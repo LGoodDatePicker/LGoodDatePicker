@@ -1,0 +1,152 @@
+JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_60" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "0dlu, default, 0dlu"
+			"$rowSpecs": "0dlu, fill:default, linegap, default, fill:default, linegap, fill:default, 0dlu"
+			"$rowGroupIds": "0, 1, 0, 0, 0, 0, 1, 0"
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "min, min, default, min, min"
+				"$rowSpecs": "fill:default"
+				"$columnGroupIds": "1, 1, 0, 1, 1"
+			} ) {
+				name: "headerControlsPanel"
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonPreviousYear"
+					"text": "<<"
+					"focusable": false
+					"focusPainted": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonPreviousYearActionPerformed", true ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonPreviousMonth"
+					"text": "<"
+					"focusable": false
+					"focusPainted": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonPreviousMonthActionPerformed", true ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 2
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+					"$columnSpecs": "default:grow, default, 1px, default, default:grow"
+					"$rowSpecs": "fill:default:grow"
+				} ) {
+					name: "monthAndYearPanel"
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelMonthIndicator"
+						"text": "September"
+						"horizontalAlignment": 4
+						"opaque": true
+						"border": &CompoundBorder0 new javax.swing.border.CompoundBorder( new javax.swing.border.EmptyBorder( 1, 1, 1, 1 ), new javax.swing.border.EmptyBorder( 0, 2, 0, 2 ) )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelMonthIndicatorMousePressed", true ) )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 2
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelYearIndicator"
+						"text": "2100"
+						"opaque": true
+						"border": #CompoundBorder0
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelYearIndicatorMousePressed", true ) )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
+						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 4
+					} )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 3
+					"gridY": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonNextMonth"
+					"text": ">"
+					"focusable": false
+					"focusPainted": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonNextMonthActionPerformed", true ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 4
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "buttonNextYear"
+					"text": ">>"
+					"margin": new java.awt.Insets( 0, 0, 0, 0 )
+					"focusable": false
+					"focusPainted": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonNextYearActionPerformed", true ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 5
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 2
+				"gridX": 2
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "max(default;27px):grow, default:grow, default:grow, default:grow, default:grow, default:grow, default:grow"
+				"$rowSpecs": "fill:max(default;22px)"
+				"$columnGroupIds": "1, 1, 1, 1, 1, 1, 1"
+			} ) {
+				name: "weekDaysPanel"
+				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 4
+				"gridX": 2
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "pref:grow, pref:grow, pref:grow, pref:grow, pref:grow, pref:grow, pref:grow"
+				"$rowSpecs": "2px, fill:max(default;18px):grow, fill:max(default;18px):grow, fill:max(default;18px):grow, fill:max(default;18px):grow, fill:max(default;18px):grow, fill:max(default;18px):grow, 3px"
+				"$columnGroupIds": "1, 1, 1, 1, 1, 1, 1"
+				"$rowGroupIds": "0, 1, 1, 1, 1, 1, 1, 0"
+			} ) {
+				name: "datesPanel"
+				"border": new javax.swing.border.LineBorder( new java.awt.Color( 99, 130, 191, 255 ), 1, false )
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 2
+				"gridY": 5
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "relgap, default, default:grow, default, relgap"
+				"$rowSpecs": "fill:default:grow"
+			} ) {
+				name: "footerPanel"
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelSetDateToToday"
+					"text": "Today: Feb 12, 2016"
+					"horizontalAlignment": 0
+					"opaque": true
+					"border": #CompoundBorder0
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "labelSetDateToTodayMouseClicked", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 2
+				} )
+				add( new FormComponent( "javax.swing.JLabel" ) {
+					name: "labelClearDate"
+					"text": "Clear"
+					"opaque": true
+					"border": #CompoundBorder0
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "labelClearDateMouseClicked", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
+					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 4
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 7
+				"gridX": 2
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 250, 200 )
+		} )
+	}
+}
