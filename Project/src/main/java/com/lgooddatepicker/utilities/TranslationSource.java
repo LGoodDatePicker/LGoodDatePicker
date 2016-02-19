@@ -1,6 +1,5 @@
 package com.lgooddatepicker.utilities;
 
-import java.io.InputStream;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -42,12 +41,9 @@ public class TranslationSource {
             return;
         }
         try {
-
             translationResources = new Properties();
-            InputStream stream = TranslationSource.class.getResourceAsStream(
-                    "TranslationResources.properties");
-            translationResources.load(stream);
-            stream.close();
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            translationResources.load(classLoader.getResourceAsStream("TranslationResources.properties"));
         } catch (Exception e) {
             System.out.println(e.toString());
         }
