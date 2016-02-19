@@ -1,0 +1,105 @@
+JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_60" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "unrelgap, min(default;110dlu), labelcompgap, default:grow, labelcompgap, default:grow, labelcompgap, default:grow, unrelgap"
+			"$rowSpecs": "unrelgap, fill:default, 20dlu, fill:default, 20dlu, fill:default, fill:20dlu, fill:default, 8dlu, unrelgap, fill:max(default;60dlu), linegap, top:default, unrelgap"
+		} ) {
+			name: "this"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "default:grow"
+				"$rowSpecs": "min, default, linegap, default, linegap, default, linegap, default, linegap, default"
+			} ) {
+				name: "buttonPanel"
+				auxiliary() {
+					"JavaCodeGenerator.variableModifiers": 1
+				}
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 8
+				"gridY": 2
+				"gridHeight": 6
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "dateLabel1"
+				"text": "Date 1:"
+				"horizontalAlignment": 4
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 2
+				"gridY": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "clickHereLabel"
+				"text": "Click here  _____________/\\    "
+				"horizontalAlignment": 4
+				"foreground": sfield java.awt.Color blue
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 3
+				"gridX": 4
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "dateLabel2"
+				"text": "Date 2:"
+				"horizontalAlignment": 4
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 4
+				"gridX": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "dateLabel3"
+				"text": "<html>With Customized Settings:<br/>First weekday is Monday. Has Veto Policy and Highlight Policy.</html>"
+				"horizontalAlignment": 2
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 5
+				"gridX": 2
+				"gridHeight": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "<html>With A Different Locale:<br/>(Russian)</html>"
+				"horizontalAlignment": 2
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 2
+				"gridY": 8
+				"gridHeight": 2
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "messageTextAreaScrollPane"
+				"border": new javax.swing.border.TitledBorder( "Messages" )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "messageTextArea"
+					"lineWrap": true
+					"wrapStyleWord": true
+					"font": new java.awt.Font( "Arial", 1, 13 )
+					"margin": new java.awt.Insets( 4, 6, 2, 6 )
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 2
+				"gridY": 11
+				"gridWidth": 7
+			} )
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "informationTextAreaScrollPane"
+				"border": new javax.swing.border.TitledBorder( "Information" )
+				add( new FormComponent( "javax.swing.JTextArea" ) {
+					name: "informationTextArea"
+					"text": "\nInterface: Most items in a date picker are clickable. These include... The buttons for previous and next month, the buttons for previous and next year, the \"today\" text, the \"clear\" text, and individual dates. A click on the month or year label (at the top), will open a menu for changing the month or year.\n\nGeneral features: \n* Automatic internationalization. (Month names, weekday names, the default first day of the week,  default date formats, and button text.)\n* Translations so far include 12 languages.\n* Fonts and colors can be changed. (For example the highlight color, or the invalid date font). \n* Relatively compact source code (3 main classes).\n* Creating a DatePicker requires only one line of code.\n* Open source code base.\n\nData types: The standard Java 8 time library is used to store dates, and they are convertible to other data types. (The Java 8 time package is also called \"java.time\" or \"JSR-310\", and was developed by the author of Joda Time.)\n\nVeto and Highlight Policies: These policies are optional. A veto policy restricts the dates that can be selected. A highlight policy provides a visual highlight on desired dates, with optional tooltips. The customized date picker above has a highlight policy for weekends and the 3rd (with tooltips added), and a veto policy for every 5th day. If today is vetoed, the \"today\" button will be grey and disabled.\n\nDate values and automatic validation: Every date picker stores its current text, and its last valid date. The last valid date is returned when you call DatePicker.getDate(). If the user types into the text field, any text that is not a valid date will be displayed in red, any vetoed date will have a strikethrough, and valid dates will display in black. When the focus on a date picker is lost, the text is always set to match the last valid date.\n"
+					"editable": false
+					"lineWrap": true
+					"wrapStyleWord": true
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 2
+				"gridY": 13
+				"gridWidth": 7
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 860, 745 )
+		} )
+	}
+}
