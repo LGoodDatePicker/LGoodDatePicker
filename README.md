@@ -25,6 +25,10 @@ General features:
 
 Screenshots below:
 
-
-
 ![Screenshots](/Site/ScreenShots/LGoodDatePicker_Screenshots_1.png?raw=true "")
+  
+    
+Thanks and acknowledgment to: 
+
+[Microba DatePicker](https://github.com/tdbear/microba)  
+The basic visual form design of LGoodDatePicker was originally inspired by Microba.
