@@ -5,11 +5,12 @@ News:
 LGoodDatePicker 2.0 was released 19 February 2016.
 This release includes all the features of LGoodDatePicker to date.
 
-Contact information:  
+Project Links:  
 The primary developer can be contacted with [this email form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
+Bugs or feature requests can be submitted as a [new isssue](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).
 We also have a place for [General Discussion](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).
 
-General features:
+General Features:
 * Automatic internationalization. (Month names, weekday names, the default first day of the week, default date formats, and button text.)
 * Translations so far include 12 languages.
 * Uses the standard Java 8 time package. This package is also called "java.time" or "JSR-310"
@@ -24,7 +25,7 @@ General features:
 * Open source MIT license.
 
 
-Screenshots below:
+Screenshots Below:
 
 ![Screenshots](/Site/ScreenShots/LGoodDatePicker_Screenshots_1.png?raw=true "")
   
