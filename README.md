@@ -14,6 +14,7 @@ General Features:
 * Automatic internationalization. (Month names, weekday names, the default first day of the week, default date formats, and button text.)
 * Translations so far include 12 languages.
 * Uses the standard Java 8 time package. This package is also called "java.time" or "JSR-310"
+* Supports other common data types, such as "java.util.Date".
 * Automatic validation of dates, whether entered with the mouse or keyboard.
 * Fonts and colors can be changed. 
 * Optional highlight policies and veto policies.
