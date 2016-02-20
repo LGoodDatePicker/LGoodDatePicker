@@ -15,7 +15,7 @@ General Features:
 * Translations so far include 12 languages.
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
 * Also supports other common data types, such as "java.util.Date".
-* Automatic validation of dates, whether entered with the mouse or keyboard.
+* Automatic validation of dates.
 * Fonts and colors can be changed. 
 * Optional highlight policies and veto policies.
 * Relatively compact source code (3 main classes).
