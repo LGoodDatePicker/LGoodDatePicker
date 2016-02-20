@@ -13,6 +13,7 @@ import java.time.chrono.IsoEra;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import com.lgooddatepicker.policies.VetoPolicy;
+import com.lgooddatepicker.utilities.Convert;
 import com.lgooddatepicker.utilities.CustomPopup;
 import com.lgooddatepicker.utilities.TopWindowMovementListener;
 
@@ -50,6 +51,12 @@ public class DatePicker extends JPanel {
      * date picker calendar is opened.
      */
     private CalendarPanel calendarPanel = null;
+
+    /**
+     * convert, This utility class instance is used to get or set the DatePicker java.time.LocalDate
+     * value, using other common date related data types.
+     */
+    private Convert convert;
 
     /**
      * lastPopupCloseTime, This holds a timestamp that indicates when the calendar was last closed.
@@ -92,8 +99,8 @@ public class DatePicker extends JPanel {
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	private JTextField dateTextField;
-	private JButton toggleCalendarButton;
+    private JTextField dateTextField;
+    private JButton toggleCalendarButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -109,6 +116,7 @@ public class DatePicker extends JPanel {
      * picker settings.
      */
     public DatePicker(DatePickerSettings settings) {
+        this.convert = new Convert(this);
         this.settings = settings;
         initComponents();
         // Add a change listener to the text field.
@@ -153,6 +161,16 @@ public class DatePicker extends JPanel {
                 topWindow.removeComponentListener(listener);
             }
         }
+    }
+
+    /**
+     * convert, This is used to access the convert class instance. The convert class allows the
+     * programmer to get or set the date picker java.time.LocalDate value using other common data
+     * types. Example usage: datePicker.convert().getDateWithDefaultZone(); See the documentation of
+     * the Convert class for additional information and usage examples.
+     */
+    public Convert convert() {
+        return convert;
     }
 
     /**
@@ -443,35 +461,35 @@ public class DatePicker extends JPanel {
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		dateTextField = new JTextField();
-		toggleCalendarButton = new JButton();
+        dateTextField = new JTextField();
+        toggleCalendarButton = new JButton();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"[80dlu,default]:grow, $lcgap, [14dlu,default]",
-			"fill:default:grow"));
+        //======== this ========
+        setLayout(new FormLayout(
+                "[80dlu,default]:grow, $lcgap, [14dlu,default]",
+                "fill:default:grow"));
 
-		//---- dateTextField ----
-		dateTextField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				zEventDateTextFieldFocusLostSoValidateText(e);
-			}
-		});
-		add(dateTextField, CC.xy(1, 1));
+        //---- dateTextField ----
+        dateTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                zEventDateTextFieldFocusLostSoValidateText(e);
+            }
+        });
+        add(dateTextField, CC.xy(1, 1));
 
-		//---- toggleCalendarButton ----
-		toggleCalendarButton.setText("...");
-		toggleCalendarButton.setFocusPainted(false);
-		toggleCalendarButton.setFocusable(false);
-		toggleCalendarButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				zEventToggleCalendarButtonMousePressed(e);
-			}
-		});
-		add(toggleCalendarButton, CC.xy(3, 1));
+        //---- toggleCalendarButton ----
+        toggleCalendarButton.setText("...");
+        toggleCalendarButton.setFocusPainted(false);
+        toggleCalendarButton.setFocusable(false);
+        toggleCalendarButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                zEventToggleCalendarButtonMousePressed(e);
+            }
+        });
+        add(toggleCalendarButton, CC.xy(3, 1));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-} 
+}
