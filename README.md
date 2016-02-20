@@ -6,7 +6,8 @@ LGoodDatePicker 2.0 was released 19 February 2016.
 This release includes all the features of LGoodDatePicker to date.
 
 Contact information:  
-The primary developer can be contacted with [this email form](http://www.emailmeform.com/builder/form/ZQcYut4393).
+The primary developer can be contacted with [this email form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
+We also have a place for [General Discussion](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).
 
 General features:
 * Automatic internationalization. (Month names, weekday names, the default first day of the week, default date formats, and button text.)
