@@ -1,11 +1,14 @@
 # LGoodDatePicker
 Java 8 Swing Date Picker. Mature API, easy to use, good looking, and localized.
 
-News:
+Contact information:  
+You can contact the author with [this email form](http://www.emailmeform.com/builder/form/ZQcYut4393).
+
+News:  
 LGoodDatePicker 2.0 was released 19 February 2016.
 This release includes all the features of LGoodDatePicker to date.
 
-General features: 
+General features:
 * Automatic internationalization. (Month names, weekday names, the default first day of the week, default date formats, and button text.)
 * Translations so far include 12 languages.
 * Uses the standard Java 8 time package. This package is also called "java.time" or "JSR-310"
