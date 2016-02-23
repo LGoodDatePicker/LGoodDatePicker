@@ -1,4 +1,4 @@
-package com.lgooddatepicker.utilities;
+package com.lgooddatepicker.support;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;

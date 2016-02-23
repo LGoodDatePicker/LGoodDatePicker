@@ -48,7 +48,7 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "dateLabel3"
-				"text": "<html>With Customized Settings:<br/>First weekday is Monday. Has Veto Policy and Highlight Policy.</html>"
+				"text": "<html>With Customized Settings:<br/>First weekday is Monday. Has Veto Policy, Highlight Policy, and a Change Listener.</html>"
 				"horizontalAlignment": 2
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridY": 5

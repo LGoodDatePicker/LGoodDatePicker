@@ -1,4 +1,4 @@
-package com.lgooddatepicker.utilities;
+package com.lgooddatepicker.support;
 
 import com.lgooddatepicker.core.DatePicker;
 import java.time.Instant;

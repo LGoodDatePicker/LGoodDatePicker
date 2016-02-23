@@ -54,7 +54,7 @@ public class DemoPanel extends JPanel {
 		add(dateLabel2, CC.xy(2, 4));
 
 		//---- dateLabel3 ----
-		dateLabel3.setText("<html>With Customized Settings:<br/>First weekday is Monday. Has Veto Policy and Highlight Policy.</html>");
+		dateLabel3.setText("<html>With Customized Settings:<br/>First weekday is Monday. Has Veto Policy, Highlight Policy, and a Change Listener.</html>");
 		dateLabel3.setHorizontalAlignment(SwingConstants.LEFT);
 		add(dateLabel3, CC.xywh(2, 5, 1, 3));
 
