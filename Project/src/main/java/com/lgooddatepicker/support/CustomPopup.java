@@ -1,4 +1,4 @@
-package com.lgooddatepicker.utilities;
+package com.lgooddatepicker.support;
 
 import java.awt.Component;
 import java.awt.Window;

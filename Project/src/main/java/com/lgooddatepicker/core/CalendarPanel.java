@@ -12,9 +12,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import com.lgooddatepicker.policies.HighlightPolicy;
-import com.lgooddatepicker.policies.VetoPolicy;
-import com.lgooddatepicker.utilities.TopWindowMovementListener;
+import com.lgooddatepicker.optionalusertools.HighlightPolicy;
+import com.lgooddatepicker.optionalusertools.VetoPolicy;
+import com.lgooddatepicker.support.TopWindowMovementListener;
 
 /**
  * CalendarPanel, This implements the calendar panel which is displayed on the screen when the user

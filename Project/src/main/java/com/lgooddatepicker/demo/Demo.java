@@ -10,8 +10,9 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.Locale;
 import com.lgooddatepicker.core.DatePickerSettings;
-import com.lgooddatepicker.policies.HighlightPolicy;
-import com.lgooddatepicker.policies.VetoPolicy;
+import com.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.lgooddatepicker.optionalusertools.HighlightPolicy;
+import com.lgooddatepicker.optionalusertools.VetoPolicy;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -93,7 +94,9 @@ public class Demo {
         settings.firstDayOfWeek = DayOfWeek.MONDAY;
         settings.vetoPolicy = new SampleVetoPolicy();
         settings.highlightPolicy = new SampleHighlightPolicy();
-        return new DatePicker(settings);
+        DatePicker customizedDatePicker = new DatePicker(settings);
+        customizedDatePicker.addDateChangeListener(new SampleDateChangeListener());
+        return customizedDatePicker;
     }
 
     /**
@@ -245,6 +248,33 @@ public class Demo {
             // All other days should not be highlighted.
             return null;
         }
+    }
+
+    /**
+     * SampleDateChangeListener, A date change listener provides a way for a class to receive
+     * notifications whenever the date has changed in a DatePicker.
+     */
+    private static class SampleDateChangeListener implements DateChangeListener {
+
+        /**
+         * dateChanged, This function will be called each time that the date in the applicable date
+         * picker has changed. Both the old date, and the new date, are supplied as parameters. Note
+         * that either parameter may contain null, which represents a cleared or empty date.
+         */
+        @Override
+        public void dateChanged(LocalDate oldDate, LocalDate newDate) {
+            String oldDateString = (oldDate == null)
+                    ? DatePicker.EmptyDateString : oldDate.toString();
+            String newDateString = (newDate == null)
+                    ? DatePicker.EmptyDateString : newDate.toString();
+            String messageStart = "\nThe Customized DatePicker date has changed from: ";
+            String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
+            if (!panel.messageTextArea.getText().startsWith(messageStart)) {
+                panel.messageTextArea.setText("");
+            }
+            panel.messageTextArea.append(fullMessage);
+        }
+
     }
 
 }

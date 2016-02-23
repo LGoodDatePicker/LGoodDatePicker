@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.JTextField;
-import com.lgooddatepicker.policies.HighlightPolicy;
-import com.lgooddatepicker.policies.VetoPolicy;
-import com.lgooddatepicker.utilities.DatePickerUtilities;
-import com.lgooddatepicker.utilities.ExtraDateFormats;
-import com.lgooddatepicker.utilities.TranslationSource;
+import com.lgooddatepicker.optionalusertools.HighlightPolicy;
+import com.lgooddatepicker.optionalusertools.VetoPolicy;
+import com.lgooddatepicker.support.DatePickerUtilities;
+import com.lgooddatepicker.support.ExtraDateFormats;
+import com.lgooddatepicker.support.TranslationSource;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized in a date picker. All of
