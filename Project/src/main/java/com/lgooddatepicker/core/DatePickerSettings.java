@@ -14,7 +14,7 @@ import java.util.Map;
 import javax.swing.JTextField;
 import com.lgooddatepicker.optionalusertools.HighlightPolicy;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
-import com.lgooddatepicker.support.DatePickerUtilities;
+import com.lgooddatepicker.support.DatePickerInternalUtilities;
 import com.lgooddatepicker.support.ExtraDateFormats;
 import com.lgooddatepicker.support.TranslationSource;
 
@@ -193,8 +193,8 @@ public class DatePickerSettings {
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
         todayFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(pickerLocale);
-        displayFormatterAD = DatePickerUtilities.getDefaultDisplayFormatterAD(pickerLocale);
-        displayFormatterBC = DatePickerUtilities.getDefaultDisplayFormatterBC(pickerLocale);
+        displayFormatterAD = DatePickerInternalUtilities.generateDefaultDisplayFormatterAD(pickerLocale);
+        displayFormatterBC = DatePickerInternalUtilities.generateDefaultDisplayFormatterBC(pickerLocale);
 
         // Initialize the other fields.
         highlightPolicy = null;

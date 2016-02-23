@@ -11,11 +11,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * DatePickerUtilities, This class contains static functions that are used by the date picker or the
- * calendar panel. Some of these functions are large, and were separated out of the date picker
- * class or calendar panel class in order to improve the readability of those classes.
+ * DatePickerInternalUtilities, This class contains static functions that are used by the date
+ * picker or the calendar panel. Some of these functions are large, and were separated out of the
+ * date picker class or calendar panel class in order to improve the readability of those classes.
  */
-public class DatePickerUtilities {
+public class DatePickerInternalUtilities {
 
     /**
      * doesParsedDateMatchText, This compares the numbers in a parsed date, to the original text
@@ -85,21 +85,21 @@ public class DatePickerUtilities {
     }
 
     /**
-     * getDefaultDisplayFormatterAD, This returns a default formatter for the specified locale, that
-     * can be used for displaying or parsing AD dates. The formatter is generated from the default
-     * FormatStyle.LONG formatter in the specified locale.
+     * generateDefaultDisplayFormatterAD, This returns a default formatter for the specified locale,
+     * that can be used for displaying or parsing AD dates. The formatter is generated from the
+     * default FormatStyle.LONG formatter in the specified locale.
      */
-    public static DateTimeFormatter getDefaultDisplayFormatterAD(Locale pickerLocale) {
+    public static DateTimeFormatter generateDefaultDisplayFormatterAD(Locale pickerLocale) {
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(pickerLocale);
     }
 
     /**
-     * getDefaultDisplayFormatterBC, This returns a default formatter for the specified locale, that
-     * can be used for displaying or parsing BC dates. The formatter is generated from the default
-     * FormatStyle.LONG formatter in the specified locale. The resulting format is intended to be
-     * nearly identical to the default formatter used for AD dates.
+     * generateDefaultDisplayFormatterBC, This returns a default formatter for the specified locale,
+     * that can be used for displaying or parsing BC dates. The formatter is generated from the
+     * default FormatStyle.LONG formatter in the specified locale. The resulting format is intended
+     * to be nearly identical to the default formatter used for AD dates.
      */
-    public static DateTimeFormatter getDefaultDisplayFormatterBC(Locale pickerLocale) {
+    public static DateTimeFormatter generateDefaultDisplayFormatterBC(Locale pickerLocale) {
         // This is verified to work for the following locale languages:
         // en, de, fr, pt, ru, it, nl, es, pl, da, ro, sv, zh.
         String displayFormatterBCPattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
@@ -152,7 +152,7 @@ public class DatePickerUtilities {
         }
         // Check for any "successfully" parsed but nonexistent dates like Feb 31.
         // Note, this function has been thoroughly tested. See the function docs for details.
-        if ((parsedDate != null) && (!DatePickerUtilities.doesParsedDateMatchText(
+        if ((parsedDate != null) && (!DatePickerInternalUtilities.doesParsedDateMatchText(
                 parsedDate, text, formatLocale))) {
             return null;
         }

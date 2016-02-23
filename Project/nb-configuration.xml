@@ -10,6 +10,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>dd</word>
         <word>parsable</word>
         <word>popup</word>
+        <word>strikethrough</word>
         <word>tooltip</word>
         <word>util</word>
         <word>uuuu</word>

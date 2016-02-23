@@ -1,9 +1,10 @@
 package com.lgooddatepicker.core;
 
-import com.lgooddatepicker.support.DatePickerUtilities;
+import com.lgooddatepicker.support.DatePickerInternalUtilities;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 import com.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.lgooddatepicker.optionalusertools.DateUtilities;
 import java.awt.Window;
 import java.awt.event.*;
 import javax.swing.*;
@@ -267,7 +268,7 @@ public class DatePicker extends JPanel {
             return true;
         }
         // Try to get a parsed date.
-        LocalDate parsedDate = DatePickerUtilities.getParsedDateOrNull(text,
+        LocalDate parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(text,
                 settings.displayFormatterAD, settings.displayFormatterBC,
                 settings.parsingFormatters, settings.pickerLocale);
 
@@ -462,11 +463,11 @@ public class DatePicker extends JPanel {
     }
 
     /**
-     * zInternalSetDateTextField, This is called whenever we need to programmatically change the date text
-     * field. The purpose of this function is to make sure that text field change events only occur
-     * once per programmatic text change, instead of occurring twice. The default behavior is that
-     * the text change event will fire twice. (By default, it changes once to clear the text, and
-     * changes once to change it to new text.)
+     * zInternalSetDateTextField, This is called whenever we need to programmatically change the
+     * date text field. The purpose of this function is to make sure that text field change events
+     * only occur once per programmatic text change, instead of occurring twice. The default
+     * behavior is that the text change event will fire twice. (By default, it changes once to clear
+     * the text, and changes once to change it to new text.)
      */
     private void zInternalSetDateTextField(String text) {
         skipTextFieldChangedFunctionWhileTrue = true;
@@ -477,15 +478,17 @@ public class DatePicker extends JPanel {
 
     /**
      * zInternalSetLastValidDateAndNotifyListeners, This should be called whenever we need to change
-     * the last valid date variable. This will notify all date change listeners that the date has
-     * been changed, and store the supplied last valid date. This does -not- update the displayed
-     * calendar, and does not perform any other tasks besides those described here.
+     * the last valid date variable. This will store the supplied last valid date. If needed, this
+     * will notify all date change listeners that the date has been changed. This does -not- update
+     * the displayed calendar, and does not perform any other tasks besides those described here.
      */
     private void zInternalSetLastValidDateAndNotifyListeners(LocalDate newDate) {
         LocalDate oldDate = lastValidDate;
         lastValidDate = newDate;
-        for (DateChangeListener dateChangeListener : dateChangeListeners) {
-            dateChangeListener.dateChanged(oldDate, newDate);
+        if (!DateUtilities.isSameLocalDate(oldDate, newDate)) {
+            for (DateChangeListener dateChangeListener : dateChangeListeners) {
+                dateChangeListener.dateChanged(oldDate, newDate);
+            }
         }
     }
 
@@ -511,7 +514,7 @@ public class DatePicker extends JPanel {
         // If needed, try to get a parsed date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
-            parsedDate = DatePickerUtilities.getParsedDateOrNull(dateText,
+            parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(dateText,
                     settings.displayFormatterAD, settings.displayFormatterBC,
                     settings.parsingFormatters, settings.pickerLocale);
         }
