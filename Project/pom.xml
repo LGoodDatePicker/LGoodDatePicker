@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>2.1</version>
+    <version>2.1.1</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -62,6 +62,24 @@
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <configuration>
+                    <tasks>
+                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-jar-without-dependencies.jar"/>
+                        <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}-jar-with-dependencies.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
+                    </tasks>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>
