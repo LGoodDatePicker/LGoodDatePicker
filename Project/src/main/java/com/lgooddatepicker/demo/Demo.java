@@ -11,8 +11,10 @@ import java.time.Month;
 import java.util.Locale;
 import com.lgooddatepicker.core.DatePickerSettings;
 import com.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.lgooddatepicker.optionalusertools.DateUtilities;
 import com.lgooddatepicker.optionalusertools.HighlightPolicy;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
+import com.lgooddatepicker.support.DateChangeEvent;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -258,15 +260,16 @@ public class Demo {
 
         /**
          * dateChanged, This function will be called each time that the date in the applicable date
-         * picker has changed. Both the old date, and the new date, are supplied as parameters. Note
-         * that either parameter may contain null, which represents a cleared or empty date.
+         * picker has changed. Both the old date, and the new date, are supplied in the event
+         * object. Note that either parameter may contain null, which represents a cleared or empty
+         * date.
          */
         @Override
-        public void dateChanged(LocalDate oldDate, LocalDate newDate) {
-            String oldDateString = (oldDate == null)
-                    ? DatePicker.EmptyDateString : oldDate.toString();
-            String newDateString = (newDate == null)
-                    ? DatePicker.EmptyDateString : newDate.toString();
+        public void dateChanged(DateChangeEvent event) {
+            LocalDate oldDate = event.getOldDate();
+            LocalDate newDate = event.getNewDate();
+            String oldDateString = DateUtilities.localDateToString(oldDate);
+            String newDateString = DateUtilities.localDateToString(newDate);
             String messageStart = "\nThe Customized DatePicker date has changed from: ";
             String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {
