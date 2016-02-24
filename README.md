@@ -2,7 +2,7 @@
 Java 8 Swing Date Picker. Mature API, easy to use, good looking, and localized.
 
 News:  
-LGoodDatePicker 2.1.1 was released 23 February 2016. This version includes these requested enhancements:
+LGoodDatePicker 2.1 was released 22 February 2016. This version includes these requested enhancements:
 * Added support for converting to or from a java.util.Date.
 * Added date change listeners to the DatePicker.
 
