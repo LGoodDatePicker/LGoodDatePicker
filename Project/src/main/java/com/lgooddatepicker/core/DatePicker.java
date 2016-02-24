@@ -17,6 +17,7 @@ import javax.swing.event.DocumentListener;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import com.lgooddatepicker.support.Convert;
 import com.lgooddatepicker.support.CustomPopup;
+import com.lgooddatepicker.support.DateChangeEvent;
 import com.lgooddatepicker.support.TopWindowMovementListener;
 import java.util.ArrayList;
 
@@ -487,7 +488,8 @@ public class DatePicker extends JPanel {
         lastValidDate = newDate;
         if (!DateUtilities.isSameLocalDate(oldDate, newDate)) {
             for (DateChangeListener dateChangeListener : dateChangeListeners) {
-                dateChangeListener.dateChanged(oldDate, newDate);
+                DateChangeEvent dateChangeEvent = new DateChangeEvent(this, oldDate, newDate);
+                dateChangeListener.dateChanged(dateChangeEvent);
             }
         }
     }

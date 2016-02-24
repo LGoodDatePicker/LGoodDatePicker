@@ -1,5 +1,6 @@
 package com.lgooddatepicker.optionalusertools;
 
+import com.lgooddatepicker.core.DatePicker;
 import java.time.LocalDate;
 
 /**
@@ -27,5 +28,21 @@ public class DateUtilities {
         }
         // Both values contain dates. Return true if the dates are equal, otherwise return false.
         return first.isEqual(second);
+    }
+
+    /**
+     * localDateToString, This can be used to convert a nullable LocalDate to a String. Null strings
+     * will use the default string representation of null from the DatePicker class.
+     */
+    static public String localDateToString(LocalDate date) {
+        return localDateToString(date, DatePicker.EmptyDateString);
+    }
+
+    /**
+     * localDateToString, This can be used to convert a nullable LocalDate to a String. Null strings
+     * will use the supplied string representation of null, which may optionally be null.
+     */
+    static public String localDateToString(LocalDate date, String nullString) {
+        return (date == null) ? nullString : date.toString();
     }
 }
