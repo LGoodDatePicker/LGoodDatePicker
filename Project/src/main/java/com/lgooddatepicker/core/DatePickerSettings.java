@@ -15,7 +15,7 @@ import javax.swing.JTextField;
 import com.lgooddatepicker.optionalusertools.HighlightPolicy;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import com.lgooddatepicker.support.DatePickerInternalUtilities;
-import com.lgooddatepicker.support.ExtraDateFormats;
+import com.lgooddatepicker.support.ExtraDateStrings;
 import com.lgooddatepicker.support.TranslationSource;
 
 /**
@@ -128,6 +128,20 @@ public class DatePickerSettings {
     public HighlightPolicy highlightPolicy;
 
     /**
+     * monthNameTranslations, This holds an array of month names to use for the calendar panel
+     * header, as translated to the current language. It is not expected that this variable will
+     * need to be changed by the programmer. The default values are generated using the locale of
+     * the settings instance, by retrieving the translated text for the current language from the
+     * class called java.text.DateFormatSymbols. This array is indexed with January = 0. The
+     * Calendar class month name constants can also be used for indexing. (Calendar.JANUARY, etc).
+     *
+     * Expected array contents: This array should never be set to null, and the array should always
+     * have a length of 12. Each element should always contain a string that is not null and not
+     * empty.
+     */
+    public String[] monthNameTranslations;
+
+    /**
      * parsingFormatters, This holds a list of formatters that are used to try to parse dates that
      * are typed by the user. The parsingFormatters are attempted to be used in the order that they
      * appear in this list. Note that the displayFormatterAD and displayFormatterBC are always tried
@@ -190,6 +204,9 @@ public class DatePickerSettings {
         todayTranslation = TranslationSource.getTranslation(pickerLocale, "today", "Today");
         clearTranslation = TranslationSource.getTranslation(pickerLocale, "clear", "Clear");
 
+        // Set the default month names for the current locale.
+        monthNameTranslations = ExtraDateStrings.getDefaultMonthNamesForLocale(pickerLocale);
+
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
         todayFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(pickerLocale);
@@ -211,8 +228,8 @@ public class DatePickerSettings {
         }
         // Get any common extra parsing formats for the specified locale, and append them to
         // the list of parsingFormatters.
-        ArrayList<DateTimeFormatter> extraFormatters = 
-                ExtraDateFormats.getExtraParsingFormatsForLocale(pickerLocale);
+        ArrayList<DateTimeFormatter> extraFormatters
+                = ExtraDateStrings.getExtraParsingFormatsForLocale(pickerLocale);
         parsingFormatters.addAll(extraFormatters);
 
         // Generate the default fonts and text colors for the text field text.

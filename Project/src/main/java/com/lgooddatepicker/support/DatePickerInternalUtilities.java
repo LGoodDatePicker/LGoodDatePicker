@@ -159,4 +159,16 @@ public class DatePickerInternalUtilities {
         return parsedDate;
     }
 
+    /**
+     * capitalizeFirstLetterOfString, This capitalizes the first letter of the supplied string, in a
+     * way that is sensitive to the specified locale.
+     */
+    static String capitalizeFirstLetterOfString(String text, Locale locale) {
+        if (text == null || text.length() < 1) {
+            return text;
+        }
+        String textCapitalized = text.substring(0, 1).toUpperCase(locale) + text.substring(1);
+        return textCapitalized;
+    }
+
 }

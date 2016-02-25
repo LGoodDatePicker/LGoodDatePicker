@@ -72,19 +72,19 @@ public class CalendarPanel extends JPanel {
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	private JPanel headerControlsPanel;
-	private JButton buttonPreviousYear;
-	private JButton buttonPreviousMonth;
-	private JPanel monthAndYearPanel;
-	private JLabel labelMonthIndicator;
-	private JLabel labelYearIndicator;
-	private JButton buttonNextMonth;
-	private JButton buttonNextYear;
-	private JPanel weekDaysPanel;
-	private JPanel datesPanel;
-	private JPanel footerPanel;
-	private JLabel labelSetDateToToday;
-	private JLabel labelClearDate;
+    private JPanel headerControlsPanel;
+    private JButton buttonPreviousYear;
+    private JButton buttonPreviousMonth;
+    private JPanel monthAndYearPanel;
+    private JLabel labelMonthIndicator;
+    private JLabel labelYearIndicator;
+    private JButton buttonNextMonth;
+    private JButton buttonNextYear;
+    private JPanel weekDaysPanel;
+    private JPanel datesPanel;
+    private JPanel footerPanel;
+    private JLabel labelSetDateToToday;
+    private JLabel labelClearDate;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -263,7 +263,8 @@ public class CalendarPanel extends JPanel {
         // Get the days of the week in the local language.
         String localShortDaysOfWeek[] = symbols.getShortWeekdays();
         // Get the full name of the month in the current locale.
-        String localizedFullMonth = symbols.getMonths()[displayedMonth.getValue() - 1];
+        int zeroBasedMonthIndex = (displayedMonth.getValue() - 1);
+        String localizedFullMonth = getSettings().monthNameTranslations[zeroBasedMonthIndex];
         // Get the first day of the month, and the first day of week.
         LocalDate firstDayOfMonth = LocalDate.of(displayedYear, displayedMonth, 1);
         DayOfWeek firstDayOfWeekOfMonth = firstDayOfMonth.getDayOfWeek();
@@ -448,8 +449,7 @@ public class CalendarPanel extends JPanel {
      */
     private void labelMonthIndicatorMousePressed(MouseEvent e) {
         JPopupMenu monthPopupMenu = new JPopupMenu();
-        DateFormatSymbols symbols = DateFormatSymbols.getInstance(getSettings().pickerLocale);
-        String[] allLocalMonths = symbols.getMonths();
+        String[] allLocalMonths = getSettings().monthNameTranslations;
         for (int i = 0; i < allLocalMonths.length; ++i) {
             final String localMonth = allLocalMonths[i];
             final int localMonthZeroBasedIndexTemp = i;
@@ -583,191 +583,199 @@ public class CalendarPanel extends JPanel {
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		headerControlsPanel = new JPanel();
-		buttonPreviousYear = new JButton();
-		buttonPreviousMonth = new JButton();
-		monthAndYearPanel = new JPanel();
-		labelMonthIndicator = new JLabel();
-		labelYearIndicator = new JLabel();
-		buttonNextMonth = new JButton();
-		buttonNextYear = new JButton();
-		weekDaysPanel = new JPanel();
-		datesPanel = new JPanel();
-		footerPanel = new JPanel();
-		labelSetDateToToday = new JLabel();
-		labelClearDate = new JLabel();
+        headerControlsPanel = new JPanel();
+        buttonPreviousYear = new JButton();
+        buttonPreviousMonth = new JButton();
+        monthAndYearPanel = new JPanel();
+        labelMonthIndicator = new JLabel();
+        labelYearIndicator = new JLabel();
+        buttonNextMonth = new JButton();
+        buttonNextYear = new JButton();
+        weekDaysPanel = new JPanel();
+        datesPanel = new JPanel();
+        footerPanel = new JPanel();
+        labelSetDateToToday = new JLabel();
+        labelClearDate = new JLabel();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"0dlu, default, 0dlu",
-			"0dlu, fill:default, $lgap, default, fill:default, $lgap, fill:default, 0dlu"));
-		((FormLayout)getLayout()).setRowGroups(new int[][] {{2, 7}});
+        //======== this ========
+        setLayout(new FormLayout(
+                "0dlu, default, 0dlu",
+                "0dlu, fill:default, $lgap, default, fill:default, $lgap, fill:default, 0dlu"));
+        ((FormLayout) getLayout()).setRowGroups(new int[][]{{2, 7}});
 
-		//======== headerControlsPanel ========
-		{
-			headerControlsPanel.setLayout(new FormLayout(
-				"2*(min), default, 2*(min)",
-				"fill:default"));
-			((FormLayout)headerControlsPanel.getLayout()).setColumnGroups(new int[][] {{1, 2, 4, 5}});
+        //======== headerControlsPanel ========
+        {
+            headerControlsPanel.setLayout(new FormLayout(
+                    "2*(min), default, 2*(min)",
+                    "fill:default"));
+            ((FormLayout) headerControlsPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 4, 5}});
 
-			//---- buttonPreviousYear ----
-			buttonPreviousYear.setText("<<");
-			buttonPreviousYear.setFocusable(false);
-			buttonPreviousYear.setFocusPainted(false);
-			buttonPreviousYear.addActionListener(e -> buttonPreviousYearActionPerformed(e));
-			headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
+            //---- buttonPreviousYear ----
+            buttonPreviousYear.setText("<<");
+            buttonPreviousYear.setFocusable(false);
+            buttonPreviousYear.setFocusPainted(false);
+            buttonPreviousYear.addActionListener(e -> buttonPreviousYearActionPerformed(e));
+            headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
-			//---- buttonPreviousMonth ----
-			buttonPreviousMonth.setText("<");
-			buttonPreviousMonth.setFocusable(false);
-			buttonPreviousMonth.setFocusPainted(false);
-			buttonPreviousMonth.addActionListener(e -> buttonPreviousMonthActionPerformed(e));
-			headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
+            //---- buttonPreviousMonth ----
+            buttonPreviousMonth.setText("<");
+            buttonPreviousMonth.setFocusable(false);
+            buttonPreviousMonth.setFocusPainted(false);
+            buttonPreviousMonth.addActionListener(e -> buttonPreviousMonthActionPerformed(e));
+            headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
-			//======== monthAndYearPanel ========
-			{
-				monthAndYearPanel.setLayout(new FormLayout(
-					"default:grow, default, 1px, default, default:grow",
-					"fill:default:grow"));
+            //======== monthAndYearPanel ========
+            {
+                monthAndYearPanel.setLayout(new FormLayout(
+                        "default:grow, default, 1px, default, default:grow",
+                        "fill:default:grow"));
 
-				//---- labelMonthIndicator ----
-				labelMonthIndicator.setText("September");
-				labelMonthIndicator.setHorizontalAlignment(SwingConstants.RIGHT);
-				labelMonthIndicator.setOpaque(true);
-				labelMonthIndicator.setBorder(new CompoundBorder(
-					new EmptyBorder(1, 1, 1, 1),
-					new EmptyBorder(0, 2, 0, 2)));
-				labelMonthIndicator.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						labelIndicatorMouseEntered(e);
-					}
-					@Override
-					public void mouseExited(MouseEvent e) {
-						labelIndicatorMouseExited(e);
-					}
-					@Override
-					public void mousePressed(MouseEvent e) {
-						labelMonthIndicatorMousePressed(e);
-					}
-				});
-				monthAndYearPanel.add(labelMonthIndicator, CC.xy(2, 1));
+                //---- labelMonthIndicator ----
+                labelMonthIndicator.setText("September");
+                labelMonthIndicator.setHorizontalAlignment(SwingConstants.RIGHT);
+                labelMonthIndicator.setOpaque(true);
+                labelMonthIndicator.setBorder(new CompoundBorder(
+                        new EmptyBorder(1, 1, 1, 1),
+                        new EmptyBorder(0, 2, 0, 2)));
+                labelMonthIndicator.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        labelIndicatorMouseEntered(e);
+                    }
 
-				//---- labelYearIndicator ----
-				labelYearIndicator.setText("2100");
-				labelYearIndicator.setOpaque(true);
-				labelYearIndicator.setBorder(new CompoundBorder(
-					new EmptyBorder(1, 1, 1, 1),
-					new EmptyBorder(0, 2, 0, 2)));
-				labelYearIndicator.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						labelIndicatorMouseEntered(e);
-					}
-					@Override
-					public void mouseExited(MouseEvent e) {
-						labelIndicatorMouseExited(e);
-					}
-					@Override
-					public void mousePressed(MouseEvent e) {
-						labelYearIndicatorMousePressed(e);
-					}
-				});
-				monthAndYearPanel.add(labelYearIndicator, CC.xy(4, 1));
-			}
-			headerControlsPanel.add(monthAndYearPanel, CC.xy(3, 1));
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        labelIndicatorMouseExited(e);
+                    }
 
-			//---- buttonNextMonth ----
-			buttonNextMonth.setText(">");
-			buttonNextMonth.setFocusable(false);
-			buttonNextMonth.setFocusPainted(false);
-			buttonNextMonth.addActionListener(e -> buttonNextMonthActionPerformed(e));
-			headerControlsPanel.add(buttonNextMonth, CC.xy(4, 1));
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        labelMonthIndicatorMousePressed(e);
+                    }
+                });
+                monthAndYearPanel.add(labelMonthIndicator, CC.xy(2, 1));
 
-			//---- buttonNextYear ----
-			buttonNextYear.setText(">>");
-			buttonNextYear.setMargin(new Insets(0, 0, 0, 0));
-			buttonNextYear.setFocusable(false);
-			buttonNextYear.setFocusPainted(false);
-			buttonNextYear.addActionListener(e -> buttonNextYearActionPerformed(e));
-			headerControlsPanel.add(buttonNextYear, CC.xy(5, 1));
-		}
-		add(headerControlsPanel, CC.xy(2, 2));
+                //---- labelYearIndicator ----
+                labelYearIndicator.setText("2100");
+                labelYearIndicator.setOpaque(true);
+                labelYearIndicator.setBorder(new CompoundBorder(
+                        new EmptyBorder(1, 1, 1, 1),
+                        new EmptyBorder(0, 2, 0, 2)));
+                labelYearIndicator.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        labelIndicatorMouseEntered(e);
+                    }
 
-		//======== weekDaysPanel ========
-		{
-			weekDaysPanel.setBorder(null);
-			weekDaysPanel.setLayout(new FormLayout(
-				"[27px,default]:grow, 6*(default:grow)",
-				"fill:[22px,default]"));
-			((FormLayout)weekDaysPanel.getLayout()).setColumnGroups(new int[][] {{1, 2, 3, 4, 5, 6, 7}});
-		}
-		add(weekDaysPanel, CC.xy(2, 4));
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        labelIndicatorMouseExited(e);
+                    }
 
-		//======== datesPanel ========
-		{
-			datesPanel.setBorder(new LineBorder(new Color(99, 130, 191)));
-			datesPanel.setBackground(Color.white);
-			datesPanel.setLayout(new FormLayout(
-				"7*(pref:grow)",
-				"2px, 6*(fill:[18px,default]:grow), 3px"));
-			((FormLayout)datesPanel.getLayout()).setColumnGroups(new int[][] {{1, 2, 3, 4, 5, 6, 7}});
-			((FormLayout)datesPanel.getLayout()).setRowGroups(new int[][] {{2, 3, 4, 5, 6, 7}});
-		}
-		add(datesPanel, CC.xy(2, 5));
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        labelYearIndicatorMousePressed(e);
+                    }
+                });
+                monthAndYearPanel.add(labelYearIndicator, CC.xy(4, 1));
+            }
+            headerControlsPanel.add(monthAndYearPanel, CC.xy(3, 1));
 
-		//======== footerPanel ========
-		{
-			footerPanel.setLayout(new FormLayout(
-				"$rgap, default, default:grow, default, $rgap",
-				"fill:default:grow"));
+            //---- buttonNextMonth ----
+            buttonNextMonth.setText(">");
+            buttonNextMonth.setFocusable(false);
+            buttonNextMonth.setFocusPainted(false);
+            buttonNextMonth.addActionListener(e -> buttonNextMonthActionPerformed(e));
+            headerControlsPanel.add(buttonNextMonth, CC.xy(4, 1));
 
-			//---- labelSetDateToToday ----
-			labelSetDateToToday.setText("Today: Feb 12, 2016");
-			labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
-			labelSetDateToToday.setOpaque(true);
-			labelSetDateToToday.setBorder(new CompoundBorder(
-				new EmptyBorder(1, 1, 1, 1),
-				new EmptyBorder(0, 2, 0, 2)));
-			labelSetDateToToday.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					labelSetDateToTodayMouseClicked(e);
-				}
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					labelIndicatorMouseEntered(e);
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					labelIndicatorMouseExited(e);
-				}
-			});
-			footerPanel.add(labelSetDateToToday, CC.xy(2, 1));
+            //---- buttonNextYear ----
+            buttonNextYear.setText(">>");
+            buttonNextYear.setMargin(new Insets(0, 0, 0, 0));
+            buttonNextYear.setFocusable(false);
+            buttonNextYear.setFocusPainted(false);
+            buttonNextYear.addActionListener(e -> buttonNextYearActionPerformed(e));
+            headerControlsPanel.add(buttonNextYear, CC.xy(5, 1));
+        }
+        add(headerControlsPanel, CC.xy(2, 2));
 
-			//---- labelClearDate ----
-			labelClearDate.setText("Clear");
-			labelClearDate.setOpaque(true);
-			labelClearDate.setBorder(new CompoundBorder(
-				new EmptyBorder(1, 1, 1, 1),
-				new EmptyBorder(0, 2, 0, 2)));
-			labelClearDate.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					labelClearDateMouseClicked(e);
-				}
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					labelIndicatorMouseEntered(e);
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					labelIndicatorMouseExited(e);
-				}
-			});
-			footerPanel.add(labelClearDate, CC.xy(4, 1));
-		}
-		add(footerPanel, CC.xy(2, 7));
+        //======== weekDaysPanel ========
+        {
+            weekDaysPanel.setBorder(null);
+            weekDaysPanel.setLayout(new FormLayout(
+                    "[27px,default]:grow, 6*(default:grow)",
+                    "fill:[22px,default]"));
+            ((FormLayout) weekDaysPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 3, 4, 5, 6, 7}});
+        }
+        add(weekDaysPanel, CC.xy(2, 4));
+
+        //======== datesPanel ========
+        {
+            datesPanel.setBorder(new LineBorder(new Color(99, 130, 191)));
+            datesPanel.setBackground(Color.white);
+            datesPanel.setLayout(new FormLayout(
+                    "7*(pref:grow)",
+                    "2px, 6*(fill:[18px,default]:grow), 3px"));
+            ((FormLayout) datesPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 3, 4, 5, 6, 7}});
+            ((FormLayout) datesPanel.getLayout()).setRowGroups(new int[][]{{2, 3, 4, 5, 6, 7}});
+        }
+        add(datesPanel, CC.xy(2, 5));
+
+        //======== footerPanel ========
+        {
+            footerPanel.setLayout(new FormLayout(
+                    "$rgap, default, default:grow, default, $rgap",
+                    "fill:default:grow"));
+
+            //---- labelSetDateToToday ----
+            labelSetDateToToday.setText("Today: Feb 12, 2016");
+            labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSetDateToToday.setOpaque(true);
+            labelSetDateToToday.setBorder(new CompoundBorder(
+                    new EmptyBorder(1, 1, 1, 1),
+                    new EmptyBorder(0, 2, 0, 2)));
+            labelSetDateToToday.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    labelSetDateToTodayMouseClicked(e);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    labelIndicatorMouseEntered(e);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    labelIndicatorMouseExited(e);
+                }
+            });
+            footerPanel.add(labelSetDateToToday, CC.xy(2, 1));
+
+            //---- labelClearDate ----
+            labelClearDate.setText("Clear");
+            labelClearDate.setOpaque(true);
+            labelClearDate.setBorder(new CompoundBorder(
+                    new EmptyBorder(1, 1, 1, 1),
+                    new EmptyBorder(0, 2, 0, 2)));
+            labelClearDate.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    labelClearDateMouseClicked(e);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    labelIndicatorMouseEntered(e);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    labelIndicatorMouseExited(e);
+                }
+            });
+            footerPanel.add(labelClearDate, CC.xy(4, 1));
+        }
+        add(footerPanel, CC.xy(2, 7));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
