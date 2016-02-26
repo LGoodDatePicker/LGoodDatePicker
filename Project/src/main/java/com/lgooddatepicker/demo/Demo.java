@@ -93,7 +93,7 @@ public class Demo {
      */
     private static DatePicker createCustomizedDatePicker() {
         DatePickerSettings settings = new DatePickerSettings();
-        // settings.allowNullDates = false;
+        // settings.allowEmptyDates = false;
         settings.firstDayOfWeek = DayOfWeek.MONDAY;
         settings.vetoPolicy = new SampleVetoPolicy();
         settings.highlightPolicy = new SampleHighlightPolicy();
@@ -110,7 +110,7 @@ public class Demo {
         LocalDate dateY2K = LocalDate.of(2000, Month.JANUARY, 1);
         datePicker2.setDate(dateY2K);
         // Display message.
-        String dateString = datePicker2.getISODateStringOrNullString();
+        String dateString = datePicker2.getISODateStringOrSuppliedString("(null)");
         String message = "The datePicker2 date was set to New Years 2000!\n\n";
         message += ("The datePicker2 date is currently set to: " + dateString + ".");
         panel.messageTextArea.setText(message);
@@ -122,7 +122,7 @@ public class Demo {
      */
     private static void setOneWithTwoButtonClicked(ActionEvent e) {
         // Set date from date picker 2.
-        LocalDate datePicker2Date = datePicker2.getDateOrNull();
+        LocalDate datePicker2Date = datePicker2.getDate();
         datePicker1.setDate(datePicker2Date);
         // Display message.
         String message = "The datePicker1 date was set using the datePicker2 date!\n\n";
@@ -173,7 +173,7 @@ public class Demo {
      */
     private static String getDatePickerOneDateText() {
         // Create date string for date picker 1.
-        String dateString = datePicker1.getISODateStringOrNullString();
+        String dateString = datePicker1.getISODateStringOrSuppliedString("(null)");
         return ("The datePicker1 date is currently set to: " + dateString + ".");
     }
 
@@ -280,8 +280,8 @@ public class Demo {
         public void dateChanged(DateChangeEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
-            String oldDateString = DateUtilities.localDateToString(oldDate);
-            String newDateString = DateUtilities.localDateToString(newDate);
+            String oldDateString = DateUtilities.localDateToString(oldDate, "(null)");
+            String newDateString = DateUtilities.localDateToString(newDate, "(null)");
             String messageStart = "\nThe Customized DatePicker date has changed from: ";
             String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {

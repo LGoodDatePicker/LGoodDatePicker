@@ -1,6 +1,5 @@
 package com.lgooddatepicker.optionalusertools;
 
-import com.lgooddatepicker.core.DatePicker;
 import java.time.LocalDate;
 
 /**
@@ -31,18 +30,23 @@ public class DateUtilities {
     }
 
     /**
-     * localDateToString, This can be used to convert a nullable LocalDate to a String. Null strings
-     * will use the default string representation of null from the DatePicker class.
+     * localDateToString, This returns the supplied date in the ISO-8601 format (uuuu-MM-dd).
+     * Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have 11 characters,
+     * due to the addition of a minus sign before the year. If the date is null, this will return an
+     * empty string ("").
      */
     static public String localDateToString(LocalDate date) {
-        return localDateToString(date, DatePicker.EmptyDateString);
+        return localDateToString(date, "");
     }
 
     /**
-     * localDateToString, This can be used to convert a nullable LocalDate to a String. Null strings
-     * will use the supplied string representation of null, which may optionally be null.
+     * localDateToString, This returns the supplied date in the ISO-8601 format (uuuu-MM-dd).
+     * Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have 11 characters,
+     * due to the addition of a minus sign before the year. If the date is null, this will return
+     * the value of emptyDateString.
      */
-    static public String localDateToString(LocalDate date, String nullString) {
-        return (date == null) ? nullString : date.toString();
+    static public String localDateToString(LocalDate date, String emptyDateString) {
+        return (date == null) ? emptyDateString : date.toString();
     }
+
 }

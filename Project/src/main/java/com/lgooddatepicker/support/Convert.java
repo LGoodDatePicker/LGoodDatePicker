@@ -47,7 +47,7 @@ public class Convert {
      * picker has no value.
      */
     public java.util.Date getDateWithDefaultZone() {
-        LocalDate pickerDate = parentDatePicker.getDateOrNull();
+        LocalDate pickerDate = parentDatePicker.getDate();
         if (pickerDate == null) {
             return null;
         }
@@ -62,7 +62,7 @@ public class Convert {
      * value, or if the supplied time zone was null.
      */
     public java.util.Date getDateWithZone(ZoneId timezone) {
-        LocalDate pickerDate = parentDatePicker.getDateOrNull();
+        LocalDate pickerDate = parentDatePicker.getDate();
         if (pickerDate == null || timezone == null) {
             return null;
         }
