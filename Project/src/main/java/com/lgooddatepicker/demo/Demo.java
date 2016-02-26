@@ -3,7 +3,6 @@ package com.lgooddatepicker.demo;
 import com.lgooddatepicker.core.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import com.jgoodies.forms.factories.CC;
 import java.awt.event.ActionEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -15,6 +14,7 @@ import com.lgooddatepicker.optionalusertools.DateUtilities;
 import com.lgooddatepicker.optionalusertools.HighlightPolicy;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import com.lgooddatepicker.support.DateChangeEvent;
+import java.awt.GridBagConstraints;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -65,18 +65,18 @@ public class Demo {
 
         // Create two date pickers.
         datePicker1 = new DatePicker();
-        panel.add(datePicker1, CC.xy(4, 2));
+        panel.add(datePicker1, getConstraints(4, 2));
         datePicker2 = new DatePicker();
-        panel.add(datePicker2, CC.xy(4, 4));
+        panel.add(datePicker2, getConstraints(4, 4));
 
         // Create a date picker with some customized settings.
         datePicker3 = createCustomizedDatePicker();
-        panel.add(datePicker3, CC.xy(4, 6));
+        panel.add(datePicker3, getConstraints(4, 6));
 
         // Create a date picker with a different locale (Russian).
         DatePickerSettings settings = new DatePickerSettings(new Locale("ru"));
         datePicker4 = new DatePicker(settings);
-        panel.add(datePicker4, CC.xy(4, 8));
+        panel.add(datePicker4, getConstraints(4, 8));
 
         // Display the frame.
         frame.pack();
@@ -183,22 +183,33 @@ public class Demo {
     private static void createDemoButtons() {
         // Create each demo button, and add it to the panel.
         // Add an action listener to link it to its appropriate function.
-        int row = 0;
         JButton setTwoWithY2K = new JButton("Set DatePicker Two with New Years Day 2000");
         setTwoWithY2K.addActionListener(e -> setTwoWithY2KButtonClicked(e));
-        panel.buttonPanel.add(setTwoWithY2K, CC.xy(1, (row += 2)));
+        panel.buttonPanel.add(setTwoWithY2K, getConstraints(1, 2));
         JButton setOneWithTwo = new JButton("Set DatePicker One with the date in Two");
         setOneWithTwo.addActionListener(e -> setOneWithTwoButtonClicked(e));
-        panel.buttonPanel.add(setOneWithTwo, CC.xy(1, (row += 2)));
+        panel.buttonPanel.add(setOneWithTwo, getConstraints(1, 4));
         JButton setOneWithFeb31 = new JButton("Set Text in DatePicker One to February 31, 1950");
         setOneWithFeb31.addActionListener(e -> setOneWithFeb31ButtonClicked(e));
-        panel.buttonPanel.add(setOneWithFeb31, CC.xy(1, (row += 2)));
+        panel.buttonPanel.add(setOneWithFeb31, getConstraints(1, 6));
         JButton getOneAndShow = new JButton("Get and show the date in DatePicker One");
         getOneAndShow.addActionListener(e -> getOneAndShowButtonClicked(e));
-        panel.buttonPanel.add(getOneAndShow, CC.xy(1, (row += 2)));
+        panel.buttonPanel.add(getOneAndShow, getConstraints(1, 8));
         JButton clearOne = new JButton("Clear DatePicker One.");
         clearOne.addActionListener(e -> clearOneButtonClicked(e));
-        panel.buttonPanel.add(clearOne, CC.xy(1, (row += 2)));
+        panel.buttonPanel.add(clearOne, getConstraints(1, 10));
+    }
+
+    /**
+     * getConstraints, This returns a grid bag constraints object that can be used for placing a
+     * component appropriately into a grid bag layout.
+     */
+    private static GridBagConstraints getConstraints(int gridx, int gridy) {
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.fill = GridBagConstraints.BOTH;
+        gc.gridx = gridx;
+        gc.gridy = gridy;
+        return gc;
     }
 
     /**

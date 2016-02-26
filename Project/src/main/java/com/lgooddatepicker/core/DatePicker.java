@@ -1,8 +1,7 @@
 package com.lgooddatepicker.core;
 
+import java.awt.*;
 import com.lgooddatepicker.support.DatePickerInternalUtilities;
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
 import com.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.lgooddatepicker.optionalusertools.DateUtilities;
 import java.awt.Window;
@@ -113,8 +112,8 @@ public class DatePicker extends JPanel {
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JTextField dateTextField;
-    private JButton toggleCalendarButton;
+	private JTextField dateTextField;
+	private JButton toggleCalendarButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -186,10 +185,10 @@ public class DatePicker extends JPanel {
     }
 
     /**
-     * convert, This is used to access the convert class instance. The convert class allows the
+     * convert, This is used to access the Convert class instance. The convert class allows the
      * programmer to get or set the date picker java.time.LocalDate value using other common data
-     * types. Example usage: datePicker.convert().getDateWithDefaultZone(); See the documentation of
-     * the Convert class for additional information and usage examples.
+     * types, such as java.util.Date. Example usage: datePicker.convert().getDateWithDefaultZone();
+     * See the documentation of the Convert class for additional information and usage examples.
      */
     public Convert convert() {
         return convert;
@@ -559,34 +558,41 @@ public class DatePicker extends JPanel {
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        dateTextField = new JTextField();
-        toggleCalendarButton = new JButton();
+		dateTextField = new JTextField();
+		toggleCalendarButton = new JButton();
 
-        //======== this ========
-        setLayout(new FormLayout(
-                "[80dlu,default]:grow, $lcgap, [14dlu,default]",
-                "fill:default:grow"));
+		//======== this ========
+		setLayout(new GridBagLayout());
+		((GridBagLayout)getLayout()).columnWidths = new int[] {119, 3, 26, 0};
+		((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0};
+		((GridBagLayout)getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
+		((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-        //---- dateTextField ----
-        dateTextField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                zEventDateTextFieldFocusLostSoValidateText(e);
-            }
-        });
-        add(dateTextField, CC.xy(1, 1));
+		//---- dateTextField ----
+		dateTextField.setMargin(new Insets(1, 3, 2, 2));
+		dateTextField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				zEventDateTextFieldFocusLostSoValidateText(e);
+			}
+		});
+		add(dateTextField, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
-        //---- toggleCalendarButton ----
-        toggleCalendarButton.setText("...");
-        toggleCalendarButton.setFocusPainted(false);
-        toggleCalendarButton.setFocusable(false);
-        toggleCalendarButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                zEventToggleCalendarButtonMousePressed(e);
-            }
-        });
-        add(toggleCalendarButton, CC.xy(3, 1));
+		//---- toggleCalendarButton ----
+		toggleCalendarButton.setText("...");
+		toggleCalendarButton.setFocusPainted(false);
+		toggleCalendarButton.setFocusable(false);
+		toggleCalendarButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				zEventToggleCalendarButtonMousePressed(e);
+			}
+		});
+		add(toggleCalendarButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

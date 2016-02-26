@@ -55,6 +55,12 @@ public class DatePickerSettings {
     public Color backgroundColorVetoed;
 
     /**
+     * backgroundColorWeekdayLabels, This is the calendar background color for the weekday labels.
+     * The default color is a medium sky blue.
+     */
+    public Color backgroundColorWeekdayLabels;
+
+    /**
      * clearTranslation, This holds the text of the calendars "Clear" button, as translated to the
      * current language. It is not expected that this variable will need to be changed by the
      * programmer. If you wish to supply a new translation for the date picker, it would generally
@@ -82,6 +88,42 @@ public class DatePickerSettings {
      * dates.
      */
     public Color colorVetoedDate;
+
+    /**
+     * datePanelMinimumHeight, This specifies the minimum height, in pixels, of the date label area.
+     * The date label area is the part of the calendar panel that holds (only) the date labels. The
+     * remainder of the calendar panel is automatically resized to encompass the date label area.
+     * The default value for this variable is (6 * 18). If the default value is modified, the
+     * programmer may also wish to adjust datePanelPixelsExtraHeight.
+     */
+    public int datePanelMinimumHeight;
+
+    /**
+     * datePanelMinimumWidth, This specifies the minimum width, in pixels, of the date label area.
+     * The date label area is the part of the calendar panel that holds (only) the date labels. The
+     * remainder of the calendar panel is automatically resized to encompass the date label area.
+     * The default value for this variable is (7 * 30). If the default value is modified, the
+     * programmer may also wish to adjust datePanelPixelsExtraWidth.
+     */
+    public int datePanelMinimumWidth;
+
+    /**
+     * datePanelPixelsExtraHeight, This value should not need to be adjusted unless
+     * "datePanelMinimumHeight" has been modified. This specifies a number of "extra pixels" to add
+     * to the date panel height. By default, these extra pixels are used to force the date labels to
+     * fit exactly to the edges of the date label area. Setting this variable for a date panel size
+     * other than the default size, is generally a matter of trial and error.
+     */
+    public int datePanelPixelsExtraHeight;
+
+    /**
+     * datePanelPixelsExtraWidth, This value should not need to be adjusted unless
+     * "datePanelMinimumWidth" has been modified. This specifies a number of "extra pixels" to add
+     * to the date panel width. By default, these extra pixels are used to force the date labels to
+     * fit exactly to the edges of the date label area. Setting this variable for a date panel size
+     * other than the default size, is generally a matter of trial and error.
+     */
+    public int datePanelPixelsExtraWidth;
 
     /**
      * displayFormatterAD, This holds the default format that is used to display or parse AD dates
@@ -213,6 +255,12 @@ public class DatePickerSettings {
         displayFormatterAD = DatePickerInternalUtilities.generateDefaultDisplayFormatterAD(pickerLocale);
         displayFormatterBC = DatePickerInternalUtilities.generateDefaultDisplayFormatterBC(pickerLocale);
 
+        // Set the minimum height, minimum width, and extra pixels for the date panel.
+        datePanelMinimumHeight = (6 * 18);
+        datePanelMinimumWidth = (7 * 30);
+        datePanelPixelsExtraHeight = 2;
+        datePanelPixelsExtraWidth = 2;
+
         // Initialize the other fields.
         highlightPolicy = null;
         parsingFormatters = new ArrayList<>();
@@ -232,7 +280,8 @@ public class DatePickerSettings {
                 = ExtraDateStrings.getExtraParsingFormatsForLocale(pickerLocale);
         parsingFormatters.addAll(extraFormatters);
 
-        // Generate the default fonts and text colors for the text field text.
+        // Generate the default fonts and text colors.
+        backgroundColorWeekdayLabels = new Color(184, 207, 229);
         colorValidDate = Color.black;
         fontValidDate = new JTextField().getFont();
         colorInvalidDate = Color.red;

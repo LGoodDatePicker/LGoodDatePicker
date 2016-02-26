@@ -3,66 +3,70 @@ JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_60" encoding: "UTF-8"
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
-		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "unrelgap, min(default;110dlu), labelcompgap, default:grow, labelcompgap, default:grow, labelcompgap, default:grow, unrelgap"
-			"$rowSpecs": "unrelgap, fill:default, 20dlu, fill:default, 20dlu, fill:default, fill:20dlu, fill:default, 8dlu, unrelgap, fill:max(default;60dlu), linegap, top:default, unrelgap"
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0, 10, 180, 4, 0:1.0, 4, 0:1.0, 4, 0:1.0, 10"
+			"$rowSpecs": "0, center:11, 0, center:30, 0, center:30, 0, 30, 0, center:12, center:11, 100, center:5, 0:1.0, center:11"
+			"$alignTop": true
+			"$alignLeft": true
 		} ) {
 			name: "this"
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-				"$columnSpecs": "default:grow"
-				"$rowSpecs": "min, default, linegap, default, linegap, default, linegap, default, linegap, default"
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+				"$columnSpecs": "0:1.0"
+				"$rowSpecs": "0, center:5, center:0, center:5, center:0, center:5, center:0, center:5, center:0, center:5, 0, center:5, 0:1.0"
+				"$alignTop": true
+				"$alignLeft": true
 			} ) {
 				name: "buttonPanel"
 				auxiliary() {
 					"JavaCodeGenerator.variableModifiers": 1
 				}
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 8
-				"gridY": 2
-				"gridHeight": 6
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 8
+				"gridy": 2
+				"gridheight": 6
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "dateLabel1"
 				"text": "Date 1:"
 				"horizontalAlignment": 4
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 2
-				"gridY": 2
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 2
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "clickHereLabel"
-				"text": "Click here  _____________/\\    "
+				"text": "Click here  _______/\\    "
 				"horizontalAlignment": 4
 				"foreground": sfield java.awt.Color blue
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 3
-				"gridX": 4
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 4
+				"gridy": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "dateLabel2"
 				"text": "Date 2:"
 				"horizontalAlignment": 4
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 4
-				"gridX": 2
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 4
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "dateLabel3"
-				"text": "<html>With Customized Settings:<br/>First weekday is Monday. Has Veto Policy, Highlight Policy, and a Change Listener.</html>"
+				"text": "<html>With Customized Settings:<br/>First weekday is Monday. Has<br/>Veto Policy, Highlight Policy,<br/>and a Change Listener.</html>"
 				"horizontalAlignment": 2
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 5
-				"gridX": 2
-				"gridHeight": 3
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 5
+				"gridheight": 3
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "label1"
 				"text": "<html>With A Different Locale:<br/>(Russian)</html>"
 				"horizontalAlignment": 2
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 2
-				"gridY": 8
-				"gridHeight": 2
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 8
+				"gridheight": 2
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "messageTextAreaScrollPane"
@@ -77,10 +81,10 @@ new FormModel {
 						"JavaCodeGenerator.variableModifiers": 1
 					}
 				} )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 2
-				"gridY": 11
-				"gridWidth": 7
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 11
+				"gridwidth": 7
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "informationTextAreaScrollPane"
@@ -92,10 +96,10 @@ new FormModel {
 					"lineWrap": true
 					"wrapStyleWord": true
 				} )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 2
-				"gridY": 13
-				"gridWidth": 7
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 13
+				"gridwidth": 7
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
