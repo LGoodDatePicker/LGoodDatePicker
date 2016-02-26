@@ -3,8 +3,6 @@ package com.lgooddatepicker.demo;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
 
 public class DemoPanel extends JPanel {
 	public DemoPanel() {
@@ -25,43 +23,59 @@ public class DemoPanel extends JPanel {
 		informationTextArea = new JTextArea();
 
 		//======== this ========
-		setLayout(new FormLayout(
-			"$ugap, [default,110dlu], 3*($lcgap, default:grow), $ugap",
-			"$ugap, 2*(fill:default, 20dlu), fill:default, fill:20dlu, fill:default, 8dlu, $ugap, fill:[60dlu,default], $lgap, top:default, $ugap"));
+		setLayout(new GridBagLayout());
+		((GridBagLayout)getLayout()).columnWidths = new int[] {0, 10, 180, 4, 0, 4, 0, 4, 0, 10, 0};
+		((GridBagLayout)getLayout()).rowHeights = new int[] {0, 11, 0, 30, 0, 30, 0, 30, 0, 12, 11, 100, 5, 0, 11, 0};
+		((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0E-4};
+		((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0E-4};
 
 		//======== buttonPanel ========
 		{
-			buttonPanel.setLayout(new FormLayout(
-				"default:grow",
-				"min, 4*(default, $lgap), default"));
+			buttonPanel.setLayout(new GridBagLayout());
+			((GridBagLayout)buttonPanel.getLayout()).columnWidths = new int[] {0, 0};
+			((GridBagLayout)buttonPanel.getLayout()).rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 0};
+			((GridBagLayout)buttonPanel.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
+			((GridBagLayout)buttonPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
 		}
-		add(buttonPanel, CC.xywh(8, 2, 1, 6));
+		add(buttonPanel, new GridBagConstraints(8, 2, 1, 6, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
 		//---- dateLabel1 ----
 		dateLabel1.setText("Date 1:");
 		dateLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(dateLabel1, CC.xy(2, 2));
+		add(dateLabel1, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
 		//---- clickHereLabel ----
-		clickHereLabel.setText("Click here  _____________/\\    ");
+		clickHereLabel.setText("Click here  _______/\\    ");
 		clickHereLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		clickHereLabel.setForeground(Color.blue);
-		add(clickHereLabel, CC.xy(4, 3));
+		add(clickHereLabel, new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+			new Insets(0, 0, 0, 0), 0, 0));
 
 		//---- dateLabel2 ----
 		dateLabel2.setText("Date 2:");
 		dateLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(dateLabel2, CC.xy(2, 4));
+		add(dateLabel2, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
 		//---- dateLabel3 ----
-		dateLabel3.setText("<html>With Customized Settings:<br/>First weekday is Monday. Has Veto Policy, Highlight Policy, and a Change Listener.</html>");
+		dateLabel3.setText("<html>With Customized Settings:<br/>First weekday is Monday. Has<br/>Veto Policy, Highlight Policy,<br/>and a Change Listener.</html>");
 		dateLabel3.setHorizontalAlignment(SwingConstants.LEFT);
-		add(dateLabel3, CC.xywh(2, 5, 1, 3));
+		add(dateLabel3, new GridBagConstraints(2, 5, 1, 3, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
 		//---- label1 ----
 		label1.setText("<html>With A Different Locale:<br/>(Russian)</html>");
 		label1.setHorizontalAlignment(SwingConstants.LEFT);
-		add(label1, CC.xywh(2, 8, 1, 2));
+		add(label1, new GridBagConstraints(2, 8, 1, 2, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
 		//======== messageTextAreaScrollPane ========
 		{
@@ -74,7 +88,9 @@ public class DemoPanel extends JPanel {
 			messageTextArea.setMargin(new Insets(4, 6, 2, 6));
 			messageTextAreaScrollPane.setViewportView(messageTextArea);
 		}
-		add(messageTextAreaScrollPane, CC.xywh(2, 11, 7, 1));
+		add(messageTextAreaScrollPane, new GridBagConstraints(2, 11, 7, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
 		//======== informationTextAreaScrollPane ========
 		{
@@ -87,7 +103,9 @@ public class DemoPanel extends JPanel {
 			informationTextArea.setWrapStyleWord(true);
 			informationTextAreaScrollPane.setViewportView(informationTextArea);
 		}
-		add(informationTextAreaScrollPane, CC.xywh(2, 13, 7, 1));
+		add(informationTextAreaScrollPane, new GridBagConstraints(2, 13, 7, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 

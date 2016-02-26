@@ -3,27 +3,26 @@ JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_60" encoding: "UTF-8"
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
-		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "max(default;80dlu):grow, labelcompgap, max(default;14dlu)"
-			"$rowSpecs": "fill:default:grow"
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "119:1.0, 3, 26"
+			"$rowSpecs": "0:1.0"
+			"$alignTop": true
+			"$alignLeft": true
 		} ) {
 			name: "this"
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "dateTextField"
+				"margin": new java.awt.Insets( 1, 3, 2, 2 )
 				addEvent( new FormEvent( "java.awt.event.FocusListener", "focusLost", "zEventDateTextFieldFocusLostSoValidateText", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 1
-				"gridY": 1
-			} )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 			add( new FormComponent( "javax.swing.JButton" ) {
 				name: "toggleCalendarButton"
 				"text": "..."
 				"focusPainted": false
 				"focusable": false
 				addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "zEventToggleCalendarButtonMousePressed", true ) )
-			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridX": 3
-				"gridY": 1
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )

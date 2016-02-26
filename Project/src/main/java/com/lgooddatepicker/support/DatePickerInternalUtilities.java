@@ -1,5 +1,6 @@
 package com.lgooddatepicker.support;
 
+import java.awt.GridBagConstraints;
 import java.time.LocalDate;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
@@ -169,6 +170,18 @@ public class DatePickerInternalUtilities {
         }
         String textCapitalized = text.substring(0, 1).toUpperCase(locale) + text.substring(1);
         return textCapitalized;
+    }
+
+    /**
+     * getConstraints, This returns a grid bag constraints object that can be used for placing a
+     * component appropriately into a grid bag layout.
+     */
+    static public GridBagConstraints getConstraints(int gridx, int gridy) {
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.fill = GridBagConstraints.BOTH;
+        gc.gridx = gridx;
+        gc.gridy = gridy;
+        return gc;
     }
 
 }
