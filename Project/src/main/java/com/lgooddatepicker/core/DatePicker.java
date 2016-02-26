@@ -206,19 +206,25 @@ public class DatePicker extends JPanel {
     }
 
     /**
-     * getDateOrNull, This returns the last valid date, or null.
+     * getDateOrNull, This returns the last valid date, or null to represent an empty date. If
+     * "DatePickerSettings.allowNullDates" has been set to false, then this will never return null.
      *
-     * If the last valid date has a value, this will return that date. If the last valid text was an
-     * empty string, then this will return null. In other words, this will return null if the field
-     * has been left empty, or if the field has been cleared. Note that if the automatic validation
-     * has not yet occurred, this date may not always match the current date picker text.
+     * Note: If the automatic validation has not yet occurred, then the the last valid date may not
+     * always match the current date picker text.
      *
-     * Additional Details: Whenever the current date picker text is not valid, the value returned by
-     * getDateOrNull() will generally not match the date picker text. The date picker can contain
-     * invalid text whenever: 1) The user has manually typed text that cannot be parsed by the
-     * parsing formats into a valid date, or the user has typed a date that is vetoed by a current
-     * veto policy. AND 2) The date picker text field has continued to have focus, and therefore the
-     * automatic validation (revert/commit) process has not yet occurred.
+     * <pre>
+     * Additional Details:
+     * Whenever the current date picker text is not valid, the value returned by getDateOrNull()
+     * will generally not match the date picker text. The date picker can contain invalid text
+     * whenever both items (1) and (2) below are true:
+     *
+     * 1) The user has manually typed text that cannot be parsed by the parsing formats into a valid
+     * date, or the user has typed a date that is vetoed by a current veto policy, or the user has
+     * cleared (or left only whitespace) in the text when allowNullDates is false.
+     *
+     * 2) The date picker text field has continued to have focus, and therefore the automatic
+     * validation (revert/commit) process has not yet occurred.
+     * </pre>
      */
     public LocalDate getDateOrNull() {
         return lastValidDate;
