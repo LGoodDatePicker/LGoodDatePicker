@@ -1,5 +1,6 @@
 package com.lgooddatepicker.support;
 
+import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import java.awt.GridBagConstraints;
 import java.time.LocalDate;
 import java.time.chrono.IsoChronology;
@@ -182,6 +183,17 @@ public class DatePickerInternalUtilities {
         gc.gridx = gridx;
         gc.gridy = gridy;
         return gc;
+    }
+
+    /**
+     * isDateVetoed, This is a convenience function for checking whether or not a particular date is
+     * vetoed.
+     */
+    static public boolean isDateVetoed(VetoPolicy policy, LocalDate date) {
+        if (policy == null) {
+            return false;
+        }
+        return (!policy.isDateAllowed(date));
     }
 
 }

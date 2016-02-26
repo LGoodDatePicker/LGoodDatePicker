@@ -339,8 +339,8 @@ public class CalendarPanel extends JPanel {
                 LocalDate currentDate = LocalDate.of(displayedYear, displayedMonth, dayOfMonth);
                 VetoPolicy vetoPolicy = getSettings().vetoPolicy;
                 HighlightPolicy highlightPolicy = getSettings().highlightPolicy;
-                boolean dateIsVetoed = (vetoPolicy != null)
-                        && (vetoPolicy.isDateVetoed(currentDate));
+                boolean dateIsVetoed = DatePickerInternalUtilities.isDateVetoed(
+                        vetoPolicy, currentDate);
                 String highlightStringOrNull = null;
                 if (highlightPolicy != null) {
                     highlightStringOrNull = highlightPolicy.getHighlightStringOrNull(currentDate);
@@ -379,9 +379,15 @@ public class CalendarPanel extends JPanel {
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
         VetoPolicy vetoPolicy = getSettings().vetoPolicy;
-        boolean todayIsVetoed = (vetoPolicy != null)
-                && (vetoPolicy.isDateVetoed(LocalDate.now()));
+        boolean todayIsVetoed = DatePickerInternalUtilities.isDateVetoed(
+                vetoPolicy, LocalDate.now());
         labelSetDateToToday.setEnabled(!todayIsVetoed);
+
+        // If null is not allowed, then disable and hide the Clear label. 
+        boolean shouldEnableClearButton = getSettings().allowNullDates;
+        labelClearDate.setEnabled(shouldEnableClearButton);
+        labelClearDate.setVisible(shouldEnableClearButton);
+
         // Set the label for the clear button.
         labelClearDate.setText(getSettings().clearTranslation);
     }
@@ -439,8 +445,8 @@ public class CalendarPanel extends JPanel {
         JLabel label = ((JLabel) e.getSource());
         if (label == labelSetDateToToday) {
             VetoPolicy vetoPolicy = getSettings().vetoPolicy;
-            boolean todayIsVetoed = (vetoPolicy != null)
-                    && (vetoPolicy.isDateVetoed(LocalDate.now()));
+            boolean todayIsVetoed = DatePickerInternalUtilities.isDateVetoed(
+                    vetoPolicy, LocalDate.now());
             if (todayIsVetoed) {
                 return;
             }
@@ -619,7 +625,7 @@ public class CalendarPanel extends JPanel {
         // If a date was selected and the date is vetoed, do nothing.
         if (selectedDate != null) {
             VetoPolicy vetoPolicy = getSettings().vetoPolicy;
-            if (vetoPolicy != null && vetoPolicy.isDateVetoed(selectedDate)) {
+            if (DatePickerInternalUtilities.isDateVetoed(vetoPolicy, selectedDate)) {
                 return;
             }
         }

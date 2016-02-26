@@ -112,8 +112,8 @@ public class DatePicker extends JPanel {
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	private JTextField dateTextField;
-	private JButton toggleCalendarButton;
+    private JTextField dateTextField;
+    private JButton toggleCalendarButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -136,6 +136,17 @@ public class DatePicker extends JPanel {
         zAddTextChangeListener();
         // Shrink the toggle calendar button to a reasonable size.
         toggleCalendarButton.setMargin(new java.awt.Insets(1, 2, 1, 2));
+        // Make sure that the initial date is in a valid state.
+        if (settings.allowNullDates == false && settings.initialDate == null) {
+            settings.initialDate = LocalDate.now();
+        }
+        // Set the initial date from the settings.
+        // Note that we intentionally bypass all listeners while setting the initial date.
+        this.lastValidDate = settings.initialDate;
+        String initialDateString = zGetStandardTextFieldDateString(settings.initialDate);
+        skipTextFieldChangedFunctionWhileTrue = true;
+        dateTextField.setText(initialDateString);
+        skipTextFieldChangedFunctionWhileTrue = false;
     }
 
     /**
@@ -251,21 +262,21 @@ public class DatePicker extends JPanel {
     }
 
     /**
-     * isTextValid, Utility function. This returns true if, and only if, the supplied text contains
-     * a valid, parsable date that has not been vetoed by a current veto policy, or contains an
-     * empty string. This could be used in conjunction with the getText() function to determine if
-     * the date picker text currently contains a valid parsable date. It is expected that this
-     * function would be rarely needed.
+     * isTextValid, Utility function. This returns true if, and only if, 1) the supplied text
+     * contains a valid, parsable date that has not been vetoed by a current veto policy, or 2)
+     * (allowNullDates == true) and text.trim() contains an empty string. This could be used in
+     * conjunction with the getText() function to determine if the date picker text currently
+     * contains a valid parsable date. It is expected that this function would be rarely needed.
      */
     public boolean isTextValid(String text) {
         // If the text is null, return false.
         if (text == null) {
             return false;
         }
-        // If the text is empty, return true.
+        // If the text is empty, return the value of allowNullDates.
         text = text.trim();
         if (text.isEmpty()) {
-            return true;
+            return settings.allowNullDates;
         }
         // Try to get a parsed date.
         LocalDate parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(text,
@@ -278,7 +289,7 @@ public class DatePicker extends JPanel {
         }
         // If the date is vetoed, return false.
         VetoPolicy vetoPolicy = settings.vetoPolicy;
-        if (vetoPolicy != null && vetoPolicy.isDateVetoed(parsedDate)) {
+        if (DatePickerInternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
             return false;
         }
         // The date is valid, so return true.
@@ -512,6 +523,7 @@ public class DatePicker extends JPanel {
         String dateText = dateTextField.getText();
         boolean textIsEmpty = dateText.trim().isEmpty();
         VetoPolicy vetoPolicy = settings.vetoPolicy;
+        boolean nullIsAllowed = settings.allowNullDates;
         // If needed, try to get a parsed date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
@@ -519,24 +531,29 @@ public class DatePicker extends JPanel {
                     settings.displayFormatterAD, settings.displayFormatterBC,
                     settings.parsingFormatters, settings.pickerLocale);
         }
+        // Reset all atributes to normal before starting.
+        dateTextField.setBackground(Color.white);
+        dateTextField.setForeground(settings.colorValidDate);
+        dateTextField.setFont(settings.fontValidDate);
         // Handle the various possibilities.
-        // If the text field is empty, set the normal font, and set lastValidDate to null.
-        if (textIsEmpty) {
-            dateTextField.setForeground(settings.colorValidDate);
-            dateTextField.setFont(settings.fontValidDate);
+        // If the text is empty and null is allowed, leave the normal font, and 
+        // set lastValidDate to null.
+        if (textIsEmpty && nullIsAllowed) {
             zInternalSetLastValidDateAndNotifyListeners(null);
+            // If the text is empty and null is not allowed, set a pink background, and 
+            // do not change the lastValidDate.
+        } else if ((textIsEmpty) && (!nullIsAllowed)) {
+            dateTextField.setBackground(Color.pink);
             // If the text is not valid, set a font indicator, and do not change the lastValidDate.
         } else if (parsedDate == null) {
             dateTextField.setForeground(settings.colorInvalidDate);
             dateTextField.setFont(settings.fontInvalidDate);
             // If the date is vetoed, set a font indicator, and do not change the lastValidDate.
-        } else if (vetoPolicy != null && vetoPolicy.isDateVetoed(parsedDate)) {
+        } else if (DatePickerInternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
             dateTextField.setForeground(settings.colorVetoedDate);
             dateTextField.setFont(settings.fontVetoedDate);
         } else {
-            // The date is valid, so set the normal font, and store the last valid date.
-            dateTextField.setForeground(settings.colorValidDate);
-            dateTextField.setFont(settings.fontValidDate);
+            // The date is valid, so leave the normal font, and store the last valid date.
             zInternalSetLastValidDateAndNotifyListeners(parsedDate);
         }
     }
@@ -558,41 +575,41 @@ public class DatePicker extends JPanel {
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		dateTextField = new JTextField();
-		toggleCalendarButton = new JButton();
+        dateTextField = new JTextField();
+        toggleCalendarButton = new JButton();
 
-		//======== this ========
-		setLayout(new GridBagLayout());
-		((GridBagLayout)getLayout()).columnWidths = new int[] {119, 3, 26, 0};
-		((GridBagLayout)getLayout()).rowHeights = new int[] {0, 0};
-		((GridBagLayout)getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
-		((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+        //======== this ========
+        setLayout(new GridBagLayout());
+        ((GridBagLayout) getLayout()).columnWidths = new int[]{119, 3, 26, 0};
+        ((GridBagLayout) getLayout()).rowHeights = new int[]{0, 0};
+        ((GridBagLayout) getLayout()).columnWeights = new double[]{1.0, 0.0, 0.0, 1.0E-4};
+        ((GridBagLayout) getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
-		//---- dateTextField ----
-		dateTextField.setMargin(new Insets(1, 3, 2, 2));
-		dateTextField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				zEventDateTextFieldFocusLostSoValidateText(e);
-			}
-		});
-		add(dateTextField, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+        //---- dateTextField ----
+        dateTextField.setMargin(new Insets(1, 3, 2, 2));
+        dateTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                zEventDateTextFieldFocusLostSoValidateText(e);
+            }
+        });
+        add(dateTextField, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
 
-		//---- toggleCalendarButton ----
-		toggleCalendarButton.setText("...");
-		toggleCalendarButton.setFocusPainted(false);
-		toggleCalendarButton.setFocusable(false);
-		toggleCalendarButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				zEventToggleCalendarButtonMousePressed(e);
-			}
-		});
-		add(toggleCalendarButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+        //---- toggleCalendarButton ----
+        toggleCalendarButton.setText("...");
+        toggleCalendarButton.setFocusPainted(false);
+        toggleCalendarButton.setFocusable(false);
+        toggleCalendarButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                zEventToggleCalendarButtonMousePressed(e);
+            }
+        });
+        add(toggleCalendarButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

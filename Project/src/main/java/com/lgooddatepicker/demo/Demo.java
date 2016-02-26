@@ -62,7 +62,7 @@ public class Demo {
         panel = new DemoPanel();
         frame.getContentPane().add(panel);
         createDemoButtons();
-
+        
         // Create two date pickers.
         datePicker1 = new DatePicker();
         panel.add(datePicker1, getConstraints(4, 2));
@@ -74,8 +74,8 @@ public class Demo {
         panel.add(datePicker3, getConstraints(4, 6));
 
         // Create a date picker with a different locale (Russian).
-        DatePickerSettings settings = new DatePickerSettings(new Locale("ru"));
-        datePicker4 = new DatePicker(settings);
+        DatePickerSettings settingsRussian = new DatePickerSettings(new Locale("ru"));
+        datePicker4 = new DatePicker(settingsRussian);
         panel.add(datePicker4, getConstraints(4, 8));
 
         // Display the frame.
@@ -93,6 +93,7 @@ public class Demo {
      */
     private static DatePicker createCustomizedDatePicker() {
         DatePickerSettings settings = new DatePickerSettings();
+        // settings.allowNullDates = false;
         settings.firstDayOfWeek = DayOfWeek.MONDAY;
         settings.vetoPolicy = new SampleVetoPolicy();
         settings.highlightPolicy = new SampleHighlightPolicy();
@@ -219,17 +220,17 @@ public class Demo {
     private static class SampleVetoPolicy implements VetoPolicy {
 
         /**
-         * isDateVetoed, Returns true if a date should be vetoed. Returns false to allow a date to
-         * be selected.
+         * isDateAllowed, Return true if a date should be allowed, or false if a date should be
+         * vetoed.
          */
         @Override
-        public boolean isDateVetoed(LocalDate date) {
+        public boolean isDateAllowed(LocalDate date) {
             // Disallow every fifth day.
             if (date.getDayOfMonth() % 5 == 0) {
-                return true;
+                return false;
             }
             // Allow all other days.
-            return false;
+            return true;
         }
     }
 
