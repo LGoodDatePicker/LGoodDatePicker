@@ -17,6 +17,7 @@ import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import com.lgooddatepicker.support.DatePickerInternalUtilities;
 import com.lgooddatepicker.support.ExtraDateStrings;
 import com.lgooddatepicker.support.TranslationSource;
+import java.time.LocalDate;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized in a date picker. All of
@@ -41,6 +42,14 @@ public class DatePickerSettings {
      */
     private final FormatStyle[] allFormatStyles = new FormatStyle[]{
         FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
+
+    /**
+     * allowNullDates, This indicates whether or not null dates (empty dates) are allowed in the
+     * date picker. The default value is true, which allows empty dates. If null dates are not
+     * allowed, but DatePickerSettings.initialDate is left set to null, then the initial date will
+     * be set to today's date.
+     */
+    public boolean allowNullDates;
 
     /**
      * backgroundColorHighlighted, This is the calendar background color for dates which are
@@ -202,6 +211,15 @@ public class DatePickerSettings {
     public Locale pickerLocale;
 
     /**
+     * initialDate, This is the date that the date picker will have when it is created. This can be
+     * set to any date, or it can be null. If you would like the starting date be today, then you
+     * can use the convenience function DatePickerSettings.setInitialDateToToday(). The default
+     * value for initialDate is today's date if allowNullDates is false, or null (an empty date) if
+     * allowNullDates is true.
+     */
+    public LocalDate initialDate;
+
+    /**
      * todayFormatter, This formatter is used to format today's date into a date string, which is
      * displayed on the today button. The default value is generated using the locale of the
      * settings instance.
@@ -240,7 +258,16 @@ public class DatePickerSettings {
      * supplied locale and language. The constructor populates all the settings with default values.
      */
     public DatePickerSettings(Locale pickerLocale) {
+        // Save the date picker locale.
         this.pickerLocale = pickerLocale;
+
+        // Set the default value for allowing null dates.
+        allowNullDates = true;
+
+        // Set the default value for the initial date.
+        // Note that if allowNullDates becomes false and this is still null, then this would be set
+        // to today's date in the DatePicker constructor.
+        initialDate = null;
 
         // Set the default translations for the locale.
         todayTranslation = TranslationSource.getTranslation(pickerLocale, "today", "Today");
@@ -296,5 +323,13 @@ public class DatePickerSettings {
         backgroundColorHighlighted = Color.green;
         backgroundColorVetoed = Color.lightGray;
 
+    }
+
+    /**
+     * setInitialDateToToday, This is a convenience function to set the initial date of a DatePicker
+     * to today's date.
+     */
+    public void setInitialDateToToday() {
+        initialDate = LocalDate.now();
     }
 }
