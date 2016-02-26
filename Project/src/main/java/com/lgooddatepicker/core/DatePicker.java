@@ -43,12 +43,6 @@ import java.util.ArrayList;
 public class DatePicker extends JPanel {
 
     /**
-     * EmptyDateString, This string is returned from the toString() and
-     * getISODateStringOrNullString() methods when the last validate is null.
-     */
-    static final public String EmptyDateString = "(null)";
-
-    /**
      * calendarPanel, This holds the calendar panel GUI component of this date picker. This should
      * be null when the date picker calendar is closed, and hold a calendar panel instance when the
      * date picker calendar is opened.
@@ -137,7 +131,7 @@ public class DatePicker extends JPanel {
         // Shrink the toggle calendar button to a reasonable size.
         toggleCalendarButton.setMargin(new java.awt.Insets(1, 2, 1, 2));
         // Make sure that the initial date is in a valid state.
-        if (settings.allowNullDates == false && settings.initialDate == null) {
+        if (settings.allowEmptyDates == false && settings.initialDate == null) {
             settings.initialDate = LocalDate.now();
         }
         // Set the initial date from the settings.
@@ -206,40 +200,52 @@ public class DatePicker extends JPanel {
     }
 
     /**
-     * getDateOrNull, This returns the last valid date, or null to represent an empty date. If
-     * "DatePickerSettings.allowNullDates" has been set to false, then this will never return null.
+     * getDate, This returns the last valid date, or returns null to represent an empty date.
      *
-     * Note: If the automatic validation has not yet occurred, then the the last valid date may not
-     * always match the current date picker text.
+     * If "DatePickerSettings.allowEmptyDates" is true, then this can return null. If allow empty
+     * dates is false, then this can never return null.
+     *
+     * Note: If the automatic validation of date picker text has not yet occurred, then the the last
+     * valid date may not always match the current text.
      *
      * <pre>
-     * Additional Details:
-     * Whenever the current date picker text is not valid, the value returned by getDateOrNull()
+     * Additional Text Validation Details:
+     * Whenever the current date picker text is not valid, the value returned by getDate()
      * will generally not match the date picker text. The date picker can contain invalid text
      * whenever both items (1) and (2) below are true:
      *
      * 1) The user has manually typed text that cannot be parsed by the parsing formats into a valid
      * date, or the user has typed a date that is vetoed by a current veto policy, or the user has
-     * cleared (or left only whitespace) in the text when allowNullDates is false.
+     * cleared (or left only whitespace) in the text when allowEmptyDates is false.
      *
      * 2) The date picker text field has continued to have focus, and therefore the automatic
      * validation (revert/commit) process has not yet occurred.
      * </pre>
      */
-    public LocalDate getDateOrNull() {
+    public LocalDate getDate() {
         return lastValidDate;
     }
 
     /**
-     * getISODateStringOrNullString, This returns the last valid date in the ISO-8601 format
+     * getISODateStringOrEmptyString, This returns the last valid date in the ISO-8601 format
      * (uuuu-MM-dd). Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have
      * 11 characters, due to the addition of a minus sign before the year. If the last valid date is
-     * empty, this will return the constant value of 'DatePicker.EmptyDateString' which is the
-     * string "(null)". This function returns the same value as DatePicker.toString().
+     * empty, this will return an empty string ("").
      */
-    public String getISODateStringOrNullString() {
-        LocalDate date = getDateOrNull();
-        return (date == null) ? EmptyDateString : date.toString();
+    public String getISODateStringOrEmptyString() {
+        LocalDate date = getDate();
+        return (date == null) ? "" : date.toString();
+    }
+
+    /**
+     * getISODateStringOrSuppliedString, This returns the last valid date in the ISO-8601 format
+     * (uuuu-MM-dd). Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have
+     * 11 characters, due to the addition of a minus sign before the year. If the last valid date is
+     * empty, this will return the value of emptyDateString.
+     */
+    public String getISODateStringOrSuppliedString(String emptyDateString) {
+        LocalDate date = getDate();
+        return (date == null) ? emptyDateString : date.toString();
     }
 
     /**
@@ -261,28 +267,43 @@ public class DatePicker extends JPanel {
      * getText, This returns the current text that is present in the date picker text field. This
      * text can contain anything that was written by the user. It is specifically not guaranteed to
      * contain a valid date. This should not be used to retrieve the date picker date. Instead, use
-     * DatePicker.getDateOrNull() for retrieving the date.
+     * DatePicker.getDate() for retrieving the date.
      */
     public String getText() {
         return dateTextField.getText();
     }
 
     /**
-     * isTextValid, Utility function. This returns true if, and only if, 1) the supplied text
-     * contains a valid, parsable date that has not been vetoed by a current veto policy, or 2)
-     * (allowNullDates == true) and text.trim() contains an empty string. This could be used in
-     * conjunction with the getText() function to determine if the date picker text currently
-     * contains a valid parsable date. It is expected that this function would be rarely needed.
+     * isTextFieldValid, This returns true if, and only if, the text field contains a parsable date
+     * or a valid empty string. Note that this does not guarantee that the text in the text field is
+     * in a standard format. Valid dates can be in any one of the parsingFormats that are accepted
+     * by the date picker.
+     *
+     * More specifically, this returns true if: 1) the text field contains a parsable date that
+     * exists, and that has not been vetoed by a current veto policy, OR 2) (allowEmptyDates ==
+     * true) and dateTextField.getText().trim() contains an empty string. Otherwise returns false.
+     */
+    public boolean isTextFieldValid() {
+        return isTextValid(dateTextField.getText());
+    }
+
+    /**
+     * isTextValid, This function can be used to see if the supplied text represents a "valid date"
+     * according to the settings of this date picker.
+     *
+     * More specifically, this returns true if: 1) the text contains a parsable date that exists,
+     * and that has not been vetoed by a current veto policy, OR 2) (allowEmptyDates == true) and
+     * text.trim() contains an empty string. Otherwise returns false.
      */
     public boolean isTextValid(String text) {
         // If the text is null, return false.
         if (text == null) {
             return false;
         }
-        // If the text is empty, return the value of allowNullDates.
+        // If the text is empty, return the value of allowEmptyDates.
         text = text.trim();
         if (text.isEmpty()) {
-            return settings.allowNullDates;
+            return settings.allowEmptyDates;
         }
         // Try to get a parsed date.
         LocalDate parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(text,
@@ -401,12 +422,11 @@ public class DatePicker extends JPanel {
      * toString, This returns the last valid date in the ISO-8601 format (uuuu-MM-dd). Non-empty AD
      * dates are a fixed length of 10 characters. Any BC dates will have 11 characters, due to the
      * addition of a minus sign before the year. If the last valid date is empty, this will return
-     * the constant value of 'DatePicker.EmptyDateString' which is the string "(null)". This
-     * function returns the same value as getISODateStringOrNullString().
+     * an empty string (""). This returns the same value as getISODateStringOrEmptyString().
      */
     @Override
     public String toString() {
-        return getISODateStringOrNullString();
+        return getISODateStringOrEmptyString();
     }
 
     private void zAddTextChangeListener() {
@@ -529,7 +549,7 @@ public class DatePicker extends JPanel {
         String dateText = dateTextField.getText();
         boolean textIsEmpty = dateText.trim().isEmpty();
         VetoPolicy vetoPolicy = settings.vetoPolicy;
-        boolean nullIsAllowed = settings.allowNullDates;
+        boolean nullIsAllowed = settings.allowEmptyDates;
         // If needed, try to get a parsed date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {

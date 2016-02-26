@@ -44,12 +44,12 @@ public class DatePickerSettings {
         FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
 
     /**
-     * allowNullDates, This indicates whether or not null dates (empty dates) are allowed in the
-     * date picker. The default value is true, which allows empty dates. If null dates are not
-     * allowed, but DatePickerSettings.initialDate is left set to null, then the initial date will
-     * be set to today's date.
+     * allowEmptyDates, This indicates whether or not empty dates are allowed in the date picker.
+     * Empty dates are also called "null dates". The default value is true, which allows empty
+     * dates. If empty dates are not allowed, but DatePickerSettings.initialDate is left set to
+     * null, then the initial date will be set to today's date.
      */
-    public boolean allowNullDates;
+    public boolean allowEmptyDates;
 
     /**
      * backgroundColorHighlighted, This is the calendar background color for dates which are
@@ -212,10 +212,13 @@ public class DatePickerSettings {
 
     /**
      * initialDate, This is the date that the date picker will have when it is created. This can be
-     * set to any date, or it can be null. If you would like the starting date be today, then you
-     * can use the convenience function DatePickerSettings.setInitialDateToToday(). The default
-     * value for initialDate is today's date if allowNullDates is false, or null (an empty date) if
-     * allowNullDates is true.
+     * set to any date, or it can be set to null. If you would like the starting date be today, then
+     * you can use the convenience function DatePickerSettings.setInitialDateToToday(). The default
+     * value for initialDate is null, which represents an empty date.
+     *
+     * If allowEmptyDates is false, then a null initialDate value will be ignored. More
+     * specifically: When a DatePicker is constructed, if allowEmptyDates is false and initialDate
+     * is null, then the initialDate value will be set to today's date.
      */
     public LocalDate initialDate;
 
@@ -261,12 +264,12 @@ public class DatePickerSettings {
         // Save the date picker locale.
         this.pickerLocale = pickerLocale;
 
-        // Set the default value for allowing null dates.
-        allowNullDates = true;
+        // Set the default value for allowing empty dates.
+        allowEmptyDates = true;
 
         // Set the default value for the initial date.
-        // Note that if allowNullDates becomes false and this is still null, then this would be set
-        // to today's date in the DatePicker constructor.
+        // Note that if allowEmptyDates is false, and initialDate is still null when a date picker
+        // is constructed, then this would be set to today's date in the DatePicker constructor.
         initialDate = null;
 
         // Set the default translations for the locale.

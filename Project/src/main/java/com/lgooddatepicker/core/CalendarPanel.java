@@ -384,7 +384,7 @@ public class CalendarPanel extends JPanel {
         labelSetDateToToday.setEnabled(!todayIsVetoed);
 
         // If null is not allowed, then disable and hide the Clear label. 
-        boolean shouldEnableClearButton = getSettings().allowNullDates;
+        boolean shouldEnableClearButton = getSettings().allowEmptyDates;
         labelClearDate.setEnabled(shouldEnableClearButton);
         labelClearDate.setVisible(shouldEnableClearButton);
 
