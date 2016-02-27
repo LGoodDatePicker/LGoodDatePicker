@@ -112,7 +112,7 @@ public class ExtraDateStrings {
         // If no mapping was found, then get the formatting version of the month name.
         if (monthName.equals(monthNumber)) {
             DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
-            monthName = dateSymbols.getMonths()[month.getValue()];
+            monthName = dateSymbols.getMonths()[month.getValue() - 1];
         }
         // If needed, capitalize the month name.
         if ((capitalize) && (monthName != null) && (monthName.length() > 0)) {
