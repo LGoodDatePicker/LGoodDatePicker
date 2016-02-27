@@ -1,8 +1,10 @@
 package com.lgooddatepicker.support;
 
 import java.text.DateFormatSymbols;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -29,13 +31,13 @@ public class ExtraDateStrings {
         "d MMM uuuu"};
 
     /**
-     * monthsNamesForLanguage_ru, This is a constant list of month names, which are used as the
-     * default month names in a Russian locale. These strings were supplied by a user who stated
-     * that the default Russian month names from DateFormatSymbols had incorrect grammar for the
-     * calendar title usage. (The default month names were incorrectly using the genitive case
-     * instead of the nominative case.)
+     * monthsNamesForLanguage_ru, This is a constant list of "standalone" month names, for the
+     * Russian locale. This was previously used to supply the Russian month names, but now that this
+     * class has a generalized solution for getting the standalone month names in all languages,
+     * this array should only be used for visual reference. This can be used for comparison to
+     * ensure that the general solution is functioning correctly.
      */
-    final static private String[] monthsNamesForLanguage_ru = new String[]{"январь", "февраль",
+    final static public String[] monthsNamesForLanguage_ru = new String[]{"январь", "февраль",
         "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"};
 
     /**
@@ -75,27 +77,62 @@ public class ExtraDateStrings {
     }
 
     /**
-     * getDefaultMonthNamesForLocale, This will return a list of translated month names for the
-     * specified locale. Usually, these translations come from java.text.DateFormatSymbols. For some
-     * languages, this function may return a list of default override strings instead. This function
-     * will always return a list with 12 elements, and each element will always contain a string.
-     * This will never return a null array, or any null elements.
+     * getDefaultMonthNamesForLocale, This will return a list of capitalized, translated, standalone
+     * month names for the specified locale. This function will always return a list with 12
+     * elements, and each element will always contain a string. This will never return a null array,
+     * or any null elements.
+     *
+     * Implementation note: it was previously required to override the month names in certain
+     * languages such as Russian, to get the proper grammar. At this point, a generalized solution
+     * has been implemented for all languages. It is assumed that this solution is working
+     * correctly, unless and until someone reports that it is not working correctly for their
+     * language.
      */
     public static String[] getDefaultMonthNamesForLocale(Locale locale) {
-        // Use the DateFormatSymbols class to get default month names for the specified language.
-        DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
-        String[] monthNames = dateSymbols.getMonths();
-
-        // When needed, replace the array with overridden translations for particular languages.
-        String language = locale.getLanguage();
-        if ("ru".equals(language)) {
-            monthNames = monthsNamesForLanguage_ru;
-            for (int i = 0; i < monthNames.length; ++i) {
-                monthNames[i] = DatePickerInternalUtilities.capitalizeFirstLetterOfString(
-                        monthNames[i], locale);
-            }
-        }
+        // Get the standalone version of the month names for the specified language.
+        String[] monthNames = getStandaloneMonthNamesArray(locale, true);
         // Return the array of month names.
+        return monthNames;
+    }
+
+    /**
+     * getStandaloneMonthName, This returns a standalone month name for the specified month, in the
+     * specified locale. In some languages, including Russian and Czech, the standalone version of
+     * the month name is different from the version of the month name you would use as part of a
+     * full date. (Different from the formatting version).
+     *
+     * This tries to get the standalone version first. If no mapping is found for a standalone
+     * version (Presumably because the supplied language has no standalone version), then this will
+     * return the formatting version of the month name.
+     */
+    private static String getStandaloneMonthName(Month month, Locale locale, boolean capitalize) {
+        // Attempt to get the standalone version of the month name.
+        String monthName = month.getDisplayName(TextStyle.FULL_STANDALONE, locale);
+        String monthNumber = "" + month.getValue();
+        // If no mapping was found, then get the formatting version of the month name.
+        if (monthName.equals(monthNumber)) {
+            DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
+            monthName = dateSymbols.getMonths()[month.getValue()];
+        }
+        // If needed, capitalize the month name.
+        if ((capitalize) && (monthName != null) && (monthName.length() > 0)) {
+            monthName = monthName.substring(0, 1).toUpperCase(locale) + monthName.substring(1);
+        }
+        return monthName;
+    }
+
+    /**
+     * getStandaloneMonthNamesArray, This returns an array with the standalone version of the full
+     * month names.
+     */
+    private static String[] getStandaloneMonthNamesArray(Locale locale, boolean capitalize) {
+        Month[] monthEnums = Month.values();
+        ArrayList<String> monthNamesArrayList = new ArrayList<>();
+        for (Month monthEnum : monthEnums) {
+            monthNamesArrayList.add(getStandaloneMonthName(monthEnum, locale, capitalize));
+        }
+        // Convert the arraylist to a string array, and return the array.
+        String[] monthNames = monthNamesArrayList.toArray(new String[]{});
         return monthNames;
     }
 }

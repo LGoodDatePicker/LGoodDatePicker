@@ -12,6 +12,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>nullable</word>
         <word>parsable</word>
         <word>popup</word>
+        <word>ru</word>
         <word>strikethrough</word>
         <word>tooltip</word>
         <word>util</word>
