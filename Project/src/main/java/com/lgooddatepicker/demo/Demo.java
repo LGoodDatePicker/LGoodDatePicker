@@ -40,7 +40,7 @@ import java.awt.GridBagConstraints;
  * equivalent command) for the Demo class in your IDE.
  */
 public class Demo {
-
+    
     // This holds our main frame.
     static JFrame frame;
     // This holds our display panel.
@@ -55,6 +55,7 @@ public class Demo {
      * main, The application entry point.
      */
     public static void main(String[] args) {
+        
         // Create a frame, a panel, and our demo buttons.
         frame = new JFrame();
         frame.setTitle("LGoodDatePicker Demo");
