@@ -307,8 +307,8 @@ public class DatePicker extends JPanel {
         }
         // Try to get a parsed date.
         LocalDate parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(text,
-                settings.displayFormatterAD, settings.displayFormatterBC,
-                settings.parsingFormatters, settings.pickerLocale);
+                settings.formatDatesCommonEra, settings.formatDatesBeforeCommonEra,
+                settings.formatsForParsing, settings.pickerLocale);
 
         // If the date could not be parsed, return false.
         if (parsedDate == null) {
@@ -492,9 +492,9 @@ public class DatePicker extends JPanel {
             return standardDateString;
         }
         if (date.getEra() == IsoEra.CE) {
-            standardDateString = date.format(settings.displayFormatterAD);
+            standardDateString = date.format(settings.formatDatesCommonEra);
         } else {
-            standardDateString = date.format(settings.displayFormatterBC);
+            standardDateString = date.format(settings.formatDatesBeforeCommonEra);
         }
         return standardDateString;
     }
@@ -554,12 +554,12 @@ public class DatePicker extends JPanel {
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
             parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(dateText,
-                    settings.displayFormatterAD, settings.displayFormatterBC,
-                    settings.parsingFormatters, settings.pickerLocale);
+                    settings.formatDatesCommonEra, settings.formatDatesBeforeCommonEra,
+                    settings.formatsForParsing, settings.pickerLocale);
         }
         // Reset all atributes to normal before starting.
         dateTextField.setBackground(Color.white);
-        dateTextField.setForeground(settings.colorValidDate);
+        dateTextField.setForeground(settings.colorTextValidDate);
         dateTextField.setFont(settings.fontValidDate);
         // Handle the various possibilities.
         // If the text is empty and null is allowed, leave the normal font, and 
@@ -572,11 +572,11 @@ public class DatePicker extends JPanel {
             dateTextField.setBackground(Color.pink);
             // If the text is not valid, set a font indicator, and do not change the lastValidDate.
         } else if (parsedDate == null) {
-            dateTextField.setForeground(settings.colorInvalidDate);
+            dateTextField.setForeground(settings.colorTextInvalidDate);
             dateTextField.setFont(settings.fontInvalidDate);
             // If the date is vetoed, set a font indicator, and do not change the lastValidDate.
         } else if (DatePickerInternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
-            dateTextField.setForeground(settings.colorVetoedDate);
+            dateTextField.setForeground(settings.colorTextVetoedDate);
             dateTextField.setFont(settings.fontVetoedDate);
         } else {
             // The date is valid, so leave the normal font, and store the last valid date.

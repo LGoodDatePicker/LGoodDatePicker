@@ -87,21 +87,21 @@ public class DatePickerInternalUtilities {
     }
 
     /**
-     * generateDefaultDisplayFormatterAD, This returns a default formatter for the specified locale,
-     * that can be used for displaying or parsing AD dates. The formatter is generated from the
-     * default FormatStyle.LONG formatter in the specified locale.
+     * generateDefaultFormatterCE, This returns a default formatter for the specified locale, that
+     * can be used for displaying or parsing AD dates. The formatter is generated from the default
+     * FormatStyle.LONG formatter in the specified locale.
      */
-    public static DateTimeFormatter generateDefaultDisplayFormatterAD(Locale pickerLocale) {
+    public static DateTimeFormatter generateDefaultFormatterCE(Locale pickerLocale) {
         return DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(pickerLocale);
     }
 
     /**
-     * generateDefaultDisplayFormatterBC, This returns a default formatter for the specified locale,
-     * that can be used for displaying or parsing BC dates. The formatter is generated from the
-     * default FormatStyle.LONG formatter in the specified locale. The resulting format is intended
-     * to be nearly identical to the default formatter used for AD dates.
+     * generateDefaultFormatterBCE, This returns a default formatter for the specified locale, that
+     * can be used for displaying or parsing BC dates. The formatter is generated from the default
+     * FormatStyle.LONG formatter in the specified locale. The resulting format is intended to be
+     * nearly identical to the default formatter used for AD dates.
      */
-    public static DateTimeFormatter generateDefaultDisplayFormatterBC(Locale pickerLocale) {
+    public static DateTimeFormatter generateDefaultFormatterBCE(Locale pickerLocale) {
         // This is verified to work for the following locale languages:
         // en, de, fr, pt, ru, it, nl, es, pl, da, ro, sv, zh.
         String displayFormatterBCPattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
