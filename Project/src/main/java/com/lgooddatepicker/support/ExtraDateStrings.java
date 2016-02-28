@@ -96,10 +96,10 @@ public class ExtraDateStrings {
     }
 
     /**
-     * getStandaloneMonthName, This returns a standalone month name for the specified month, in the
-     * specified locale. In some languages, including Russian and Czech, the standalone version of
-     * the month name is different from the version of the month name you would use as part of a
-     * full date. (Different from the formatting version).
+     * getStandaloneMonthName, This returns a "standalone version" month name for the specified
+     * month, in the specified locale. In some languages, including Russian and Czech, the
+     * standalone version of the month name is different from the version of the month name you
+     * would use as part of a full date. (Is different from the formatting version).
      *
      * This tries to get the standalone version first. If no mapping is found for a standalone
      * version (Presumably because the supplied language has no standalone version), then this will
@@ -109,7 +109,7 @@ public class ExtraDateStrings {
         // Attempt to get the standalone version of the month name.
         String monthName = month.getDisplayName(TextStyle.FULL_STANDALONE, locale);
         String monthNumber = "" + month.getValue();
-        // If no mapping was found, then get the formatting version of the month name.
+        // If no mapping was found, then get the "formatting version" of the month name.
         if (monthName.equals(monthNumber)) {
             DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
             monthName = dateSymbols.getMonths()[month.getValue() - 1];
@@ -122,8 +122,8 @@ public class ExtraDateStrings {
     }
 
     /**
-     * getStandaloneMonthNamesArray, This returns an array with the standalone version of the full
-     * month names.
+     * getStandaloneMonthNamesArray, This returns an array with the standalone version of all the
+     * full month names.
      */
     private static String[] getStandaloneMonthNamesArray(Locale locale, boolean capitalize) {
         Month[] monthEnums = Month.values();
