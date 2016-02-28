@@ -179,7 +179,7 @@ public class CalendarPanel extends JPanel {
      * redrawn.
      */
     private void addWeekdayLabels() {
-        weekDaysPanel.setBackground(getSettings().backgroundColorWeekdayLabels);
+        weekDaysPanel.setBackground(getSettings().colorBackgroundWeekdayLabels);
         weekdayLabels = new ArrayList<>();
         for (int i = 0; i < 7; ++i) {
             int weekdayLabelColumnX = (i);
@@ -187,7 +187,7 @@ public class CalendarPanel extends JPanel {
             JLabel weekdayLabel = new JLabel();
             weekdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
             weekdayLabel.setVerticalAlignment(SwingConstants.CENTER);
-            weekdayLabel.setBackground(getSettings().backgroundColorWeekdayLabels);
+            weekdayLabel.setBackground(getSettings().colorBackgroundWeekdayLabels);
             weekdayLabel.setOpaque(true);
             weekdayLabel.setText("wd" + i);
             GridBagConstraints gc = DatePickerInternalUtilities.getConstraints(
@@ -283,7 +283,7 @@ public class CalendarPanel extends JPanel {
         String localShortDaysOfWeek[] = symbols.getShortWeekdays();
         // Get the full name of the month in the current locale.
         int zeroBasedMonthIndex = (displayedMonth.getValue() - 1);
-        String localizedFullMonth = getSettings().monthNameTranslations[zeroBasedMonthIndex];
+        String localizedFullMonth = getSettings().translationArrayMonthNames[zeroBasedMonthIndex];
         // Get the first day of the month, and the first day of week.
         LocalDate firstDayOfMonth = LocalDate.of(displayedYear, displayedMonth, 1);
         DayOfWeek firstDayOfWeekOfMonth = firstDayOfMonth.getDayOfWeek();
@@ -347,10 +347,10 @@ public class CalendarPanel extends JPanel {
                 }
                 if (dateIsVetoed) {
                     dateLabel.setEnabled(false);
-                    dateLabel.setBackground(getSettings().backgroundColorVetoed);
+                    dateLabel.setBackground(getSettings().colorBackgroundVetoed);
                 }
                 if ((!dateIsVetoed) && (highlightStringOrNull != null)) {
-                    dateLabel.setBackground(getSettings().backgroundColorHighlighted);
+                    dateLabel.setBackground(getSettings().colorBackgroundHighlighted);
                     if (!highlightStringOrNull.isEmpty()) {
                         dateLabel.setToolTipText(highlightStringOrNull);
                     }
@@ -374,8 +374,8 @@ public class CalendarPanel extends JPanel {
             selectedDateLabel.setBorder(new LineBorder(new Color(99, 130, 191)));
         }
         // Set the label for the today button.
-        String todayDateString = getSettings().todayFormatter.format(LocalDate.now());
-        String todayLabel = getSettings().todayTranslation + ":  " + todayDateString;
+        String todayDateString = getSettings().formatTodayButton.format(LocalDate.now());
+        String todayLabel = getSettings().translationToday + ":  " + todayDateString;
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
         VetoPolicy vetoPolicy = getSettings().vetoPolicy;
@@ -389,7 +389,7 @@ public class CalendarPanel extends JPanel {
         labelClearDate.setVisible(shouldEnableClearButton);
 
         // Set the label for the clear button.
-        labelClearDate.setText(getSettings().clearTranslation);
+        labelClearDate.setText(getSettings().translationClear);
     }
 
     /**
@@ -482,7 +482,7 @@ public class CalendarPanel extends JPanel {
      */
     private void labelMonthIndicatorMousePressed(MouseEvent e) {
         JPopupMenu monthPopupMenu = new JPopupMenu();
-        String[] allLocalMonths = getSettings().monthNameTranslations;
+        String[] allLocalMonths = getSettings().translationArrayMonthNames;
         for (int i = 0; i < allLocalMonths.length; ++i) {
             final String localMonth = allLocalMonths[i];
             final int localMonthZeroBasedIndexTemp = i;
@@ -554,8 +554,8 @@ public class CalendarPanel extends JPanel {
      */
     private void setSizeOfDatePanelCell() {
         // Get the minimum desired size of the date panel.
-        int minimumHeight = getSettings().datePanelMinimumHeight;
-        int minimumWidth = getSettings().datePanelMinimumWidth;
+        int minimumHeight = getSettings().sizeDatePanelMinimumHeight;
+        int minimumWidth = getSettings().sizeDatePanelMinimumWidth;
         // Redraw the panel, to make sure the panel is the "default layout size" before starting.
         this.doLayout();
         this.validate();
@@ -573,8 +573,8 @@ public class CalendarPanel extends JPanel {
         panelWidth += (panelWidth % 7);
         // Extra pixels appears to be required to make the date labels touch the inside edges 
         // of the date panel.
-        panelHeight += getSettings().datePanelPixelsExtraHeight;
-        panelWidth += getSettings().datePanelPixelsExtraWidth;
+        panelHeight += getSettings().sizeDatePanelPixelsExtraHeight;
+        panelWidth += getSettings().sizeDatePanelPixelsExtraWidth;
         // Set the containing cell to be the desired size.
         layout.rowHeights[4] = panelHeight;
         layout.columnWidths[1] = panelWidth;
