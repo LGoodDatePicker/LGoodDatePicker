@@ -14,6 +14,7 @@ import com.lgooddatepicker.optionalusertools.DateUtilities;
 import com.lgooddatepicker.optionalusertools.HighlightPolicy;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import com.lgooddatepicker.zinternaltools.DateChangeEvent;
+import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.lgooddatepicker.zinternaltools.WrapLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -75,7 +76,7 @@ public class Demo {
         ///////////////////////////////////////////////////////////////////////////////////////////
         // Create a frame, a panel, and our demo buttons.
         frame = new JFrame();
-        frame.setTitle("LGoodDatePicker Demo");
+        frame.setTitle("LGoodDatePicker Demo " + InternalUtilities.getProjectVersionString());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new DemoPanel();
         frame.getContentPane().add(panel);
