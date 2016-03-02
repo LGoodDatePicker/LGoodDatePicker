@@ -14,10 +14,12 @@ import java.util.Map;
 import javax.swing.JTextField;
 import com.lgooddatepicker.optionalusertools.HighlightPolicy;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
-import com.lgooddatepicker.support.DatePickerInternalUtilities;
-import com.lgooddatepicker.support.ExtraDateStrings;
-import com.lgooddatepicker.support.TranslationSource;
+import com.lgooddatepicker.zinternaltools.InternalUtilities;
+import com.lgooddatepicker.zinternaltools.ExtraDateStrings;
+import com.lgooddatepicker.zinternaltools.TranslationSource;
 import java.time.LocalDate;
+import javax.swing.JPopupMenu;
+import javax.swing.border.Border;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized in a date picker. All of
@@ -44,41 +46,72 @@ public class DatePickerSettings {
     public boolean allowEmptyDates;
 
     /**
-     * colorBackgroundHighlighted, This is the calendar background color for dates which are
-     * highlighted by a highlight policy. The default color is green.
+     * borderCalendarPopup, This is the border for the calendar popup window. If this is null, a
+     * default border will be provided by the CustomPopup class. The default value is null.
      */
-    public Color colorBackgroundHighlighted;
+    public Border borderCalendarPopup;
 
     /**
-     * colorBackgroundVetoed, This is the calendar background color for dates which are vetoed by a
-     * veto policy. The default color is light gray.
+     * colorBackgroundCalendarPanel, This is the background color for the entire calendar panel. The
+     * default color is a very light gray.
      */
-    public Color colorBackgroundVetoed;
+    public Color colorBackgroundCalendarPanel = new Color(240, 240, 240);
+
+    /**
+     * colorBackgroundHighlightedDates, This is the calendar background color for dates which are
+     * highlighted by a highlight policy. The default color is green.
+     */
+    public Color colorBackgroundHighlightedDates = Color.green;
+
+    /**
+     * colorBackgroundMonthAndYear, This is the background color used by the month and year buttons.
+     * The default color is a very light gray.
+     */
+    public Color colorBackgroundMonthAndYear = new Color(240, 240, 240);
+
+    /**
+     * colorBackgroundNavigateYearMonthButtons, This is the background color used by the buttons for
+     * navigating "previous year", "previous month", "next year", "next month". The default value is
+     * the default java button background
+     */
+    public Color colorBackgroundNavigateYearMonthButtons = null;
+
+    /**
+     * colorBackgroundTodayAndClear, This is the background color used by the "Today" and "Clear"
+     * buttons. The default color is a very light gray.
+     */
+    public Color colorBackgroundTodayAndClear = new Color(240, 240, 240);
+
+    /**
+     * colorBackgroundVetoedDates, This is the calendar background color for dates which are vetoed
+     * by a veto policy. The default color is light gray.
+     */
+    public Color colorBackgroundVetoedDates = Color.lightGray;
 
     /**
      * colorBackgroundWeekdayLabels, This is the calendar background color for the weekday labels.
      * The default color is a medium sky blue.
      */
-    public Color colorBackgroundWeekdayLabels;
+    public Color colorBackgroundWeekdayLabels = new Color(184, 207, 229);
 
     /**
      * colorTextInvalidDate, This is the text field text color for invalid dates. The default color
      * is red.
      */
-    public Color colorTextInvalidDate;
+    public Color colorTextInvalidDate = Color.red;
 
     /**
      * colorTextValidDate, This is the text field text color for valid dates. The default color is
      * black.
      */
-    public Color colorTextValidDate;
+    public Color colorTextValidDate = Color.black;
 
     /**
      * colorTextVetoedDate, This is the text field text color for vetoed dates. The default color is
      * black. Note: The default fontVetoedDate setting will draw a line (strikethrough) vetoed
      * dates.
      */
-    public Color colorTextVetoedDate;
+    public Color colorTextVetoedDate = Color.black;
 
     /**
      * firstDayOfWeek, This holds the day of the week that will be displayed in the far left column
@@ -107,13 +140,23 @@ public class DatePickerSettings {
     /**
      * formatDatesCommonEra, This holds the default format that is used to display or parse CE dates
      * in the date picker. The default value is generated using the locale of the settings instance.
+     * A DateTimeFormatter can be created from a pattern string with the convenience function
+     * DateUtilities.createFormatterFromPatternString();
      */
     public DateTimeFormatter formatDatesCommonEra;
 
     /**
      * formatDatesBeforeCommonEra, This holds the default format that is used to display or parse
      * BCE dates in the date picker. The default value is generated using the locale of the settings
-     * instance.
+     * instance. A DateTimeFormatter can be created from a pattern string with the convenience
+     * function DateUtilities.createFormatterFromPatternString();
+     *
+     * Note: It is important to use the letter "u" (astronomical year) instead of "y" (year of era)
+     * when creating pattern strings for BCE dates. This is because the DatePicker uses ISO 8601,
+     * which specifies "Astronomical year numbering". (Additional details: The astronomical year
+     * "-1" and "1 BC" are not the same thing. Astronomical years are zero-based, and BC dates are
+     * one-based. Astronomical year "0", is the same year as "1 BC", and astronomical year "-1" is
+     * the same year as "2 BC", and so forth.)
      */
     public DateTimeFormatter formatDatesBeforeCommonEra;
 
@@ -276,14 +319,17 @@ public class DatePickerSettings {
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
         formatTodayButton = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(pickerLocale);
-        formatDatesCommonEra = DatePickerInternalUtilities.generateDefaultFormatterCE(pickerLocale);
-        formatDatesBeforeCommonEra = DatePickerInternalUtilities.generateDefaultFormatterBCE(pickerLocale);
+        formatDatesCommonEra = InternalUtilities.generateDefaultFormatterCE(pickerLocale);
+        formatDatesBeforeCommonEra = InternalUtilities.generateDefaultFormatterBCE(pickerLocale);
 
         // Set the minimum height, minimum width, and extra pixels for the date panel.
         sizeDatePanelMinimumHeight = (6 * 18);
         sizeDatePanelMinimumWidth = (7 * 30);
         sizeDatePanelPixelsExtraHeight = 2;
         sizeDatePanelPixelsExtraWidth = 2;
+
+        // This will use a default border provided by the CustomPopup class.
+        borderCalendarPopup = null;
 
         // Initialize the other fields.
         highlightPolicy = null;
@@ -309,20 +355,12 @@ public class DatePickerSettings {
         formatsForParsing.addAll(extraFormatters);
 
         // Generate the default fonts and text colors.
-        colorBackgroundWeekdayLabels = new Color(184, 207, 229);
-        colorTextValidDate = Color.black;
         fontValidDate = new JTextField().getFont();
-        colorTextInvalidDate = Color.red;
         fontInvalidDate = new JTextField().getFont();
-        colorTextVetoedDate = Color.BLACK;
         fontVetoedDate = new JTextField().getFont();
         Map attributes = fontVetoedDate.getAttributes();
         attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
         fontVetoedDate = new Font(attributes);
-
-        // Generate default colors for highlighted and vetoed dates.
-        colorBackgroundHighlighted = Color.green;
-        colorBackgroundVetoed = Color.lightGray;
 
     }
 

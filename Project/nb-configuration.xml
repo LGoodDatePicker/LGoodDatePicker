@@ -8,8 +8,11 @@ Without this configuration present, some functionality in the IDE may be limited
 -->
     <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
         <word>dd</word>
+        <word>deregistering</word>
         <word>enum</word>
         <word>internet</word>
+        <word>Javadoc</word>
+        <word>Javadocs</word>
         <word>nullable</word>
         <word>parsable</word>
         <word>popup</word>

@@ -1,12 +1,38 @@
 package com.lgooddatepicker.optionalusertools;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Locale;
 
 /**
  * DateUtilities, This is a set of date or date picker related utilities that may be useful to
  * developers using this project.
  */
 public class DateUtilities {
+
+    /**
+     * createFormatterFromPatternString, This creates a DateTimeFormatter from the supplied pattern
+     * string and supplied locale. The pattern will be created to be "lenient" and "case
+     * insensitive", so it can be used for display or for user-friendly parsing. Information about
+     * creating a pattern string can be found in the DateTimeFormatter class Javadocs. @see
+     * <a href="https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html">
+     * The DateTimeFormatter Javadocs </a>
+     *
+     * Note: It is important to use the letter "u" (astronomical year) instead of "y" (year of era)
+     * when creating pattern strings for BCE dates. This is because the DatePicker uses ISO 8601,
+     * which specifies "Astronomical year numbering". (Additional details: The astronomical year
+     * "-1" and "1 BC" are not the same thing. Astronomical years are zero-based, and BC dates are
+     * one-based. Astronomical year "0", is the same year as "1 BC", and astronomical year "-1" is
+     * the same year as "2 BC", and so forth.)
+     */
+    public static DateTimeFormatter createFormatterFromPatternString(
+            String formatPattern, Locale locale) {
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseLenient()
+                .parseCaseInsensitive().appendPattern(formatPattern)
+                .toFormatter(locale);
+        return formatter;
+    }
 
     /**
      * isSameLocalDate, This compares two date variables to see if their values are equal. Returns

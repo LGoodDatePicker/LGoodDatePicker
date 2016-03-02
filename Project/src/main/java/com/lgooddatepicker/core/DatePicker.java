@@ -1,7 +1,7 @@
 package com.lgooddatepicker.core;
 
 import java.awt.*;
-import com.lgooddatepicker.support.DatePickerInternalUtilities;
+import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.lgooddatepicker.optionalusertools.DateUtilities;
 import java.awt.Window;
@@ -14,10 +14,10 @@ import java.time.chrono.IsoEra;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
-import com.lgooddatepicker.support.Convert;
-import com.lgooddatepicker.support.CustomPopup;
-import com.lgooddatepicker.support.DateChangeEvent;
-import com.lgooddatepicker.support.TopWindowMovementListener;
+import com.lgooddatepicker.zinternaltools.Convert;
+import com.lgooddatepicker.zinternaltools.CustomPopup;
+import com.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
+import com.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.util.ArrayList;
 
 /**
@@ -40,7 +40,7 @@ import java.util.ArrayList;
  *
  * JPanel panel = new JPanel(); panel.add(datePicker); panel.pack(); panel.validate();
  */
-public class DatePicker extends JPanel {
+public class DatePicker extends JPanel implements CustomPopupCloseListener {
 
     /**
      * calendarPanel, This holds the calendar panel GUI component of this date picker. This should
@@ -135,12 +135,8 @@ public class DatePicker extends JPanel {
             settings.initialDate = LocalDate.now();
         }
         // Set the initial date from the settings.
-        // Note that we intentionally bypass all listeners while setting the initial date.
-        this.lastValidDate = settings.initialDate;
-        String initialDateString = zGetStandardTextFieldDateString(settings.initialDate);
-        skipTextFieldChangedFunctionWhileTrue = true;
-        dateTextField.setText(initialDateString);
-        skipTextFieldChangedFunctionWhileTrue = false;
+        // Note that no date listeners can exist until after the constructor has returned.
+        setDate(settings.initialDate);
     }
 
     /**
@@ -160,9 +156,8 @@ public class DatePicker extends JPanel {
     }
 
     /**
-     * closePopup, This closes the calendar popup, and sets the associated object instances to null.
-     * This is called automatically when calendar popup needs to be closed. This function does not
-     * generally need to be called programmatically.
+     * closePopup, This closes the calendar popup. The popup can close itself automatically, so this
+     * function does not generally need to be called programmatically.
      *
      * Notes: The popup can be automatically closed for various reasons. 1) The user may press
      * escape. 2) The popup may lose focus. 3) The window may be moved. 4) The user may toggle the
@@ -170,22 +165,10 @@ public class DatePicker extends JPanel {
      */
     public void closePopup() {
         if (popup != null) {
+            // The popup.hide() function handles the de-registration of the various listeners 
+            // associated with the popup window. This also initiates a callback to the 
+            // DatePicker.zEventcustomPopupWasClosed() function.
             popup.hide();
-        }
-        popup = null;
-        if (calendarPanel != null) {
-            calendarPanel.clearParent();
-        }
-        calendarPanel = null;
-        lastPopupCloseTime = Instant.now();
-        // Remove any component listeners from the top window better instances of the
-        // TopWindowMovementListener class.
-        Window topWindow = SwingUtilities.getWindowAncestor(this);
-        ComponentListener[] componentListeners = topWindow.getComponentListeners();
-        for (ComponentListener listener : componentListeners) {
-            if (listener instanceof TopWindowMovementListener) {
-                topWindow.removeComponentListener(listener);
-            }
         }
     }
 
@@ -274,6 +257,14 @@ public class DatePicker extends JPanel {
     }
 
     /**
+     * isPopupOpen, This returns true if the calendar popup is open. This returns false if the
+     * calendar popup is closed
+     */
+    public boolean isPopupOpen() {
+        return (popup != null);
+    }
+
+    /**
      * isTextFieldValid, This returns true if, and only if, the text field contains a parsable date
      * or a valid empty string. Note that this does not guarantee that the text in the text field is
      * in a standard format. Valid dates can be in any one of the parsingFormats that are accepted
@@ -306,7 +297,7 @@ public class DatePicker extends JPanel {
             return settings.allowEmptyDates;
         }
         // Try to get a parsed date.
-        LocalDate parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(text,
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(text,
                 settings.formatDatesCommonEra, settings.formatDatesBeforeCommonEra,
                 settings.formatsForParsing, settings.pickerLocale);
 
@@ -316,11 +307,38 @@ public class DatePicker extends JPanel {
         }
         // If the date is vetoed, return false.
         VetoPolicy vetoPolicy = settings.vetoPolicy;
-        if (DatePickerInternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
+        if (InternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
             return false;
         }
         // The date is valid, so return true.
         return true;
+    }
+
+    public void openPopup() {
+        // If this function was called programmatically, we may need to change the focus to this
+        // popup.
+        if (!dateTextField.hasFocus()) {
+            dateTextField.requestFocusInWindow();
+        }
+        // Get the last valid date, to pass to the calendar if needed.
+        LocalDate selectedDateForCalendar = lastValidDate;
+        // Create a new calendar panel.
+        calendarPanel = new CalendarPanel(this);
+        if (selectedDateForCalendar != null) {
+            calendarPanel.setDisplayedSelectedDate(selectedDateForCalendar);
+            calendarPanel.drawCalendar(YearMonth.from(selectedDateForCalendar));
+        }
+        // Create a new custom popup.
+        popup = new CustomPopup(calendarPanel, SwingUtilities.getWindowAncestor(this),
+                this, settings.borderCalendarPopup);
+        int popupX = toggleCalendarButton.getLocationOnScreen().x
+                + toggleCalendarButton.getBounds().width - popup.getBounds().width - 2;
+        int popupY = toggleCalendarButton.getLocationOnScreen().y
+                + toggleCalendarButton.getBounds().height + 2;
+        popup.setLocation(popupX, popupY);
+        // Show the popup and focus the calendar.
+        popup.show();
+        calendarPanel.requestFocus();
     }
 
     /**
@@ -348,7 +366,7 @@ public class DatePicker extends JPanel {
      * lastValidDate is also automatically set. This occurs through the DocumentListener which is
      * registered on the dateTextField.
      */
-    public void setDate(LocalDate optionalDate) {
+    public final void setDate(LocalDate optionalDate) {
         // Set the text field to the supplied date, using the standard format for null, AD, or BC.
         String standardDateString = zGetStandardTextFieldDateString(optionalDate);
         String textFieldString = dateTextField.getText();
@@ -372,53 +390,6 @@ public class DatePicker extends JPanel {
     }
 
     /**
-     * showPopup, This creates and shows a calendar popup. This is called when the user clicks on
-     * the toggle calendar button of the date picker. This function does not generally need to be
-     * called programmatically.
-     *
-     * If the date picker contains a lastValidDate, the calendar will be opened to the month and
-     * year of the lastValidDate, with the lastValidDate marked as selected.
-     *
-     * If the lastValidDate is null, then the calendar will be opened with today's month and year
-     * displayed, and no date will be selected.
-     *
-     * This function creates a new calendar and a new custom popup instance each time that it is
-     * called. The associated object instances are automatically disposed and set to null when a
-     * popup is closed.
-     */
-    public void showPopup() {
-        // If a popup calendar was closed in the last 200 milliseconds, then do not open a new one.
-        // This is a workaround for a problem where the toggle calendar button would erroneously
-        // reopen a calendar after closing one.
-        if ((Instant.now().toEpochMilli() - lastPopupCloseTime.toEpochMilli()) < 200) {
-            return;
-        }
-        // If this function was called programmatically, we may need to change the focus to this
-        // popup.
-        if (!dateTextField.hasFocus()) {
-            dateTextField.requestFocusInWindow();
-        }
-        // Get the last valid date, to pass to the calendar if needed.
-        LocalDate selectedDateForCalendar = lastValidDate;
-        // Create a new calendar panel.
-        calendarPanel = new CalendarPanel(this);
-        if (selectedDateForCalendar != null) {
-            calendarPanel.setDisplayedSelectedDate(selectedDateForCalendar);
-            calendarPanel.drawCalendar(YearMonth.from(selectedDateForCalendar));
-        }
-        // Create a new custom popup.
-        popup = new CustomPopup(SwingUtilities.getWindowAncestor(this), calendarPanel, this);
-        int popupX = toggleCalendarButton.getLocationOnScreen().x
-                + toggleCalendarButton.getBounds().width - popup.displayWindow.getBounds().width - 2;
-        int popupY = toggleCalendarButton.getLocationOnScreen().y
-                + toggleCalendarButton.getBounds().height + 2;
-        popup.setLocation(popupX, popupY);
-        // Show the popup and focus the calendar.
-        popup.show();
-        calendarPanel.requestFocus();
-    }
-
-    /**
      * toString, This returns the last valid date in the ISO-8601 format (uuuu-MM-dd). Non-empty AD
      * dates are a fixed length of 10 characters. Any BC dates will have 11 characters, due to the
      * addition of a minus sign before the year. If the last valid date is empty, this will return
@@ -429,6 +400,39 @@ public class DatePicker extends JPanel {
         return getISODateStringOrEmptyString();
     }
 
+    /**
+     * togglePopup, This creates and shows a calendar popup. If the popup is already open, then this
+     * will close the popup.
+     *
+     * This is called when the user clicks on the toggle calendar button of the date picker. This
+     * function does not generally need to be called programmatically.
+     *
+     * If the date picker contains a lastValidDate, the calendar will be opened to the month and
+     * year of the lastValidDate, with the lastValidDate marked as selected.
+     *
+     * If the lastValidDate is null, then the calendar will be opened with today's month and year
+     * displayed, and no date will be selected.
+     *
+     * This function creates a new calendar and a new custom popup instance each time that it is
+     * called. The associated object instances are automatically disposed and set to null when a
+     * popup is closed.
+     *
+     *
+     */
+    public void togglePopup() {
+        // If a popup calendar was closed in the last 200 milliseconds, then do not open a new one.
+        // This is a workaround for a problem where the toggle calendar button would erroneously
+        // reopen a calendar after closing one.
+        if ((Instant.now().toEpochMilli() - lastPopupCloseTime.toEpochMilli()) < 200) {
+            return;
+        }
+        openPopup();
+    }
+
+    /**
+     * zAddTextChangeListener, This add a text change listener to the date text field, so that we
+     * can respond to text as it is typed.
+     */
     private void zAddTextChangeListener() {
         dateTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -479,7 +483,7 @@ public class DatePicker extends JPanel {
      * panel is already opened, it will be closed instead.
      */
     private void zEventToggleCalendarButtonMousePressed(MouseEvent event) {
-        showPopup();
+        togglePopup();
     }
 
     /**
@@ -553,7 +557,7 @@ public class DatePicker extends JPanel {
         // If needed, try to get a parsed date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
-            parsedDate = DatePickerInternalUtilities.getParsedDateOrNull(dateText,
+            parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
                     settings.formatDatesCommonEra, settings.formatDatesBeforeCommonEra,
                     settings.formatsForParsing, settings.pickerLocale);
         }
@@ -575,7 +579,7 @@ public class DatePicker extends JPanel {
             dateTextField.setForeground(settings.colorTextInvalidDate);
             dateTextField.setFont(settings.fontInvalidDate);
             // If the date is vetoed, set a font indicator, and do not change the lastValidDate.
-        } else if (DatePickerInternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
+        } else if (InternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
             dateTextField.setForeground(settings.colorTextVetoedDate);
             dateTextField.setFont(settings.fontVetoedDate);
         } else {
@@ -637,6 +641,25 @@ public class DatePicker extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
+    }
+
+    /**
+     * zEventCustomPopupWasClosed, This is called automatically whenever the CustomPopup that is
+     * associated with this date picker is closed. This should be called regardless of the type of
+     * event which caused the popup to close.
+     *
+     * Notes: The popup can be automatically closed for various reasons. 1) The user may press
+     * escape. 2) The popup may lose focus. 3) The window may be moved. 4) The user may toggle the
+     * calendar with the "toggle calendar" button. 5) The user may select a date in the calendar.
+     */
+    @Override
+    public void zEventCustomPopupWasClosed(CustomPopup popup) {
+        popup = null;
+        if (calendarPanel != null) {
+            calendarPanel.clearParent();
+        }
+        calendarPanel = null;
+        lastPopupCloseTime = Instant.now();
     }
 
 }
