@@ -4,73 +4,266 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-			"$columnSpecs": "0, 10, 180, 4, 0:1.0, 4, 0:1.0, 4, 0:1.0, 10"
-			"$rowSpecs": "0, center:11, 0, center:30, 0, center:30, 0, 30, 0, center:12, center:11, 100, center:5, 0:1.0, center:11"
-			"$alignTop": true
+			"$columnSpecs": "40, 0:1.0, 30, 0:1.0, 40"
+			"$rowSpecs": "20, 0, 10, 200:1.0, 15, 100, 15, 158, 25"
 			"$alignLeft": true
+			"$alignTop": true
 		} ) {
 			name: "this"
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-				"$columnSpecs": "0:1.0"
-				"$rowSpecs": "0, center:5, center:0, center:5, center:0, center:5, center:0, center:5, center:0, center:5, 0, center:5, 0:1.0"
-				"$alignTop": true
-				"$alignLeft": true
-			} ) {
-				name: "buttonPanel"
-				auxiliary() {
-					"JavaCodeGenerator.variableModifiers": 1
-				}
+			auxiliary() {
+				"JavaCodeGenerator.variableModifiers": 1
+			}
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "labelFeatures"
+				"text": "Features Sample:"
+				"font": &SwingDerivedFont0 new com.jformdesigner.model.SwingDerivedFont( null, 1, 6, false )
+				"horizontalTextPosition": 0
+				"horizontalAlignment": 0
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 8
-				"gridy": 2
-				"gridheight": 6
+				"gridx": 1
+				"gridy": 1
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "dateLabel1"
-				"text": "Date 1:"
-				"horizontalAlignment": 4
+				name: "labelLanguages"
+				"text": "Languages Sample:"
+				"font": #SwingDerivedFont0
+				"horizontalTextPosition": 0
+				"horizontalAlignment": 0
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 2
-				"gridy": 2
+				"gridx": 3
+				"gridy": 1
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "clickHereLabel"
-				"text": "Click here  _______/\\    "
-				"horizontalAlignment": 4
-				"foreground": sfield java.awt.Color blue
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPaneFeatures"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+					"$columnSpecs": "10, right:0:1.0, 10, 200, 20:1.0"
+					"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0"
+					"$alignLeft": true
+					"$alignTop": true
+				} ) {
+					name: "featuresPanel"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "clickHereLabel"
+						"text": "Click here  -------V   "
+						"horizontalAlignment": 4
+						"foreground": sfield java.awt.Color blue
+						"border": new javax.swing.border.EmptyBorder( 5, 0, 5, 0 )
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 1
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate1"
+						"text": "Date 1, Default Settings:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 1
+						"gridy": 2
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label15"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridx": 3
+						"gridy": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate2"
+						"text": "Date 2, Highlight Policy:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 4
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label16"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 5
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate3"
+						"text": "Date 3, Veto Policy:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 6
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label17"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 7
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate4"
+						"text": "Date 4, Both Policies:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 8
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label18"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 9
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate5"
+						"text": "Date 5, Set First Day Of Week (Mon):"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 10
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label19"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 11
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate6"
+						"text": "Date 6, Change Calendar Size:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 12
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label20"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 13
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate7"
+						"text": "Date 7, Change Colors:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 14
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label21"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 15
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate9"
+						"text": "Date 8, Custom Date Format:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 16
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label22"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 17
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate8"
+						"text": "Date 9, Disallow Empty Dates:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 18
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label23"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 19
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate10"
+						"text": "Date 10, Custom Font:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 20
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label24"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 21
+						"gridx": 3
+					} )
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 4
+				"gridx": 1
 				"gridy": 3
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "dateLabel2"
-				"text": "Date 2:"
-				"horizontalAlignment": 4
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "scrollPaneLanguages"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+					"$columnSpecs": "10, right:0:1.0, 10, 200, 20:1.0"
+					"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0"
+					"$alignLeft": true
+					"$alignTop": true
+				} ) {
+					name: "languagePanel"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 2
-				"gridy": 4
+				"gridx": 3
+				"gridy": 3
 			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "dateLabel3"
-				"text": "<html>With Customized Settings:<br/>First weekday is Monday. Has<br/>Veto Policy, Highlight Policy,<br/>and a Change Listener.</html>"
-				"horizontalAlignment": 2
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
+				name: "outerButtonPanel"
+				"border": new javax.swing.border.TitledBorder( null, "Programmatic Control:", 4, 0, new java.awt.Font( "Segoe UI", 1, 14 ), null )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPaneForButtons"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 2
+				"gridx": 1
 				"gridy": 5
-				"gridheight": 3
-			} )
-			add( new FormComponent( "javax.swing.JLabel" ) {
-				name: "label1"
-				"text": "<html>With A Different Locale:<br/>(Russian)</html>"
-				"horizontalAlignment": 2
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 2
-				"gridy": 8
-				"gridheight": 2
+				"gridwidth": 3
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "messageTextAreaScrollPane"
-				"border": new javax.swing.border.TitledBorder( "Messages" )
+				"border": new javax.swing.border.TitledBorder( null, "Messages:", 4, 0, new java.awt.Font( "Segoe UI", 1, 14 ), null )
 				add( new FormComponent( "javax.swing.JTextArea" ) {
 					name: "messageTextArea"
 					"lineWrap": true
@@ -82,28 +275,13 @@ new FormModel {
 					}
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 2
-				"gridy": 11
-				"gridwidth": 7
-			} )
-			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
-				name: "informationTextAreaScrollPane"
-				"border": new javax.swing.border.TitledBorder( "Information" )
-				add( new FormComponent( "javax.swing.JTextArea" ) {
-					name: "informationTextArea"
-					"text": "\nInterface: Most items in a date picker are clickable. These include... The buttons for previous and next month, the buttons for previous and next year, the \"today\" text, the \"clear\" text, and individual dates. A click on the month or year label (at the top), will open a menu for changing the month or year.\n\nGeneral features: \n* Automatic internationalization. (Month names, weekday names, the default first day of the week,  default date formats, and button text.)\n* Translations so far include 12 languages.\n* Fonts and colors can be changed. (For example the highlight color, or the invalid date font). \n* Relatively compact source code (3 main classes).\n* Creating a DatePicker requires only one line of code.\n* Open source code base.\n\nData types: The standard Java 8 time library is used to store dates, and they are convertible to other data types. (The Java 8 time package is also called \"java.time\" or \"JSR-310\", and was developed by the author of Joda Time.)\n\nVeto and Highlight Policies: These policies are optional. A veto policy restricts the dates that can be selected. A highlight policy provides a visual highlight on desired dates, with optional tooltips. The customized date picker above has a highlight policy for weekends and the 3rd (with tooltips added), and a veto policy for every 5th day. If today is vetoed, the \"today\" button will be grey and disabled.\n\nDate values and automatic validation: Every date picker stores its current text, and its last valid date. The last valid date is returned when you call DatePicker.getDate(). If the user types into the text field, any text that is not a valid date will be displayed in red, any vetoed date will have a strikethrough, and valid dates will display in black. When the focus on a date picker is lost, the text is always set to match the last valid date.\n"
-					"editable": false
-					"lineWrap": true
-					"wrapStyleWord": true
-				} )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 2
-				"gridy": 13
-				"gridwidth": 7
+				"gridx": 1
+				"gridy": 7
+				"gridwidth": 3
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 860, 745 )
+			"size": new java.awt.Dimension( 980, 1165 )
 		} )
 	}
 }

@@ -5,81 +5,248 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 public class DemoPanel extends JPanel {
+    
 	public DemoPanel() {
 		initComponents();
 	}
 
 	private void initComponents() {
 		// JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		buttonPanel = new JPanel();
-		dateLabel1 = new JLabel();
+		labelFeatures = new JLabel();
+		labelLanguages = new JLabel();
+		scrollPaneFeatures = new JScrollPane();
+		featuresPanel = new JPanel();
 		clickHereLabel = new JLabel();
-		dateLabel2 = new JLabel();
-		dateLabel3 = new JLabel();
-		label1 = new JLabel();
+		labelDate1 = new JLabel();
+		label15 = new JLabel();
+		labelDate2 = new JLabel();
+		label16 = new JLabel();
+		labelDate3 = new JLabel();
+		label17 = new JLabel();
+		labelDate4 = new JLabel();
+		label18 = new JLabel();
+		labelDate5 = new JLabel();
+		label19 = new JLabel();
+		labelDate6 = new JLabel();
+		label20 = new JLabel();
+		labelDate7 = new JLabel();
+		label21 = new JLabel();
+		labelDate9 = new JLabel();
+		label22 = new JLabel();
+		labelDate8 = new JLabel();
+		label23 = new JLabel();
+		labelDate10 = new JLabel();
+		label24 = new JLabel();
+		scrollPaneLanguages = new JScrollPane();
+		languagePanel = new JPanel();
+		outerButtonPanel = new JPanel();
+		scrollPaneForButtons = new JScrollPane();
 		messageTextAreaScrollPane = new JScrollPane();
 		messageTextArea = new JTextArea();
-		informationTextAreaScrollPane = new JScrollPane();
-		informationTextArea = new JTextArea();
 
 		//======== this ========
 		setLayout(new GridBagLayout());
-		((GridBagLayout)getLayout()).columnWidths = new int[] {0, 10, 180, 4, 0, 4, 0, 4, 0, 10, 0};
-		((GridBagLayout)getLayout()).rowHeights = new int[] {0, 11, 0, 30, 0, 30, 0, 30, 0, 12, 11, 100, 5, 0, 11, 0};
-		((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, 1.0E-4};
-		((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0E-4};
+		((GridBagLayout)getLayout()).columnWidths = new int[] {40, 0, 30, 0, 40, 0};
+		((GridBagLayout)getLayout()).rowHeights = new int[] {20, 0, 10, 200, 15, 100, 15, 158, 25, 0};
+		((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 1.0, 0.0, 1.0, 0.0, 1.0E-4};
+		((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
-		//======== buttonPanel ========
+		//---- labelFeatures ----
+		labelFeatures.setText("Features Sample:");
+		labelFeatures.setFont(labelFeatures.getFont().deriveFont(labelFeatures.getFont().getStyle() | Font.BOLD, labelFeatures.getFont().getSize() + 6f));
+		labelFeatures.setHorizontalTextPosition(SwingConstants.CENTER);
+		labelFeatures.setHorizontalAlignment(SwingConstants.CENTER);
+		add(labelFeatures, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
+
+		//---- labelLanguages ----
+		labelLanguages.setText("Languages Sample:");
+		labelLanguages.setFont(labelLanguages.getFont().deriveFont(labelLanguages.getFont().getStyle() | Font.BOLD, labelLanguages.getFont().getSize() + 6f));
+		labelLanguages.setHorizontalTextPosition(SwingConstants.CENTER);
+		labelLanguages.setHorizontalAlignment(SwingConstants.CENTER);
+		add(labelLanguages, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
+
+		//======== scrollPaneFeatures ========
 		{
-			buttonPanel.setLayout(new GridBagLayout());
-			((GridBagLayout)buttonPanel.getLayout()).columnWidths = new int[] {0, 0};
-			((GridBagLayout)buttonPanel.getLayout()).rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 0};
-			((GridBagLayout)buttonPanel.getLayout()).columnWeights = new double[] {1.0, 1.0E-4};
-			((GridBagLayout)buttonPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0E-4};
+
+			//======== featuresPanel ========
+			{
+				featuresPanel.setLayout(new GridBagLayout());
+				((GridBagLayout)featuresPanel.getLayout()).columnWidths = new int[] {10, 0, 10, 200, 20, 0};
+				((GridBagLayout)featuresPanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+				((GridBagLayout)featuresPanel.getLayout()).columnWeights = new double[] {0.0, 1.0, 0.0, 0.0, 1.0, 1.0E-4};
+				((GridBagLayout)featuresPanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+
+				//---- clickHereLabel ----
+				clickHereLabel.setText("Click here  -------V   ");
+				clickHereLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+				clickHereLabel.setForeground(Color.blue);
+				clickHereLabel.setBorder(new EmptyBorder(5, 0, 5, 0));
+				featuresPanel.add(clickHereLabel, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate1 ----
+				labelDate1.setText("Date 1, Default Settings:");
+				featuresPanel.add(labelDate1, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label15 ----
+				label15.setText(" ");
+				featuresPanel.add(label15, new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate2 ----
+				labelDate2.setText("Date 2, Highlight Policy:");
+				featuresPanel.add(labelDate2, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label16 ----
+				label16.setText(" ");
+				featuresPanel.add(label16, new GridBagConstraints(3, 5, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate3 ----
+				labelDate3.setText("Date 3, Veto Policy:");
+				featuresPanel.add(labelDate3, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label17 ----
+				label17.setText(" ");
+				featuresPanel.add(label17, new GridBagConstraints(3, 7, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate4 ----
+				labelDate4.setText("Date 4, Both Policies:");
+				featuresPanel.add(labelDate4, new GridBagConstraints(1, 8, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label18 ----
+				label18.setText(" ");
+				featuresPanel.add(label18, new GridBagConstraints(3, 9, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate5 ----
+				labelDate5.setText("Date 5, Set First Day Of Week (Mon):");
+				featuresPanel.add(labelDate5, new GridBagConstraints(1, 10, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label19 ----
+				label19.setText(" ");
+				featuresPanel.add(label19, new GridBagConstraints(3, 11, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate6 ----
+				labelDate6.setText("Date 6, Change Calendar Size:");
+				featuresPanel.add(labelDate6, new GridBagConstraints(1, 12, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label20 ----
+				label20.setText(" ");
+				featuresPanel.add(label20, new GridBagConstraints(3, 13, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate7 ----
+				labelDate7.setText("Date 7, Change Colors:");
+				featuresPanel.add(labelDate7, new GridBagConstraints(1, 14, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label21 ----
+				label21.setText(" ");
+				featuresPanel.add(label21, new GridBagConstraints(3, 15, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate9 ----
+				labelDate9.setText("Date 8, Custom Date Format:");
+				featuresPanel.add(labelDate9, new GridBagConstraints(1, 16, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label22 ----
+				label22.setText(" ");
+				featuresPanel.add(label22, new GridBagConstraints(3, 17, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate8 ----
+				labelDate8.setText("Date 9, Disallow Empty Dates:");
+				featuresPanel.add(labelDate8, new GridBagConstraints(1, 18, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label23 ----
+				label23.setText(" ");
+				featuresPanel.add(label23, new GridBagConstraints(3, 19, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate10 ----
+				labelDate10.setText("Date 10, Custom Font:");
+				featuresPanel.add(labelDate10, new GridBagConstraints(1, 20, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label24 ----
+				label24.setText(" ");
+				featuresPanel.add(label24, new GridBagConstraints(3, 21, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+			}
+			scrollPaneFeatures.setViewportView(featuresPanel);
 		}
-		add(buttonPanel, new GridBagConstraints(8, 2, 1, 6, 0.0, 0.0,
+		add(scrollPaneFeatures, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 0, 0), 0, 0));
 
-		//---- dateLabel1 ----
-		dateLabel1.setText("Date 1:");
-		dateLabel1.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(dateLabel1, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0,
+		//======== scrollPaneLanguages ========
+		{
+
+			//======== languagePanel ========
+			{
+				languagePanel.setLayout(new GridBagLayout());
+				((GridBagLayout)languagePanel.getLayout()).columnWidths = new int[] {10, 0, 10, 200, 20, 0};
+				((GridBagLayout)languagePanel.getLayout()).rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+				((GridBagLayout)languagePanel.getLayout()).columnWeights = new double[] {0.0, 1.0, 0.0, 0.0, 1.0, 1.0E-4};
+				((GridBagLayout)languagePanel.getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+			}
+			scrollPaneLanguages.setViewportView(languagePanel);
+		}
+		add(scrollPaneLanguages, new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 0, 0), 0, 0));
 
-		//---- clickHereLabel ----
-		clickHereLabel.setText("Click here  _______/\\    ");
-		clickHereLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		clickHereLabel.setForeground(Color.blue);
-		add(clickHereLabel, new GridBagConstraints(4, 3, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-			new Insets(0, 0, 0, 0), 0, 0));
-
-		//---- dateLabel2 ----
-		dateLabel2.setText("Date 2:");
-		dateLabel2.setHorizontalAlignment(SwingConstants.RIGHT);
-		add(dateLabel2, new GridBagConstraints(2, 4, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
-
-		//---- dateLabel3 ----
-		dateLabel3.setText("<html>With Customized Settings:<br/>First weekday is Monday. Has<br/>Veto Policy, Highlight Policy,<br/>and a Change Listener.</html>");
-		dateLabel3.setHorizontalAlignment(SwingConstants.LEFT);
-		add(dateLabel3, new GridBagConstraints(2, 5, 1, 3, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
-
-		//---- label1 ----
-		label1.setText("<html>With A Different Locale:<br/>(Russian)</html>");
-		label1.setHorizontalAlignment(SwingConstants.LEFT);
-		add(label1, new GridBagConstraints(2, 8, 1, 2, 0.0, 0.0,
+		//======== outerButtonPanel ========
+		{
+			outerButtonPanel.setBorder(new TitledBorder(null, "Programmatic Control:", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				new Font("Segoe UI", Font.BOLD, 14)));
+			outerButtonPanel.setLayout(new BoxLayout(outerButtonPanel, BoxLayout.X_AXIS));
+			outerButtonPanel.add(scrollPaneForButtons);
+		}
+		add(outerButtonPanel, new GridBagConstraints(1, 5, 3, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 0, 0), 0, 0));
 
 		//======== messageTextAreaScrollPane ========
 		{
-			messageTextAreaScrollPane.setBorder(new TitledBorder("Messages"));
+			messageTextAreaScrollPane.setBorder(new TitledBorder(null, "Messages:", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				new Font("Segoe UI", Font.BOLD, 14)));
 
 			//---- messageTextArea ----
 			messageTextArea.setLineWrap(true);
@@ -88,37 +255,43 @@ public class DemoPanel extends JPanel {
 			messageTextArea.setMargin(new Insets(4, 6, 2, 6));
 			messageTextAreaScrollPane.setViewportView(messageTextArea);
 		}
-		add(messageTextAreaScrollPane, new GridBagConstraints(2, 11, 7, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
-
-		//======== informationTextAreaScrollPane ========
-		{
-			informationTextAreaScrollPane.setBorder(new TitledBorder("Information"));
-
-			//---- informationTextArea ----
-			informationTextArea.setText("\nInterface: Most items in a date picker are clickable. These include... The buttons for previous and next month, the buttons for previous and next year, the \"today\" text, the \"clear\" text, and individual dates. A click on the month or year label (at the top), will open a menu for changing the month or year.\n\nGeneral features: \n* Automatic internationalization. (Month names, weekday names, the default first day of the week,  default date formats, and button text.)\n* Translations so far include 12 languages.\n* Fonts and colors can be changed. (For example the highlight color, or the invalid date font). \n* Relatively compact source code (3 main classes).\n* Creating a DatePicker requires only one line of code.\n* Open source code base.\n\nData types: The standard Java 8 time library is used to store dates, and they are convertible to other data types. (The Java 8 time package is also called \"java.time\" or \"JSR-310\", and was developed by the author of Joda Time.)\n\nVeto and Highlight Policies: These policies are optional. A veto policy restricts the dates that can be selected. A highlight policy provides a visual highlight on desired dates, with optional tooltips. The customized date picker above has a highlight policy for weekends and the 3rd (with tooltips added), and a veto policy for every 5th day. If today is vetoed, the \"today\" button will be grey and disabled.\n\nDate values and automatic validation: Every date picker stores its current text, and its last valid date. The last valid date is returned when you call DatePicker.getDate(). If the user types into the text field, any text that is not a valid date will be displayed in red, any vetoed date will have a strikethrough, and valid dates will display in black. When the focus on a date picker is lost, the text is always set to match the last valid date.\n");
-			informationTextArea.setEditable(false);
-			informationTextArea.setLineWrap(true);
-			informationTextArea.setWrapStyleWord(true);
-			informationTextAreaScrollPane.setViewportView(informationTextArea);
-		}
-		add(informationTextAreaScrollPane, new GridBagConstraints(2, 13, 7, 1, 0.0, 0.0,
+		add(messageTextAreaScrollPane, new GridBagConstraints(1, 7, 3, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 0, 0), 0, 0));
 		// JFormDesigner - End of component initialization  //GEN-END:initComponents
 	}
 
 	// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	public JPanel buttonPanel;
-	private JLabel dateLabel1;
+	private JLabel labelFeatures;
+	private JLabel labelLanguages;
+	private JScrollPane scrollPaneFeatures;
+	public JPanel featuresPanel;
 	private JLabel clickHereLabel;
-	private JLabel dateLabel2;
-	private JLabel dateLabel3;
-	private JLabel label1;
+	public JLabel labelDate1;
+	private JLabel label15;
+	public JLabel labelDate2;
+	private JLabel label16;
+	public JLabel labelDate3;
+	private JLabel label17;
+	public JLabel labelDate4;
+	private JLabel label18;
+	public JLabel labelDate5;
+	private JLabel label19;
+	public JLabel labelDate6;
+	private JLabel label20;
+	public JLabel labelDate7;
+	private JLabel label21;
+	public JLabel labelDate9;
+	private JLabel label22;
+	public JLabel labelDate8;
+	private JLabel label23;
+	public JLabel labelDate10;
+	private JLabel label24;
+	private JScrollPane scrollPaneLanguages;
+	public JPanel languagePanel;
+	private JPanel outerButtonPanel;
+	public JScrollPane scrollPaneForButtons;
 	private JScrollPane messageTextAreaScrollPane;
 	public JTextArea messageTextArea;
-	private JScrollPane informationTextAreaScrollPane;
-	private JTextArea informationTextArea;
 	// JFormDesigner - End of variables declaration  //GEN-END:variables
 }

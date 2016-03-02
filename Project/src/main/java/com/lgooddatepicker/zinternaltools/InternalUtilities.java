@@ -1,4 +1,4 @@
-package com.lgooddatepicker.support;
+package com.lgooddatepicker.zinternaltools;
 
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import java.awt.GridBagConstraints;
@@ -13,11 +13,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * DatePickerInternalUtilities, This class contains static functions that are used by the date
- * picker or the calendar panel. Some of these functions are large, and were separated out of the
- * date picker class or calendar panel class in order to improve the readability of those classes.
+ * InternalUtilities, This class contains static functions that are used by the date picker or the
+ * calendar panel. Some of these functions are large, and were separated out of the date picker
+ * class or calendar panel class in order to improve the readability of those classes.
  */
-public class DatePickerInternalUtilities {
+public class InternalUtilities {
 
     /**
      * doesParsedDateMatchText, This compares the numbers in a parsed date, to the original text
@@ -107,6 +107,9 @@ public class DatePickerInternalUtilities {
         String displayFormatterBCPattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
                 FormatStyle.LONG, null, IsoChronology.INSTANCE, pickerLocale);
         displayFormatterBCPattern = displayFormatterBCPattern.replace("y", "u");
+        // Note: We could have used DateUtilities.createFormatterFromPatternString(), which should 
+        // have the same formatter options as this line. We kept this code independent in case 
+        // anyone ever mistakenly changes that utility function.
         DateTimeFormatter displayFormatterBC = new DateTimeFormatterBuilder().parseLenient()
                 .parseCaseInsensitive().appendPattern(displayFormatterBCPattern)
                 .toFormatter(pickerLocale);
@@ -154,7 +157,7 @@ public class DatePickerInternalUtilities {
         }
         // Check for any "successfully" parsed but nonexistent dates like Feb 31.
         // Note, this function has been thoroughly tested. See the function docs for details.
-        if ((parsedDate != null) && (!DatePickerInternalUtilities.doesParsedDateMatchText(
+        if ((parsedDate != null) && (!InternalUtilities.doesParsedDateMatchText(
                 parsedDate, text, formatLocale))) {
             return null;
         }

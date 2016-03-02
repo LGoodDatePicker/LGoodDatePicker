@@ -4,8 +4,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-			"$columnSpecs": "0, 0, 0"
-			"$rowSpecs": "center:0, 0, center:5, 22, 80, center:5, 0, center:0"
+			"$columnSpecs": "5, 0, 5"
+			"$rowSpecs": "center:6, 0, center:5, 22, 80, center:5, 0, center:5"
 			"$alignTop": true
 			"$alignLeft": true
 		} ) {
@@ -40,32 +40,43 @@ new FormModel {
 					"gridx": 1
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-					"$columnSpecs": "0:1.0, 0, 1, 0, 0:1.0"
+					"$columnSpecs": "0:1.0, 0, 0:1.0"
 					"$rowSpecs": "0:1.0"
 					"$alignTop": true
 					"$alignLeft": true
 				} ) {
-					name: "monthAndYearPanel"
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "labelMonthIndicator"
-						"text": "September"
-						"horizontalAlignment": 4
-						"opaque": true
-						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelMonthIndicatorMousePressed", true ) )
-						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
-						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
+					name: "monthAndYearOuterPanel"
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+						"$columnSpecs": "0, 1, 0"
+						"$rowSpecs": "0:1.0"
+						"$alignLeft": true
+						"$alignTop": true
+					} ) {
+						name: "monthAndYearInnerPanel"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelMonthIndicator"
+							"text": "September"
+							"horizontalAlignment": 4
+							"opaque": true
+							addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelMonthIndicatorMousePressed", true ) )
+							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
+							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
+						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+						add( new FormComponent( "javax.swing.JLabel" ) {
+							name: "labelYearIndicator"
+							"text": "2100"
+							"opaque": true
+							addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelYearIndicatorMousePressed", true ) )
+							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
+							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
+						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+							"gridx": 2
+						} )
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 1
-					} )
-					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "labelYearIndicator"
-						"text": "2100"
-						"opaque": true
-						addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelYearIndicatorMousePressed", true ) )
-						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
-						addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
-					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-						"gridx": 3
 					} )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 					"gridx": 3
@@ -101,9 +112,10 @@ new FormModel {
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
 				"columns": 7
+				"hgap": 5
 			} ) {
 				name: "weekDaysPanel"
-				"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+				"border": new javax.swing.border.EmptyBorder( 0, 4, 0, 4 )
 				"background": new java.awt.Color( 51, 51, 255, 255 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
@@ -154,7 +166,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 295, 200 )
+			"size": new java.awt.Dimension( 325, 210 )
 		} )
 	}
 }

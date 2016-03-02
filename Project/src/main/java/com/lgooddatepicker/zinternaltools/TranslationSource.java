@@ -1,4 +1,4 @@
-package com.lgooddatepicker.support;
+package com.lgooddatepicker.zinternaltools;
 
 import java.util.Locale;
 import java.util.Properties;
