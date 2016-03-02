@@ -47,7 +47,7 @@ public class DemoPanel extends JPanel {
 		//======== this ========
 		setLayout(new GridBagLayout());
 		((GridBagLayout)getLayout()).columnWidths = new int[] {40, 0, 30, 0, 40, 0};
-		((GridBagLayout)getLayout()).rowHeights = new int[] {20, 0, 10, 200, 15, 100, 15, 158, 25, 0};
+		((GridBagLayout)getLayout()).rowHeights = new int[] {20, 0, 10, 200, 15, 100, 15, 193, 25, 0};
 		((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 1.0, 0.0, 1.0, 0.0, 1.0E-4};
 		((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
