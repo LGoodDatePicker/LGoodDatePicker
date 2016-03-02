@@ -5,7 +5,7 @@ Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localize
 [LGoodDatePicker 2.4.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 2, 2016.
 
 ## Project Links:
-Demo Application is in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases)
+Demo Application is in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
 Contact the primary developer: [Email Form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
 Submit bugs or feature requests: [Issues Section](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).  
 General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).  
