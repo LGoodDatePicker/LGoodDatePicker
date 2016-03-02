@@ -2,6 +2,7 @@ package com.lgooddatepicker.zinternaltools;
 
 import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import java.awt.GridBagConstraints;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
@@ -9,6 +10,9 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,6 +71,20 @@ public class InternalUtilities {
             parsedYear = forceNumberStringToTwoDigits(parsedYear);
             boolean yearFound = unsignedNumbersFound.remove(parsedYear);
             return yearFound && dayOfMonthFound;
+        }
+    }
+
+    /**
+     * getProjectVersionString, Returns a string with the project version number.
+     */
+    public static String getProjectVersionString() {
+        try {
+            Properties properties = new Properties();
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            properties.load(classLoader.getResourceAsStream("project.properties"));
+            return "v" + properties.getProperty("version");
+        } catch (Exception ex) {
+            return "";
         }
     }
 
