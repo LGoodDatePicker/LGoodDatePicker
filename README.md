@@ -1,10 +1,10 @@
 # LGoodDatePicker
 Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
-News:  
+## News:  
 [LGoodDatePicker 2.4.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 2, 2016.
 
-General Features:
+## General Features:
 * Automatic internationalization.
 (Month names, weekday names, the default first day of the week, default date formats, and button text.)
 * Translations include 22 languages.
@@ -25,20 +25,20 @@ General Features:
 * Active developer support. 
 * Open source MIT license.
 
-Project Links:  
+## Project Links:  
 The primary developer can be contacted with [this email form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
 Bugs or feature requests can be submitted as a [new isssue](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).  
 We have a place for [General Discussion](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).  
 The Demo Application is in the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases)
 
-Screenshots Below:
+## Screenshots Below:
 
 ![Screenshots DatePicker](/Site/ScreenShots/LGoodDatePicker_Screenshots_1_FullSize.png?raw=true "")
 
 ![Screenshots Demo](/Site/ScreenShots/DemoProgramScreenshot1.png?raw=true "")
   
     
-Thanks and acknowledgment to: 
+## Thanks and acknowledgment to: 
 
 [Microba DatePicker](https://github.com/tdbear/microba)  
 The basic visual form design of LGoodDatePicker was originally inspired by Microba.
