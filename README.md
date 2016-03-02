@@ -31,7 +31,7 @@ Bugs or feature requests can be submitted as a [new isssue](https://github.com/L
 We have a place for [General Discussion](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).  
 The Demo Application is in the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases)
 
-## Screenshots Below:
+## Screenshots:
 
 ![Screenshots DatePicker](/Site/ScreenShots/LGoodDatePicker_Screenshots_1_FullSize.png?raw=true "")
 
