@@ -2,12 +2,15 @@
 Java 8 Swing Date Picker. Mature API, easy to use, good looking, and localized.
 
 News:  
-[LGoodDatePicker 2.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released 26 February 2016. This version includes these requested enhancements:
+[LGoodDatePicker 2.4.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 1, 2016. This version includes these requested enhancements:
 * Added the ability to allow or disallow empty dates. (Null dates.)
 * Removed the dependency on JGoodies forms. As of this writing, the date picker has no external dependencies.
-* Added the ability to set the size of the date picker in DatePickerSettings.
 * Added support for converting to or from a java.util.Date.
 * Added date change listeners to the DatePicker.
+* Added the ability to set the size of the date picker in DatePickerSettings.
+* Expanded the ability to change the calendar colors.
+* Added the ability to change the date picker border.
+* Implemented the new [Demo](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) application, to include multiple language translations and the latest DatePicker features.
 
 Project Links:  
 The primary developer can be contacted with [this email form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
@@ -20,7 +23,7 @@ General Features:
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
 * Also supports other common data types, such as "java.util.Date".
 * Automatic validation of dates.
-* Fonts and colors can be changed. 
+* Customizable visual elements. (Including size, fonts, colors, and the popup border.) 
 * Optional highlight policies and veto policies.
 * Relatively compact source code (3 main classes).
 * Simple usage. Creating a DatePicker requires only one line of code.
