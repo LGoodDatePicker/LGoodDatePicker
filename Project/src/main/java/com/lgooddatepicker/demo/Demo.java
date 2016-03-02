@@ -24,7 +24,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -164,19 +163,32 @@ public class Demo {
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates date pickers and labels for demonstrating the language translations.
         int rowMarker = 0;
+        addLocalizedPickerAndLabel(++rowMarker, "Arabic:", "ar");
+        addLocalizedPickerAndLabel(++rowMarker, "Chinese:", "zh");
+        addLocalizedPickerAndLabel(++rowMarker, "Czech:", "cs");
         addLocalizedPickerAndLabel(++rowMarker, "Danish:", "da");
-        addLocalizedPickerAndLabel(++rowMarker, "German:", "de");
-        addLocalizedPickerAndLabel(++rowMarker, "English:", "en");
-        addLocalizedPickerAndLabel(++rowMarker, "Spanish:", "es");
-        addLocalizedPickerAndLabel(++rowMarker, "French:", "fr");
-        addLocalizedPickerAndLabel(++rowMarker, "Italian:", "it");
         addLocalizedPickerAndLabel(++rowMarker, "Dutch:", "nl");
+        addLocalizedPickerAndLabel(++rowMarker, "English:", "en");
+        addLocalizedPickerAndLabel(++rowMarker, "French:", "fr");
+        addLocalizedPickerAndLabel(++rowMarker, "German:", "de");
+        addLocalizedPickerAndLabel(++rowMarker, "Greek:", "el");
+        addLocalizedPickerAndLabel(++rowMarker, "Hindi:", "hi");
+        addLocalizedPickerAndLabel(++rowMarker, "Italian:", "it");
+        addLocalizedPickerAndLabel(++rowMarker, "Indonesian:", "in");
+        addLocalizedPickerAndLabel(++rowMarker, "Japanese:", "ja");
+        addLocalizedPickerAndLabel(++rowMarker, "Korean:", "ko");
         addLocalizedPickerAndLabel(++rowMarker, "Polish:", "pl");
         addLocalizedPickerAndLabel(++rowMarker, "Portuguese:", "pt");
         addLocalizedPickerAndLabel(++rowMarker, "Romanian:", "ro");
         addLocalizedPickerAndLabel(++rowMarker, "Russian:", "ru");
+        addLocalizedPickerAndLabel(++rowMarker, "Spanish:", "es");
         addLocalizedPickerAndLabel(++rowMarker, "Swedish:", "sv");
-        addLocalizedPickerAndLabel(++rowMarker, "Chinese:", "zh");
+        addLocalizedPickerAndLabel(++rowMarker, "Turkish:", "tr");
+        addLocalizedPickerAndLabel(++rowMarker, "Vietnamese:", "vi");
+        // Add a few empty rows at the bottom.
+        for (int i = 0; i < 5; ++i) {
+            addLocalizedPickerAndLabel(++rowMarker, "", "");
+        }
 
         // Display the frame.
         frame.pack();
@@ -206,6 +218,15 @@ public class Demo {
      * adds the components to the language panel.
      */
     private static void addLocalizedPickerAndLabel(int rowMarker, String labelText, String languageCode) {
+        // Create an empty spacer label, and add it to the previous row.
+        JLabel spacerLabel = new JLabel(" ");
+        panel.languagePanel.add(spacerLabel, new GridBagConstraints(3, ((rowMarker * rowMultiplier) - 1),
+                1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
+        // If the language code is empty, we only add the spacer label and nothing else. 
+        if (languageCode == null || "".equals(languageCode)) {
+            return;
+        }
         // Create the localized date picker.
         DatePickerSettings settings = new DatePickerSettings(new Locale(languageCode));
         settings.initialDate = LocalDate.now();
@@ -215,11 +236,6 @@ public class Demo {
         JLabel languageLabel = new JLabel(labelText);
         panel.languagePanel.add(languageLabel, new GridBagConstraints(1, (rowMarker * rowMultiplier),
                 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
-                new Insets(0, 0, 0, 0), 0, 0));
-        // Create an empty spacer label, and add it to the previous row.
-        JLabel spacerLabel = new JLabel(" ");
-        panel.languagePanel.add(spacerLabel, new GridBagConstraints(3, ((rowMarker * rowMultiplier) - 1),
-                1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
     }
 
@@ -342,7 +358,7 @@ public class Demo {
      * showIntroductionClicked, This displays an introduction message about the date picker.
      */
     private static void showIntroductionClicked(ActionEvent e) {
-        panel.messageTextArea.setText("\nInterface: \nMost items in a date picker are clickable. "
+        panel.messageTextArea.setText("Interface: \nMost items in a date picker are clickable. "
                 + "These include... The buttons for previous and next month, the buttons for "
                 + "previous and next year, the \"today\" text, the \"clear\" text, and individual "
                 + "dates. A click on the month or year label (at the top), will open a menu for "
