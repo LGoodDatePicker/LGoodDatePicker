@@ -10,7 +10,7 @@ News:
 * Added the ability to set the size of the date picker in DatePickerSettings.
 * Expanded the ability to change the calendar colors.
 * Added the ability to change the date picker border.
-* Implemented the new [Demo](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) application, to include multiple language translations and the latest DatePicker features.
+* Rewrote the [Demo](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) application, to include multiple language translations and the latest DatePicker features.
 
 Project Links:  
 The primary developer can be contacted with [this email form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
