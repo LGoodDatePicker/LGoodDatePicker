@@ -1,8 +1,6 @@
 package com.lgooddatepicker.zinternaltools;
 
-import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import java.awt.GridBagConstraints;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
@@ -11,10 +9,9 @@ import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
 
 /**
  * InternalUtilities, This class contains static functions that are used by the date picker or the
@@ -210,7 +207,7 @@ public class InternalUtilities {
      * isDateVetoed, This is a convenience function for checking whether or not a particular date is
      * vetoed.
      */
-    static public boolean isDateVetoed(VetoPolicy policy, LocalDate date) {
+    static public boolean isDateVetoed(DateVetoPolicy policy, LocalDate date) {
         if (policy == null) {
             return false;
         }

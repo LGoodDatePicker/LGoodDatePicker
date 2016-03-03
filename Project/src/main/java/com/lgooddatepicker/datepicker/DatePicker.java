@@ -1,10 +1,10 @@
-package com.lgooddatepicker.core;
+package com.lgooddatepicker.datepicker;
 
+import com.lgooddatepicker.zinternaltools.CalendarPanel;
 import java.awt.*;
 import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.lgooddatepicker.optionalusertools.DateUtilities;
-import java.awt.Window;
+import com.lgooddatepicker.optionalusertools.PickerUtilities;
 import java.awt.event.*;
 import javax.swing.*;
 import java.time.Instant;
@@ -13,12 +13,12 @@ import java.time.YearMonth;
 import java.time.chrono.IsoEra;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import com.lgooddatepicker.zinternaltools.Convert;
 import com.lgooddatepicker.zinternaltools.CustomPopup;
 import com.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
 import com.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.util.ArrayList;
+import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
 
 /**
  * DatePicker, This class implements a date picker GUI component.
@@ -298,7 +298,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Try to get a parsed date.
         LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(text,
-                settings.formatDatesCommonEra, settings.formatDatesBeforeCommonEra,
+                settings.formatForDatesCommonEra, settings.formatForDatesBeforeCommonEra,
                 settings.formatsForParsing, settings.pickerLocale);
 
         // If the date could not be parsed, return false.
@@ -306,7 +306,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return false;
         }
         // If the date is vetoed, return false.
-        VetoPolicy vetoPolicy = settings.vetoPolicy;
+        DateVetoPolicy vetoPolicy = settings.vetoPolicy;
         if (InternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
             return false;
         }
@@ -496,9 +496,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return standardDateString;
         }
         if (date.getEra() == IsoEra.CE) {
-            standardDateString = date.format(settings.formatDatesCommonEra);
+            standardDateString = date.format(settings.formatForDatesCommonEra);
         } else {
-            standardDateString = date.format(settings.formatDatesBeforeCommonEra);
+            standardDateString = date.format(settings.formatForDatesBeforeCommonEra);
         }
         return standardDateString;
     }
@@ -526,7 +526,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     private void zInternalSetLastValidDateAndNotifyListeners(LocalDate newDate) {
         LocalDate oldDate = lastValidDate;
         lastValidDate = newDate;
-        if (!DateUtilities.isSameLocalDate(oldDate, newDate)) {
+        if (!PickerUtilities.isSameLocalDate(oldDate, newDate)) {
             for (DateChangeListener dateChangeListener : dateChangeListeners) {
                 DateChangeEvent dateChangeEvent = new DateChangeEvent(this, oldDate, newDate);
                 dateChangeListener.dateChanged(dateChangeEvent);
@@ -552,13 +552,13 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Gather some variables that we will need.
         String dateText = dateTextField.getText();
         boolean textIsEmpty = dateText.trim().isEmpty();
-        VetoPolicy vetoPolicy = settings.vetoPolicy;
+        DateVetoPolicy vetoPolicy = settings.vetoPolicy;
         boolean nullIsAllowed = settings.allowEmptyDates;
         // If needed, try to get a parsed date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
             parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
-                    settings.formatDatesCommonEra, settings.formatDatesBeforeCommonEra,
+                    settings.formatForDatesCommonEra, settings.formatForDatesBeforeCommonEra,
                     settings.formatsForParsing, settings.pickerLocale);
         }
         // Reset all atributes to normal before starting.

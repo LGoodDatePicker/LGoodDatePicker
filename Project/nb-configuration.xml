@@ -10,11 +10,13 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>dd</word>
         <word>deregistering</word>
         <word>enum</word>
+        <word>enums</word>
         <word>internet</word>
         <word>Javadoc</word>
         <word>Javadocs</word>
         <word>nullable</word>
         <word>parsable</word>
+        <word>pm</word>
         <word>popup</word>
         <word>ru</word>
         <word>strikethrough</word>

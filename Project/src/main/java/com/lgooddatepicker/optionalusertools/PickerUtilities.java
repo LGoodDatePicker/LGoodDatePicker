@@ -9,7 +9,7 @@ import java.util.Locale;
  * DateUtilities, This is a set of date or date picker related utilities that may be useful to
  * developers using this project.
  */
-public class DateUtilities {
+public class PickerUtilities {
 
     /**
      * createFormatterFromPatternString, This creates a DateTimeFormatter from the supplied pattern

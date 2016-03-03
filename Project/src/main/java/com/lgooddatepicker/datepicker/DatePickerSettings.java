@@ -1,4 +1,4 @@
-package com.lgooddatepicker.core;
+package com.lgooddatepicker.datepicker;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -12,14 +12,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.JTextField;
-import com.lgooddatepicker.optionalusertools.HighlightPolicy;
-import com.lgooddatepicker.optionalusertools.VetoPolicy;
 import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.lgooddatepicker.zinternaltools.ExtraDateStrings;
 import com.lgooddatepicker.zinternaltools.TranslationSource;
 import java.time.LocalDate;
-import javax.swing.JPopupMenu;
 import javax.swing.border.Border;
+import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized in a date picker. All of
@@ -133,20 +132,20 @@ public class DatePickerSettings {
 
     /**
      * fontVetoedDate, This is the text field text font for vetoed dates. The default font crosses
-     * out the veto date. (Has a strikethrough font attribute.)
+     * out the vetoed date. (Has a strikethrough font attribute.)
      */
     public Font fontVetoedDate;
 
     /**
-     * formatDatesCommonEra, This holds the default format that is used to display or parse CE dates
-     * in the date picker. The default value is generated using the locale of the settings instance.
-     * A DateTimeFormatter can be created from a pattern string with the convenience function
-     * DateUtilities.createFormatterFromPatternString();
+     * formatForDatesCommonEra, This holds the default format that is used to display or parse CE
+     * dates in the date picker. The default value is generated using the locale of the settings
+     * instance. A DateTimeFormatter can be created from a pattern string with the convenience
+     * function DateUtilities.createFormatterFromPatternString();
      */
-    public DateTimeFormatter formatDatesCommonEra;
+    public DateTimeFormatter formatForDatesCommonEra;
 
     /**
-     * formatDatesBeforeCommonEra, This holds the default format that is used to display or parse
+     * formatForDatesBeforeCommonEra, This holds the default format that is used to display or parse
      * BCE dates in the date picker. The default value is generated using the locale of the settings
      * instance. A DateTimeFormatter can be created from a pattern string with the convenience
      * function DateUtilities.createFormatterFromPatternString();
@@ -158,20 +157,20 @@ public class DatePickerSettings {
      * one-based. Astronomical year "0", is the same year as "1 BC", and astronomical year "-1" is
      * the same year as "2 BC", and so forth.)
      */
-    public DateTimeFormatter formatDatesBeforeCommonEra;
+    public DateTimeFormatter formatForDatesBeforeCommonEra;
 
     /**
      * formatTodayButton, This format is used to format today's date into a date string, which is
      * displayed on the today button. The default value is generated using the locale of the
      * settings instance.
      */
-    public DateTimeFormatter formatTodayButton;
+    public DateTimeFormatter formatForTodayButton;
 
     /**
      * formatsForParsing, This holds a list of formats that are used to attempt to parse dates that
      * are typed by the user. When parsing a date, these formats are tried in the order that they
-     * appear in this list. Note that the formatDatesCommonEra and formatDatesBeforeCommonEra are
-     * always tried (in that order) before any other parsing formats. The default values for the
+     * appear in this list. Note that the formatForDatesCommonEra and formatForDatesBeforeCommonEra
+     * are always tried (in that order) before any other parsing formats. The default values for the
      * formatsForParsing are generated using the pickerLocale, using the enum constants in
      * java.time.format.FormatStyle.
      */
@@ -183,7 +182,7 @@ public class DatePickerSettings {
      * text for any highlighted dates. See the demo class for an example of constructing a highlight
      * policy. By default, there is no highlight policy. (The default value is null.)
      */
-    public HighlightPolicy highlightPolicy;
+    public DateHighlightPolicy highlightPolicy;
 
     /**
      * initialDate, This is the date that the date picker will have when it is created. This can be
@@ -282,7 +281,7 @@ public class DatePickerSettings {
      * field). See the demo class for an example of constructing a veto policy. By default, there is
      * no veto policy. (The default value is null.)
      */
-    public VetoPolicy vetoPolicy;
+    public DateVetoPolicy vetoPolicy;
 
     /**
      * Constructor with Default Locale, This constructs a date picker settings instance using the
@@ -318,9 +317,9 @@ public class DatePickerSettings {
 
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
-        formatTodayButton = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(pickerLocale);
-        formatDatesCommonEra = InternalUtilities.generateDefaultFormatterCE(pickerLocale);
-        formatDatesBeforeCommonEra = InternalUtilities.generateDefaultFormatterBCE(pickerLocale);
+        formatForTodayButton = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(pickerLocale);
+        formatForDatesCommonEra = InternalUtilities.generateDefaultFormatterCE(pickerLocale);
+        formatForDatesBeforeCommonEra = InternalUtilities.generateDefaultFormatterBCE(pickerLocale);
 
         // Set the minimum height, minimum width, and extra pixels for the date panel.
         sizeDatePanelMinimumHeight = (6 * 18);
