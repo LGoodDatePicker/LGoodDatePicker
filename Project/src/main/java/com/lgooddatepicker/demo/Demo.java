@@ -1,6 +1,6 @@
 package com.lgooddatepicker.demo;
 
-import com.lgooddatepicker.core.DatePicker;
+import com.lgooddatepicker.datepicker.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
@@ -8,11 +8,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Locale;
-import com.lgooddatepicker.core.DatePickerSettings;
+import com.lgooddatepicker.datepicker.DatePickerSettings;
 import com.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.lgooddatepicker.optionalusertools.DateUtilities;
-import com.lgooddatepicker.optionalusertools.HighlightPolicy;
-import com.lgooddatepicker.optionalusertools.VetoPolicy;
+import com.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.lgooddatepicker.zinternaltools.WrapLayout;
@@ -25,6 +23,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -139,9 +139,9 @@ public class Demo {
         // For more details about that, see: DatePickerSettings.formatDatesBeforeCommonEra.
         settings = new DatePickerSettings();
         settings.initialDate = LocalDate.now();
-        settings.formatDatesCommonEra = DateUtilities.createFormatterFromPatternString(
+        settings.formatForDatesCommonEra = PickerUtilities.createFormatterFromPatternString(
                 "d MMM yyyy", settings.pickerLocale);
-        settings.formatDatesBeforeCommonEra = DateUtilities.createFormatterFromPatternString(
+        settings.formatForDatesBeforeCommonEra = PickerUtilities.createFormatterFromPatternString(
                 "d MMM uuuu", settings.pickerLocale);
         datePicker8 = new DatePicker(settings);
         panel.featuresPanel.add(datePicker8, getConstraints(3, (8 * rowMultiplier)));
@@ -396,7 +396,7 @@ public class Demo {
      * SampleVetoPolicy, A veto policy is a way to disallow certain dates from being selected in
      * calendar. A vetoed date cannot be selected by using the keyboard or the mouse.
      */
-    private static class SampleVetoPolicy implements VetoPolicy {
+    private static class SampleVetoPolicy implements DateVetoPolicy {
 
         /**
          * isDateAllowed, Return true if a date should be allowed, or false if a date should be
@@ -421,7 +421,7 @@ public class Demo {
      * SampleHighlightPolicy, A highlight policy is a way to visually highlight certain dates in the
      * calendar. These may be holidays, or weekends, or other significant dates.
      */
-    private static class SampleHighlightPolicy implements HighlightPolicy {
+    private static class SampleHighlightPolicy implements DateHighlightPolicy {
 
         /**
          * getHighlightStringOrNull, This indicates if a date should be highlighted, or have a tool
@@ -474,8 +474,8 @@ public class Demo {
         public void dateChanged(DateChangeEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
-            String oldDateString = DateUtilities.localDateToString(oldDate, "(null)");
-            String newDateString = DateUtilities.localDateToString(newDate, "(null)");
+            String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
+            String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
             String messageStart = "\nThe date in " + datePickerName + " has changed from: ";
             String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {

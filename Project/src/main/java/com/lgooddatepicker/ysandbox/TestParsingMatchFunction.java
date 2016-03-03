@@ -1,4 +1,4 @@
-package com.lgooddatepicker.sandbox;
+package com.lgooddatepicker.ysandbox;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * DatePickerUtilities.doesParsedDateMatchText() function. This class is not involved with the
  * normal operation of the date pickers.
  */
-public class testParsingMatchFunction {
+public class TestParsingMatchFunction {
 
     /**
      * main, This only exists to run test functions.

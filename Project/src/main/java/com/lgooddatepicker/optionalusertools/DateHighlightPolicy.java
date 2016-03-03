@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * picker. A highlight policy might be used to visually indicate holidays, or weekends, or other
  * significant days. See the demo class for an example of implementing a HighlightPolicy.
  */
-public interface HighlightPolicy {
+public interface DateHighlightPolicy {
 
     /**
      * getHighlightStringOrNull, Implement this function to indicate if a date should be

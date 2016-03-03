@@ -1,5 +1,7 @@
-package com.lgooddatepicker.core;
+package com.lgooddatepicker.zinternaltools;
 
+import com.lgooddatepicker.datepicker.DatePicker;
+import com.lgooddatepicker.datepicker.DatePickerSettings;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -10,9 +12,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import com.lgooddatepicker.optionalusertools.HighlightPolicy;
-import com.lgooddatepicker.optionalusertools.VetoPolicy;
-import com.lgooddatepicker.zinternaltools.InternalUtilities;
+import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 
 /**
  * CalendarPanel, This implements the calendar panel which is displayed on the screen when the user
@@ -59,7 +60,7 @@ public class CalendarPanel extends JPanel {
     /**
      * parentDatePicker, This holds a reference to the date picker that is the parent of this
      * calendar panel. A calendar panel always has a parent date picker. This will never be null
-     * until the calendar is closed and disposed..
+     * until the calendar is closed and disposed.
      */
     private DatePicker parentDatePicker;
 
@@ -95,7 +96,7 @@ public class CalendarPanel extends JPanel {
     /**
      * Constructor, This creates a calendar panel and stores the parent date picker.
      */
-    CalendarPanel(DatePicker parentDatePicker) {
+    public CalendarPanel(DatePicker parentDatePicker) {
         this.parentDatePicker = parentDatePicker;
         // Initialize the components.
         initComponents();
@@ -237,7 +238,7 @@ public class CalendarPanel extends JPanel {
      * panel. This is called at the same time that the parent date picker wants to close and dispose
      * its popup calendar panel.
      */
-    void clearParent() {
+    public void clearParent() {
         parentDatePicker = null;
     }
 
@@ -272,7 +273,7 @@ public class CalendarPanel extends JPanel {
      * drawCalendar, This is called whenever the calendar needs to be drawn. This takes a year and a
      * month to indicate which month should be drawn in the calendar.
      */
-    final void drawCalendar(YearMonth yearMonth) {
+    final public void drawCalendar(YearMonth yearMonth) {
         // Save the displayed yearMonth.
         this.displayedYearMonth = yearMonth;
         // Get the displayed month and year.
@@ -338,8 +339,8 @@ public class CalendarPanel extends JPanel {
             if (insideValidRange) {
                 // Get a local date object for the current date.
                 LocalDate currentDate = LocalDate.of(displayedYear, displayedMonth, dayOfMonth);
-                VetoPolicy vetoPolicy = getSettings().vetoPolicy;
-                HighlightPolicy highlightPolicy = getSettings().highlightPolicy;
+                DateVetoPolicy vetoPolicy = getSettings().vetoPolicy;
+                DateHighlightPolicy highlightPolicy = getSettings().highlightPolicy;
                 boolean dateIsVetoed = InternalUtilities.isDateVetoed(
                         vetoPolicy, currentDate);
                 String highlightStringOrNull = null;
@@ -375,11 +376,11 @@ public class CalendarPanel extends JPanel {
             selectedDateLabel.setBorder(new LineBorder(new Color(99, 130, 191)));
         }
         // Set the label for the today button.
-        String todayDateString = getSettings().formatTodayButton.format(LocalDate.now());
+        String todayDateString = getSettings().formatForTodayButton.format(LocalDate.now());
         String todayLabel = getSettings().translationToday + ":  " + todayDateString;
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
-        VetoPolicy vetoPolicy = getSettings().vetoPolicy;
+        DateVetoPolicy vetoPolicy = getSettings().vetoPolicy;
         boolean todayIsVetoed = InternalUtilities.isDateVetoed(
                 vetoPolicy, LocalDate.now());
         labelSetDateToToday.setEnabled(!todayIsVetoed);
@@ -451,7 +452,7 @@ public class CalendarPanel extends JPanel {
     private void labelIndicatorMouseEntered(MouseEvent e) {
         JLabel label = ((JLabel) e.getSource());
         if (label == labelSetDateToToday) {
-            VetoPolicy vetoPolicy = getSettings().vetoPolicy;
+            DateVetoPolicy vetoPolicy = getSettings().vetoPolicy;
             boolean todayIsVetoed = InternalUtilities.isDateVetoed(
                     vetoPolicy, LocalDate.now());
             if (todayIsVetoed) {
@@ -554,7 +555,7 @@ public class CalendarPanel extends JPanel {
      * setDisplayedSelectedDate, This sets the date that will be marked as "selected" in the
      * calendar. Note that this function does -not- change the displayed YearMonth.
      */
-    void setDisplayedSelectedDate(LocalDate selectedDate) {
+    public void setDisplayedSelectedDate(LocalDate selectedDate) {
         this.displayedSelectedDate = selectedDate;
     }
 
@@ -636,7 +637,7 @@ public class CalendarPanel extends JPanel {
     private void userSelectedADate(LocalDate selectedDate) {
         // If a date was selected and the date is vetoed, do nothing.
         if (selectedDate != null) {
-            VetoPolicy vetoPolicy = getSettings().vetoPolicy;
+            DateVetoPolicy vetoPolicy = getSettings().vetoPolicy;
             if (InternalUtilities.isDateVetoed(vetoPolicy, selectedDate)) {
                 return;
             }
