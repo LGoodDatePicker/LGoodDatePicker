@@ -23,7 +23,6 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Optional highlight policies and veto policies.
 * Can allow or disallow empty dates. (Null dates.)
 * Relatively compact source code.
-* No external dependencies.
 * Simple usage. Creating a DatePicker requires only one line of code.
 * Includes [Demo Program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases). (Found in the Github release files.)
 * Code and usage examples.
