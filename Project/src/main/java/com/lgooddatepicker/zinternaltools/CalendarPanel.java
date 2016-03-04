@@ -1,5 +1,7 @@
 package com.lgooddatepicker.zinternaltools;
 
+import com.jgoodies.forms.factories.*;
+import com.jgoodies.forms.layout.*;
 import com.lgooddatepicker.datepicker.DatePicker;
 import com.lgooddatepicker.datepicker.DatePickerSettings;
 import java.awt.*;
@@ -690,35 +692,28 @@ public class CalendarPanel extends JPanel {
 
 		//======== headerControlsPanel ========
 		{
-			headerControlsPanel.setLayout(new GridBagLayout());
-			((GridBagLayout)headerControlsPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0, 0, 0, 0, 0};
-			((GridBagLayout)headerControlsPanel.getLayout()).rowHeights = new int[] {0, 0};
-			((GridBagLayout)headerControlsPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0E-4};
-			((GridBagLayout)headerControlsPanel.getLayout()).rowWeights = new double[] {0.0, 1.0E-4};
+			headerControlsPanel.setLayout(new FormLayout(
+				"3*(pref), pref:grow, 3*(pref)",
+				"fill:pref"));
+			((FormLayout)headerControlsPanel.getLayout()).setColumnGroups(new int[][] {{1, 2, 6, 7}});
 
 			//---- buttonPreviousYear ----
 			buttonPreviousYear.setText("<<");
 			buttonPreviousYear.setFocusable(false);
 			buttonPreviousYear.setFocusPainted(false);
-			buttonPreviousYear.setMinimumSize(new Dimension(25, 24));
-			buttonPreviousYear.setPreferredSize(new Dimension(25, 24));
 			buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
 			buttonPreviousYear.addActionListener(e -> buttonPreviousYearActionPerformed(e));
-			headerControlsPanel.add(buttonPreviousYear, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+			headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
 			//---- buttonPreviousMonth ----
 			buttonPreviousMonth.setText("<");
 			buttonPreviousMonth.setFocusable(false);
 			buttonPreviousMonth.setFocusPainted(false);
-			buttonPreviousMonth.setMinimumSize(new Dimension(25, 24));
-			buttonPreviousMonth.setPreferredSize(new Dimension(25, 24));
 			buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
 			buttonPreviousMonth.addActionListener(e -> buttonPreviousMonthActionPerformed(e));
-			headerControlsPanel.add(buttonPreviousMonth, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+			headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
 			//======== monthAndYearOuterPanel ========
 			{
@@ -783,34 +778,25 @@ public class CalendarPanel extends JPanel {
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
 			}
-			headerControlsPanel.add(monthAndYearOuterPanel, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+			headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
 
 			//---- buttonNextMonth ----
 			buttonNextMonth.setText(">");
 			buttonNextMonth.setFocusable(false);
 			buttonNextMonth.setFocusPainted(false);
-			buttonNextMonth.setMinimumSize(new Dimension(25, 24));
-			buttonNextMonth.setPreferredSize(new Dimension(25, 24));
 			buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
 			buttonNextMonth.addActionListener(e -> buttonNextMonthActionPerformed(e));
-			headerControlsPanel.add(buttonNextMonth, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+			headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
 
 			//---- buttonNextYear ----
 			buttonNextYear.setText(">>");
-			buttonNextYear.setMargin(new Insets(0, 0, 0, 0));
 			buttonNextYear.setFocusable(false);
 			buttonNextYear.setFocusPainted(false);
-			buttonNextYear.setMinimumSize(new Dimension(25, 24));
-			buttonNextYear.setPreferredSize(new Dimension(25, 24));
 			buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
 			buttonNextYear.addActionListener(e -> buttonNextYearActionPerformed(e));
-			headerControlsPanel.add(buttonNextYear, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+			headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
 		}
 		add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,

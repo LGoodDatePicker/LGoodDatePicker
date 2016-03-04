@@ -10,11 +10,10 @@ new FormModel {
 			"$alignLeft": true
 		} ) {
 			name: "this"
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-				"$columnSpecs": "0, 0, 0, 0:1.0, 0, 0, 0"
-				"$rowSpecs": "0"
-				"$alignTop": true
-				"$alignLeft": true
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "pref, pref, pref, pref:grow, pref, pref, pref"
+				"$rowSpecs": "fill:pref"
+				"$columnGroupIds": "1, 1, 0, 0, 0, 1, 1"
 			} ) {
 				name: "headerControlsPanel"
 				add( new FormComponent( "javax.swing.JButton" ) {
@@ -22,22 +21,24 @@ new FormModel {
 					"text": "<<"
 					"focusable": false
 					"focusPainted": false
-					"minimumSize": new java.awt.Dimension( 25, 24 )
-					"preferredSize": new java.awt.Dimension( 25, 24 )
 					"horizontalTextPosition": 0
+					"margin": new java.awt.Insets( 5, 6, 5, 6 )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonPreviousYearActionPerformed", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 1
+					"gridY": 1
+				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonPreviousMonth"
 					"text": "<"
 					"focusable": false
 					"focusPainted": false
-					"minimumSize": new java.awt.Dimension( 25, 24 )
-					"preferredSize": new java.awt.Dimension( 25, 24 )
 					"horizontalTextPosition": 0
+					"margin": new java.awt.Insets( 5, 6, 5, 6 )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonPreviousMonthActionPerformed", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridx": 1
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 2
+					"gridY": 1
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 					"$columnSpecs": "0:1.0, 0, 0:1.0"
@@ -78,33 +79,33 @@ new FormModel {
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridx": 1
 					} )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridx": 3
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 4
+					"gridY": 1
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonNextMonth"
 					"text": ">"
 					"focusable": false
 					"focusPainted": false
-					"minimumSize": new java.awt.Dimension( 25, 24 )
-					"preferredSize": new java.awt.Dimension( 25, 24 )
 					"horizontalTextPosition": 0
+					"margin": new java.awt.Insets( 5, 6, 5, 6 )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonNextMonthActionPerformed", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridx": 5
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 6
+					"gridY": 1
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonNextYear"
 					"text": ">>"
-					"margin": new java.awt.Insets( 0, 0, 0, 0 )
 					"focusable": false
 					"focusPainted": false
-					"minimumSize": new java.awt.Dimension( 25, 24 )
-					"preferredSize": new java.awt.Dimension( 25, 24 )
 					"horizontalTextPosition": 0
+					"margin": new java.awt.Insets( 5, 6, 5, 6 )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonNextYearActionPerformed", true ) )
-				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-					"gridx": 6
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 7
+					"gridY": 1
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
@@ -166,7 +167,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 325, 210 )
+			"size": new java.awt.Dimension( 370, 240 )
 		} )
 	}
 }

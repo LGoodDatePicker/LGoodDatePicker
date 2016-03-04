@@ -25,6 +25,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -73,6 +75,27 @@ public class Demo {
      * main, The application entry point.
      */
     public static void main(String[] args) {
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // If desired, set a swing look and feel here. 
+        try {
+        /*
+            // Set a specific look and feel.
+            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+            
+            // Set a random look and feel. 
+            LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
+            int lookIndex = (int) (Math.random() * installedLooks.length);
+            UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
+            System.out.println(installedLooks[lookIndex].getClassName().toString());
+        */
+        } catch (Exception e) {
+        }
+
         ///////////////////////////////////////////////////////////////////////////////////////////
         // Create a frame, a panel, and our demo buttons.
         frame = new JFrame();
