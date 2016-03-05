@@ -45,6 +45,22 @@ public class DatePickerSettings {
     public boolean allowEmptyDates;
 
     /**
+     * allowKeyboardEditing, This indicates whether or not keyboard editing is allowed for this date
+     * picker. If this is true, then dates can be entered into the date picker either by using the
+     * keyboard or the mouse. If this is false, then dates can only be selected by using the mouse.
+     * The default value is true. It is generally recommended to leave this setting as "true".
+     *
+     * Accessibility Impact: Disallowing the use of the keyboard, and requiring the use of the
+     * mouse, could impact the accessibility of your program for disabled persons.
+     *
+     * Important note: Setting this to false reduces the options that the user has for inputing
+     * data, and provides little or no additional benefit. Specifically, this setting does not
+     * impact the automatic enforcement of valid dates. To learn about the automatic date validation
+     * and enforcement for keyboard entered text, see the javadocs for the DatePicker class.
+     */
+    public boolean allowKeyboardEditing;
+
+    /**
      * borderCalendarPopup, This is the border for the calendar popup window. If this is null, a
      * default border will be provided by the CustomPopup class. The default value is null.
      */
@@ -256,6 +272,21 @@ public class DatePickerSettings {
     public String[] translationArrayMonthNames;
 
     /**
+     * translationArrayShortMonthNames, This holds an array of short month names to use for the
+     * calendar panel header, as translated to the current language. It is not expected that this
+     * variable will need to be changed by the programmer. The default values are generated using
+     * the locale of the settings instance, by retrieving the translated text for the current
+     * language from the class called java.text.DateFormatSymbols. This array is indexed with
+     * January = 0. The Calendar class month name constants can also be used for indexing.
+     * (Calendar.JANUARY, etc).
+     *
+     * Expected array contents: This array should never be set to null, and the array should always
+     * have a length of 12. Each element should always contain a string that is not null and not
+     * empty.
+     */
+    public String[] translationArrayShortMonthNames;
+
+    /**
      * translationClear, This holds the text of the calendars "Clear" button, as translated to the
      * current language. It is not expected that this variable will need to be changed by the
      * programmer. If you wish to supply a new translation for the date picker, it would generally
@@ -297,6 +328,11 @@ public class DatePickerSettings {
      * supplied locale and language. The constructor populates all the settings with default values.
      */
     public DatePickerSettings(Locale pickerLocale) {
+        // Fix a problem where the Hindi locale is not recognized by language alone. 
+        if("hi".equals(pickerLocale.getLanguage()) && (pickerLocale.getCountry().isEmpty())) {
+            pickerLocale = new Locale("hi", "IN");
+        }
+        
         // Save the date picker locale.
         this.pickerLocale = pickerLocale;
 
@@ -314,6 +350,7 @@ public class DatePickerSettings {
 
         // Set the default month names for the current locale.
         translationArrayMonthNames = ExtraDateStrings.getDefaultMonthNamesForLocale(pickerLocale);
+        translationArrayShortMonthNames = ExtraDateStrings.getDefaultShortMonthNamesForLocale(pickerLocale);
 
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
@@ -331,6 +368,7 @@ public class DatePickerSettings {
         borderCalendarPopup = null;
 
         // Initialize the other fields.
+        allowKeyboardEditing = true;
         highlightPolicy = null;
         formatsForParsing = new ArrayList<>();
         vetoPolicy = null;
