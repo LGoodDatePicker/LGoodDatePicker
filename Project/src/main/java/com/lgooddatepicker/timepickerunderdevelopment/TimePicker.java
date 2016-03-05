@@ -35,11 +35,11 @@ public class TimePicker extends JPanel {
 		((GridBagLayout)getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
 		//---- timeComboBox ----
-		timeComboBox.setEditable(true);
 		timeComboBox.setModel(new DefaultComboBoxModel<>(new String[] {
 			"12:00am",
 			"12:30am"
 		}));
+		timeComboBox.setEditable(true);
 		add(timeComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
 			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 			new Insets(0, 0, 0, 0), 0, 0));

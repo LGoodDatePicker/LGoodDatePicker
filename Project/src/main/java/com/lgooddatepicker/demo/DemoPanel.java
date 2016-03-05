@@ -33,10 +33,13 @@ public class DemoPanel extends JPanel {
 		label21 = new JLabel();
 		labelDate9 = new JLabel();
 		label22 = new JLabel();
-		labelDate8 = new JLabel();
-		label23 = new JLabel();
 		labelDate10 = new JLabel();
+		label23 = new JLabel();
+		labelDate8 = new JLabel();
 		label24 = new JLabel();
+		labelDate11 = new JLabel();
+		label25 = new JLabel();
+		label26 = new JLabel();
 		scrollPaneLanguages = new JScrollPane();
 		languagePanel = new JPanel();
 		outerButtonPanel = new JPanel();
@@ -185,9 +188,9 @@ public class DemoPanel extends JPanel {
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
 
-				//---- labelDate8 ----
-				labelDate8.setText("Date 9, Disallow Empty Dates:");
-				featuresPanel.add(labelDate8, new GridBagConstraints(1, 18, 1, 1, 0.0, 0.0,
+				//---- labelDate10 ----
+				labelDate10.setText("Date 9, Custom Font:");
+				featuresPanel.add(labelDate10, new GridBagConstraints(1, 18, 1, 1, 0.0, 0.0,
 					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
 					new Insets(0, 0, 0, 0), 0, 0));
 
@@ -197,15 +200,33 @@ public class DemoPanel extends JPanel {
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
 
-				//---- labelDate10 ----
-				labelDate10.setText("Date 10, Custom Font:");
-				featuresPanel.add(labelDate10, new GridBagConstraints(1, 20, 1, 1, 0.0, 0.0,
+				//---- labelDate8 ----
+				labelDate8.setText("Date 10, Disallow Empty Dates:");
+				featuresPanel.add(labelDate8, new GridBagConstraints(1, 20, 1, 1, 0.0, 0.0,
 					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
 					new Insets(0, 0, 0, 0), 0, 0));
 
 				//---- label24 ----
 				label24.setText(" ");
 				featuresPanel.add(label24, new GridBagConstraints(3, 21, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- labelDate11 ----
+				labelDate11.setText("Date 11, Disallow Keyboard Editing:");
+				featuresPanel.add(labelDate11, new GridBagConstraints(1, 22, 1, 1, 0.0, 0.0,
+					GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label25 ----
+				label25.setText(" ");
+				featuresPanel.add(label25, new GridBagConstraints(3, 23, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+
+				//---- label26 ----
+				label26.setText(" ");
+				featuresPanel.add(label26, new GridBagConstraints(3, 25, 1, 1, 0.0, 0.0,
 					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 					new Insets(0, 0, 0, 0), 0, 0));
 			}
@@ -283,10 +304,13 @@ public class DemoPanel extends JPanel {
 	private JLabel label21;
 	public JLabel labelDate9;
 	private JLabel label22;
-	public JLabel labelDate8;
-	private JLabel label23;
 	public JLabel labelDate10;
+	private JLabel label23;
+	public JLabel labelDate8;
 	private JLabel label24;
+	public JLabel labelDate11;
+	private JLabel label25;
+	private JLabel label26;
 	private JScrollPane scrollPaneLanguages;
 	public JPanel languagePanel;
 	private JPanel outerButtonPanel;

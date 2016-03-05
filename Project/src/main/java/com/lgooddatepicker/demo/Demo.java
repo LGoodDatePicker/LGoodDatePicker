@@ -68,6 +68,7 @@ public class Demo {
     static DatePicker datePicker8;
     static DatePicker datePicker9;
     static DatePicker datePicker10;
+    static DatePicker datePicker11;
     // Date pickers are placed on even rows.
     static final int rowMultiplier = 2;
 
@@ -78,7 +79,7 @@ public class Demo {
         ///////////////////////////////////////////////////////////////////////////////////////////
         // If desired, set a swing look and feel here. 
         try {
-        /*
+            /*
             // Set a specific look and feel.
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -92,7 +93,7 @@ public class Demo {
             int lookIndex = (int) (Math.random() * installedLooks.length);
             UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
             System.out.println(installedLooks[lookIndex].getClassName().toString());
-        */
+             */
         } catch (Exception e) {
         }
 
@@ -169,20 +170,27 @@ public class Demo {
         datePicker8 = new DatePicker(settings);
         panel.featuresPanel.add(datePicker8, getConstraints(3, (8 * rowMultiplier)));
 
-        // Create a date picker: No empty dates. (aka null)
-        settings = new DatePickerSettings();
-        settings.allowEmptyDates = false;
-        datePicker9 = new DatePicker(settings);
-        datePicker9.addDateChangeListener(new SampleDateChangeListener("datePicker9 (Disallow Empty Dates or Null), "));
-        panel.featuresPanel.add(datePicker9, getConstraints(3, (9 * rowMultiplier)));
-
         // Create a date picker: Custom font.
         settings = new DatePickerSettings();
         settings.initialDate = LocalDate.now();
         settings.fontValidDate = new Font("Monospaced", Font.ITALIC | Font.BOLD, 17);
         settings.colorTextValidDate = new Color(0, 100, 0);
+        datePicker9 = new DatePicker(settings);
+        panel.featuresPanel.add(datePicker9, getConstraints(3, (9 * rowMultiplier)));
+
+        // Create a date picker: No empty dates. (aka null)
+        settings = new DatePickerSettings();
+        settings.allowEmptyDates = false;
         datePicker10 = new DatePicker(settings);
+        datePicker10.addDateChangeListener(new SampleDateChangeListener("datePicker10 (Disallow Empty Dates or Null), "));
         panel.featuresPanel.add(datePicker10, getConstraints(3, (10 * rowMultiplier)));
+
+        // Create a date picker: Disallow keyboard editing.
+        settings = new DatePickerSettings();
+        settings.initialDate = LocalDate.now();
+        settings.allowKeyboardEditing = false;
+        datePicker11 = new DatePicker(settings);
+        panel.featuresPanel.add(datePicker11, getConstraints(3, (11 * rowMultiplier)));
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates date pickers and labels for demonstrating the language translations.
@@ -196,6 +204,7 @@ public class Demo {
         addLocalizedPickerAndLabel(++rowMarker, "French:", "fr");
         addLocalizedPickerAndLabel(++rowMarker, "German:", "de");
         addLocalizedPickerAndLabel(++rowMarker, "Greek:", "el");
+        // Note: Hindi requires a full locale specifier. 
         addLocalizedPickerAndLabel(++rowMarker, "Hindi:", "hi");
         addLocalizedPickerAndLabel(++rowMarker, "Italian:", "it");
         addLocalizedPickerAndLabel(++rowMarker, "Indonesian:", "in");
@@ -241,7 +250,8 @@ public class Demo {
      * language. This also sets the picker to today's date, creates a label for the date picker, and
      * adds the components to the language panel.
      */
-    private static void addLocalizedPickerAndLabel(int rowMarker, String labelText, String languageCode) {
+    private static void addLocalizedPickerAndLabel(int rowMarker, String labelText,
+            String languageCode) {
         // Create an empty spacer label, and add it to the previous row.
         JLabel spacerLabel = new JLabel(" ");
         panel.languagePanel.add(spacerLabel, new GridBagConstraints(3, ((rowMarker * rowMultiplier) - 1),
@@ -252,7 +262,8 @@ public class Demo {
             return;
         }
         // Create the localized date picker.
-        DatePickerSettings settings = new DatePickerSettings(new Locale(languageCode));
+        Locale locale = new Locale(languageCode);
+        DatePickerSettings settings = new DatePickerSettings(locale);
         settings.initialDate = LocalDate.now();
         DatePicker datePicker = new DatePicker(settings);
         panel.languagePanel.add(datePicker, getConstraints(3, (rowMarker * rowMultiplier)));

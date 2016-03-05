@@ -13,8 +13,8 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>enum</word>
         <word>enums</word>
         <word>internet</word>
-        <word>Javadoc</word>
-        <word>Javadocs</word>
+        <word>javadoc</word>
+        <word>javadocs</word>
         <word>nullable</word>
         <word>parsable</word>
         <word>pm</word>

@@ -58,7 +58,7 @@ new FormModel {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
 						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "labelMonthIndicator"
+							name: "labelMonth"
 							"text": "September"
 							"horizontalAlignment": 4
 							"opaque": true
@@ -67,7 +67,7 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
 						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
 						add( new FormComponent( "javax.swing.JLabel" ) {
-							name: "labelYearIndicator"
+							name: "labelYear"
 							"text": "2100"
 							"opaque": true
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelYearIndicatorMousePressed", true ) )
@@ -168,6 +168,25 @@ new FormModel {
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
 			"size": new java.awt.Dimension( 370, 240 )
+		} )
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "40:1.0, 1, 26"
+			"$rowSpecs": "0:1.0"
+			"$alignTop": true
+			"$alignLeft": true
+		} ) {
+			name: "yearEditorPanel"
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "doneEditingYearButton"
+				"focusPainted": false
+				"focusable": false
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "doneEditingYearButtonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 250 )
+			"size": new java.awt.Dimension( 115, 25 )
 		} )
 	}
 }

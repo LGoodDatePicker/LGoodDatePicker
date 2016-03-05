@@ -192,8 +192,8 @@ new FormModel {
 						"gridx": 3
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "labelDate8"
-						"text": "Date 9, Disallow Empty Dates:"
+						name: "labelDate10"
+						"text": "Date 9, Custom Font:"
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -209,8 +209,8 @@ new FormModel {
 						"gridx": 3
 					} )
 					add( new FormComponent( "javax.swing.JLabel" ) {
-						name: "labelDate10"
-						"text": "Date 10, Custom Font:"
+						name: "labelDate8"
+						"text": "Date 10, Disallow Empty Dates:"
 						auxiliary() {
 							"JavaCodeGenerator.variableModifiers": 1
 						}
@@ -223,6 +223,30 @@ new FormModel {
 						"text": " "
 					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 						"gridy": 21
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "labelDate11"
+						"text": "Date 11, Disallow Keyboard Editing:"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 22
+						"gridx": 1
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label25"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 23
+						"gridx": 3
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "label26"
+						"text": " "
+					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+						"gridy": 25
 						"gridx": 3
 					} )
 				} )

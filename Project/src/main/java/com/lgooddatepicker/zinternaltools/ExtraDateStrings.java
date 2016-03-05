@@ -90,7 +90,14 @@ public class ExtraDateStrings {
      */
     public static String[] getDefaultMonthNamesForLocale(Locale locale) {
         // Get the standalone version of the month names for the specified language.
-        String[] monthNames = getStandaloneMonthNamesArray(locale, true);
+        String[] monthNames = getStandaloneMonthNamesArray(locale, true, false);
+        // Return the array of month names.
+        return monthNames;
+    }
+
+    public static String[] getDefaultShortMonthNamesForLocale(Locale locale) {
+        // Get the standalone version of the month names for the specified language.
+        String[] monthNames = getStandaloneMonthNamesArray(locale, true, true);
         // Return the array of month names.
         return monthNames;
     }
@@ -105,14 +112,20 @@ public class ExtraDateStrings {
      * version (Presumably because the supplied language has no standalone version), then this will
      * return the formatting version of the month name.
      */
-    private static String getStandaloneMonthName(Month month, Locale locale, boolean capitalize) {
+    private static String getStandaloneMonthName(Month month, Locale locale, boolean capitalize,
+            boolean shortVersion) {
         // Attempt to get the standalone version of the month name.
-        String monthName = month.getDisplayName(TextStyle.FULL_STANDALONE, locale);
+        TextStyle style = (shortVersion) ? TextStyle.SHORT_STANDALONE : TextStyle.FULL_STANDALONE;
+        String monthName = month.getDisplayName(style, locale);
         String monthNumber = "" + month.getValue();
         // If no mapping was found, then get the "formatting version" of the month name.
         if (monthName.equals(monthNumber)) {
             DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
-            monthName = dateSymbols.getMonths()[month.getValue() - 1];
+            if (shortVersion) {
+                monthName = dateSymbols.getShortMonths()[month.getValue() - 1];
+            } else {
+                monthName = dateSymbols.getMonths()[month.getValue() - 1];
+            }
         }
         // If needed, capitalize the month name.
         if ((capitalize) && (monthName != null) && (monthName.length() > 0)) {
@@ -125,11 +138,12 @@ public class ExtraDateStrings {
      * getStandaloneMonthNamesArray, This returns an array with the standalone version of all the
      * full month names.
      */
-    private static String[] getStandaloneMonthNamesArray(Locale locale, boolean capitalize) {
+    private static String[] getStandaloneMonthNamesArray(Locale locale, boolean capitalize,
+            boolean shortVersion) {
         Month[] monthEnums = Month.values();
         ArrayList<String> monthNamesArrayList = new ArrayList<>();
         for (Month monthEnum : monthEnums) {
-            monthNamesArrayList.add(getStandaloneMonthName(monthEnum, locale, capitalize));
+            monthNamesArrayList.add(getStandaloneMonthName(monthEnum, locale, capitalize, shortVersion));
         }
         // Convert the arraylist to a string array, and return the array.
         String[] monthNames = monthNamesArrayList.toArray(new String[]{});
