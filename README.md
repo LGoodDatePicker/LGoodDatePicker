@@ -2,7 +2,7 @@
 Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## News:
-[LGoodDatePicker 2.4.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 2, 2016.
+[LGoodDatePicker 3.1.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 5, 2016.
 
 ## Project Links:
 Demo Application is in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
@@ -22,6 +22,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 (Including calendar size, fonts, colors, and the popup border.)
 * Optional highlight policies and veto policies.
 * Can allow or disallow empty dates. (Null dates.)
+* Can optionally disallow keyboard editing. 
 * Relatively compact source code.
 * Simple usage. Creating a DatePicker requires only one line of code.
 * Includes [Demo Program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases). (Found in the Github release files.)
