@@ -1,0 +1,67 @@
+JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_60" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "default:grow, labelcompgap, default, labelcompgap, default:grow, labelcompgap, default, labelcompgap, default"
+			"$rowSpecs": "default:grow, linegap, default, linegap, default:grow, linegap, default"
+		} ) {
+			name: "this"
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField1"
+				"editable": false
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+				"text": "ddttddt"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 1
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "textField2"
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 5
+				"gridY": 1
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "comboBox1"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "beeef123"
+					addElement( "beeef123" )
+					addElement( "2" )
+					addElement( "3" )
+					addElement( "4" )
+					addElement( "5" )
+					addElement( "6" )
+					addElement( "7" )
+					addElement( "8" )
+					addElement( "9" )
+					addElement( "0" )
+					addElement( "4" )
+					addElement( "4" )
+					addElement( "3" )
+					addElement( "3" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "22" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "2" )
+					addElement( "2" )
+				}
+				"selectedIndex": -1
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 3
+				"gridY": 3
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 400, 300 )
+		} )
+	}
+}

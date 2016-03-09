@@ -1,6 +1,8 @@
 package com.lgooddatepicker.optionalusertools;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
@@ -35,6 +37,38 @@ public class PickerUtilities {
     }
 
     /**
+     * isLocalTimeInRange, This returns true if the specified value is inside of the specified
+     * range. This returns false if the specified value is outside of the specified range. If the
+     * specified value is null, then this will return false.
+     *
+     * If optionalMinimum is null, then it will be set to LocalTime.MIN. If optionalMaximum is null,
+     * then it will be set to LocalTime.MAX.
+     *
+     * If inclusiveOfEndpoints is true, then values that equal the minimum or maximum will return
+     * true. Otherwise, values that equal the minimum or maximum will return false.
+     */
+    public static boolean isLocalTimeInRange(LocalTime value,
+            LocalTime optionalMinimum, LocalTime optionalMaximum, boolean inclusiveOfEndpoints) {
+        // If either bounding time does does not already exist, then set it to the maximum range.
+        LocalTime minimum = (optionalMinimum == null) ? LocalTime.MIN : optionalMinimum;
+        LocalTime maximum = (optionalMaximum == null) ? LocalTime.MAX : optionalMaximum;
+        // Null is never considered to be inside of a range.
+        if (value == null) {
+            return false;
+        }
+        // Return false if the range does not contain any times.
+        if (maximum.isBefore(minimum) || maximum.equals(minimum)) {
+            return false;
+        }
+        if (inclusiveOfEndpoints) {
+            return ((value.isAfter(minimum) || value.equals(minimum))
+                    && (value.isBefore(maximum) || value.equals(maximum)));
+        } else {
+            return (value.isAfter(minimum) && value.isBefore(maximum));
+        }
+    }
+
+    /**
      * isSameLocalDate, This compares two date variables to see if their values are equal. Returns
      * true if the values are equal, otherwise returns false.
      *
@@ -55,24 +89,115 @@ public class PickerUtilities {
         return first.isEqual(second);
     }
 
+    public static boolean isSameLocalTime(LocalTime first, LocalTime second) {
+        // If both values are null, return true.
+        if (first == null && second == null) {
+            return true;
+        }
+        // At least one value contains a time. If the other value is null, then return false.
+        if (first == null || second == null) {
+            return false;
+        }
+        // Both values contain times. Return true if the times are equal, otherwise return false.
+        return first.equals(second);
+    }
+
     /**
-     * localDateToString, This returns the supplied date in the ISO-8601 format (uuuu-MM-dd).
-     * Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have 11 characters,
-     * due to the addition of a minus sign before the year. If the date is null, this will return an
-     * empty string ("").
+     * localDateTimeToString, This will return the supplied LocalDateTime as a string. If the value
+     * is null, this will return the value of emptyTimeString. Time values will be output in the
+     * same format as LocalDateTime.toString().
+     *
+     * Javadocs from LocalDateTime.toString():
+     *
+     * Outputs this date-time as a {@code String}, such as {@code 2007-12-03T10:15:30}.
+     * <p>
+     * The output will be one of the following ISO-8601 formats:
+     * <ul>
+     * <li>{@code uuuu-MM-dd'T'HH:mm}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSS}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSSSSS}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSSSSSSSS}</li>
+     * </ul>
+     * The format used will be the shortest that outputs the full value of the time where the
+     * omitted parts are implied to be zero.
+     */
+    public static String localDateTimeToString(LocalDateTime value, String emptyTimeString) {
+        return (value == null) ? emptyTimeString : value.toString();
+    }
+
+    /**
+     * localDateTimeToString, This will return the supplied LocalDateTime as a string. If the value
+     * is null, this will return an empty string (""). Time values will be output in the same format
+     * as LocalDateTime.toString().
+     *
+     * Javadocs from LocalDateTime.toString():
+     *
+     * Outputs this date-time as a {@code String}, such as {@code 2007-12-03T10:15:30}.
+     * <p>
+     * The output will be one of the following ISO-8601 formats:
+     * <ul>
+     * <li>{@code uuuu-MM-dd'T'HH:mm}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSS}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSSSSS}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSSSSSSSS}</li>
+     * </ul>
+     * The format used will be the shortest that outputs the full value of the time where the
+     * omitted parts are implied to be zero.
+     */
+    public static String localDateTimeToString(LocalDateTime value) {
+        return (value == null) ? "" : value.toString();
+    }
+
+    /**
+     * localDateToString, This returns the supplied date in the ISO-8601 format (uuuu-MM-dd). For
+     * any CE years that are between 0 and 9999 inclusive, the output will have a fixed length of 10
+     * characters. Years before or after that range will output longer strings. If the date is null,
+     * this will return an empty string ("").
      */
     static public String localDateToString(LocalDate date) {
         return localDateToString(date, "");
     }
 
     /**
-     * localDateToString, This returns the supplied date in the ISO-8601 format (uuuu-MM-dd).
-     * Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have 11 characters,
-     * due to the addition of a minus sign before the year. If the date is null, this will return
-     * the value of emptyDateString.
+     * localDateToString, This returns the supplied date in the ISO-8601 format (uuuu-MM-dd). For
+     * any CE years that are between 0 and 9999 inclusive, the output will have a fixed length of 10
+     * characters. Years before or after that range will output longer strings. If the date is null,
+     * this will return the value of emptyDateString.
      */
     static public String localDateToString(LocalDate date, String emptyDateString) {
         return (date == null) ? emptyDateString : date.toString();
+    }
+
+    /**
+     * localTimeToString, This will return the supplied time as a string. If the time is null, this
+     * will return an empty string ("").
+     *
+     * Time values will be output in one of the following ISO-8601 formats: "HH:mm", "HH:mm:ss",
+     * "HH:mm:ss.SSS", "HH:mm:ss.SSSSSS", "HH:mm:ss.SSSSSSSSS".
+     *
+     * The format used will be the shortest that outputs the full value of the time where the
+     * omitted parts are implied to be zero.
+     * </code>
+     */
+    public static String localTimeToString(LocalTime time) {
+        return (time == null) ? "" : time.toString();
+    }
+
+    /**
+     * localTimeToString, This will return the supplied time as a string. If the time is null, this
+     * will return the value of emptyTimeString.
+     *
+     * Time values will be output in one of the following ISO-8601 formats: "HH:mm", "HH:mm:ss",
+     * "HH:mm:ss.SSS", "HH:mm:ss.SSSSSS", "HH:mm:ss.SSSSSSSSS".
+     *
+     * The format used will be the shortest that outputs the full value of the time where the
+     * omitted parts are implied to be zero.
+     * </code>
+     */
+    public static String localTimeToString(LocalTime time, String emptyTimeString) {
+        return (time == null) ? emptyTimeString : time.toString();
     }
 
 }

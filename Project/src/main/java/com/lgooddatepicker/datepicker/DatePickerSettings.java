@@ -42,7 +42,7 @@ public class DatePickerSettings {
      * dates. If empty dates are not allowed, but DatePickerSettings.initialDate is left set to
      * null, then the initial date will be set to today's date.
      */
-    public boolean allowEmptyDates;
+    public boolean allowEmptyDates = true;
 
     /**
      * allowKeyboardEditing, This indicates whether or not keyboard editing is allowed for this date
@@ -53,18 +53,17 @@ public class DatePickerSettings {
      * Accessibility Impact: Disallowing the use of the keyboard, and requiring the use of the
      * mouse, could impact the accessibility of your program for disabled persons.
      *
-     * Important note: Setting this to false reduces the options that the user has for inputing
-     * data, and provides little or no additional benefit. Specifically, this setting does not
-     * impact the automatic enforcement of valid dates. To learn about the automatic date validation
-     * and enforcement for keyboard entered text, see the javadocs for the DatePicker class.
+     * Note: This setting does not impact the automatic enforcement of valid or vetoed dates. To
+     * learn about the automatic date validation and enforcement for keyboard entered text, see the
+     * javadocs for the DatePicker class.
      */
-    public boolean allowKeyboardEditing;
+    public boolean allowKeyboardEditing = true;
 
     /**
      * borderCalendarPopup, This is the border for the calendar popup window. If this is null, a
      * default border will be provided by the CustomPopup class. The default value is null.
      */
-    public Border borderCalendarPopup;
+    public Border borderCalendarPopup = null;
 
     /**
      * colorBackgroundCalendarPanel, This is the background color for the entire calendar panel. The
@@ -193,12 +192,19 @@ public class DatePickerSettings {
     public ArrayList<DateTimeFormatter> formatsForParsing;
 
     /**
+     * gapBeforeButtonPixels, This specifies the desired width for the gap between the date picker
+     * and the toggle calendar button (in pixels). The default value is null. If this is left at
+     * null, then the gap will set to 3 pixels in the date picker constructor.
+     */
+    public Integer gapBeforeButtonPixels = null;
+
+    /**
      * highlightPolicy, If a highlight policy is supplied, it will be used to determine which dates
      * should be highlighted in the calendar panel. The highlight policy can also supply tooltip
      * text for any highlighted dates. See the demo class for an example of constructing a highlight
      * policy. By default, there is no highlight policy. (The default value is null.)
      */
-    public DateHighlightPolicy highlightPolicy;
+    public DateHighlightPolicy highlightPolicy = null;
 
     /**
      * initialDate, This is the date that the date picker will have when it is created. This can be
@@ -210,7 +216,24 @@ public class DatePickerSettings {
      * specifically: When a DatePicker is constructed, if allowEmptyDates is false and initialDate
      * is null, then the initialDate value will be set to today's date.
      */
-    public LocalDate initialDate;
+    
+
+    /**
+     * initialDate, This is the date that the date picker will have when it is created. This can be
+     * set to any date, or it can be set to null. The default value for initialDate is null, which
+     * represents an empty date.
+     *
+     * If allowEmptyDates is false, then a null initialDate will be ignored. More specifically:
+     * When a DatePicker is constructed, if allowEmptyDates is false and initialDate is null, then
+     * the initialDate will be set to a default value. (The default value is today's date.)
+     *
+     * If a DateVetoPolicy exists, and the supplied date is vetoed, then the date will be entered
+     * into the text field (and displayed with the "fontVetoedDate"), but it will not be committed
+     * to the "last valid date".
+     *
+     * See DatePicker.setDate() to read about the automatic validation of set dates.
+     */
+    public LocalDate initialDate = null;
 
     /**
      * pickerLocale, This holds the locale instance that indicates the user's language and culture.
@@ -312,7 +335,7 @@ public class DatePickerSettings {
      * field). See the demo class for an example of constructing a veto policy. By default, there is
      * no veto policy. (The default value is null.)
      */
-    public DateVetoPolicy vetoPolicy;
+    public DateVetoPolicy vetoPolicy = null;
 
     /**
      * Constructor with Default Locale, This constructs a date picker settings instance using the
@@ -329,20 +352,12 @@ public class DatePickerSettings {
      */
     public DatePickerSettings(Locale pickerLocale) {
         // Fix a problem where the Hindi locale is not recognized by language alone. 
-        if("hi".equals(pickerLocale.getLanguage()) && (pickerLocale.getCountry().isEmpty())) {
+        if ("hi".equals(pickerLocale.getLanguage()) && (pickerLocale.getCountry().isEmpty())) {
             pickerLocale = new Locale("hi", "IN");
         }
-        
+
         // Save the date picker locale.
         this.pickerLocale = pickerLocale;
-
-        // Set the default value for allowing empty dates.
-        allowEmptyDates = true;
-
-        // Set the default value for the initial date.
-        // Note that if allowEmptyDates is false, and initialDate is still null when a date picker
-        // is constructed, then this would be set to today's date in the DatePicker constructor.
-        initialDate = null;
 
         // Set the default translations for the locale.
         translationToday = TranslationSource.getTranslation(pickerLocale, "today", "Today");
@@ -358,38 +373,33 @@ public class DatePickerSettings {
         formatForDatesCommonEra = InternalUtilities.generateDefaultFormatterCE(pickerLocale);
         formatForDatesBeforeCommonEra = InternalUtilities.generateDefaultFormatterBCE(pickerLocale);
 
-        // Set the minimum height, minimum width, and extra pixels for the date panel.
-        sizeDatePanelMinimumHeight = (6 * 18);
-        sizeDatePanelMinimumWidth = (7 * 30);
-        sizeDatePanelPixelsExtraHeight = 2;
-        sizeDatePanelPixelsExtraWidth = 2;
-
-        // This will use a default border provided by the CustomPopup class.
-        borderCalendarPopup = null;
-
-        // Initialize the other fields.
-        allowKeyboardEditing = true;
-        highlightPolicy = null;
-        formatsForParsing = new ArrayList<>();
-        vetoPolicy = null;
-        firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
-
         // Create an array of all the FormatStyle enum values, from short to long.
         FormatStyle[] allFormatStyles = new FormatStyle[]{
             FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
 
         // Create a set of default parsing formatters for the specified locale.
+        formatsForParsing = new ArrayList<>();
         DateTimeFormatter parseFormat;
         for (int i = 0; i < allFormatStyles.length; ++i) {
             parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
                     appendLocalized(allFormatStyles[i], null).toFormatter(pickerLocale);
             formatsForParsing.add(parseFormat);
         }
+
         // Get any common extra parsing formats for the specified locale, and append them to
         // the list of parsingFormatters.
         ArrayList<DateTimeFormatter> extraFormatters
                 = ExtraDateStrings.getExtraParsingFormatsForLocale(pickerLocale);
         formatsForParsing.addAll(extraFormatters);
+
+        // Set the minimum height, minimum width, and extra pixels for the date panel.
+        sizeDatePanelMinimumHeight = (6 * 18);
+        sizeDatePanelMinimumWidth = (7 * 30);
+        sizeDatePanelPixelsExtraHeight = 2;
+        sizeDatePanelPixelsExtraWidth = 2;
+        
+        // Initialize the first day of the week.
+        firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
 
         // Generate the default fonts and text colors.
         fontValidDate = new JTextField().getFont();

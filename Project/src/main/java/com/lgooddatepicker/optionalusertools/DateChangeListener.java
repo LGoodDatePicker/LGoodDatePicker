@@ -5,9 +5,8 @@ import com.lgooddatepicker.zinternaltools.DateChangeEvent;
 /**
  * DateChangeListener, This interface can be implemented to create a date change listener. Any date
  * change listeners that are registered with a DatePicker will be notified each time that the date
- * is changed. Note that there is a difference between a DatePicker's date, and its text. The text
- * may or may not contain a valid date string. The date will always either contain a valid LocalDate
- * object, or contain null.
+ * is changed. Note that there is a difference between a DatePicker's date, and its text. This class
+ * listens for changes to the "last valid date" value, but does not listen for changes in the text.
  */
 public interface DateChangeListener {
 

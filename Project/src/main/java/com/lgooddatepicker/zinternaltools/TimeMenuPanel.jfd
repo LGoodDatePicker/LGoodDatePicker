@@ -1,0 +1,29 @@
+JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_60" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+			"$columnSpecs": "default:grow"
+			"$rowSpecs": "fill:default:grow"
+		} ) {
+			name: "this"
+			"border": sfield com.jformdesigner.model.FormObject NULL_VALUE
+			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+				name: "timeScrollPane"
+				"horizontalScrollBarPolicy": 31
+				add( new FormComponent( "javax.swing.JList" ) {
+					name: "timeList"
+					"selectionMode": 1
+					"visibleRowCount": 10
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 1
+				"gridY": 1
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 0, 0 )
+			"size": new java.awt.Dimension( 115, 300 )
+		} )
+	}
+}
