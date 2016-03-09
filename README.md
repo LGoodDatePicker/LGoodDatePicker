@@ -19,7 +19,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
 * Also supports other common data types, such as "java.util.Date".
 * Automatic date and time validation.
-* Customizable visual elements.
+* Customizable visual elements.  
 (Including calendar size, fonts, colors, and the popup border.)
 * Optional highlight policies and veto policies.
 * Can allow or disallow empty values. (Null dates or times.)
