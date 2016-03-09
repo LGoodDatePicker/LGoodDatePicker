@@ -3,6 +3,7 @@ package com.lgooddatepicker.zinternaltools;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
@@ -235,6 +236,10 @@ public class CustomPopup extends Popup
     @Override
     public void windowLostFocus(WindowEvent e) {
         hide();
+    }
+
+    public void setMinimumSize(Dimension minimumSize) {
+        displayWindow.setMinimumSize(minimumSize);
     }
 
     /**

@@ -4,29 +4,35 @@ import com.lgooddatepicker.datepicker.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
+import java.time.LocalTime;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Locale;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JPanel;
 import com.lgooddatepicker.datepicker.DatePickerSettings;
 import com.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.lgooddatepicker.zinternaltools.WrapLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.lgooddatepicker.optionalusertools.DateHighlightPolicy;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
+import com.lgooddatepicker.optionalusertools.TimeChangeListener;
+import com.lgooddatepicker.optionalusertools.TimeVetoPolicy;
+import com.lgooddatepicker.datetimepicker.DateTimePicker;
+import com.lgooddatepicker.optionalusertools.DateTimeChangeListener;
+import com.lgooddatepicker.timepicker.TimePicker;
+import com.lgooddatepicker.timepicker.TimePickerSettings;
+import com.lgooddatepicker.timepicker.TimePickerSettings.TimeIncrement;
+import com.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
+import com.lgooddatepicker.zinternaltools.TimeChangeEvent;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -69,8 +75,25 @@ public class Demo {
     static DatePicker datePicker9;
     static DatePicker datePicker10;
     static DatePicker datePicker11;
-    // Date pickers are placed on even rows.
-    static final int rowMultiplier = 2;
+    // These hold time pickers.
+    static TimePicker timePicker1;
+    static TimePicker timePicker2;
+    static TimePicker timePicker3;
+    static TimePicker timePicker4;
+    static TimePicker timePicker5;
+    static TimePicker timePicker6;
+    static TimePicker timePicker7;
+    static TimePicker timePicker8;
+    static TimePicker timePicker9;
+    static TimePicker timePicker10;
+    // These hold DateTimePickers.
+    static DateTimePicker dateTimePicker1;
+    static DateTimePicker dateTimePicker2;
+    static DateTimePicker dateTimePicker3;
+    static DateTimePicker dateTimePicker4;
+    static DateTimePicker dateTimePicker5;
+    // Date pickers are placed on the rows at a set interval.
+    static final int rowMultiplier = 4;
 
     /**
      * main, The application entry point.
@@ -107,91 +130,209 @@ public class Demo {
         createDemoButtons();
 
         ///////////////////////////////////////////////////////////////////////////////////////////
-        // This section creates date pickers that demonstrate various features.
+        // This section creates DatePickers, with various features.
         //
         // Create a settings variable for repeated use.
-        DatePickerSettings settings;
+        DatePickerSettings dateSettings;
+        int row = rowMultiplier;
 
         // Create a date picker: With default settings
         datePicker1 = new DatePicker();
-        panel.featuresPanel.add(datePicker1, getConstraints(3, (1 * rowMultiplier)));
+        panel.panel1.add(datePicker1, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 1, Default Settings:");
 
         // Create a date picker: With highlight policy.
-        settings = new DatePickerSettings();
-        settings.highlightPolicy = new SampleHighlightPolicy();
-        datePicker2 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker2, getConstraints(3, (2 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.highlightPolicy = new SampleHighlightPolicy();
+        datePicker2 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker2, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 2, Highlight Policy:");
 
         // Create a date picker: With veto policy.
-        settings = new DatePickerSettings();
-        settings.vetoPolicy = new SampleVetoPolicy();
-        datePicker3 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker3, getConstraints(3, (3 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.vetoPolicy = new SampleDateVetoPolicy();
+        datePicker3 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker3, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 3, Veto Policy:");
 
         // Create a date picker: With both policies.
-        settings = new DatePickerSettings();
-        settings.highlightPolicy = new SampleHighlightPolicy();
-        settings.vetoPolicy = new SampleVetoPolicy();
-        datePicker4 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker4, getConstraints(3, (4 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.highlightPolicy = new SampleHighlightPolicy();
+        dateSettings.vetoPolicy = new SampleDateVetoPolicy();
+        datePicker4 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker4, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 4, Both Policies:");
 
         // Create a date picker: Change first weekday.
-        settings = new DatePickerSettings();
-        settings.firstDayOfWeek = DayOfWeek.MONDAY;
-        datePicker5 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker5, getConstraints(3, (5 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.firstDayOfWeek = DayOfWeek.MONDAY;
+        datePicker5 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker5, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 5, Set First Day Of Week (Mon):");
 
         // Create a date picker: Change calendar size.
-        settings = new DatePickerSettings();
-        settings.sizeDatePanelMinimumHeight *= 1.6;
-        settings.sizeDatePanelMinimumWidth *= 1.6;
-        datePicker6 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker6, getConstraints(3, (6 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.sizeDatePanelMinimumHeight *= 1.6;
+        dateSettings.sizeDatePanelMinimumWidth *= 1.6;
+        datePicker6 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker6, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Calendar Size:");
 
         // Create a date picker: Custom color.
-        settings = new DatePickerSettings();
-        settings.colorBackgroundCalendarPanel = Color.green;
-        settings.colorBackgroundWeekdayLabels = Color.orange;
-        settings.colorBackgroundMonthAndYear = Color.yellow;
-        settings.colorBackgroundTodayAndClear = Color.yellow;
-        settings.colorBackgroundNavigateYearMonthButtons = Color.cyan;
-        datePicker7 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker7, getConstraints(3, (7 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.colorBackgroundCalendarPanel = Color.green;
+        dateSettings.colorBackgroundWeekdayLabels = Color.orange;
+        dateSettings.colorBackgroundMonthAndYear = Color.yellow;
+        dateSettings.colorBackgroundTodayAndClear = Color.yellow;
+        dateSettings.colorBackgroundNavigateYearMonthButtons = Color.cyan;
+        datePicker7 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker7, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 7, Change Colors:");
 
         // Create a date picker: Custom date format.
         // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
         // For more details about that, see: DatePickerSettings.formatDatesBeforeCommonEra.
-        settings = new DatePickerSettings();
-        settings.initialDate = LocalDate.now();
-        settings.formatForDatesCommonEra = PickerUtilities.createFormatterFromPatternString(
-                "d MMM yyyy", settings.pickerLocale);
-        settings.formatForDatesBeforeCommonEra = PickerUtilities.createFormatterFromPatternString(
-                "d MMM uuuu", settings.pickerLocale);
-        datePicker8 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker8, getConstraints(3, (8 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.initialDate = LocalDate.now();
+        dateSettings.formatForDatesCommonEra = PickerUtilities.createFormatterFromPatternString("d MMM yyyy", dateSettings.pickerLocale);
+        dateSettings.formatForDatesBeforeCommonEra = PickerUtilities.createFormatterFromPatternString("d MMM uuuu", dateSettings.pickerLocale);
+        datePicker8 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker8, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Date Format:");
 
         // Create a date picker: Custom font.
-        settings = new DatePickerSettings();
-        settings.initialDate = LocalDate.now();
-        settings.fontValidDate = new Font("Monospaced", Font.ITALIC | Font.BOLD, 17);
-        settings.colorTextValidDate = new Color(0, 100, 0);
-        datePicker9 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker9, getConstraints(3, (9 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.initialDate = LocalDate.now();
+        dateSettings.fontValidDate = new Font("Monospaced", Font.ITALIC | Font.BOLD, 17);
+        dateSettings.colorTextValidDate = new Color(0, 100, 0);
+        datePicker9 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker9, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Font:");
 
         // Create a date picker: No empty dates. (aka null)
-        settings = new DatePickerSettings();
-        settings.allowEmptyDates = false;
-        datePicker10 = new DatePicker(settings);
+        dateSettings = new DatePickerSettings();
+        dateSettings.allowEmptyDates = false;
+        datePicker10 = new DatePicker(dateSettings);
         datePicker10.addDateChangeListener(new SampleDateChangeListener("datePicker10 (Disallow Empty Dates or Null), "));
-        panel.featuresPanel.add(datePicker10, getConstraints(3, (10 * rowMultiplier)));
+        panel.panel1.add(datePicker10, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Disallow Empty Dates:");
 
         // Create a date picker: Disallow keyboard editing.
-        settings = new DatePickerSettings();
-        settings.initialDate = LocalDate.now();
-        settings.allowKeyboardEditing = false;
-        datePicker11 = new DatePicker(settings);
-        panel.featuresPanel.add(datePicker11, getConstraints(3, (11 * rowMultiplier)));
+        dateSettings = new DatePickerSettings();
+        dateSettings.initialDate = LocalDate.now();
+        dateSettings.allowKeyboardEditing = false;
+        datePicker11 = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker11, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Disallow Keyboard Editing:");
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // This section creates TimePickers. (1 to 5)
+        //
+        // Create a settings variable for repeated use.
+        TimePickerSettings timeSettings;
+        row = rowMultiplier;
+
+        // Create a time picker: With default settings
+        timePicker1 = new TimePicker();
+        panel.panel2.add(timePicker1, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 1, Default Settings:");
+
+        // Create a time picker: Disallow Empty Times.
+        timeSettings = new TimePickerSettings();
+        timeSettings.allowEmptyTimes = false;
+        timePicker2 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker2, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 2, Disallow Empty Times:");
+
+        // Create a time picker: 15 minute interval.
+        timeSettings = new TimePickerSettings();
+        timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
+        timePicker3 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker3, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 3, Interval of 15 minutes:");
+
+        // Create a time picker: With Veto Policy.
+        timeSettings = new TimePickerSettings();
+        timeSettings.vetoPolicy = new SampleTimeVetoPolicy();
+        timePicker4 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker4, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 4, With Veto Policy (Only 9a-5p allowed):");
+
+        // Create a time picker: With 24 hour clock.
+        timeSettings = new TimePickerSettings();
+        timeSettings.use24HourClockFormat();
+        timeSettings.initialTime = LocalTime.of(15, 30);
+        timePicker5 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker5, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 5, With 24 hour clock:");
+
+        // Create a time picker: Localized (Chinese).
+        timeSettings = new TimePickerSettings(Locale.forLanguageTag("zh"));
+        timeSettings.initialTime = LocalTime.now();
+        timePicker6 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker6, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 6, Localized (to Chinese):");
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // This section creates DateTimePickers. (1 to 5)
+        //
+        // Create a DateTimePicker: Default settings
+        dateTimePicker1 = new DateTimePicker();
+        panel.panel2.add(dateTimePicker1, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "DateTimePicker 1, Default settings:");
+
+        // Create a DateTimePicker: Disallow empty dates and times.
+        dateSettings = new DatePickerSettings();
+        timeSettings = new TimePickerSettings();
+        dateSettings.allowEmptyDates = false;
+        timeSettings.allowEmptyTimes = false;
+        dateTimePicker2 = new DateTimePicker(dateSettings, timeSettings);
+        panel.panel2.add(dateTimePicker2, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "DateTimePicker 2, Disallow empty dates and times:");
+
+        // Create a DateTimePicker: With change listener.
+        dateTimePicker3 = new DateTimePicker();
+        dateTimePicker3.addDateTimeChangeListener(new SampleDateTimeChangeListener("dateTimePicker3"));
+        panel.panel2.add(dateTimePicker3, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "DateTimePicker 3, With Change Listener:");
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // This section creates any remaining TimePickers.
+        // Create a time picker: With TimeChangeListener.
+        timeSettings = new TimePickerSettings();
+        timePicker7 = new TimePicker(timeSettings);
+        timePicker7.addTimeChangeListener(new SampleTimeChangeListener("timePicker7"));
+        panel.panel2.add(timePicker7, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 7, With a TimeChangeListener:");
+
+        // Create a time picker: With more visible rows.
+        timeSettings = new TimePickerSettings();
+        timeSettings.maximumVisibleMenuRows = 20;
+        timePicker8 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker8, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 8, With 20 visible menu rows:");
+
+        // Create a time picker: Custom Format.
+        timeSettings = new TimePickerSettings();
+        timeSettings.formatForDisplayTime = PickerUtilities.createFormatterFromPatternString(
+                "ha", timeSettings.timePickerLocale);
+        timeSettings.formatForMenuTimes = timeSettings.formatForDisplayTime;
+        timeSettings.initialTime = LocalTime.of(15, 00);
+        timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
+        timePicker9 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker9, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 9, Custom Format:");
+
+        // Create a time picker: Disallow Keyboard Editing.
+        timeSettings = new TimePickerSettings();
+        timeSettings.allowKeyboardEditing = false;
+        timePicker10 = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker10, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 10, Disallow Keyboard Editing:");
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // This section creates any remaining DateTimePickers.
+        // (None here at the moment.)
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates date pickers and labels for demonstrating the language translations.
         int rowMarker = 0;
@@ -218,10 +359,6 @@ public class Demo {
         addLocalizedPickerAndLabel(++rowMarker, "Swedish:", "sv");
         addLocalizedPickerAndLabel(++rowMarker, "Turkish:", "tr");
         addLocalizedPickerAndLabel(++rowMarker, "Vietnamese:", "vi");
-        // Add a few empty rows at the bottom.
-        for (int i = 0; i < 5; ++i) {
-            addLocalizedPickerAndLabel(++rowMarker, "", "");
-        }
 
         // Display the frame.
         frame.pack();
@@ -237,11 +374,13 @@ public class Demo {
      * getConstraints, This returns a grid bag constraints object that can be used for placing a
      * component appropriately into a grid bag layout.
      */
-    private static GridBagConstraints getConstraints(int gridx, int gridy) {
+    private static GridBagConstraints getConstraints(int gridx, int gridy, int gridwidth) {
         GridBagConstraints gc = new GridBagConstraints();
-        gc.fill = GridBagConstraints.BOTH;
+        gc.fill = GridBagConstraints.NONE;
+        gc.anchor = GridBagConstraints.WEST;
         gc.gridx = gridx;
         gc.gridy = gridy;
+        gc.gridwidth = gridwidth;
         return gc;
     }
 
@@ -252,26 +391,27 @@ public class Demo {
      */
     private static void addLocalizedPickerAndLabel(int rowMarker, String labelText,
             String languageCode) {
-        // Create an empty spacer label, and add it to the previous row.
-        JLabel spacerLabel = new JLabel(" ");
-        panel.languagePanel.add(spacerLabel, new GridBagConstraints(3, ((rowMarker * rowMultiplier) - 1),
-                1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
-        // If the language code is empty, we only add the spacer label and nothing else. 
-        if (languageCode == null || "".equals(languageCode)) {
-            return;
-        }
-        // Create the localized date picker.
+        // Create the localized date picker and label.
         Locale locale = new Locale(languageCode);
         DatePickerSettings settings = new DatePickerSettings(locale);
         settings.initialDate = LocalDate.now();
         DatePicker datePicker = new DatePicker(settings);
-        panel.languagePanel.add(datePicker, getConstraints(3, (rowMarker * rowMultiplier)));
-        // Create the label for the localized date picker.
-        JLabel languageLabel = new JLabel(labelText);
-        panel.languagePanel.add(languageLabel, new GridBagConstraints(1, (rowMarker * rowMultiplier),
-                1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
-                new Insets(0, 0, 0, 0), 0, 0));
+        panel.panel4.add(datePicker, getConstraints(1, (rowMarker * rowMultiplier), 1));
+        panel.addLabel(panel.panel4, 1, (rowMarker * rowMultiplier), labelText);
+    }
+
+    /**
+     * setTimeOneWithTimeTwoButtonClicked, This sets the time in time picker one, to whatever time
+     * is currently set in time picker two.
+     */
+    private static void setTimeOneWithTimeTwoButtonClicked(ActionEvent e) {
+        LocalTime timePicker2Time = timePicker2.getTime();
+        timePicker1.setTime(timePicker2Time);
+        // Display message.
+        String message = "The timePicker1 value was set using the timePicker2 value!\n\n";
+        String timeString = timePicker1.getTimeStringOrSuppliedString("(null)");
+        String messageAddition = ("The timePicker1 value is currently set to: " + timeString + ".");
+        panel.messageTextArea.setText(message + messageAddition);
     }
 
     /**
@@ -282,7 +422,7 @@ public class Demo {
         LocalDate dateY2K = LocalDate.of(2000, Month.JANUARY, 1);
         datePicker2.setDate(dateY2K);
         // Display message.
-        String dateString = datePicker2.getISODateStringOrSuppliedString("(null)");
+        String dateString = datePicker2.getDateStringOrSuppliedString("(null)");
         String message = "The datePicker2 date was set to New Years 2000!\n\n";
         message += ("The datePicker2 date is currently set to: " + dateString + ".");
         panel.messageTextArea.setText(message);
@@ -337,7 +477,7 @@ public class Demo {
         // Display message.
         String message = "The datePicker1 and datePicker2 dates were cleared!\n\n";
         message += getDatePickerOneDateText() + "\n";
-        String date2String = datePicker2.getISODateStringOrSuppliedString("(null)");
+        String date2String = datePicker2.getDateStringOrSuppliedString("(null)");
         message += ("The datePicker2 date is currently set to: " + date2String + ".");
         panel.messageTextArea.setText(message);
     }
@@ -348,7 +488,7 @@ public class Demo {
      */
     private static String getDatePickerOneDateText() {
         // Create date string for date picker 1.
-        String dateString = datePicker1.getISODateStringOrSuppliedString("(null)");
+        String dateString = datePicker1.getDateStringOrSuppliedString("(null)");
         return ("The datePicker1 date is currently set to: " + dateString + ".");
     }
 
@@ -367,9 +507,9 @@ public class Demo {
         JButton setTwoWithY2K = new JButton("Set DatePicker Two with New Years Day 2000");
         setTwoWithY2K.addActionListener(e -> setTwoWithY2KButtonClicked(e));
         buttonPanel.add(setTwoWithY2K);
-        JButton setOneWithTwo = new JButton("Set DatePicker One with the date in Two");
-        setOneWithTwo.addActionListener(e -> setOneWithTwoButtonClicked(e));
-        buttonPanel.add(setOneWithTwo);
+        JButton setDateOneWithTwo = new JButton("Set DatePicker One with the date in Two");
+        setDateOneWithTwo.addActionListener(e -> setOneWithTwoButtonClicked(e));
+        buttonPanel.add(setDateOneWithTwo);
         JButton setOneWithFeb31 = new JButton("Set Text in DatePicker One to February 31, 1950");
         setOneWithFeb31.addActionListener(e -> setOneWithFeb31ButtonClicked(e));
         buttonPanel.add(setOneWithFeb31);
@@ -383,10 +523,21 @@ public class Demo {
         toggleButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                toggleOneButtonClicked();
+                toggleDateOneButtonClicked();
             }
         });
         buttonPanel.add(toggleButton);
+        JButton setTimeOneWithTwo = new JButton("TimePickers: Set TimePicker One with the time in Two");
+        setTimeOneWithTwo.addActionListener(e -> setTimeOneWithTimeTwoButtonClicked(e));
+        buttonPanel.add(setTimeOneWithTwo);
+        JButton timeToggleButton = new JButton("Toggle TimePicker One");
+        timeToggleButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                toggleTimeOneButtonClicked();
+            }
+        });
+        buttonPanel.add(timeToggleButton);
     }
 
     /**
@@ -417,9 +568,9 @@ public class Demo {
     }
 
     /**
-     * toggleOneButtonClicked, This toggles (opens or closes) date picker one.
+     * toggleDateOneButtonClicked, This toggles (opens or closes) date picker one.
      */
-    private static void toggleOneButtonClicked() {
+    private static void toggleDateOneButtonClicked() {
         datePicker1.togglePopup();
         String message = "The datePicker1 calendar popup is ";
         message += (datePicker1.isPopupOpen()) ? "open!" : "closed!";
@@ -427,10 +578,109 @@ public class Demo {
     }
 
     /**
-     * SampleVetoPolicy, A veto policy is a way to disallow certain dates from being selected in
+     * toggleTimeOneButtonClicked, This toggles (opens or closes) time picker one.
+     */
+    private static void toggleTimeOneButtonClicked() {
+        timePicker1.togglePopup();
+        String message = "The timePicker1 menu popup is ";
+        message += (timePicker1.isPopupOpen()) ? "open!" : "closed!";
+        panel.messageTextArea.setText(message);
+    }
+
+    /**
+     * SampleDateChangeListener, A date change listener provides a way for a class to receive
+     * notifications whenever the date has changed in a DatePicker.
+     */
+    private static class SampleDateChangeListener implements DateChangeListener {
+
+        /**
+         * datePickerName, This holds a chosen name for the date picker that we are listening to,
+         * for generating date change messages in the demo.
+         */
+        public String datePickerName;
+
+        /**
+         * Constructor.
+         */
+        private SampleDateChangeListener(String datePickerName) {
+            this.datePickerName = datePickerName;
+        }
+
+        /**
+         * dateChanged, This function will be called each time that the date in the applicable date
+         * picker has changed. Both the old date, and the new date, are supplied in the event
+         * object. Note that either parameter may contain null, which represents a cleared or empty
+         * date.
+         */
+        @Override
+        public void dateChanged(DateChangeEvent event) {
+            LocalDate oldDate = event.getOldDate();
+            LocalDate newDate = event.getNewDate();
+            String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
+            String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
+            String messageStart = "\nThe date in " + datePickerName + " has changed from: ";
+            String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
+            if (!panel.messageTextArea.getText().startsWith(messageStart)) {
+                panel.messageTextArea.setText("");
+            }
+            panel.messageTextArea.append(fullMessage);
+        }
+    }
+
+    /**
+     * SampleDateTimeChangeListener, A DateTimeChangeListener provides a way for a class to receive
+     * notifications whenever the date or time has changed in a DateTimePicker.
+     */
+    private static class SampleDateTimeChangeListener implements DateTimeChangeListener {
+
+        /**
+         * dateTimePickerName, This holds a chosen name for the component that we are listening to,
+         * for generating time change messages in the demo.
+         */
+        public String dateTimePickerName;
+
+        /**
+         * Constructor.
+         */
+        private SampleDateTimeChangeListener(String dateTimePickerName) {
+            this.dateTimePickerName = dateTimePickerName;
+        }
+
+        /**
+         * dateOrTimeChanged, This function will be called whenever the in date or time in the
+         * applicable DateTimePicker has changed.
+         */
+        @Override
+        public void dateOrTimeChanged(DateTimeChangeEvent event) {
+            // Report on the overall DateTimeChangeEvent.
+            String messageStart = "\n\nThe LocalDateTime in " + dateTimePickerName + " has changed from: (";
+            String fullMessage = messageStart + event.getOldDateTime() + ") to (" + event.getNewDateTime() + ").";
+            if (!panel.messageTextArea.getText().startsWith(messageStart)) {
+                panel.messageTextArea.setText("");
+            }
+            panel.messageTextArea.append(fullMessage);
+            // Report on any DateChangeEvent, if one exists.
+            DateChangeEvent dateEvent = event.getDateChangeEvent();
+            if (dateEvent != null) {
+                String dateChangeMessage = "\nThe DatePicker value has changed from (" + dateEvent.getOldDate()
+                        + ") to (" + dateEvent.getNewDate() + ").";
+                panel.messageTextArea.append(dateChangeMessage);
+            }
+            // Report on any TimeChangeEvent, if one exists.
+            TimeChangeEvent timeEvent = event.getTimeChangeEvent();
+            if (timeEvent != null) {
+                String timeChangeMessage = "\nThe TimePicker value has changed from ("
+                        + timeEvent.getOldTime() + ") to (" + timeEvent.getNewTime() + ").";
+                panel.messageTextArea.append(timeChangeMessage);
+            }
+        }
+    }
+
+    /**
+     * SampleDateVetoPolicy, A veto policy is a way to disallow certain dates from being selected in
      * calendar. A vetoed date cannot be selected by using the keyboard or the mouse.
      */
-    private static class SampleVetoPolicy implements DateVetoPolicy {
+    private static class SampleDateVetoPolicy implements DateVetoPolicy {
 
         /**
          * isDateAllowed, Return true if a date should be allowed, or false if a date should be
@@ -480,44 +730,61 @@ public class Demo {
     }
 
     /**
-     * SampleDateChangeListener, A date change listener provides a way for a class to receive
-     * notifications whenever the date has changed in a DatePicker.
+     * SampleTimeChangeListener, A time change listener provides a way for a class to receive
+     * notifications whenever the time has changed in a TimePicker.
      */
-    private static class SampleDateChangeListener implements DateChangeListener {
+    private static class SampleTimeChangeListener implements TimeChangeListener {
 
         /**
-         * datePickerName, This holds a chosen name for the date picker that we are listening to,
-         * for generating date change messages in the demo.
+         * timePickerName, This holds a chosen name for the time picker that we are listening to,
+         * for generating time change messages in the demo.
          */
-        public String datePickerName;
+        public String timePickerName;
 
         /**
          * Constructor.
          */
-        private SampleDateChangeListener(String datePickerName) {
-            this.datePickerName = datePickerName;
+        private SampleTimeChangeListener(String timePickerName) {
+            this.timePickerName = timePickerName;
         }
 
         /**
-         * dateChanged, This function will be called each time that the date in the applicable date
-         * picker has changed. Both the old date, and the new date, are supplied in the event
-         * object. Note that either parameter may contain null, which represents a cleared or empty
-         * date.
+         * timeChanged, This function will be called whenever the time in the applicable time picker
+         * has changed. Note that the value may contain null, which represents a cleared or empty
+         * time.
          */
         @Override
-        public void dateChanged(DateChangeEvent event) {
-            LocalDate oldDate = event.getOldDate();
-            LocalDate newDate = event.getNewDate();
-            String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
-            String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
-            String messageStart = "\nThe date in " + datePickerName + " has changed from: ";
-            String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
+        public void timeChanged(TimeChangeEvent event) {
+            LocalTime oldTime = event.getOldTime();
+            LocalTime newTime = event.getNewTime();
+            String oldTimeString = PickerUtilities.localTimeToString(oldTime, "(null)");
+            String newTimeString = PickerUtilities.localTimeToString(newTime, "(null)");
+            String messageStart = "\nThe time in " + timePickerName + " has changed from: ";
+            String fullMessage = messageStart + oldTimeString + " to: " + newTimeString + ".";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {
                 panel.messageTextArea.setText("");
             }
             panel.messageTextArea.append(fullMessage);
         }
+    }
 
+    /**
+     * SampleTimeVetoPolicy, A veto policy is a way to disallow certain times from being selected in
+     * the time picker. A vetoed time cannot be added to the time drop down menu. A vetoed time
+     * cannot be selected by using the keyboard or the mouse.
+     */
+    private static class SampleTimeVetoPolicy implements TimeVetoPolicy {
+
+        /**
+         * isTimeAllowed, Return true if a time should be allowed, or false if a time should be
+         * vetoed.
+         */
+        @Override
+        public boolean isTimeAllowed(LocalTime time) {
+            // Only allow times from 9a to 5p, inclusive.
+            return PickerUtilities.isLocalTimeInRange(
+                    time, LocalTime.of(9, 00), LocalTime.of(17, 00), true);
+        }
     }
 
 }

@@ -1,5 +1,8 @@
 package com.lgooddatepicker.datepicker;
 
+import javax.swing.border.*;
+import com.jgoodies.forms.factories.*;
+import com.jgoodies.forms.layout.*;
 import com.lgooddatepicker.zinternaltools.CalendarPanel;
 import java.awt.*;
 import com.lgooddatepicker.zinternaltools.InternalUtilities;
@@ -19,13 +22,15 @@ import com.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
 import com.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.util.ArrayList;
 import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.lgooddatepicker.zinternaltools.InternalConstants;
 
 /**
  * DatePicker, This class implements a date picker GUI component.
  *
  * This class supports a complete set of "default functionality" without requiring any
  * DatePickerSettings. However, the settings of a date picker can optionally be customized by
- * creating a DatePickerSettings instance and passing it to the DatePicker constructor.
+ * creating a DatePickerSettings instance and passing it to the DatePicker constructor. After the
+ * date picker is constructed, the settings instance should not be changed.
  *
  * By default, the language and internationalization settings of a date picker are determined from
  * the operating system defaults using Locale.getDefault(). If desired, the locale and language can
@@ -35,15 +40,15 @@ import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
  * Automatic Date Validation: Every date picker stores its current text, and its last valid date.
  * The last valid date is returned when you call DatePicker.getDate(). If a person uses their
  * keyboard to type into the text field, any text that is not a valid date will be displayed in red,
- * any vetoed date will have a strikethrough, and any valid date will display in black. Valid dates
- * are automatically committed to the date picker. Any invalid or vetoed text is automatically
+ * any vetoed date will have a strikethrough, and any valid date will be displayed in black. Valid
+ * dates are automatically committed to the date picker. Any invalid or vetoed text is automatically
  * reverted to the last valid date whenever the the date picker loses focus.
  *
  * <code>
  * // Basic usage example:
  * // Create a date picker.
  * DatePicker datePicker = new DatePicker();
- * // Create a panel, and add the date picker. The date picker should be working at this point.
+ * // Create a panel, and add the date picker.
  * JPanel panel = new JPanel();
  * panel.add(datePicker);
  * </code>
@@ -123,7 +128,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * system locale and language, and default date picker settings.
      */
     public DatePicker() {
-        this(new DatePickerSettings());
+        this(null);
     }
 
     /**
@@ -131,15 +136,31 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * picker settings.
      */
     public DatePicker(DatePickerSettings settings) {
-        this.convert = new Convert(this);
+        settings = (settings == null) ? new DatePickerSettings() : settings;
         this.settings = settings;
+        this.convert = new Convert(this);
         initComponents();
-        // Add a change listener to the text field.
-        zAddTextChangeListener();
         // Shrink the toggle calendar button to a reasonable size.
         toggleCalendarButton.setMargin(new java.awt.Insets(1, 2, 1, 2));
-        // Set the editability of the date picker.
-        this.dateTextField.setEditable(settings.allowKeyboardEditing);
+        // Set the gap size between the text field and the toggle calendar button.
+        int gapPixels = (settings.gapBeforeButtonPixels == null)
+                ? 3 : settings.gapBeforeButtonPixels;
+        setGapSize(gapPixels, ConstantSize.PIXEL);
+        // Add a change listener to the text field.
+        zAddTextChangeListener();
+        // Set the editability of the text field.
+        // This should be done before setting the default text field background color.
+        dateTextField.setEditable(settings.allowKeyboardEditing);
+        // Set the text field color and font attributes to normal.
+        dateTextField.setBackground(Color.white);
+        dateTextField.setForeground(settings.colorTextValidDate);
+        dateTextField.setFont(settings.fontValidDate);
+        // Set the text field border color based on whether the text field is editable.
+        Color textFieldBorderColor = (settings.allowKeyboardEditing)
+                ? InternalConstants.colorEditableTextFieldBorder
+                : InternalConstants.colorNotEditableTextFieldBorder;
+        dateTextField.setBorder(new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
         // Make sure that the initial date is in a valid state.
         if (settings.allowEmptyDates == false && settings.initialDate == null) {
             settings.initialDate = LocalDate.now();
@@ -161,7 +182,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * clear, This will clear the date picker text. This will also clear the last valid date.
      */
     public void clear() {
-        // Callinghim him this function with null clears the date picker text and the last valid date.
+        // Calling this function with null clears the date picker text and the last valid date.
         setDate(null);
     }
 
@@ -220,40 +241,33 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
-     * getISODateStringOrEmptyString, This returns the last valid date in the ISO-8601 format
-     * (uuuu-MM-dd). Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have
-     * 11 characters, due to the addition of a minus sign before the year. If the last valid date is
-     * empty, this will return an empty string ("").
+     * getDateChangeListeners, This returns a new ArrayList, that contains any date change listeners
+     * that are registered with this DatePicker.
      */
-    public String getISODateStringOrEmptyString() {
+    public ArrayList<DateChangeListener> getDateChangeListeners() {
+        return new ArrayList<>(dateChangeListeners);
+    }
+
+    /**
+     * getDateStringOrEmptyString, This returns the last valid date in an ISO-8601 formatted string
+     * "uuuu-MM-dd". For any CE years that are between 0 and 9999 inclusive, the output will have a
+     * fixed length of 10 characters. Years before or after that range will output longer strings.
+     * If the last valid date is empty, this will return an empty string ("").
+     */
+    public String getDateStringOrEmptyString() {
         LocalDate date = getDate();
         return (date == null) ? "" : date.toString();
     }
 
     /**
-     * getISODateStringOrSuppliedString, This returns the last valid date in the ISO-8601 format
-     * (uuuu-MM-dd). Non-empty AD dates are a fixed length of 10 characters. Any BC dates will have
-     * 11 characters, due to the addition of a minus sign before the year. If the last valid date is
-     * empty, this will return the value of emptyDateString.
+     * getDateStringOrSuppliedString, This returns the last valid date in an ISO-8601 formatted
+     * string "uuuu-MM-dd". For any CE years that are between 0 and 9999 inclusive, the output will
+     * have a fixed length of 10 characters. Years before or after that range will output longer
+     * strings. If the last valid date is empty, this will return the value of emptyDateString.
      */
-    public String getISODateStringOrSuppliedString(String emptyDateString) {
+    public String getDateStringOrSuppliedString(String emptyDateString) {
         LocalDate date = getDate();
         return (date == null) ? emptyDateString : date.toString();
-    }
-
-    /**
-     * getListOfDateChangeListeners, This returns a new ArrayList, that contains any date change
-     * listeners that are registered with this DatePicker.
-     */
-    public ArrayList<DateChangeListener> getListOfDateChangeListeners() {
-        return new ArrayList<>(dateChangeListeners);
-    }
-
-    /**
-     * getSettings, This returns the date picker settings instance.
-     */
-    public DatePickerSettings getSettings() {
-        return settings;
     }
 
     /**
@@ -264,6 +278,24 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     public String getText() {
         return dateTextField.getText();
+    }
+
+    /**
+     * isDateAllowed, This checks to see if the specified date is allowed by any currently set veto
+     * policy, and allowed by the current setting of allowEmptyDates.
+     *
+     * If allowEmptyDates is false, and the specified date is null, then this returns false.
+     *
+     * If a veto policy exists, and the specified date is vetoed, then this returns false.
+     *
+     * If the date is not vetoed, or if empty dates are allowed and the date is null, then this
+     * returns true.
+     */
+    public boolean isDateAllowed(LocalDate date) {
+        if (date == null) {
+            return settings.allowEmptyDates;
+        }
+        return (!(InternalUtilities.isDateVetoed(settings.vetoPolicy, date)));
     }
 
     /**
@@ -324,6 +356,19 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         return true;
     }
 
+    /**
+     * openPopup, This opens the calendar popup.
+     *
+     * If the date picker contains a lastValidDate, the calendar will be opened to the month and
+     * year of the lastValidDate, with the lastValidDate marked as selected.
+     *
+     * If the lastValidDate is null, then the calendar will be opened with today's month and year
+     * displayed, and no date will be selected.
+     *
+     * This function creates a new calendar and a new custom popup instance each time that it is
+     * called. The associated object instances are automatically disposed and set to null when a
+     * popup is closed.
+     */
     public void openPopup() {
         // If this function was called programmatically, we may need to change the focus to this
         // popup.
@@ -333,7 +378,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Get the last valid date, to pass to the calendar if needed.
         LocalDate selectedDateForCalendar = lastValidDate;
         // Create a new calendar panel.
-        calendarPanel = new CalendarPanel(this);
+        calendarPanel = new CalendarPanel(this, settings);
         if (selectedDateForCalendar != null) {
             calendarPanel.setDisplayedSelectedDate(selectedDateForCalendar);
             calendarPanel.drawCalendar(YearMonth.from(selectedDateForCalendar));
@@ -352,29 +397,37 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
-     * removeAllDateChangeListeners, This removes all date change listeners that are registered with
-     * this DatePicker.
-     */
-    public void removeAllDateChangeListeners() {
-        dateChangeListeners.clear();
-    }
-
-    /**
-     * removeDateChangeListener, This removes a date change listener from this date picker. For
-     * additional details, see the DateChangeListener class documentation.
+     * removeDateChangeListener, This removes the specified date change listener from this date
+     * picker.
      */
     public void removeDateChangeListener(DateChangeListener listener) {
         dateChangeListeners.remove(listener);
     }
 
     /**
-     * setDate, This uses the supplied date to set both the text field, and to set the last valid
-     * date. If the supplied date is null, this will clear the date picker. A null value will have
-     * the same effect as DatePicker.clear().
+     * setDate, This sets this date picker to the specified date. Dates that are set from this
+     * function are processed through the same validation procedures as dates that are entered by
+     * the user.
      *
-     * Implementation Note: Any time that the text field changes to a valid date string, the
-     * lastValidDate is also automatically set. This occurs through the DocumentListener which is
-     * registered on the dateTextField.
+     * More specifically:
+     * 
+     * The "veto policy" and "allowEmptyTimes" settings are used to determine whether or not a
+     * particular value is "allowed".
+     *
+     * Allowed values will be set in the text field, and also committed to the "last valid value".
+     * Disallowed values will be set in the text field (with a disallowed indicator font), but will
+     * not be committed to the "last valid value".
+     * 
+     * A date value can be checked against any current veto policy, and against the allowEmptyDates
+     * setting, by calling isDateAllowed(). This can be used to determine (in advance), if a
+     * particular value would be allowed.
+     *
+     * Note: If empty dates are allowed, and the component does not have a veto policy, then all
+     * possible values will (always) be allowed. These are the default settings of this component.
+     *
+     * Implementation Note: Whenever the text field changes to a valid date string, the
+     * lastValidDate is also automatically set (unless the date is vetoed). This occurs through the
+     * DocumentListener which is registered on the dateTextField.
      */
     public final void setDate(LocalDate optionalDate) {
         // Set the text field to the supplied date, using the standard format for null, AD, or BC.
@@ -389,10 +442,21 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * setGapSize, This sets the size of the gap between the date picker and the toggle calendar
+     * button.
+     */
+    public void setGapSize(int gapSize, ConstantSize.Unit units) {
+        ConstantSize gapSizeObject = new ConstantSize(gapSize, units);
+        ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
+        FormLayout layout = (FormLayout) getLayout();
+        layout.setColumnSpec(2, columnSpec);
+    }
+
+    /**
      * setText, This sets the text of the date picker text field to the supplied value. This will
      * have the same effect on the last valid date as if the user was typing into the text field. In
      * other words, it may or may not change the last valid date. This should not be used to set the
-     * date of the text field, instead use DatePicker.setDate().
+     * date of the date picker, instead use DatePicker.setDate().
      */
     public void setText(String text) {
         zInternalSetDateTextField(text);
@@ -400,14 +464,15 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
-     * toString, This returns the last valid date in the ISO-8601 format (uuuu-MM-dd). Non-empty AD
-     * dates are a fixed length of 10 characters. Any BC dates will have 11 characters, due to the
-     * addition of a minus sign before the year. If the last valid date is empty, this will return
-     * an empty string (""). This returns the same value as getISODateStringOrEmptyString().
+     * toString, This returns the last valid date in an ISO-8601 formatted string "uuuu-MM-dd". For
+     * any CE years that are between 0 and 9999 inclusive, the output will have a fixed length of 10
+     * characters. Years before or after that range will output longer strings. If the last valid
+     * date is empty, this will return an empty string (""). This returns the same value as
+     * getDateStringOrEmptyString().
      */
     @Override
     public String toString() {
-        return getISODateStringOrEmptyString();
+        return getDateStringOrEmptyString();
     }
 
     /**
@@ -416,18 +481,6 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      *
      * This is called when the user clicks on the toggle calendar button of the date picker. This
      * function does not generally need to be called programmatically.
-     *
-     * If the date picker contains a lastValidDate, the calendar will be opened to the month and
-     * year of the lastValidDate, with the lastValidDate marked as selected.
-     *
-     * If the lastValidDate is null, then the calendar will be opened with today's month and year
-     * displayed, and no date will be selected.
-     *
-     * This function creates a new calendar and a new custom popup instance each time that it is
-     * called. The associated object instances are automatically disposed and set to null when a
-     * popup is closed.
-     *
-     *
      */
     public void togglePopup() {
         // If a popup calendar was closed in the last 200 milliseconds, then do not open a new one.
@@ -498,7 +551,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
 
     /**
      * zGetStandardTextFieldDateString, This returns a string for the supplied date (or null), in
-     * the standard format which should be used for displaying that date in the text field.
+     * the standard format which could be used for displaying that date in the text field.
      */
     private String zGetStandardTextFieldDateString(LocalDate date) {
         String standardDateString = "";
@@ -619,23 +672,22 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         toggleCalendarButton = new JButton();
 
         //======== this ========
-        setLayout(new GridBagLayout());
-        ((GridBagLayout) getLayout()).columnWidths = new int[]{119, 3, 26, 0};
-        ((GridBagLayout) getLayout()).rowHeights = new int[]{0, 0};
-        ((GridBagLayout) getLayout()).columnWeights = new double[]{1.0, 0.0, 0.0, 1.0E-4};
-        ((GridBagLayout) getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+        setLayout(new FormLayout(
+                "[125px,pref]:grow, [3px,pref], [26px,pref]",
+                "fill:pref:grow"));
 
         //---- dateTextField ----
         dateTextField.setMargin(new Insets(1, 3, 2, 2));
+        dateTextField.setBorder(new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
+                new EmptyBorder(1, 3, 2, 2)));
         dateTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 zEventDateTextFieldFocusLostSoValidateText(e);
             }
         });
-        add(dateTextField, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+        add(dateTextField, CC.xy(1, 1));
 
         //---- toggleCalendarButton ----
         toggleCalendarButton.setText("...");
@@ -647,9 +699,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 zEventToggleCalendarButtonMousePressed(e);
             }
         });
-        add(toggleCalendarButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+        add(toggleCalendarButton, CC.xy(3, 1));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

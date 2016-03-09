@@ -12,6 +12,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.lgooddatepicker.optionalusertools.TimeVetoPolicy;
+import java.time.LocalTime;
 
 /**
  * InternalUtilities, This class contains static functions that are used by the date picker or the
@@ -107,7 +109,10 @@ public class InternalUtilities {
      * FormatStyle.LONG formatter in the specified locale.
      */
     public static DateTimeFormatter generateDefaultFormatterCE(Locale pickerLocale) {
-        return DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(pickerLocale);
+        DateTimeFormatter formatCE = new DateTimeFormatterBuilder().parseLenient().
+                parseCaseInsensitive().appendLocalized(FormatStyle.LONG, null).
+                toFormatter(pickerLocale);
+        return formatCE;
     }
 
     /**
@@ -179,6 +184,36 @@ public class InternalUtilities {
         return parsedDate;
     }
 
+    public static LocalTime getParsedTimeOrNull(String timeText,
+            DateTimeFormatter formatForDisplayTime, DateTimeFormatter formatForMenuTimes,
+            ArrayList<DateTimeFormatter> formatsForParsing, Locale timePickerLocale) {
+        if (timeText == null || timeText.trim().isEmpty()) {
+            return null;
+        }
+        timeText = timeText.trim().toLowerCase();
+        LocalTime parsedTime = null;
+        if (parsedTime == null) {
+            try {
+                parsedTime = LocalTime.parse(timeText, formatForDisplayTime);
+            } catch (Exception ex) {
+            }
+        }
+        if (parsedTime == null) {
+            try {
+                // Note: each parse attempt must have its own try/catch block. 
+                parsedTime = LocalTime.parse(timeText, formatForMenuTimes);
+            } catch (Exception ex) {
+            }
+        }
+        for (int i = 0; ((parsedTime == null) && (i < formatsForParsing.size())); ++i) {
+            try {
+                parsedTime = LocalTime.parse(timeText, formatsForParsing.get(i));
+            } catch (Exception ex) {
+            }
+        }
+        return parsedTime;
+    }
+
     /**
      * capitalizeFirstLetterOfString, This capitalizes the first letter of the supplied string, in a
      * way that is sensitive to the specified locale.
@@ -212,6 +247,13 @@ public class InternalUtilities {
             return false;
         }
         return (!policy.isDateAllowed(date));
+    }
+
+    public static boolean isTimeVetoed(TimeVetoPolicy policy, LocalTime time) {
+        if (policy == null) {
+            return false;
+        }
+        return (!policy.isTimeAllowed(time));
     }
 
 }

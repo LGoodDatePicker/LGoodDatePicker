@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>3.1.1</version>
+    <version>4.1.2</version>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -59,6 +59,8 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>core</shadedClassifierName> <!-- Any name that makes sense -->
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <mainClass>com.lgooddatepicker.demo.Demo</mainClass>
@@ -94,6 +96,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
+                <configuration>
+                    <!-- Turn off errors resulting from the new (strict) Java 8 Javadoc standards. -->
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -107,10 +113,8 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <configuration>
                     <tasks>
-                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-core.jar"/>
-                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
+                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
                         <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
-                        <delete file="${project.build.directory}/original-${project.artifactId}-${project.version}.jar"/>
                     </tasks>
                 </configuration>
                 <executions>
