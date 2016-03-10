@@ -271,6 +271,13 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * getSettings, This returns the date picker settings instance.
+     */
+    public DatePickerSettings getSettings() {
+        return settings;
+    }
+
+    /**
      * getText, This returns the current text that is present in the date picker text field. This
      * text can contain anything that was written by the user. It is specifically not guaranteed to
      * contain a valid date. This should not be used to retrieve the date picker date. Instead, use
