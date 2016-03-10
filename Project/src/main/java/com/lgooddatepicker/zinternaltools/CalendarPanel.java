@@ -510,6 +510,9 @@ public class CalendarPanel
      * state it should have when there is no mouse hovering over it.
      */
     private void labelIndicatorSetBorderToDefaultState(JLabel label) {
+        if(label == null || settings == null) {
+            return;
+        }
         if (label == labelMonth || label == labelYear) {
             label.setBackground(settings.colorBackgroundMonthAndYear);
             monthAndYearInnerPanel.setBackground(settings.colorBackgroundMonthAndYear);

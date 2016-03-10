@@ -314,6 +314,13 @@ public class TimePicker
     }
 
     /**
+     * getSettings, This returns the time picker settings instance.
+     */
+    public TimePickerSettings getSettings() {
+        return settings;
+    }
+
+    /**
      * getText, This returns the current text that is present in the time picker text field. This
      * text can contain anything that was written by the user. It is specifically not guaranteed to
      * contain a valid time. This should not be used to retrieve the time picker time. Instead, use
