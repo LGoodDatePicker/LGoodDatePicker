@@ -13,7 +13,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 ## General Features:
 * The included components are the DatePicker, the TimePicker, and the DateTimePicker.
 * Provides automatic internationalization.  
-(Month names, weekday names, the default first day of the week, default date formats, and button text.)
+(Month names, weekday names, the default first day of the week, default date and time formats, and button text.)
 * Translations include 22 languages.  
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
