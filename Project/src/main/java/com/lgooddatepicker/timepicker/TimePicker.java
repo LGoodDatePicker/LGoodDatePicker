@@ -152,10 +152,6 @@ public class TimePicker
         // Set the editability of the text field.
         // This should be done before setting the default text field background color.
         timeTextField.setEditable(settings.allowKeyboardEditing);
-        // Set the text field color and font attributes to normal.
-        timeTextField.setBackground(Color.white);
-        timeTextField.setForeground(settings.colorTextValidTime);
-        timeTextField.setFont(settings.fontValidTime);
         // Set the text field border color based on whether the date picker is editable.
         Color textFieldBorderColor = (settings.allowKeyboardEditing)
                 ? InternalConstants.colorEditableTextFieldBorder
@@ -183,6 +179,9 @@ public class TimePicker
         // Set the initial time from the settings.
         // Note that no time listeners can exist until after the constructor has returned.
         setTime(settings.initialTime);
+        // Draw the text field attributes, because they may not have been drawn if the initialTime
+        // was null. (This is because the text would not have changed in that case.)
+        zDrawTextFieldIndicators();
 
         // Create a toggleTimeMenuButton listener for mouse dragging events.
         // Note: The toggleTimeMenuButton listeners should be created here in the constructor, 
@@ -331,6 +330,14 @@ public class TimePicker
     }
 
     /**
+     * isEnabled, Returns true if this component is enabled, otherwise returns false.
+     */
+    @Override
+    public boolean isEnabled() {
+        return super.isEnabled();
+    }
+
+    /**
      * isPopupOpen, This returns true if the time menu popup is open. This returns false if the time
      * menu popup is closed
      */
@@ -414,6 +421,10 @@ public class TimePicker
      * popup is closed.
      */
     public void openPopup() {
+        // If the component is disabled, do nothing.
+        if (!isEnabled()) {
+            return;
+        }
         // If this function was called programmatically, we may need to change the focus to this
         // popup.
         if (!timeTextField.hasFocus()) {
@@ -456,6 +467,27 @@ public class TimePicker
         ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
         FormLayout layout = (FormLayout) getLayout();
         layout.setColumnSpec(2, columnSpec);
+    }
+
+    /**
+     * setEnabled, This enables or disables the time picker. When the time picker is enabled, times
+     * can be selected by the user using any methods that are allowed by the current settings. When
+     * the time picker is disabled, there is no way for the user to interact with the component.
+     * More specifically, times cannot be selected with the mouse, or with the keyboard, and the
+     * time picker components change their color scheme to indicate the disabled state. Any
+     * currently stored text and last valid time values are retained while the component is
+     * disabled.
+     */
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (enabled == false) {
+            closePopup();
+        }
+        zEventTimeTextFieldFocusLostSoValidateText(null);
+        super.setEnabled(enabled);
+        toggleTimeMenuButton.setEnabled(enabled);
+        timeTextField.setEnabled(enabled);
+        zDrawTextFieldIndicators();
     }
 
     /**
@@ -548,19 +580,74 @@ public class TimePicker
         timeTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+                zEventTextFieldChanged();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+                zEventTextFieldChanged();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+                zEventTextFieldChanged();
             }
         });
+    }
+
+    /**
+     * zDrawTextFieldIndicators, This will draw the text field indicators, to indicate to the user
+     * the state of the text in the text field.
+     *
+     * Possibilities list: DisabledComponent, ValidFullOrEmptyValue, UnparsableValue, VetoedValue,
+     * DisallowedEmptyValue.
+     */
+    private void zDrawTextFieldIndicators() {
+        if (!isEnabled()) {
+            // (Possibility: DisabledComponent)
+            // Note: The time should always be validated (as if the component lost focus), before
+            // the component is disabled.
+            timeTextField.setBackground(new Color(240, 240, 240));
+            timeTextField.setForeground(new Color(109, 109, 109));
+            timeTextField.setFont(settings.fontValidTime);
+            return;
+        }
+        // Reset all atributes to normal before going further.
+        // (Possibility: ValidFullOrEmptyValue)
+        timeTextField.setBackground(Color.white);
+        timeTextField.setForeground(settings.colorTextValidTime);
+        timeTextField.setFont(settings.fontValidTime);
+        // Get the text, and check to see if it is empty.
+        String dateText = timeTextField.getText();
+        boolean textIsEmpty = dateText.trim().isEmpty();
+        // Handle the various possibilities.
+        if (textIsEmpty) {
+            if (settings.allowEmptyTimes) {
+                // (Possibility: ValidFullOrEmptyValue)
+            } else {
+                // (Possibility: DisallowedEmptyValue)
+                timeTextField.setBackground(Color.pink);
+            }
+            return;
+        }
+        // The text is not empty.
+        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(dateText,
+                settings.formatForDisplayTime, settings.formatForMenuTimes,
+                settings.formatsForParsing, settings.timePickerLocale);
+        if (parsedTime == null) {
+            // (Possibility: UnparsableValue)
+            timeTextField.setForeground(settings.colorTextInvalidTime);
+            timeTextField.setFont(settings.fontInvalidTime);
+            return;
+        }
+        // The text was parsed to a value.
+        TimeVetoPolicy vetoPolicy = settings.vetoPolicy;
+        boolean isTimeVetoed = InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime);
+        if (isTimeVetoed) {
+            // (Possibility: VetoedValue)
+            timeTextField.setForeground(settings.colorTextVetoedTime);
+            timeTextField.setFont(settings.fontVetoedTime);
+        }
     }
 
     /**
@@ -661,20 +748,21 @@ public class TimePicker
         }
         timeTextField.setText(text);
         skipTextFieldChangedFunctionWhileTrue = false;
-        zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+        zEventTextFieldChanged();
     }
 
     /**
-     * zTextFieldChangedSoIndicateIfValidAndStoreWhenValid, This is called whenever the text in the
-     * time picker text field has changed, whether programmatically or by the user.
-     *
-     * This will change the font and color of the text in the text field to indicate to the user if
-     * the currently text is a valid time, invalid text, or a vetoed time.
+     * zEventTextFieldChanged, This is called whenever the text in the time picker text field has
+     * changed, whether programmatically or by the user.
      *
      * If the current text contains a valid time, it will be stored in the variable lastValidTime.
      * Otherwise, the lastValidTime will not be changed.
+     *
+     * This will also call the function to indicate to the user if the currently text is a valid
+     * time, invalid text, or a vetoed time. These indications are created by using font, color, and
+     * background changes of the text field.
      */
-    private void zTextFieldChangedSoIndicateIfValidAndStoreWhenValid() {
+    private void zEventTextFieldChanged() {
         // Skip this function if it should not be run.
         if (skipTextFieldChangedFunctionWhileTrue) {
             return;
@@ -684,38 +772,28 @@ public class TimePicker
         boolean textIsEmpty = timeText.trim().isEmpty();
         TimeVetoPolicy vetoPolicy = settings.vetoPolicy;
         boolean nullIsAllowed = settings.allowEmptyTimes;
-        // If needed, try to get a parsed time.
+        // If the text is not empty, then try to parse the time.
         LocalTime parsedTime = null;
         if (!textIsEmpty) {
             parsedTime = InternalUtilities.getParsedTimeOrNull(timeText,
                     settings.formatForDisplayTime, settings.formatForMenuTimes,
                     settings.formatsForParsing, settings.timePickerLocale);
         }
-        // Reset all atributes to normal before starting.
-        timeTextField.setBackground(Color.white);
-        timeTextField.setForeground(settings.colorTextValidTime);
-        timeTextField.setFont(settings.fontValidTime);
-        // Handle the various possibilities.
-        // If the text is empty and null is allowed, leave the normal font, and
-        // set lastValidTime to null.
+        // If the time was parsed successfully, then check it against the veto policy.
+        boolean timeIsVetoed = false;
+        if (parsedTime != null) {
+            timeIsVetoed = InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime);
+        }
+        // If the time is a valid empty time, then set the last valid time to null.
         if (textIsEmpty && nullIsAllowed) {
             zInternalSetLastValidTimeAndNotifyListeners(null);
-            // If the text is empty and null is not allowed, set a pink background, and
-            // do not change the lastValidTime.
-        } else if ((textIsEmpty) && (!nullIsAllowed)) {
-            timeTextField.setBackground(Color.pink);
-            // If the text is not valid, set a font indicator, and do not change the lastValidTime.
-        } else if (parsedTime == null) {
-            timeTextField.setForeground(settings.colorTextInvalidTime);
-            timeTextField.setFont(settings.fontInvalidTime);
-            // If the ttime is vetoed, set a font indicator, and do not change the lastValidTime.
-        } else if (InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime)) {
-            timeTextField.setForeground(settings.colorTextVetoedTime);
-            timeTextField.setFont(settings.fontVetoedTime);
-        } else {
-            // The time is valid, so leave the normal font, and store the last valid time.
+        }
+        // If the time is a valid parsed time, then store the last valid time.
+        if ((!textIsEmpty) && (parsedTime != null) && (timeIsVetoed == false)) {
             zInternalSetLastValidTimeAndNotifyListeners(parsedTime);
         }
+        // Draw the time status indications for the user.
+        zDrawTextFieldIndicators();
     }
 
     /**

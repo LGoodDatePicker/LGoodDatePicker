@@ -27,6 +27,11 @@ public class ComboBoxTesting extends JPanel {
 		textField1.setBackground(Color.white);
 		textField1.setText("ddttddt");
 		add(textField1, CC.xy(3, 1));
+
+		//---- textField2 ----
+		textField2.setEnabled(false);
+		textField2.setText("ssssssss__--***###");
+		textField2.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		add(textField2, CC.xy(5, 1));
 
 		//---- comboBox1 ----

@@ -151,10 +151,6 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Set the editability of the text field.
         // This should be done before setting the default text field background color.
         dateTextField.setEditable(settings.allowKeyboardEditing);
-        // Set the text field color and font attributes to normal.
-        dateTextField.setBackground(Color.white);
-        dateTextField.setForeground(settings.colorTextValidDate);
-        dateTextField.setFont(settings.fontValidDate);
         // Set the text field border color based on whether the text field is editable.
         Color textFieldBorderColor = (settings.allowKeyboardEditing)
                 ? InternalConstants.colorEditableTextFieldBorder
@@ -168,6 +164,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Set the initial date from the settings.
         // Note that no date listeners can exist until after the constructor has returned.
         setDate(settings.initialDate);
+        // Draw the text field attributes, because they may not have been drawn if the initialDate
+        // was null. (This is because the text would not have changed in that case.)
+        zDrawTextFieldIndicators();
     }
 
     /**
@@ -306,6 +305,14 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * isEnabled, Returns true if this component is enabled, otherwise returns false.
+     */
+    @Override
+    public boolean isEnabled() {
+        return super.isEnabled();
+    }
+
+    /**
      * isPopupOpen, This returns true if the calendar popup is open. This returns false if the
      * calendar popup is closed
      */
@@ -377,6 +384,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * popup is closed.
      */
     public void openPopup() {
+        // If the component is disabled, do nothing.
+        if (!isEnabled()) {
+            return;
+        }
         // If this function was called programmatically, we may need to change the focus to this
         // popup.
         if (!dateTextField.hasFocus()) {
@@ -417,14 +428,14 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * the user.
      *
      * More specifically:
-     * 
+     *
      * The "veto policy" and "allowEmptyTimes" settings are used to determine whether or not a
      * particular value is "allowed".
      *
      * Allowed values will be set in the text field, and also committed to the "last valid value".
      * Disallowed values will be set in the text field (with a disallowed indicator font), but will
      * not be committed to the "last valid value".
-     * 
+     *
      * A date value can be checked against any current veto policy, and against the allowEmptyDates
      * setting, by calling isDateAllowed(). This can be used to determine (in advance), if a
      * particular value would be allowed.
@@ -446,6 +457,27 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         if ((!standardDateString.equals(textFieldString))) {
             zInternalSetDateTextField(standardDateString);
         }
+    }
+
+    /**
+     * setEnabled, This enables or disables the date picker. When the date picker is enabled, dates
+     * can be selected by the user using any methods that are allowed by the current settings. When
+     * the date picker is disabled, there is no way for the user to interact with the component.
+     * More specifically, dates cannot be selected with the mouse, or with the keyboard, and the
+     * date picker components change their color scheme to indicate the disabled state. Any
+     * currently stored text and last valid date values are retained while the component is
+     * disabled.
+     */
+    @Override
+    public void setEnabled(boolean enabled) {
+        if (enabled == false) {
+            closePopup();
+        }
+        zEventDateTextFieldFocusLostSoValidateText(null);
+        super.setEnabled(enabled);
+        toggleCalendarButton.setEnabled(enabled);
+        dateTextField.setEnabled(enabled);
+        zDrawTextFieldIndicators();
     }
 
     /**
@@ -507,17 +539,17 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         dateTextField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+                zEventTextFieldChanged();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+                zEventTextFieldChanged();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+                zEventTextFieldChanged();
             }
         });
     }
@@ -584,7 +616,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         skipTextFieldChangedFunctionWhileTrue = true;
         dateTextField.setText(text);
         skipTextFieldChangedFunctionWhileTrue = false;
-        zTextFieldChangedSoIndicateIfValidAndStoreWhenValid();
+        zEventTextFieldChanged();
     }
 
     /**
@@ -605,16 +637,17 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
-     * zTextFieldChangedSoIndicateIfValidAndStoreWhenValid, This is called whenever the text in the
-     * date picker text field has changed, whether programmatically or by the user.
-     *
-     * This will change the font and color of the text in the text field to indicate to the user if
-     * the currently text is a valid date, invalid text, or a vetoed date.
+     * zEventTextFieldChanged, This is called whenever the text in the date picker text field has
+     * changed, whether programmatically or by the user.
      *
      * If the current text contains a valid date, it will be stored in the variable lastValidDate.
      * Otherwise, the lastValidDate will not be changed.
+     *
+     * This will also call the function to indicate to the user if the currently text is a valid
+     * date, invalid text, or a vetoed date. These indications are created by using font, color, and
+     * background changes of the text field.
      */
-    private void zTextFieldChangedSoIndicateIfValidAndStoreWhenValid() {
+    private void zEventTextFieldChanged() {
         // Skip this function if it should not be run.
         if (skipTextFieldChangedFunctionWhileTrue) {
             return;
@@ -624,38 +657,28 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         boolean textIsEmpty = dateText.trim().isEmpty();
         DateVetoPolicy vetoPolicy = settings.vetoPolicy;
         boolean nullIsAllowed = settings.allowEmptyDates;
-        // If needed, try to get a parsed date.
+        // If the text is not empty, then try to parse the date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
             parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
                     settings.formatForDatesCommonEra, settings.formatForDatesBeforeCommonEra,
                     settings.formatsForParsing, settings.pickerLocale);
         }
-        // Reset all atributes to normal before starting.
-        dateTextField.setBackground(Color.white);
-        dateTextField.setForeground(settings.colorTextValidDate);
-        dateTextField.setFont(settings.fontValidDate);
-        // Handle the various possibilities.
-        // If the text is empty and null is allowed, leave the normal font, and
-        // set lastValidDate to null.
+        // If the date was parsed successfully, then check it against the veto policy.
+        boolean dateIsVetoed = false;
+        if (parsedDate != null) {
+            dateIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, parsedDate);
+        }
+        // If the date is a valid empty date, then set the last valid date to null.
         if (textIsEmpty && nullIsAllowed) {
             zInternalSetLastValidDateAndNotifyListeners(null);
-            // If the text is empty and null is not allowed, set a pink background, and
-            // do not change the lastValidDate.
-        } else if ((textIsEmpty) && (!nullIsAllowed)) {
-            dateTextField.setBackground(Color.pink);
-            // If the text is not valid, set a font indicator, and do not change the lastValidDate.
-        } else if (parsedDate == null) {
-            dateTextField.setForeground(settings.colorTextInvalidDate);
-            dateTextField.setFont(settings.fontInvalidDate);
-            // If the date is vetoed, set a font indicator, and do not change the lastValidDate.
-        } else if (InternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
-            dateTextField.setForeground(settings.colorTextVetoedDate);
-            dateTextField.setFont(settings.fontVetoedDate);
-        } else {
-            // The date is valid, so leave the normal font, and store the last valid date.
+        }
+        // If the date is a valid parsed date, then store the last valid date.
+        if ((!textIsEmpty) && (parsedDate != null) && (dateIsVetoed == false)) {
             zInternalSetLastValidDateAndNotifyListeners(parsedDate);
         }
+        // Draw the date status indications for the user.
+        zDrawTextFieldIndicators();
     }
 
     /**
@@ -711,6 +734,61 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * zDrawTextFieldIndicators, This will draw the text field indicators, to indicate to the user
+     * the state of the text in the text field.
+     *
+     * Possibilities list: DisabledComponent, ValidFullOrEmptyValue, UnparsableValue, VetoedValue,
+     * DisallowedEmptyValue.
+     */
+    private void zDrawTextFieldIndicators() {
+        if (!isEnabled()) {
+            // (Possibility: DisabledComponent)
+            // Note: The date should always be validated (as if the component lost focus), before
+            // the component is disabled.
+            dateTextField.setBackground(new Color(240, 240, 240));
+            dateTextField.setForeground(new Color(109, 109, 109));
+            dateTextField.setFont(settings.fontValidDate);
+            return;
+        }
+        // Reset all atributes to normal before going further.
+        // (Possibility: ValidFullOrEmptyValue)
+        dateTextField.setBackground(Color.white);
+        dateTextField.setForeground(settings.colorTextValidDate);
+        dateTextField.setFont(settings.fontValidDate);
+        // Get the text, and check to see if it is empty.
+        String dateText = dateTextField.getText();
+        boolean textIsEmpty = dateText.trim().isEmpty();
+        // Handle the various possibilities.
+        if (textIsEmpty) {
+            if (settings.allowEmptyDates) {
+                // (Possibility: ValidFullOrEmptyValue)
+            } else {
+                // (Possibility: DisallowedEmptyValue)
+                dateTextField.setBackground(Color.pink);
+            }
+            return;
+        }
+        // The text is not empty.
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
+                settings.formatForDatesCommonEra, settings.formatForDatesBeforeCommonEra,
+                settings.formatsForParsing, settings.pickerLocale);
+        if (parsedDate == null) {
+            // (Possibility: UnparsableValue)
+            dateTextField.setForeground(settings.colorTextInvalidDate);
+            dateTextField.setFont(settings.fontInvalidDate);
+            return;
+        }
+        // The text was parsed to a value.
+        DateVetoPolicy vetoPolicy = settings.vetoPolicy;
+        boolean isDateVetoed = InternalUtilities.isDateVetoed(vetoPolicy, parsedDate);
+        if (isDateVetoed) {
+            // (Possibility: VetoedValue)
+            dateTextField.setForeground(settings.colorTextVetoedDate);
+            dateTextField.setFont(settings.fontVetoedDate);
+        }
+    }
+
+    /**
      * zEventCustomPopupWasClosed, This is called automatically whenever the CustomPopup that is
      * associated with this date picker is closed. This should be called regardless of the type of
      * event which caused the popup to close.
@@ -728,5 +806,4 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         calendarPanel = null;
         lastPopupCloseTime = Instant.now();
     }
-
 }
