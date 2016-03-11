@@ -1,10 +1,14 @@
 package com.lgooddatepicker.ysandbox;
 
+import com.lgooddatepicker.datepicker.DatePicker;
+import com.lgooddatepicker.datepicker.DatePickerSettings;
 import com.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.lgooddatepicker.timepicker.TimePicker;
 import com.lgooddatepicker.timepicker.TimePickerSettings;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -23,13 +27,6 @@ public class TestStart {
 
     public static void main(String[] args) {
 
-        Locale timeLocale = Locale.getDefault();
-        DateTimeFormatter defaultDisplayFormatter = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                appendLocalized(null, FormatStyle.SHORT).toFormatter(timeLocale);
-        LocalTime nowLocalTime = LocalTime.now();
-        String nowString = defaultDisplayFormatter.format(nowLocalTime);
-        LocalTime nowLocalTimeFromString = LocalTime.parse(nowString, defaultDisplayFormatter);
-
         ///////////////////////////////////////////////////////////////////////////////////////////
         // Create a frame, a panel, and our demo buttons.
         JFrame frame = new JFrame();
@@ -40,20 +37,24 @@ public class TestStart {
         // Locale timePickerLocale = Locale.forLanguageTag("zh");
         Locale timePickerLocale = Locale.forLanguageTag("en");
         TimePickerSettings timeSettings = new TimePickerSettings(timePickerLocale);
-        timeSettings.allowEmptyTimes = false;
-        timeSettings.initialTime = LocalTime.of(7, 0);
-        timeSettings.borderTimePopup = new LineBorder(Color.red);
-        /*
-        timeSettings.vetoPolicy = new TimeVetoPolicy() {
-            @Override
-            public boolean isTimeAllowed(LocalTime time) {
-                return (time.getHour() > 6 && time.getHour() < 23);
-            }
-        };
-         */
         TimePicker timePicker = new TimePicker(timeSettings);
+        timePicker.setText("heya");
         panel.add(timePicker);
-        panel.add(new JButton("Hi"));
+
+        Locale datePickerLocale = Locale.forLanguageTag("en");
+        DatePickerSettings dateSettings = new DatePickerSettings(datePickerLocale);
+        DatePicker datePicker = new DatePicker(dateSettings);
+        panel.add(datePicker);
+
+        JButton button = new JButton("Enable or disable the picker");
+        panel.add(button);
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timePicker.setEnabled(!timePicker.isEnabled());
+            }
+        });
 
         // Display the frame.
         frame.pack();

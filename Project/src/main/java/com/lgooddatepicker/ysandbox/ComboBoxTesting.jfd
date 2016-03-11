@@ -19,6 +19,9 @@ new FormModel {
 			} )
 			add( new FormComponent( "javax.swing.JTextField" ) {
 				name: "textField2"
+				"enabled": false
+				"text": "ssssssss__--***###"
+				"font": new java.awt.Font( "Segoe UI", 1, 18 )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 5
 				"gridY": 1
