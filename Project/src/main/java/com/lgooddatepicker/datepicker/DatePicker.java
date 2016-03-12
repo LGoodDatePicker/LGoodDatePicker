@@ -22,7 +22,6 @@ import com.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
 import com.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.util.ArrayList;
 import com.lgooddatepicker.optionalusertools.DateVetoPolicy;
-import com.lgooddatepicker.zinternaltools.InternalConstants;
 
 /**
  * DatePicker, This class implements a date picker GUI component.
@@ -119,8 +118,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JTextField dateTextField;
-    private JButton toggleCalendarButton;
+	JTextField dateTextField;
+	JButton toggleCalendarButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -137,35 +136,19 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     public DatePicker(DatePickerSettings settings) {
         settings = (settings == null) ? new DatePickerSettings() : settings;
+        settings.setParentDatePicker(this);
         this.settings = settings;
         this.convert = new Convert(this);
         initComponents();
         // Shrink the toggle calendar button to a reasonable size.
         toggleCalendarButton.setMargin(new java.awt.Insets(1, 2, 1, 2));
-        // Set the gap size between the text field and the toggle calendar button.
-        int gapPixels = (settings.gapBeforeButtonPixels == null)
-                ? 3 : settings.gapBeforeButtonPixels;
-        setGapSize(gapPixels, ConstantSize.PIXEL);
         // Add a change listener to the text field.
         zAddTextChangeListener();
-        // Set the editability of the text field.
-        // This should be done before setting the default text field background color.
-        dateTextField.setEditable(settings.allowKeyboardEditing);
-        // Set the text field border color based on whether the text field is editable.
-        Color textFieldBorderColor = (settings.allowKeyboardEditing)
-                ? InternalConstants.colorEditableTextFieldBorder
-                : InternalConstants.colorNotEditableTextFieldBorder;
-        dateTextField.setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
-        // Make sure that the initial date is in a valid state.
-        if (settings.allowEmptyDates == false && settings.initialDate == null) {
-            settings.initialDate = LocalDate.now();
-        }
-        // Set the initial date from the settings.
-        // Note that no date listeners can exist until after the constructor has returned.
-        setDate(settings.initialDate);
+        // Apply the settings instance to this date picker.
+        settings.yApplyNeededSettingsAtDatePickerConstruction();
         // Draw the text field attributes, because they may not have been drawn if the initialDate
         // was null. (This is because the text would not have changed in that case.)
+        // This should be called after the DatePickerSettings have been applied.
         zDrawTextFieldIndicators();
     }
 
@@ -298,10 +281,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * returns true.
      */
     public boolean isDateAllowed(LocalDate date) {
-        if (date == null) {
-            return settings.allowEmptyDates;
-        }
-        return (!(InternalUtilities.isDateVetoed(settings.vetoPolicy, date)));
+        return settings.isDateAllowed(date);
     }
 
     /**
@@ -350,19 +330,18 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // If the text is empty, return the value of allowEmptyDates.
         text = text.trim();
         if (text.isEmpty()) {
-            return settings.allowEmptyDates;
+            return settings.getAllowEmptyDates();
         }
         // Try to get a parsed date.
-        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(text,
-                settings.formatForDatesCommonEra, settings.formatForDatesBeforeCommonEra,
-                settings.formatsForParsing, settings.pickerLocale);
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(text, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(),
+                settings.formatsForParsing, settings.getLocale());
 
         // If the date could not be parsed, return false.
         if (parsedDate == null) {
             return false;
         }
         // If the date is vetoed, return false.
-        DateVetoPolicy vetoPolicy = settings.vetoPolicy;
+        DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
         if (InternalUtilities.isDateVetoed(vetoPolicy, parsedDate)) {
             return false;
         }
@@ -460,6 +439,15 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * setDateToToday, This sets the date to today's date. This function is subject to the same
+     * validation behaviors as if a user typed today's date into the date picker. See setDate() for
+     * additional details.
+     */
+    public void setDateToToday() {
+        setDate(LocalDate.now());
+    }
+
+    /**
      * setEnabled, This enables or disables the date picker. When the date picker is enabled, dates
      * can be selected by the user using any methods that are allowed by the current settings. When
      * the date picker is disabled, there is no way for the user to interact with the component.
@@ -473,22 +461,11 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         if (enabled == false) {
             closePopup();
         }
-        zEventDateTextFieldFocusLostSoValidateText(null);
+        setTextFieldToValidStateIfNeeded();
         super.setEnabled(enabled);
         toggleCalendarButton.setEnabled(enabled);
         dateTextField.setEnabled(enabled);
         zDrawTextFieldIndicators();
-    }
-
-    /**
-     * setGapSize, This sets the size of the gap between the date picker and the toggle calendar
-     * button.
-     */
-    public void setGapSize(int gapSize, ConstantSize.Unit units) {
-        ConstantSize gapSizeObject = new ConstantSize(gapSize, units);
-        ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
-        FormLayout layout = (FormLayout) getLayout();
-        layout.setColumnSpec(2, columnSpec);
     }
 
     /**
@@ -555,16 +532,20 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
-     * zEventDateTextFieldFocusLostSoValidateText, This function is called any time that the date
-     * picker text field loses focus. When needed, this function initiates a validation of the date
-     * picker text.
+     * setTextFieldToValidStateIfNeeded,
      *
-     * This has two possible effects: 1) If the current text is already valid and is in the standard
-     * format, then this will do nothing. If the text is not valid, or if the text is not in the
-     * standard format, then: 2) It will replace the invalid text in the text field with a standard
-     * date field text string that matches the last valid date.
+     * This function will check the contents of the text field, and when needed, will set the text
+     * to match the "last valid date" in a standardized valid format. This function is automatically
+     * called whenever the date picker text field loses focus, or at other times when the text must
+     * be set to a valid state. It is not expected that the programmer will normally need to call
+     * this function directly.
+     *
+     * This function has two possible effects: 1) If the current text is already valid and is in the
+     * standard format, then this will do nothing. If the text is not valid, or if the text is not
+     * in the standard format, then: 2) This will replace the invalid text in the text field with a
+     * standard date field text string that matches the last valid date.
      */
-    private void zEventDateTextFieldFocusLostSoValidateText(FocusEvent e) {
+    public void setTextFieldToValidStateIfNeeded() {
         // Find out if the text field needs to be set to the last valid date or not.
         // The text field needs to be set whenever its text does not match the standard format
         // for the last valid date.
@@ -598,9 +579,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return standardDateString;
         }
         if (date.getEra() == IsoEra.CE) {
-            standardDateString = date.format(settings.formatForDatesCommonEra);
+            standardDateString = date.format(settings.getFormatForDatesCommonEra());
         } else {
-            standardDateString = date.format(settings.formatForDatesBeforeCommonEra);
+            standardDateString = date.format(settings.getFormatForDatesBeforeCommonEra());
         }
         return standardDateString;
     }
@@ -655,14 +636,13 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Gather some variables that we will need.
         String dateText = dateTextField.getText();
         boolean textIsEmpty = dateText.trim().isEmpty();
-        DateVetoPolicy vetoPolicy = settings.vetoPolicy;
-        boolean nullIsAllowed = settings.allowEmptyDates;
+        DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
+        boolean nullIsAllowed = settings.getAllowEmptyDates();
         // If the text is not empty, then try to parse the date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
-            parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
-                    settings.formatForDatesCommonEra, settings.formatForDatesBeforeCommonEra,
-                    settings.formatsForParsing, settings.pickerLocale);
+            parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(),
+                    settings.formatsForParsing, settings.getLocale());
         }
         // If the date was parsed successfully, then check it against the veto policy.
         boolean dateIsVetoed = false;
@@ -698,38 +678,38 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        dateTextField = new JTextField();
-        toggleCalendarButton = new JButton();
+		dateTextField = new JTextField();
+		toggleCalendarButton = new JButton();
 
-        //======== this ========
-        setLayout(new FormLayout(
-                "[125px,pref]:grow, [3px,pref], [26px,pref]",
-                "fill:pref:grow"));
+		//======== this ========
+		setLayout(new FormLayout(
+			"[125px,pref]:grow, [3px,pref], [26px,pref]",
+			"fill:pref:grow"));
 
-        //---- dateTextField ----
-        dateTextField.setMargin(new Insets(1, 3, 2, 2));
-        dateTextField.setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-                new EmptyBorder(1, 3, 2, 2)));
-        dateTextField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                zEventDateTextFieldFocusLostSoValidateText(e);
-            }
-        });
-        add(dateTextField, CC.xy(1, 1));
+		//---- dateTextField ----
+		dateTextField.setMargin(new Insets(1, 3, 2, 2));
+		dateTextField.setBorder(new CompoundBorder(
+			new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
+			new EmptyBorder(1, 3, 2, 2)));
+		dateTextField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				setTextFieldToValidStateIfNeeded();
+			}
+		});
+		add(dateTextField, CC.xy(1, 1));
 
-        //---- toggleCalendarButton ----
-        toggleCalendarButton.setText("...");
-        toggleCalendarButton.setFocusPainted(false);
-        toggleCalendarButton.setFocusable(false);
-        toggleCalendarButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                zEventToggleCalendarButtonMousePressed(e);
-            }
-        });
-        add(toggleCalendarButton, CC.xy(3, 1));
+		//---- toggleCalendarButton ----
+		toggleCalendarButton.setText("...");
+		toggleCalendarButton.setFocusPainted(false);
+		toggleCalendarButton.setFocusable(false);
+		toggleCalendarButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				zEventToggleCalendarButtonMousePressed(e);
+			}
+		});
+		add(toggleCalendarButton, CC.xy(3, 1));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -760,7 +740,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         boolean textIsEmpty = dateText.trim().isEmpty();
         // Handle the various possibilities.
         if (textIsEmpty) {
-            if (settings.allowEmptyDates) {
+            if (settings.getAllowEmptyDates()) {
                 // (Possibility: ValidFullOrEmptyValue)
             } else {
                 // (Possibility: DisallowedEmptyValue)
@@ -769,9 +749,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return;
         }
         // The text is not empty.
-        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
-                settings.formatForDatesCommonEra, settings.formatForDatesBeforeCommonEra,
-                settings.formatsForParsing, settings.pickerLocale);
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(),
+                settings.formatsForParsing, settings.getLocale());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
             dateTextField.setForeground(settings.colorTextInvalidDate);
@@ -779,7 +758,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return;
         }
         // The text was parsed to a value.
-        DateVetoPolicy vetoPolicy = settings.vetoPolicy;
+        DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
         boolean isDateVetoed = InternalUtilities.isDateVetoed(vetoPolicy, parsedDate);
         if (isDateVetoed) {
             // (Possibility: VetoedValue)

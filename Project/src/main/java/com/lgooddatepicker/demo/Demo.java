@@ -143,23 +143,25 @@ public class Demo {
 
         // Create a date picker: With highlight policy.
         dateSettings = new DatePickerSettings();
-        dateSettings.highlightPolicy = new SampleHighlightPolicy();
         datePicker2 = new DatePicker(dateSettings);
+        dateSettings.highlightPolicy = new SampleHighlightPolicy();
         panel.panel1.add(datePicker2, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 2, Highlight Policy:");
 
         // Create a date picker: With veto policy.
+        // Note: Veto policies can only be set after constructing the date picker.
         dateSettings = new DatePickerSettings();
-        dateSettings.vetoPolicy = new SampleDateVetoPolicy();
         datePicker3 = new DatePicker(dateSettings);
+        dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
         panel.panel1.add(datePicker3, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 3, Veto Policy:");
 
         // Create a date picker: With both policies.
+        // Note: Veto policies can only be set after constructing the date picker.
         dateSettings = new DatePickerSettings();
-        dateSettings.highlightPolicy = new SampleHighlightPolicy();
-        dateSettings.vetoPolicy = new SampleDateVetoPolicy();
         datePicker4 = new DatePicker(dateSettings);
+        dateSettings.highlightPolicy = new SampleHighlightPolicy();
+        dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
         panel.panel1.add(datePicker4, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 4, Both Policies:");
 
@@ -193,25 +195,25 @@ public class Demo {
         // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
         // For more details about that, see: DatePickerSettings.formatDatesBeforeCommonEra.
         dateSettings = new DatePickerSettings();
-        dateSettings.initialDate = LocalDate.now();
-        dateSettings.formatForDatesCommonEra = PickerUtilities.createFormatterFromPatternString("d MMM yyyy", dateSettings.pickerLocale);
-        dateSettings.formatForDatesBeforeCommonEra = PickerUtilities.createFormatterFromPatternString("d MMM uuuu", dateSettings.pickerLocale);
+        dateSettings.setFormatForDatesCommonEra(PickerUtilities.createFormatterFromPatternString("d MMM yyyy", dateSettings.getLocale()));
+        dateSettings.setFormatForDatesBeforeCommonEra(PickerUtilities.createFormatterFromPatternString("d MMM uuuu", dateSettings.getLocale()));
+        dateSettings.setInitialDateToToday();
         datePicker8 = new DatePicker(dateSettings);
         panel.panel1.add(datePicker8, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Date Format:");
 
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
-        dateSettings.initialDate = LocalDate.now();
         dateSettings.fontValidDate = new Font("Monospaced", Font.ITALIC | Font.BOLD, 17);
         dateSettings.colorTextValidDate = new Color(0, 100, 0);
+        dateSettings.setInitialDateToToday();
         datePicker9 = new DatePicker(dateSettings);
         panel.panel1.add(datePicker9, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Font:");
 
         // Create a date picker: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
-        dateSettings.allowEmptyDates = false;
+        dateSettings.setAllowEmptyDates(false);
         datePicker10 = new DatePicker(dateSettings);
         datePicker10.addDateChangeListener(new SampleDateChangeListener("datePicker10 (Disallow Empty Dates or Null), "));
         panel.panel1.add(datePicker10, getConstraints(1, (row * rowMultiplier), 1));
@@ -219,8 +221,8 @@ public class Demo {
 
         // Create a date picker: Disallow keyboard editing.
         dateSettings = new DatePickerSettings();
-        dateSettings.initialDate = LocalDate.now();
-        dateSettings.allowKeyboardEditing = false;
+        dateSettings.setAllowKeyboardEditing(false);
+        dateSettings.setInitialDateToToday();
         datePicker11 = new DatePicker(dateSettings);
         panel.panel1.add(datePicker11, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Disallow Keyboard Editing:");
@@ -284,7 +286,7 @@ public class Demo {
         // Create a DateTimePicker: Disallow empty dates and times.
         dateSettings = new DatePickerSettings();
         timeSettings = new TimePickerSettings();
-        dateSettings.allowEmptyDates = false;
+        dateSettings.setAllowEmptyDates(false);
         timeSettings.allowEmptyTimes = false;
         dateTimePicker2 = new DateTimePicker(dateSettings, timeSettings);
         panel.panel2.add(dateTimePicker2, getConstraints(1, (row * rowMultiplier), 1));
@@ -394,7 +396,7 @@ public class Demo {
         // Create the localized date picker and label.
         Locale locale = new Locale(languageCode);
         DatePickerSettings settings = new DatePickerSettings(locale);
-        settings.initialDate = LocalDate.now();
+        settings.setInitialDateToToday();
         DatePicker datePicker = new DatePicker(settings);
         panel.panel4.add(datePicker, getConstraints(1, (rowMarker * rowMultiplier), 1));
         panel.addLabel(panel.panel4, 1, (rowMarker * rowMultiplier), labelText);

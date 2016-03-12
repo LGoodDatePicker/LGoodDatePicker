@@ -110,6 +110,11 @@ public class CalendarPanel
 
     /**
      * Constructor, This creates a calendar panel and stores the parent date picker.
+     *
+     * Technical note: This constructor is only called from the DatePicker.openPopup() function. A
+     * new CalendarPanel is created every time the popup is opened. Therefore, any
+     * DatePickerSettings variables that are initialized in this constructor are automatically able
+     * to correctly handle being set either before or after, a DatePicker is constructed.
      */
     public CalendarPanel(DatePicker parentDatePicker, DatePickerSettings settings) {
         this.parentDatePicker = parentDatePicker;
@@ -313,7 +318,7 @@ public class CalendarPanel
         Month displayedMonth = yearMonth.getMonth();
         int displayedYear = yearMonth.getYear();
         // Get an instance of the calendar symbols for the current locale.
-        DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.pickerLocale);
+        DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         // Get the days of the week in the local language.
         String localShortDaysOfWeek[] = symbols.getShortWeekdays();
         // Get the full name of the month in the current locale.
@@ -383,10 +388,9 @@ public class CalendarPanel
             if (insideValidRange) {
                 // Get a local date object for the current date.
                 LocalDate currentDate = LocalDate.of(displayedYear, displayedMonth, dayOfMonth);
-                DateVetoPolicy vetoPolicy = settings.vetoPolicy;
+                DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
                 DateHighlightPolicy highlightPolicy = settings.highlightPolicy;
-                boolean dateIsVetoed = InternalUtilities.isDateVetoed(
-                        vetoPolicy, currentDate);
+                boolean dateIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, currentDate);
                 String highlightStringOrNull = null;
                 if (highlightPolicy != null) {
                     highlightStringOrNull = highlightPolicy.getHighlightStringOrNull(currentDate);
@@ -424,7 +428,7 @@ public class CalendarPanel
         String todayLabel = settings.translationToday + ":  " + todayDateString;
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
-        DateVetoPolicy vetoPolicy = settings.vetoPolicy;
+        DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
         boolean todayIsVetoed = InternalUtilities.isDateVetoed(
                 vetoPolicy, LocalDate.now());
         labelSetDateToToday.setEnabled(!todayIsVetoed);
@@ -432,7 +436,7 @@ public class CalendarPanel
         // If null is not allowed, then disable and hide the Clear label. 
         // Note: I had considered centering the today label in the CalendarPanel whenever the 
         // clear label was hidden. However, it still looks better when it is aligned to the left.
-        boolean shouldEnableClearButton = settings.allowEmptyDates;
+        boolean shouldEnableClearButton = settings.getAllowEmptyDates();
         labelClearDate.setEnabled(shouldEnableClearButton);
         labelClearDate.setVisible(shouldEnableClearButton);
 
@@ -484,9 +488,8 @@ public class CalendarPanel
     private void labelIndicatorMouseEntered(MouseEvent e) {
         JLabel label = ((JLabel) e.getSource());
         if (label == labelSetDateToToday) {
-            DateVetoPolicy vetoPolicy = settings.vetoPolicy;
-            boolean todayIsVetoed = InternalUtilities.isDateVetoed(
-                    vetoPolicy, LocalDate.now());
+            DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
+            boolean todayIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, LocalDate.now());
             if (todayIsVetoed) {
                 return;
             }
@@ -510,7 +513,7 @@ public class CalendarPanel
      * state it should have when there is no mouse hovering over it.
      */
     private void labelIndicatorSetBorderToDefaultState(JLabel label) {
-        if(label == null || settings == null) {
+        if (label == null || settings == null) {
             return;
         }
         if (label == labelMonth || label == labelYear) {
@@ -668,7 +671,7 @@ public class CalendarPanel
         // Get the height of a line of text in this font.
         int height = metrics.getHeight();
         // Get the length of the longest translated month string (in pixels).
-        DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.pickerLocale);
+        DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         String[] allLocalMonths = symbols.getMonths();
         int longestMonthPixels = 0;
         for (String month : allLocalMonths) {
@@ -696,7 +699,7 @@ public class CalendarPanel
     private void userSelectedADate(LocalDate selectedDate) {
         // If a date was selected and the date is vetoed, do nothing.
         if (selectedDate != null) {
-            DateVetoPolicy vetoPolicy = settings.vetoPolicy;
+            DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
             if (InternalUtilities.isDateVetoed(vetoPolicy, selectedDate)) {
                 return;
             }

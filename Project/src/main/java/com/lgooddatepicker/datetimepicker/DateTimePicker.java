@@ -21,7 +21,8 @@ import javax.swing.*;
 /**
  * DateTimePicker, This class combines a date picker with a time picker. This class provides
  * functionality for creating and manipulating the two components as a single unit. This class also
- * provides functions for getting the combined date and time as a java.time.LocalDateTime object.
+ * provides functions for getting or setting the combined date and time as a java.time.LocalDateTime
+ * object.
  *
  * This class is implemented as a relatively thin wrapper around the DatePicker and TimePicker
  * instances. Those instances can be accessed with the getDatePicker() and getTimePicker()
@@ -72,10 +73,10 @@ public class DateTimePicker extends JPanel {
     public DateTimePicker(DatePickerSettings datePickerSettingsOrNull,
             TimePickerSettings timePickerSettingsOrNull) {
         initComponents();
-        DatePickerSettings dateSettings = (datePickerSettingsOrNull == null) ? new DatePickerSettings()
-                : datePickerSettingsOrNull;
-        TimePickerSettings timeSettings = (timePickerSettingsOrNull == null) ? new TimePickerSettings()
-                : timePickerSettingsOrNull;
+        DatePickerSettings dateSettings = (datePickerSettingsOrNull == null)
+                ? new DatePickerSettings() : datePickerSettingsOrNull;
+        TimePickerSettings timeSettings = (timePickerSettingsOrNull == null)
+                ? new TimePickerSettings() : timePickerSettingsOrNull;
         datePicker = new DatePicker(dateSettings);
         timePicker = new TimePicker(timeSettings);
         add(datePicker, CC.xy(1, 1));
@@ -90,8 +91,8 @@ public class DateTimePicker extends JPanel {
                 ? 5 : timeSettings.zDateTimePicker_GapBeforeTimePickerPixels;
         this.setGapSize(gapPixels, ConstantSize.PIXEL);
         // If the user has not changed the gap size for the date picker, then set it to zero.
-        if (dateSettings.gapBeforeButtonPixels == null) {
-            datePicker.setGapSize(0, ConstantSize.PIXEL);
+        if (dateSettings.getGapBeforeButtonPixels() == null) {
+            datePicker.getSettings().setGapBeforeButtonPixels(0);
         }
         // If the user has not changed the gap size for the time picker, then set it to zero.
         if (timeSettings.gapBeforeButtonPixels == null) {
@@ -216,6 +217,14 @@ public class DateTimePicker extends JPanel {
     }
 
     /**
+     * isEnabled, Returns true if this component is enabled, otherwise returns false.
+     */
+    @Override
+    public boolean isEnabled() {
+        return super.isEnabled();
+    }
+
+    /**
      * setDateTime, This uses the supplied LocalDateTime to set the value of the DatePicker and the
      * TimePicker. Values that are set from this function are processed through the same validation
      * procedures as values that are typed by the user.
@@ -254,6 +263,22 @@ public class DateTimePicker extends JPanel {
         }
         datePicker.setDate(optionalDateTime.toLocalDate());
         timePicker.setTime(optionalDateTime.toLocalTime());
+    }
+
+    /**
+     * setEnabled, This enables or disables the DateTimePicker. When the component is enabled, dates
+     * and times can be selected by the user using any methods that are allowed by the current
+     * settings. When the component is disabled, there is no way for the user to interact with the
+     * components. More specifically, dates and times cannot be selected with the mouse, or with the
+     * keyboard, and the date and time pickers change their color scheme to indicate the disabled
+     * state. Any currently stored text and last valid values are retained while the component is
+     * disabled.
+     */
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        datePicker.setEnabled(enabled);
+        timePicker.setEnabled(enabled);
     }
 
     /**

@@ -2,6 +2,8 @@ package com.lgooddatepicker.ysandbox;
 
 import com.lgooddatepicker.datepicker.DatePicker;
 import com.lgooddatepicker.datepicker.DatePickerSettings;
+import com.lgooddatepicker.datetimepicker.DateTimePicker;
+import com.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.lgooddatepicker.timepicker.TimePicker;
 import com.lgooddatepicker.timepicker.TimePickerSettings;
@@ -46,13 +48,29 @@ public class TestStart {
         DatePicker datePicker = new DatePicker(dateSettings);
         panel.add(datePicker);
 
-        JButton button = new JButton("Enable or disable the picker");
-        panel.add(button);
-        button.addActionListener(new ActionListener() {
+        DateTimePicker dateTimePicker = new DateTimePicker();
+        dateTimePicker.getDatePicker().setText("hiya");
+        dateTimePicker.getTimePicker().setText("hey");
+        panel.add(dateTimePicker);
+
+        JButton button1 = new JButton("Enable or disable the picker");
+        panel.add(button1);
+        button1.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                timePicker.setEnabled(!timePicker.isEnabled());
+                dateTimePicker.setEnabled(!dateTimePicker.isEnabled());
+            }
+        });
+
+        JButton button2 = new JButton("Change display format");
+        panel.add(button2);
+        button2.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                datePicker.getSettings().setFormatForDatesCommonEra(
+                        PickerUtilities.createFormatterFromPatternString("d MMM yyyy", dateSettings.getLocale()));
             }
         });
 
