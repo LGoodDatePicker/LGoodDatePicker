@@ -240,10 +240,11 @@ public class InternalUtilities {
 
     /**
      * isDateVetoed, This is a convenience function for checking whether or not a particular date is
-     * vetoed.
+     * vetoed. Note that veto policies do not have any say about null dates, so this function always
+     * returns false for null dates.
      */
     static public boolean isDateVetoed(DateVetoPolicy policy, LocalDate date) {
-        if (policy == null) {
+        if (policy == null || date == null) {
             return false;
         }
         return (!policy.isDateAllowed(date));
