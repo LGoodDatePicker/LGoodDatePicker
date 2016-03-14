@@ -119,13 +119,13 @@ public class TimeMenuPanel extends JPanel {
 
     void generateTimeEntriesFromSettings() {
         timeListModel.clear();
-        DateTimeFormatter formatForMenuTimes = settings.formatForMenuTimes;
+        DateTimeFormatter formatForMenuTimes = settings.getFormatForMenuTimes();
         ArrayList<LocalTime> menuTimes = settings.getPotentialMenuTimes();
         for (LocalTime localTime : menuTimes) {
-            if (!InternalUtilities.isTimeVetoed(settings.vetoPolicy, localTime)) {
+            if (!InternalUtilities.isTimeVetoed(settings.getVetoPolicy(), localTime)) {
                 String localizedTime = formatForMenuTimes.format(localTime);
                 if (settings.useLowercaseForMenuTimes) {
-                    localizedTime = localizedTime.toLowerCase(settings.timePickerLocale);
+                    localizedTime = localizedTime.toLowerCase(settings.getLocale());
                 }
                 timeListModel.addElement(localizedTime);
             }
@@ -134,9 +134,8 @@ public class TimeMenuPanel extends JPanel {
 
     private void userSelectedATime(String selectedTimeString) {
         // Try to parse the selected time string. 
-        LocalTime selectedTime = InternalUtilities.getParsedTimeOrNull(selectedTimeString,
-                settings.formatForDisplayTime, settings.formatForMenuTimes,
-                settings.formatsForParsing, settings.timePickerLocale);
+        LocalTime selectedTime = InternalUtilities.getParsedTimeOrNull(selectedTimeString, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
+                settings.formatsForParsing, settings.getLocale());
         // Check to see if the time was parsed. The time should always parse successfully.
         if (selectedTime == null) {
             throw new RuntimeException("TimeMenuPanel, "
@@ -144,7 +143,7 @@ public class TimeMenuPanel extends JPanel {
         }
 
         // If the selected time is vetoed, do nothing.
-        TimeVetoPolicy vetoPolicy = settings.vetoPolicy;
+        TimeVetoPolicy vetoPolicy = settings.getVetoPolicy();
         if (InternalUtilities.isTimeVetoed(vetoPolicy, selectedTime)) {
             return;
         }

@@ -9,7 +9,6 @@ import com.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.lgooddatepicker.zinternaltools.CustomPopup;
-import com.lgooddatepicker.zinternaltools.InternalConstants;
 import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import java.awt.Color;
@@ -121,8 +120,8 @@ public class TimePicker
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JTextField timeTextField;
-    private JButton toggleTimeMenuButton;
+    JTextField timeTextField;
+    JButton toggleTimeMenuButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -137,30 +136,19 @@ public class TimePicker
      * Constructor with Custom Settings, Create a time picker instance using the supplied time
      * picker settings.
      */
-    public TimePicker(TimePickerSettings timePickerSettings) {
-        timePickerSettings = (timePickerSettings == null)
-                ? new TimePickerSettings() : timePickerSettings;
-        this.settings = timePickerSettings;
+    public TimePicker(TimePickerSettings settings) {
+        settings = (settings == null) ? new TimePickerSettings() : settings;
+        settings.setParentTimePicker(this);
+        this.settings = settings;
         initComponents();
-        // Shrink the toggle calendar button to a reasonable size.
+        // Set the down arrow on the toggle menu button.
         toggleTimeMenuButton.setText("\u25BC");
+        // Shrink the toggle menu button to a reasonable size.
         toggleTimeMenuButton.setMargin(new java.awt.Insets(4, 4, 4, 4));
-        // Set the gap size between the text field and the toggle menu button.
-        int gapPixels = (settings.gapBeforeButtonPixels == null)
-                ? 0 : settings.gapBeforeButtonPixels;
-        setGapSize(gapPixels, ConstantSize.PIXEL);
-        // Set the editability of the text field.
-        // This should be done before setting the default text field background color.
-        timeTextField.setEditable(settings.allowKeyboardEditing);
-        // Set the text field border color based on whether the date picker is editable.
-        Color textFieldBorderColor = (settings.allowKeyboardEditing)
-                ? InternalConstants.colorEditableTextFieldBorder
-                : InternalConstants.colorNotEditableTextFieldBorder;
-        timeTextField.setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
-
         // Add a change listener to the text field.
         zAddTextChangeListener();
+        // Apply the settings instance to this time picker.
+        settings.yApplyNeededSettingsAtTimePickerConstruction();
 
         // Listen for the down arrow key, as a way to open the menu.
         timeTextField.addKeyListener(new KeyAdapter() {
@@ -172,16 +160,6 @@ public class TimePicker
                 }
             }
         });
-        // Make sure that the initial time is in a valid state.
-        if (settings.allowEmptyTimes == false && settings.initialTime == null) {
-            settings.initialTime = LocalTime.of(7, 0);
-        }
-        // Set the initial time from the settings.
-        // Note that no time listeners can exist until after the constructor has returned.
-        setTime(settings.initialTime);
-        // Draw the text field attributes, because they may not have been drawn if the initialTime
-        // was null. (This is because the text would not have changed in that case.)
-        zDrawTextFieldIndicators();
 
         // Create a toggleTimeMenuButton listener for mouse dragging events.
         // Note: The toggleTimeMenuButton listeners should be created here in the constructor, 
@@ -212,6 +190,10 @@ public class TimePicker
                 }
             }
         });
+
+        // Draw the text field attributes, because they may not have been drawn if the initialTime
+        // was null. (This is because the text would not have changed in that case.)
+        zDrawTextFieldIndicators();
     }
 
     /**
@@ -375,19 +357,18 @@ public class TimePicker
         // If the text is empty, return the value of allowEmptyTimes.
         text = text.trim();
         if (text.isEmpty()) {
-            return settings.allowEmptyTimes;
+            return settings.getAllowEmptyTimes();
         }
         // Try to get a parsed time.
-        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(text,
-                settings.formatForDisplayTime, settings.formatForMenuTimes,
-                settings.formatsForParsing, settings.timePickerLocale);
+        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(text, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
+                settings.formatsForParsing, settings.getLocale());
 
         // If the time could not be parsed, return false.
         if (parsedTime == null) {
             return false;
         }
         // If the time is vetoed, return false.
-        TimeVetoPolicy vetoPolicy = settings.vetoPolicy;
+        TimeVetoPolicy vetoPolicy = settings.getVetoPolicy();
         if (InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime)) {
             return false;
         }
@@ -407,10 +388,7 @@ public class TimePicker
      * returns true.
      */
     public boolean isTimeAllowed(LocalTime time) {
-        if (time == null) {
-            return settings.allowEmptyTimes;
-        }
-        return (!(InternalUtilities.isTimeVetoed(settings.vetoPolicy, time)));
+        return settings.isTimeAllowed(time);
     }
 
     /**
@@ -460,16 +438,6 @@ public class TimePicker
     }
 
     /**
-     * setGapSize, This sets the size of the gap between the time picker and the toggle menu button.
-     */
-    public void setGapSize(int gapSize, ConstantSize.Unit units) {
-        ConstantSize gapSizeObject = new ConstantSize(gapSize, units);
-        ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
-        FormLayout layout = (FormLayout) getLayout();
-        layout.setColumnSpec(2, columnSpec);
-    }
-
-    /**
      * setEnabled, This enables or disables the time picker. When the time picker is enabled, times
      * can be selected by the user using any methods that are allowed by the current settings. When
      * the time picker is disabled, there is no way for the user to interact with the component.
@@ -483,7 +451,7 @@ public class TimePicker
         if (enabled == false) {
             closePopup();
         }
-        zEventTimeTextFieldFocusLostSoValidateText(null);
+        setTextFieldToValidStateIfNeeded();
         super.setEnabled(enabled);
         toggleTimeMenuButton.setEnabled(enabled);
         timeTextField.setEnabled(enabled);
@@ -499,6 +467,33 @@ public class TimePicker
     public void setText(String text) {
         zInternalSetTimeTextField(text);
         timeTextField.requestFocusInWindow();
+    }
+
+    /**
+     * setTextFieldToValidStateIfNeeded,
+     *
+     * This function will check the contents of the text field, and when needed, will set the text
+     * to match the "last valid time" in a standardized valid format. This function is automatically
+     * called whenever the time picker text field loses focus, or at other times when the text must
+     * be set to a valid state. It is not expected that the programmer will normally need to call
+     * this function directly.
+     *
+     * This function has two possible effects: 1) If the current text is already valid and is in the
+     * standard format, then this will do nothing. If the text is not valid, or if the text is not
+     * in the standard format, then: 2) This will replace the invalid text in the text field with a
+     * standard time field text string that matches the last valid time.
+     */
+    public void setTextFieldToValidStateIfNeeded() {
+        // Find out if the text field needs to be set to the last valid time or not.
+        // The text field needs to be set whenever its text does not match the standard format
+        // for the last valid time.
+        String standardTimeString = zGetStandardTextFieldTimeString(lastValidTime);
+        String textFieldString = timeTextField.getText();
+        if (!standardTimeString.equals(textFieldString)) {
+            // Overwrite the text field with the last valid time.
+            // This will clear the text field if the last valid time is null.
+            setTime(lastValidTime);
+        }
     }
 
     /**
@@ -536,6 +531,15 @@ public class TimePicker
         if ((!standardTimeString.equals(textFieldString))) {
             zInternalSetTimeTextField(standardTimeString);
         }
+    }
+
+    /**
+     * setTimeToNow, This sets the time to the current time. This function is subject to the same
+     * validation behaviors as if a user typed the current time into the time picker. See setTime()
+     * for additional details.
+     */
+    public void setTimeToNow() {
+        setTime(LocalTime.now());
     }
 
     /**
@@ -618,11 +622,11 @@ public class TimePicker
         timeTextField.setForeground(settings.colorTextValidTime);
         timeTextField.setFont(settings.fontValidTime);
         // Get the text, and check to see if it is empty.
-        String dateText = timeTextField.getText();
-        boolean textIsEmpty = dateText.trim().isEmpty();
+        String timeText = timeTextField.getText();
+        boolean textIsEmpty = timeText.trim().isEmpty();
         // Handle the various possibilities.
         if (textIsEmpty) {
-            if (settings.allowEmptyTimes) {
+            if (settings.getAllowEmptyTimes()) {
                 // (Possibility: ValidFullOrEmptyValue)
             } else {
                 // (Possibility: DisallowedEmptyValue)
@@ -631,9 +635,8 @@ public class TimePicker
             return;
         }
         // The text is not empty.
-        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(dateText,
-                settings.formatForDisplayTime, settings.formatForMenuTimes,
-                settings.formatsForParsing, settings.timePickerLocale);
+        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(timeText, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
+                settings.formatsForParsing, settings.getLocale());
         if (parsedTime == null) {
             // (Possibility: UnparsableValue)
             timeTextField.setForeground(settings.colorTextInvalidTime);
@@ -641,7 +644,7 @@ public class TimePicker
             return;
         }
         // The text was parsed to a value.
-        TimeVetoPolicy vetoPolicy = settings.vetoPolicy;
+        TimeVetoPolicy vetoPolicy = settings.getVetoPolicy();
         boolean isTimeVetoed = InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime);
         if (isTimeVetoed) {
             // (Possibility: VetoedValue)
@@ -671,29 +674,6 @@ public class TimePicker
     }
 
     /**
-     * zEventTimeTextFieldFocusLostSoValidateText, This function is called whenever the time picker
-     * text field loses focus. When needed, this function initiates a validation of the time picker
-     * text.
-     *
-     * This has two possible effects: 1) If the current text is already valid and is in the standard
-     * format, then this will do nothing. If the text is not valid, or if the text is not in the
-     * standard format, then: 2) It will replace the invalid text in the text field with a standard
-     * time field text string that matches the last valid time.
-     */
-    private void zEventTimeTextFieldFocusLostSoValidateText(FocusEvent e) {
-        // Find out if the text field needs to be set to the last valid time or not.
-        // The text field needs to be set whenever its text does not match the standard format
-        // for the last valid time.
-        String standardTimeString = zGetStandardTextFieldTimeString(lastValidTime);
-        String textFieldString = timeTextField.getText();
-        if (!standardTimeString.equals(textFieldString)) {
-            // Overwrite the text field with the last valid time.
-            // This will clear the text field if the last valid time is null.
-            setTime(lastValidTime);
-        }
-    }
-
-    /**
      * zEventToggleTimeMenuButtonMousePressed, This is called when the user clicks on the "toggle
      * time menu" button of the time picker.
      *
@@ -713,7 +693,7 @@ public class TimePicker
         if (time == null) {
             return standardTimeString;
         }
-        standardTimeString = time.format(settings.formatForDisplayTime);
+        standardTimeString = time.format(settings.getFormatForDisplayTime());
         return standardTimeString;
     }
 
@@ -744,7 +724,7 @@ public class TimePicker
     private void zInternalSetTimeTextField(String text) {
         skipTextFieldChangedFunctionWhileTrue = true;
         if (settings.useLowercaseForDisplayTime) {
-            text = text.toLowerCase(settings.timePickerLocale);
+            text = text.toLowerCase(settings.getLocale());
         }
         timeTextField.setText(text);
         skipTextFieldChangedFunctionWhileTrue = false;
@@ -770,14 +750,13 @@ public class TimePicker
         // Gather some variables that we will need.
         String timeText = timeTextField.getText();
         boolean textIsEmpty = timeText.trim().isEmpty();
-        TimeVetoPolicy vetoPolicy = settings.vetoPolicy;
-        boolean nullIsAllowed = settings.allowEmptyTimes;
+        TimeVetoPolicy vetoPolicy = settings.getVetoPolicy();
+        boolean nullIsAllowed = settings.getAllowEmptyTimes();
         // If the text is not empty, then try to parse the time.
         LocalTime parsedTime = null;
         if (!textIsEmpty) {
-            parsedTime = InternalUtilities.getParsedTimeOrNull(timeText,
-                    settings.formatForDisplayTime, settings.formatForMenuTimes,
-                    settings.formatsForParsing, settings.timePickerLocale);
+            parsedTime = InternalUtilities.getParsedTimeOrNull(timeText, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
+                    settings.formatsForParsing, settings.getLocale());
         }
         // If the time was parsed successfully, then check it against the veto policy.
         boolean timeIsVetoed = false;
@@ -819,7 +798,7 @@ public class TimePicker
         timeTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
-                zEventTimeTextFieldFocusLostSoValidateText(e);
+                setTextFieldToValidStateIfNeeded();
             }
         });
         add(timeTextField, CC.xy(1, 1));

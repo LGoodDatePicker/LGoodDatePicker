@@ -95,8 +95,8 @@ public class DateTimePicker extends JPanel {
             datePicker.getSettings().setGapBeforeButtonPixels(0);
         }
         // If the user has not changed the gap size for the time picker, then set it to zero.
-        if (timeSettings.gapBeforeButtonPixels == null) {
-            timePicker.setGapSize(0, ConstantSize.PIXEL);
+        if (timeSettings.getGapBeforeButtonPixels() == null) {
+            timePicker.getSettings().setGapBeforeButtonPixels(0);
         }
     }
 

@@ -1,8 +1,13 @@
 package com.lgooddatepicker.timepicker;
 
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.ConstantSize;
+import com.jgoodies.forms.layout.FormLayout;
 import com.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.lgooddatepicker.zinternaltools.ExtraTimeStrings;
+import com.lgooddatepicker.zinternaltools.InternalConstants;
+import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
@@ -16,7 +21,9 @@ import java.util.Map;
 import java.util.TreeSet;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 
 /**
  * TimePickerSettings, This holds all the settings that can be customized in a time picker. Most of
@@ -43,9 +50,9 @@ public class TimePickerSettings {
      * allowEmptyTimes, This indicates whether or not empty times are allowed in the time picker.
      * Empty times are also called "null times". The default value is true, which allows empty
      * times. If empty times are not allowed, but TimePickerSettings.initialTime is left set to
-     * null, then the initial time will be set to a default value.
+     * null, then the initial time will be set to a default value. (The default value is 7:00am.)
      */
-    public boolean allowEmptyTimes = true;
+    private boolean allowEmptyTimes = true;
 
     /**
      * allowKeyboardEditing, This indicates whether or not keyboard editing is allowed for this time
@@ -109,13 +116,13 @@ public class TimePickerSettings {
      * formatForDisplayTime, This is used to format and display the time values in the main text
      * field of the time picker. By default, a format is generated from the time picker locale.
      */
-    public DateTimeFormatter formatForDisplayTime;
+    private DateTimeFormatter formatForDisplayTime;
 
     /**
      * formatForMenuTimes, This is used to format and display the time values in the menu of the
      * time picker. By default, a format is generated from the time picker locale.
      */
-    public DateTimeFormatter formatForMenuTimes;
+    private DateTimeFormatter formatForMenuTimes;
 
     /**
      * formatsForParsing, This holds a list of formats that are used to attempt to parse times that
@@ -132,22 +139,20 @@ public class TimePickerSettings {
      * and the toggle time menu button (in pixels). The default value is null. If this is left at
      * null, then the gap will set to 0 pixels in the time picker constructor.
      */
-    public Integer gapBeforeButtonPixels = null;
+    private Integer gapBeforeButtonPixels = null;
 
     /**
      * initialTime, This is the time that the time picker will have when it is created. This can be
      * set to any time, or it can be set to null. The default value for initialTime is null, which
-     * represents an empty time.
+     * represents an empty time. This setting will only have an effect if it is set before the date
+     * picker is constructed.
      *
      * If allowEmptyTimes is false, then a null initialTime will be ignored. More specifically: When
      * a TimePicker is constructed, if allowEmptyTimes is false and initialTime is null, then the
      * initialTime will be set to a default value. (The default value is currently 7:00 am.)
      *
-     * If a TimeVetoPolicy exists, and the supplied time is vetoed, then the time will be entered
-     * into the text field (and displayed with the "fontVetoedTime"), but it will not be committed
-     * to the "last valid time".
-     *
-     * See TimePicker.setTime() to read about the automatic validation of set times.
+     * Note: This time can not be vetoed, because a veto policy can not be set until after the
+     * TimePicker is constructed.
      */
     public LocalTime initialTime = null;
 
@@ -160,6 +165,14 @@ public class TimePickerSettings {
      * drop down menu, then the menu will be made smaller to fit the number of time entries.
      */
     public int maximumVisibleMenuRows = 10;
+
+    /**
+     * parent, This holds a reference to the parent time picker that is associated with these
+     * settings. This variable is only intended to be set from the time picker constructor.
+     *
+     * This will be null until the TimePicker is constructed (using this settings instance).
+     */
+    private TimePicker parent;
 
     /**
      * potentialMenuTimes, This is a list of candidate time values for populating the drop down
@@ -175,7 +188,7 @@ public class TimePickerSettings {
      * timeLocale, This is the locale of the time picker, which is used to generate some of the
      * other default values, such as the default time formats.
      */
-    public Locale timePickerLocale;
+    private Locale locale;
 
     /**
      * useLowercaseForDisplayTime, This indicates if the display time should always be shown in
@@ -194,13 +207,13 @@ public class TimePickerSettings {
     public boolean useLowercaseForMenuTimes = true;
 
     /**
-     * vetoPolicy, If a veto policy is supplied, it will be used to determine which times are
-     * allowed or not allowed to be selected in the time picker. Vetoed times are not accepted by
-     * the time picker text field. Vetoed times will not be displayed or available as options in the
-     * drop down menu. See the demo class for an example of constructing a veto policy. By default,
-     * there is no veto policy. (The default value is null.)
+     * vetoPolicy, If a veto policy is supplied, it will be used to determine which times can and
+     * cannot be selected in the time picker. Vetoed times can not be selected using the keyboard or
+     * the mouse. By default, there is no veto policy. (The default value is null.) See the
+     * TimeVetoPolicy Javadocs for details regarding when a veto policy is enforced. See the demo
+     * class for an example of constructing a veto policy.
      */
-    public TimeVetoPolicy vetoPolicy = null;
+    private TimeVetoPolicy vetoPolicy = null;
 
     /**
      * zDateTimePicker_GapBeforeTimePickerPixels, This setting only applies to the DateTimePicker
@@ -225,7 +238,7 @@ public class TimePickerSettings {
      */
     public TimePickerSettings(Locale timeLocale) {
         // Save the locale.
-        this.timePickerLocale = timeLocale;
+        this.locale = timeLocale;
 
         // Generate default menu times.
         generatePotentialMenuTimes(TimeIncrement.ThirtyMinutes, null, null);
@@ -252,7 +265,7 @@ public class TimePickerSettings {
                 = ExtraTimeStrings.getExtraTimeParsingFormatsForLocale(timeLocale);
         formatsForParsing.addAll(extraFormatters);
 
-        // This will use a default border provided by the CustomPopup class.
+        // Set the default popup border. This can be overridden by the user if they desire. 
         borderTimePopup = new EmptyBorder(0, 0, 0, 0);
 
         // Generate the default fonts and text colors.
@@ -330,11 +343,207 @@ public class TimePickerSettings {
     }
 
     /**
+     * getAllowEmptyTimes, Returns the value of this setting. See the "set" function for setting
+     * information.
+     */
+    public boolean getAllowEmptyTimes() {
+        return allowEmptyTimes;
+    }
+
+    /**
+     * getAllowKeyboardEditing, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public boolean getAllowKeyboardEditing() {
+        return allowKeyboardEditing;
+    }
+
+    /**
+     * getFormatForDisplayTime, Returns the value this setting. See the "set" function for setting
+     * information.
+     */
+    public DateTimeFormatter getFormatForDisplayTime() {
+        return formatForDisplayTime;
+    }
+
+    /**
+     * getFormatForMenuTimes, Returns the value this setting. See the "set" function for setting
+     * information.
+     */
+    public DateTimeFormatter getFormatForMenuTimes() {
+        return formatForMenuTimes;
+    }
+
+    /**
+     * getGapBeforeButtonPixels, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public Integer getGapBeforeButtonPixels() {
+        return gapBeforeButtonPixels;
+    }
+
+    /**
+     * getLocale, This returns locale setting of the time picker. The locale can only be set in the
+     * TimePickerSettings constructor.
+     */
+    public Locale getLocale() {
+        return locale;
+    }
+
+    /**
      * getPotentialMenuTimes, This returns a copy of the list of potential menu times. For
      * additional details, see TimePickerSettings.potentialMenuTimes.
      */
     public ArrayList<LocalTime> getPotentialMenuTimes() {
         return (ArrayList<LocalTime>) potentialMenuTimes.clone();
+    }
+
+    /**
+     * getVetoPolicy, This returns the veto policy.
+     */
+    public TimeVetoPolicy getVetoPolicy() {
+        return vetoPolicy;
+    }
+
+    /**
+     * isTimeAllowed, This checks to see if the specified time is allowed by any currently set veto
+     * policy, and allowed by the current setting of allowEmptyTimes.
+     *
+     * If allowEmptyTimes is false, and the specified time is null, then this returns false.
+     *
+     * If a veto policy exists, and the specified time is vetoed, then this returns false.
+     *
+     * If the time is not vetoed, or if empty times are allowed and the time is null, then this
+     * returns true.
+     */
+    public boolean isTimeAllowed(LocalTime time) {
+        if (time == null) {
+            return allowEmptyTimes;
+        }
+        return (!(InternalUtilities.isTimeVetoed(vetoPolicy, time)));
+    }
+
+    /**
+     * setAllowEmptyTimes, This sets whether or not empty times (null times) are allowed in the time
+     * picker. If this is true, then empty times will be allowed in the time picker. If this is
+     * false, then empty times will not be allowed.
+     *
+     * If setting this function to false, it is recommended to call this function -before- setting a
+     * veto policy. This sequence will guarantee that the TimePicker.getTime() function will never
+     * return a null value, and will guarantee that the setAllowEmptyTimes() function will not throw
+     * an exception.
+     *
+     * If the current time is null and you set allowEmptyTimes to false, then this function will
+     * attempt to initialize the current time to 7am. This function will throw an exception if it
+     * fails to initialize a null time. An exception is only possible if a veto policy is set before
+     * calling this function, and the veto policy vetoes the time "7:00 am".
+     */
+    public void setAllowEmptyTimes(boolean allowEmptyTimes) {
+        this.allowEmptyTimes = allowEmptyTimes;
+        if (parent != null) {
+            zApplyAllowEmptyTimes();
+        }
+    }
+
+    /**
+     * setAllowKeyboardEditing, This sets whether or not keyboard editing is allowed for this time
+     * picker. If this is true, then times can be entered into the time picker either by using the
+     * keyboard or the mouse. If this is false, then times can only be selected by using the mouse.
+     * The default value is true. It is generally recommended to leave this setting as "true".
+     *
+     * Accessibility Impact: Disallowing the use of the keyboard, and requiring the use of the
+     * mouse, could impact the accessibility of your program for disabled persons.
+     *
+     * Note: This setting does not impact the automatic enforcement of valid or vetoed times. To
+     * learn about the automatic time validation and enforcement for keyboard entered text, see the
+     * javadocs for the TimePicker class.
+     */
+    public void setAllowKeyboardEditing(boolean allowKeyboardEditing) {
+        this.allowKeyboardEditing = allowKeyboardEditing;
+        if (parent != null) {
+            zApplyAllowKeyboardEditing();
+        }
+    }
+
+    /**
+     * setFormatForDisplayTime, This sets the default format that is used to display or parse the
+     * text field time times in the time picker. The default value is generated using the locale of
+     * the settings instance. If desired, a DateTimeFormatter can be created from a pattern string
+     * by using the convenience function PickerUtilities.createFormatterFromPatternString();
+     *
+     * If the time picker has already been constructed, then calling this function will cause
+     * immediate validation of the text field text.
+     */
+    public void setFormatForDisplayTime(DateTimeFormatter formatForDisplayTime) {
+        this.formatForDisplayTime = formatForDisplayTime;
+        if (parent != null) {
+            parent.setTextFieldToValidStateIfNeeded();
+        }
+    }
+
+    /**
+     * setFormatForMenuTimes, This sets the default format that is used to display or parse menu
+     * times in the time picker. The default value is generated using the locale of the settings
+     * instance. If desired, a DateTimeFormatter can be created from a pattern string by using the
+     * convenience function PickerUtilities.createFormatterFromPatternString();
+     *
+     * If the time picker has already been constructed, then calling this function will cause
+     * immediate validation of the text field text.
+     */
+    public void setFormatForMenuTimes(DateTimeFormatter formatForMenuTimes) {
+        this.formatForMenuTimes = formatForMenuTimes;
+        if (parent != null) {
+            parent.setTextFieldToValidStateIfNeeded();
+        }
+    }
+
+    /**
+     * setGapBeforeButtonPixels, This specifies the desired width for the gap between the time
+     * picker and the toggle menu button (in pixels). The default value is null. If this is left at
+     * null, then the default value is 0 pixels.
+     */
+    public void setGapBeforeButtonPixels(Integer gapBeforeButtonPixels) {
+        this.gapBeforeButtonPixels = gapBeforeButtonPixels;
+        if (parent != null) {
+            zApplyGapBeforeButtonPixels();
+        }
+    }
+
+    /**
+     * setParentTimePicker, This sets the parent time picker for these settings. This is only
+     * intended to be called from the constructor of the time picker class.
+     */
+    void setParentTimePicker(TimePicker parentTimePicker) {
+        this.parent = parentTimePicker;
+    }
+
+    /**
+     * setVetoPolicy,
+     *
+     * This sets a veto policy for the time picker. Note: This function can only be called after the
+     * time picker is constructed. If this is called before the TimePicker is constructed, then an
+     * exception will be thrown.
+     *
+     * When a veto policy is supplied, it will be used to determine which times can or can not be
+     * selected in the calendar panel. (Vetoed times are also not accepted into the time picker text
+     * field). See the demo class for an example of constructing a veto policy.
+     *
+     * By default, there is no veto policy on a time picker. Setting this function to null will
+     * clear any veto policy that has been set.
+     *
+     * It's possible to set a veto policy that vetoes the current "last valid time". This function
+     * returns true if the last valid time is allowed by the new veto policy and the time picker
+     * settings, or false if the last valid time is vetoed or disallowed. Setting a new veto policy
+     * does not modify the last valid time. Is up to the programmer to resolve any potential
+     * conflict between a new veto policy, and the last valid time stored in the time picker.
+     */
+    public boolean setVetoPolicy(TimeVetoPolicy vetoPolicy) {
+        if (parent == null) {
+            throw new RuntimeException("TimePickerSettings.setVetoPolicy(), "
+                    + "A veto policy can only be set after constructing the TimePicker.");
+        }
+        this.vetoPolicy = vetoPolicy;
+        return isTimeAllowed(parent.getTime());
     }
 
     /**
@@ -349,9 +558,101 @@ public class TimePickerSettings {
      * you, then please inform the developers.
      */
     public void use24HourClockFormat() {
-        formatForDisplayTime = PickerUtilities.createFormatterFromPatternString(
-                "HH:mm", timePickerLocale);
+        formatForDisplayTime = PickerUtilities.createFormatterFromPatternString("HH:mm", locale);
         formatForMenuTimes = formatForDisplayTime;
+    }
+
+    /**
+     * yApplyNeededSettingsAtTimePickerConstruction, This is called from the time picker constructor
+     * to apply various settings in this settings instance to the time picker. Only the settings
+     * that are needed at the time of time picker construction, are applied in this function.
+     */
+    void yApplyNeededSettingsAtTimePickerConstruction() {
+        // Run the needed "apply" functions.
+        zApplyGapBeforeButtonPixels();
+        zApplyAllowKeyboardEditing();
+        zApplyInitialTime();
+        zApplyAllowEmptyTimes();
+    }
+
+    /**
+     * zApplyAllowEmptyTimes, This applies the named setting to the parent component.
+     *
+     * Notes:
+     *
+     * The zApplyInitialTime() and zApplyAllowEmptyTimes() functions may theoretically be called in
+     * any order. However, the order is currently zApplyInitialTime() and zApplyAllowEmptyTimes()
+     * because that is more intuitive.
+     *
+     * This cannot throw an exception while the time picker is being constructed, because a veto
+     * policy cannot be set until after the time picker is constructed.
+     */
+    private void zApplyAllowEmptyTimes() {
+        // Find out if we need to initialize a null time.
+        if ((!allowEmptyTimes) && (parent.getTime() == null)) {
+            // We need to initialize the current time, so find out if the default time is vetoed.
+            LocalTime defaultTime = LocalTime.of(7, 0);
+            if (InternalUtilities.isTimeVetoed(vetoPolicy, defaultTime)) {
+                throw new RuntimeException("Exception in TimePickerSettings.zApplyAllowEmptyTimes(), "
+                        + "Could not initialize a null time to 7am, because 7am is vetoed by "
+                        + "the veto policy. To prevent this exception, always call "
+                        + "setAllowEmptyTimes() -before- setting a veto policy.");
+            }
+            // Initialize the current time.
+            parent.setTime(defaultTime);
+        }
+    }
+
+    /**
+     * zApplyAllowKeyboardEditing, This applies the named setting to the parent component.
+     */
+    private void zApplyAllowKeyboardEditing() {
+        // Set the editability of the time picker text field.
+        parent.timeTextField.setEditable(allowKeyboardEditing);
+        // Set the text field border color based on whether the text field is editable.
+        Color textFieldBorderColor = (allowKeyboardEditing)
+                ? InternalConstants.colorEditableTextFieldBorder
+                : InternalConstants.colorNotEditableTextFieldBorder;
+        parent.timeTextField.setBorder(new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
+    }
+
+    /**
+     * zApplyGapBeforeButtonPixels, This applies the named setting to the parent component.
+     */
+    private void zApplyGapBeforeButtonPixels() {
+        int gapPixels = (gapBeforeButtonPixels == null) ? 0 : gapBeforeButtonPixels;
+        ConstantSize gapSizeObject = new ConstantSize(gapPixels, ConstantSize.PIXEL);
+        ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
+        FormLayout layout = ((FormLayout) parent.getLayout());
+        layout.setColumnSpec(2, columnSpec);
+    }
+
+    /**
+     * zApplyInitialTime, This applies the named setting to the parent component.
+     *
+     * Notes:
+     *
+     * This does not need to check the parent for null, because this is always and only called while
+     * the time picker is being constructed.
+     *
+     * This does not need to handle (allowEmptyTimes == false && initialTime == null). That
+     * situation is handled by the zApplyAllowEmptyTimes() function.
+     *
+     * There is no possibility that this can conflict with a veto policy at the time that it is set,
+     * because a veto policy cannot be set until after the construction of a time picker.
+     *
+     * The zApplyInitialTime() and zApplyAllowEmptyTimes() functions may theoretically be called in
+     * any order. However, the order is currently zApplyInitialTime() and zApplyAllowEmptyTimes()
+     * because that is more intuitive.
+     */
+    private void zApplyInitialTime() {
+        if (allowEmptyTimes == true && initialTime == null) {
+            parent.setTime(null);
+        }
+        if (initialTime != null) {
+            parent.setTime(initialTime);
+        }
     }
 
     /**
