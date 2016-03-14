@@ -241,7 +241,7 @@ public class Demo {
 
         // Create a time picker: Disallow Empty Times.
         timeSettings = new TimePickerSettings();
-        timeSettings.allowEmptyTimes = false;
+        timeSettings.setAllowEmptyTimes(false);
         timePicker2 = new TimePicker(timeSettings);
         panel.panel2.add(timePicker2, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 2, Disallow Empty Times:");
@@ -255,8 +255,8 @@ public class Demo {
 
         // Create a time picker: With Veto Policy.
         timeSettings = new TimePickerSettings();
-        timeSettings.vetoPolicy = new SampleTimeVetoPolicy();
         timePicker4 = new TimePicker(timeSettings);
+        timeSettings.setVetoPolicy(new SampleTimeVetoPolicy());
         panel.panel2.add(timePicker4, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 4, With Veto Policy (Only 9a-5p allowed):");
 
@@ -287,7 +287,7 @@ public class Demo {
         dateSettings = new DatePickerSettings();
         timeSettings = new TimePickerSettings();
         dateSettings.setAllowEmptyDates(false);
-        timeSettings.allowEmptyTimes = false;
+        timeSettings.setAllowEmptyTimes(false);
         dateTimePicker2 = new DateTimePicker(dateSettings, timeSettings);
         panel.panel2.add(dateTimePicker2, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "DateTimePicker 2, Disallow empty dates and times:");
@@ -316,9 +316,8 @@ public class Demo {
 
         // Create a time picker: Custom Format.
         timeSettings = new TimePickerSettings();
-        timeSettings.formatForDisplayTime = PickerUtilities.createFormatterFromPatternString(
-                "ha", timeSettings.timePickerLocale);
-        timeSettings.formatForMenuTimes = timeSettings.formatForDisplayTime;
+        timeSettings.setFormatForDisplayTime(PickerUtilities.createFormatterFromPatternString("ha", timeSettings.getLocale()));
+        timeSettings.setFormatForMenuTimes(timeSettings.getFormatForDisplayTime());
         timeSettings.initialTime = LocalTime.of(15, 00);
         timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
         timePicker9 = new TimePicker(timeSettings);

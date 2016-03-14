@@ -244,10 +244,7 @@ public class DatePickerSettings {
      * parent, This holds a reference to the parent date picker that is associated with these
      * settings. This variable is only intended to be set from the date picker constructor.
      *
-     * This will be null until the DatePicker is constructed (using this settings instance). Any
-     * functions that rely on this variable may or may not not have an effect until the date picker
-     * is constructed. If there are restrictions on when a settings function can be used, it will be
-     * noted in the functions documentation.
+     * This will be null until the DatePicker is constructed (using this settings instance).
      */
     private DatePicker parent;
 
@@ -337,9 +334,9 @@ public class DatePickerSettings {
     public String translationToday;
 
     /**
-     * vetoPolicy, If a veto policy is supplied, it will be used to determine which dates cannot be
-     * selected in the calendar panel. (Vetoed dates are also not accepted into the date picker text
-     * field). By default, there is no veto policy. (The default value is null.) See the
+     * vetoPolicy, If a veto policy is supplied, it will be used to determine which dates can and
+     * cannot be selected in the calendar panel. (Vetoed dates are also not accepted into the date
+     * picker text field). By default, there is no veto policy. (The default value is null.) See the
      * DateVetoPolicy Javadocs for details regarding when a veto policy is enforced. See the demo
      * class for an example of constructing a veto policy.
      */
@@ -427,19 +424,19 @@ public class DatePickerSettings {
     }
 
     /**
-     * getFormatForDatesBeforeCommonEra, Returns the value this setting. See the "set" function for
-     * setting information.
-     */
-    public DateTimeFormatter getFormatForDatesBeforeCommonEra() {
-        return formatForDatesBeforeCommonEra;
-    }
-
-    /**
      * getAllowKeyboardEditing, Returns the value of this setting. See the "set" function for
      * setting information.
      */
     public boolean getAllowKeyboardEditing() {
         return allowKeyboardEditing;
+    }
+
+    /**
+     * getFormatForDatesBeforeCommonEra, Returns the value this setting. See the "set" function for
+     * setting information.
+     */
+    public DateTimeFormatter getFormatForDatesBeforeCommonEra() {
+        return formatForDatesBeforeCommonEra;
     }
 
     /**
@@ -467,7 +464,7 @@ public class DatePickerSettings {
     }
 
     /**
-     * @return the vetoPolicy
+     * getVetoPolicy, This returns the veto policy.
      */
     public DateVetoPolicy getVetoPolicy() {
         return vetoPolicy;
@@ -560,7 +557,7 @@ public class DatePickerSettings {
      * setFormatForDatesCommonEra, This sets the default format that is used to display or parse CE
      * dates in the date picker. The default value is generated using the locale of the settings
      * instance. If desired, a DateTimeFormatter can be created from a pattern string by using the
-     * convenience function DateUtilities.createFormatterFromPatternString();
+     * convenience function PickerUtilities.createFormatterFromPatternString();
      *
      * If the date picker has already been constructed, then calling this function will cause
      * immediate validation of the text field text.
@@ -603,8 +600,9 @@ public class DatePickerSettings {
     /**
      * setVetoPolicy,
      *
-     * This sets a veto policy for the date picker. This function can only be called after the date
-     * picker is constructed, otherwise an exception will be thrown.
+     * This sets a veto policy for the date picker. Note: This function can only be called after the
+     * date picker is constructed. If this is called before the DatePicker is constructed, then an
+     * exception will be thrown.
      *
      * When a veto policy is supplied, it will be used to determine which dates can or can not be
      * selected in the calendar panel. (Vetoed dates are also not accepted into the date picker text
