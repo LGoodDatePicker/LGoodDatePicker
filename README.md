@@ -20,7 +20,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Also supports other common data types, such as "java.util.Date".
 * Customizable visual elements.  
 (Including calendar size, fonts, colors, and the popup border.)
-* The TimePicker user interface provides the time selection list, up/down arrow key response, and optional spinner buttons. 
+* The TimePicker GUI provides the time selection list, up/down arrow key response, and optional spinner buttons. 
 * Automatic date and time validation on all components.
 * Optional highlight policies and veto policies.
 * Can allow or disallow empty values. (Null dates or times.)
