@@ -9,6 +9,7 @@ import com.lgooddatepicker.zinternaltools.ExtraTimeStrings;
 import com.lgooddatepicker.zinternaltools.InternalConstants;
 import com.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.time.LocalTime;
@@ -68,7 +69,7 @@ public class TimePickerSettings {
      * learn about the automatic time validation and enforcement for keyboard entered text, see the
      * javadocs for the TimePicker class.
      */
-    public boolean allowKeyboardEditing = true;
+    private boolean allowKeyboardEditing = true;
 
     /**
      * borderTimePopup, This allows you to set a custom border for the time picker popup menu. By
@@ -94,6 +95,18 @@ public class TimePickerSettings {
      * times.
      */
     public Color colorTextVetoedTime = Color.black;
+
+    /**
+     * displayToggleTimeMenuButton, This controls whether or not the toggle menu button is displayed
+     * (and enabled), on the time picker. The default value is true.
+     */
+    private boolean displayToggleTimeMenuButton = true;
+
+    /**
+     * displaySpinnerButtons, This controls whether or not the spinner buttons are displayed (and
+     * enabled), on the time picker. The default value is false.
+     */
+    private boolean displaySpinnerButtons = false;
 
     /**
      * fontInvalidTime, This is the text field text font for invalid times. The default font is
@@ -165,6 +178,18 @@ public class TimePickerSettings {
      * drop down menu, then the menu will be made smaller to fit the number of time entries.
      */
     public int maximumVisibleMenuRows = 10;
+
+    /**
+     * minimumSpinnerButtonWidthInPixels, This sets the minimum width of the spinner buttons. The
+     * default value is 20 pixels.
+     */
+    private int minimumSpinnerButtonWidthInPixels = 20;
+
+    /**
+     * minimumToggleTimeMenuButtonWidthInPixels, This sets the minimum width of the toggle menu
+     * button. The default value is 26 pixels.
+     */
+    private int minimumToggleTimeMenuButtonWidthInPixels = 26;
 
     /**
      * parent, This holds a reference to the parent time picker that is associated with these
@@ -359,6 +384,22 @@ public class TimePickerSettings {
     }
 
     /**
+     * getDisplaySpinnerButtons, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public boolean getDisplaySpinnerButtons() {
+        return displaySpinnerButtons;
+    }
+
+    /**
+     * getDisplayToggleTimeMenuButton, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public boolean getDisplayToggleTimeMenuButton() {
+        return displayToggleTimeMenuButton;
+    }
+
+    /**
      * getFormatForDisplayTime, Returns the value this setting. See the "set" function for setting
      * information.
      */
@@ -388,6 +429,21 @@ public class TimePickerSettings {
      */
     public Locale getLocale() {
         return locale;
+    }
+
+    /**
+     * getMinimumSpinnerButtonWidthInPixels, This returns the minimum width of the spinner buttons.
+     */
+    public int getMinimumSpinnerButtonWidthInPixels() {
+        return minimumSpinnerButtonWidthInPixels;
+    }
+
+    /**
+     * getMinimumSpinnerButtonWidthInPixels, This returns the minimum width of the toggle menu
+     * button.
+     */
+    public int getMinimumToggleTimeMenuButtonWidthInPixels() {
+        return minimumToggleTimeMenuButtonWidthInPixels;
     }
 
     /**
@@ -466,6 +522,24 @@ public class TimePickerSettings {
     }
 
     /**
+     * setDisplaySpinnerButtons, This sets whether or not the spinner buttons will be displayed (and
+     * enabled), on the time picker. The default value is false.
+     */
+    public void setDisplaySpinnerButtons(boolean displaySpinnerButtons) {
+        this.displaySpinnerButtons = displaySpinnerButtons;
+        zApplyDisplaySpinnerButtons();
+    }
+
+    /**
+     * setDisplayToggleTimeMenuButton, This sets whether or not the toggle menu button will be
+     * displayed (and enabled), on the time picker. The default value is true.
+     */
+    public void setDisplayToggleTimeMenuButton(boolean showToggleTimeMenuButton) {
+        this.displayToggleTimeMenuButton = showToggleTimeMenuButton;
+        zApplyDisplayToggleTimeMenuButton();
+    }
+
+    /**
      * setFormatForDisplayTime, This sets the default format that is used to display or parse the
      * text field time times in the time picker. The default value is generated using the locale of
      * the settings instance. If desired, a DateTimeFormatter can be created from a pattern string
@@ -507,6 +581,31 @@ public class TimePickerSettings {
         if (parent != null) {
             zApplyGapBeforeButtonPixels();
         }
+    }
+
+    /**
+     * setInitialTimeToNow, This sets the initial time for the time picker to the current time. This
+     * function only has an effect before the time picker is constructed.
+     */
+    public void setInitialTimeToNow() {
+        initialTime = LocalTime.now();
+    }
+
+    /**
+     * setMinimumSpinnerButtonWidthInPixels, This sets the minimum width of the spinner buttons.
+     */
+    public void setMinimumSpinnerButtonWidthInPixels(int pixels) {
+        this.minimumSpinnerButtonWidthInPixels = pixels;
+        zApplyMinimumSpinnerButtonWidthInPixels();
+    }
+
+    /**
+     * setMinimumToggleTimeMenuButtonWidthInPixels, This sets the minimum width of the toggle menu
+     * button.
+     */
+    public void setMinimumToggleTimeMenuButtonWidthInPixels(int pixels) {
+        this.minimumToggleTimeMenuButtonWidthInPixels = pixels;
+        zApplyMinimumToggleTimeMenuButtonWidthInPixels();
     }
 
     /**
@@ -573,6 +672,10 @@ public class TimePickerSettings {
         zApplyAllowKeyboardEditing();
         zApplyInitialTime();
         zApplyAllowEmptyTimes();
+        zApplyMinimumToggleTimeMenuButtonWidthInPixels();
+        zApplyMinimumSpinnerButtonWidthInPixels();
+        zApplyDisplayToggleTimeMenuButton();
+        zApplyDisplaySpinnerButtons();
     }
 
     /**
@@ -618,6 +721,30 @@ public class TimePickerSettings {
     }
 
     /**
+     * zApplyDisplaySpinnerButtons, This applies the specified setting to the time picker.
+     */
+    void zApplyDisplaySpinnerButtons() {
+        if (parent == null) {
+            return;
+        }
+        parent.decreaseButton.setEnabled(displaySpinnerButtons);
+        parent.decreaseButton.setVisible(displaySpinnerButtons);
+        parent.increaseButton.setEnabled(displaySpinnerButtons);
+        parent.increaseButton.setVisible(displaySpinnerButtons);
+    }
+
+    /**
+     * zApplyDisplayToggleTimeMenuButton, This applies the specified setting to the time picker.
+     */
+    void zApplyDisplayToggleTimeMenuButton() {
+        if (parent == null) {
+            return;
+        }
+        parent.toggleTimeMenuButton.setEnabled(displayToggleTimeMenuButton);
+        parent.toggleTimeMenuButton.setVisible(displayToggleTimeMenuButton);
+    }
+
+    /**
      * zApplyGapBeforeButtonPixels, This applies the named setting to the parent component.
      */
     private void zApplyGapBeforeButtonPixels() {
@@ -653,6 +780,42 @@ public class TimePickerSettings {
         if (initialTime != null) {
             parent.setTime(initialTime);
         }
+    }
+
+    /**
+     * zApplyMinimumSpinnerButtonWidthInPixels, The applies the specified setting to the time
+     * picker.
+     */
+    void zApplyMinimumSpinnerButtonWidthInPixels() {
+        if (parent == null) {
+            return;
+        }
+        Dimension decreaseButtonPreferredSize = parent.decreaseButton.getPreferredSize();
+        Dimension increaseButtonPreferredSize = parent.increaseButton.getPreferredSize();
+        int width = Math.max(decreaseButtonPreferredSize.width, increaseButtonPreferredSize.width);
+        int height = Math.max(decreaseButtonPreferredSize.height, increaseButtonPreferredSize.height);
+        int minimumWidth = minimumSpinnerButtonWidthInPixels;
+        width = (width < minimumWidth) ? minimumWidth : width;
+        Dimension newSize = new Dimension(width, height);
+        parent.decreaseButton.setPreferredSize(newSize);
+        parent.increaseButton.setPreferredSize(newSize);
+    }
+
+    /**
+     * zApplyMinimumToggleTimeMenuButtonWidthInPixels, This applies the specified setting to the
+     * time picker.
+     */
+    void zApplyMinimumToggleTimeMenuButtonWidthInPixels() {
+        if (parent == null) {
+            return;
+        }
+        Dimension menuButtonPreferredSize = parent.toggleTimeMenuButton.getPreferredSize();
+        int width = menuButtonPreferredSize.width;
+        int height = menuButtonPreferredSize.height;
+        int minimumWidth = minimumToggleTimeMenuButtonWidthInPixels;
+        width = (width < minimumWidth) ? minimumWidth : width;
+        Dimension newSize = new Dimension(width, height);
+        parent.toggleTimeMenuButton.setPreferredSize(newSize);
     }
 
     /**

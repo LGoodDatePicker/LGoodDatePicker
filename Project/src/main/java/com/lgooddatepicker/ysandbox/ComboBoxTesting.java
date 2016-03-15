@@ -16,6 +16,7 @@ public class ComboBoxTesting extends JPanel {
 		textField1 = new JTextField();
 		textField2 = new JTextField();
 		comboBox1 = new JComboBox<>();
+		spinner1 = new JSpinner();
 
 		//======== this ========
 		setLayout(new FormLayout(
@@ -65,6 +66,7 @@ public class ComboBoxTesting extends JPanel {
 		}));
 		comboBox1.setSelectedIndex(-1);
 		add(comboBox1, CC.xy(3, 3));
+		add(spinner1, CC.xy(5, 7));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -72,5 +74,6 @@ public class ComboBoxTesting extends JPanel {
 	private JTextField textField1;
 	private JTextField textField2;
 	private JComboBox<String> comboBox1;
+	private JSpinner spinner1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }
