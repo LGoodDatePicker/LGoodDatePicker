@@ -64,28 +64,13 @@ public class Demo {
     // This holds our display panel.
     static DemoPanel panel;
     // These hold date pickers.
+    static DatePicker datePicker;
     static DatePicker datePicker1;
     static DatePicker datePicker2;
-    static DatePicker datePicker3;
-    static DatePicker datePicker4;
-    static DatePicker datePicker5;
-    static DatePicker datePicker6;
-    static DatePicker datePicker7;
-    static DatePicker datePicker8;
-    static DatePicker datePicker9;
-    static DatePicker datePicker10;
-    static DatePicker datePicker11;
     // These hold time pickers.
+    static TimePicker timePicker;
     static TimePicker timePicker1;
     static TimePicker timePicker2;
-    static TimePicker timePicker3;
-    static TimePicker timePicker4;
-    static TimePicker timePicker5;
-    static TimePicker timePicker6;
-    static TimePicker timePicker7;
-    static TimePicker timePicker8;
-    static TimePicker timePicker9;
-    static TimePicker timePicker10;
     // These hold DateTimePickers.
     static DateTimePicker dateTimePicker1;
     static DateTimePicker dateTimePicker2;
@@ -151,33 +136,33 @@ public class Demo {
         // Create a date picker: With veto policy.
         // Note: Veto policies can only be set after constructing the date picker.
         dateSettings = new DatePickerSettings();
-        datePicker3 = new DatePicker(dateSettings);
+        datePicker = new DatePicker(dateSettings);
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
-        panel.panel1.add(datePicker3, getConstraints(1, (row * rowMultiplier), 1));
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 3, Veto Policy:");
 
         // Create a date picker: With both policies.
         // Note: Veto policies can only be set after constructing the date picker.
         dateSettings = new DatePickerSettings();
-        datePicker4 = new DatePicker(dateSettings);
+        datePicker = new DatePicker(dateSettings);
         dateSettings.highlightPolicy = new SampleHighlightPolicy();
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
-        panel.panel1.add(datePicker4, getConstraints(1, (row * rowMultiplier), 1));
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 4, Both Policies:");
 
         // Create a date picker: Change first weekday.
         dateSettings = new DatePickerSettings();
         dateSettings.firstDayOfWeek = DayOfWeek.MONDAY;
-        datePicker5 = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker5, getConstraints(1, (row * rowMultiplier), 1));
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 5, Set First Day Of Week (Mon):");
 
         // Create a date picker: Change calendar size.
         dateSettings = new DatePickerSettings();
         dateSettings.sizeDatePanelMinimumHeight *= 1.6;
         dateSettings.sizeDatePanelMinimumWidth *= 1.6;
-        datePicker6 = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker6, getConstraints(1, (row * rowMultiplier), 1));
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Calendar Size:");
 
         // Create a date picker: Custom color.
@@ -187,8 +172,8 @@ public class Demo {
         dateSettings.colorBackgroundMonthAndYear = Color.yellow;
         dateSettings.colorBackgroundTodayAndClear = Color.yellow;
         dateSettings.colorBackgroundNavigateYearMonthButtons = Color.cyan;
-        datePicker7 = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker7, getConstraints(1, (row * rowMultiplier), 1));
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 7, Change Colors:");
 
         // Create a date picker: Custom date format.
@@ -198,8 +183,8 @@ public class Demo {
         dateSettings.setFormatForDatesCommonEra(PickerUtilities.createFormatterFromPatternString("d MMM yyyy", dateSettings.getLocale()));
         dateSettings.setFormatForDatesBeforeCommonEra(PickerUtilities.createFormatterFromPatternString("d MMM uuuu", dateSettings.getLocale()));
         dateSettings.setInitialDateToToday();
-        datePicker8 = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker8, getConstraints(1, (row * rowMultiplier), 1));
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Date Format:");
 
         // Create a date picker: Custom font.
@@ -207,30 +192,31 @@ public class Demo {
         dateSettings.fontValidDate = new Font("Monospaced", Font.ITALIC | Font.BOLD, 17);
         dateSettings.colorTextValidDate = new Color(0, 100, 0);
         dateSettings.setInitialDateToToday();
-        datePicker9 = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker9, getConstraints(1, (row * rowMultiplier), 1));
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Font:");
 
         // Create a date picker: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowEmptyDates(false);
-        datePicker10 = new DatePicker(dateSettings);
-        datePicker10.addDateChangeListener(new SampleDateChangeListener("datePicker10 (Disallow Empty Dates or Null), "));
-        panel.panel1.add(datePicker10, getConstraints(1, (row * rowMultiplier), 1));
+        datePicker = new DatePicker(dateSettings);
+        datePicker.addDateChangeListener(new SampleDateChangeListener("datePicker10 (Disallow Empty Dates or Null), "));
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Disallow Empty Dates:");
 
         // Create a date picker: Disallow keyboard editing.
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowKeyboardEditing(false);
         dateSettings.setInitialDateToToday();
-        datePicker11 = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker11, getConstraints(1, (row * rowMultiplier), 1));
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Disallow Keyboard Editing:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
         //
-        // Create a settings variable for repeated use.
+        // Create some variables for repeated use.
+        TimePicker timePicker;
         TimePickerSettings timeSettings;
         row = rowMultiplier;
 
@@ -238,42 +224,55 @@ public class Demo {
         timePicker1 = new TimePicker();
         panel.panel2.add(timePicker1, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 1, Default Settings:");
-
-        // Create a time picker: Disallow Empty Times.
+        
+        // Create a time picker: With No Buttons.
         timeSettings = new TimePickerSettings();
-        timeSettings.setAllowEmptyTimes(false);
-        timePicker2 = new TimePicker(timeSettings);
-        panel.panel2.add(timePicker2, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 2, Disallow Empty Times:");
-
-        // Create a time picker: 15 minute interval.
+        timeSettings.setDisplayToggleTimeMenuButton(false);
+        timeSettings.setInitialTimeToNow();
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 2, No Buttons:");
+        
+        // Create a time picker: With Spinner Buttons.
         timeSettings = new TimePickerSettings();
-        timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
-        timePicker3 = new TimePicker(timeSettings);
-        panel.panel2.add(timePicker3, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 3, Interval of 15 minutes:");
-
-        // Create a time picker: With Veto Policy.
+        timeSettings.setDisplayToggleTimeMenuButton(false);
+        timeSettings.setDisplaySpinnerButtons(true);
+        timeSettings.setInitialTimeToNow();
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 3, With Spinner Buttons:");
+        
+        // Create a time picker: With All Buttons.
         timeSettings = new TimePickerSettings();
-        timePicker4 = new TimePicker(timeSettings);
-        timeSettings.setVetoPolicy(new SampleTimeVetoPolicy());
-        panel.panel2.add(timePicker4, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 4, With Veto Policy (Only 9a-5p allowed):");
+        timeSettings.setDisplaySpinnerButtons(true);
+        timeSettings.setInitialTimeToNow();
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 4, With All Buttons:");
 
-        // Create a time picker: With 24 hour clock.
+        // Create a time picker: 15 minute interval, and 24 hour clock.
         timeSettings = new TimePickerSettings();
         timeSettings.use24HourClockFormat();
         timeSettings.initialTime = LocalTime.of(15, 30);
-        timePicker5 = new TimePicker(timeSettings);
-        panel.panel2.add(timePicker5, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 5, With 24 hour clock:");
+        timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 5, Interval 15 minutes, and 24 hour clock:");
+
+        // Create a time picker: With Veto Policy.
+        timeSettings = new TimePickerSettings();
+        timePicker = new TimePicker(timeSettings);
+        timeSettings.setVetoPolicy(new SampleTimeVetoPolicy());
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 6, With Veto Policy (Only 9a-5p allowed):");
+
 
         // Create a time picker: Localized (Chinese).
         timeSettings = new TimePickerSettings(Locale.forLanguageTag("zh"));
         timeSettings.initialTime = LocalTime.now();
-        timePicker6 = new TimePicker(timeSettings);
-        panel.panel2.add(timePicker6, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 6, Localized (to Chinese):");
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 7, Localized (to Chinese):");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates DateTimePickers. (1 to 5)
@@ -300,19 +299,29 @@ public class Demo {
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining TimePickers.
+        
+        
+
+        // Create a time picker: Disallow Empty Times.
+        timeSettings = new TimePickerSettings();
+        timeSettings.setAllowEmptyTimes(false);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 8, Disallow Empty Times:");
+        
         // Create a time picker: With TimeChangeListener.
         timeSettings = new TimePickerSettings();
-        timePicker7 = new TimePicker(timeSettings);
-        timePicker7.addTimeChangeListener(new SampleTimeChangeListener("timePicker7"));
-        panel.panel2.add(timePicker7, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 7, With a TimeChangeListener:");
+        timePicker = new TimePicker(timeSettings);
+        timePicker.addTimeChangeListener(new SampleTimeChangeListener("timePicker7"));
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 9, With a TimeChangeListener:");
 
         // Create a time picker: With more visible rows.
         timeSettings = new TimePickerSettings();
         timeSettings.maximumVisibleMenuRows = 20;
-        timePicker8 = new TimePicker(timeSettings);
-        panel.panel2.add(timePicker8, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 8, With 20 visible menu rows:");
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 10, With 20 visible menu rows:");
 
         // Create a time picker: Custom Format.
         timeSettings = new TimePickerSettings();
@@ -320,16 +329,16 @@ public class Demo {
         timeSettings.setFormatForMenuTimes(timeSettings.getFormatForDisplayTime());
         timeSettings.initialTime = LocalTime.of(15, 00);
         timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
-        timePicker9 = new TimePicker(timeSettings);
-        panel.panel2.add(timePicker9, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 9, Custom Format:");
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 11, Custom Format:");
 
         // Create a time picker: Disallow Keyboard Editing.
         timeSettings = new TimePickerSettings();
-        timeSettings.allowKeyboardEditing = false;
-        timePicker10 = new TimePicker(timeSettings);
-        panel.panel2.add(timePicker10, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 10, Disallow Keyboard Editing:");
+        timeSettings.setAllowKeyboardEditing(false);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 12, Disallow Keyboard Editing:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining DateTimePickers.
