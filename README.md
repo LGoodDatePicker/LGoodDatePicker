@@ -2,7 +2,7 @@
 Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## News:
-[LGoodDatePicker 4.2.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 15, 2016. Enhancements in this release include arrow key functionality and "spinner buttons" for the TimePicker component. The spinner buttons can be displayed or removed by the programmer in the TimePickerSettings.
+[LGoodDatePicker 4.2.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 15, 2016. Enhancements in this release include arrow key functionality and "spinner buttons" for the TimePicker component. The spinner buttons can be displayed or removed by the developer in the TimePickerSettings.
 
 ## Project Links:
 Demo Application is in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
