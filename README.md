@@ -2,7 +2,7 @@
 Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## News:
-[LGoodDatePicker 4.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 14, 2016. This release consists of "internal improvements" to the DatePicker and TimePicker settings which allow greater flexibility over when the settings can be applied. 
+[LGoodDatePicker 4.2.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 15, 2016. This release adds the optional "spinner buttons" to the TimePicker component.
 
 ## Project Links:
 Demo Application is in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
@@ -18,9 +18,10 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
 * Also supports other common data types, such as "java.util.Date".
-* Automatic date and time validation.
 * Customizable visual elements.  
 (Including calendar size, fonts, colors, and the popup border.)
+* The TimePicker user interface provides the time selection list, up/down arrow key response, and optional spinner buttons. 
+* Automatic date and time validation on all components.
 * Optional highlight policies and veto policies.
 * Can allow or disallow empty values. (Null dates or times.)
 * Can optionally disallow keyboard editing. 
