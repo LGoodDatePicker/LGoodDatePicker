@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.lgooddatepicker</groupId>
+    <artifactId>LGoodDatePicker</artifactId>
+    <version>${project.version}</version>
+    <packaging>jar</packaging>
+    <name>LGoodDatePicker</name>
+    <description>Java 8 Swing Date Picker. Easy to use, good looking, nice features, and 
+        localized. Uses the JSR-310 standard.</description>
+    <url>https://github.com/LGoodDatePicker/LGoodDatePicker</url>
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>BlakeTNC</name>
+            <email>BlakeTNC@gmailRemoveThisNoSpam.com</email>
+            <organization>LGoodDatePicker</organization>
+            <organizationUrl>https://github.com/LGoodDatePicker/LGoodDatePicker</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:LGoodDatePicker/LGoodDatePicker.git</connection>
+        <developerConnection>scm:git:git@github.com:LGoodDatePicker/LGoodDatePicker.git</developerConnection>
+        <url>git@github.com:LGoodDatePicker/LGoodDatePicker.git</url>
+    </scm>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <dependencies>
+    </dependencies>
+    <build>
+    </build>
+</project>

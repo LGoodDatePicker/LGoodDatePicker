@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- General notes:
+The ordering of the plugins in this file matters. The execution order for any plugin executions 
+that are on the same phase will be the same as the order of entries in the pom file. Multiple 
+plugins in this file operate inside the "package" and "install" phases.
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.lgooddatepicker</groupId>
+    <groupId>com.github.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>4.2.1</version>
+    <version>4.2.2</version>
     <packaging>jar</packaging>
+    <name>LGoodDatePicker</name>
+    <description>Java 8 Swing Date Picker. Easy to use, good looking, nice features, and 
+        localized. Uses the JSR-310 standard.</description>
+    <url>https://github.com/LGoodDatePicker/LGoodDatePicker</url>
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>BlakeTNC</name>
+            <email>BlakeTNC@gmailRemoveThisNoSpam.com</email>
+            <organization>LGoodDatePicker</organization>
+            <organizationUrl>https://github.com/LGoodDatePicker/LGoodDatePicker</organizationUrl>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:LGoodDatePicker/LGoodDatePicker.git</connection>
+        <developerConnection>scm:git:git@github.com:LGoodDatePicker/LGoodDatePicker.git</developerConnection>
+        <url>git@github.com:LGoodDatePicker/LGoodDatePicker.git</url>
+    </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -40,6 +68,7 @@
         </dependency>
     </dependencies>
     <build>
+        
         <resources>
             <resource>
                 <!-- This turns on resource filtering so we can get the version number at runtime. -->
@@ -47,38 +76,9 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+        
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>core</shadedClassifierName> <!-- Any name that makes sense -->
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.lgooddatepicker.demo.Demo</mainClass>
-                                </transformer>
-                            </transformers>
-                            <minimizeJar>true</minimizeJar>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.jgoodies</pattern>
-                                    <shadedPattern>com.shadedprivatejgoodies</shadedPattern>
-                                    <excludes>
-                                    </excludes>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -92,6 +92,7 @@
                     </execution>
                 </executions>
             </plugin>
+            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -109,23 +110,159 @@
                     </execution>
                 </executions>
             </plugin>
+            
             <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <configuration>
-                    <tasks>
-                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
-                        <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
-                    </tasks>
-                </configuration>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
                 <executions>
                     <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>core</shadedClassifierName> <!-- Any name that makes sense -->
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.github.lgooddatepicker.demo.Demo</mainClass>
+                                </transformer>
+                            </transformers>
+                            <minimizeJar>true</minimizeJar>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.jgoodies</pattern>
+                                    <shadedPattern>com.shadedprivatejgoodies</shadedPattern>
+                                    <excludes>
+                                    </excludes>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>package</id>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <echo message = ">>>>>>>>>>>>>>>>>>>>>>>>>>>>package"/>
+                                <copy file="${basedir}/target/classes/pom-for-users.txt" tofile="${project.build.directory}/pom-for-users.xml"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>install</id>
                         <phase>install</phase>
+                        <configuration>
+                            <tasks>
+                                <echo message = ">>>>>>>>>>>>>>>>>>>>>>>>>>>>install"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar.asc"/>
+                                <copy file="${project.build.directory}/pom-for-users.xml" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom"/>
+                                <copy file="${project.build.directory}/pom-for-users.xml.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
+                                <delete file="${project.build.directory}/pom-for-users.xml"/>
+                                <delete file="${project.build.directory}/pom-for-users.xml.asc"/>
+                            </tasks>
+                        </configuration>
                         <goals>
                             <goal>run</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>${project.build.directory}/pom-for-users.xml</file>
+                                    <type>pom</type>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- This will generate a warning, that can be ignored: -->
+            <!-- "Artifact com.github.lgooddatepicker:LGoodDatePicker:pom.asc:4.2.2 already attached to project, ignoring duplicate" -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                        <configuration>
+                            <keyname>${gpg.keyname}</keyname>
+                            <passphraseServerId>${gpg.keyname}</passphraseServerId>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- This must be positioned in the pom after other plugins on the "install" phase. -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <executions>
+                    <execution>
+                        <id>install</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>${env.JAVA_HOME}/bin/jar.exe</executable>
+                    <workingDirectory>${project.build.directory}</workingDirectory>
+                    <arguments>
+                        <argument>-cvf</argument>
+                        <argument>Bundle-${project.artifactId}-${project.version}.jar</argument>
+                        <argument>${project.artifactId}-${project.version}.pom</argument>
+                        <argument>${project.artifactId}-${project.version}.pom.asc</argument>
+                        <argument>${project.artifactId}-${project.version}-core.jar</argument>
+                        <argument>${project.artifactId}-${project.version}-core.jar.asc</argument>
+                        <argument>${project.artifactId}-${project.version}-executable-demo.jar</argument>
+                        <argument>${project.artifactId}-${project.version}-executable-demo.jar.asc</argument>
+                        <argument>${project.artifactId}-${project.version}-javadoc.jar</argument>
+                        <argument>${project.artifactId}-${project.version}-javadoc.jar.asc</argument>
+                        <argument>${project.artifactId}-${project.version}-sources.jar</argument>
+                        <argument>${project.artifactId}-${project.version}-sources.jar.asc</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+            
         </plugins>
     </build>
 </project>
