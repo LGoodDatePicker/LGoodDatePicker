@@ -2,11 +2,11 @@
 Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## News:
-[LGoodDatePicker 4.2.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 15, 2016. Enhancements in this release include arrow key functionality and "spinner buttons" for the TimePicker component. The spinner buttons can be displayed or removed by the developer in the TimePickerSettings.
+[LGoodDatePicker 4.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 17, 2016. The requirements for publishing to the Maven Central repository were added to the project (Including jar signing, package names, Pom file specifications, etc.). The project now has an entry at [Maven Central - LGoodDatePicker](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22). This makes the library easier to include in Java applications that use Apache Maven.
 
 ## Project Links:
 Demo Application and Downloads in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
-Maven Central LGoodDatePicker pages: on [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), or [MVNRepository](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).  
+Maven Central pages: on [Maven Central - LGoodDatePicker](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), or [MVNRepository](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).  
 Contact the primary developer: [Email Form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
 Submit bugs or feature requests: [Issues Section](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).  
 General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).  
