@@ -1,8 +1,8 @@
 package com.github.lgooddatepicker.datepicker;
 
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.ConstantSize;
-import com.jgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.ConstantSize;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;

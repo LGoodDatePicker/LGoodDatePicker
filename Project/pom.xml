@@ -42,30 +42,6 @@ plugins in this file operate inside the "package" and "install" phases.
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <dependencies>
-        <dependency>
-            <!-- 
-            Note: You are not required to include the JGoodies library in your project in order 
-            to use LGoodDatePicker. (Also, it will not be automatically added to your project by 
-            Maven). For all practical purposes, you can treat LGoodDatePicker as if it had no 
-            dependencies. The only time the JGoodies dependency entry is required, is when 
-            LGoodDatePicker itself is being built and packaged into a release jar. 
-            
-            In case it is needed, Maven automatically generates a copy of the LGoodDatePicker POM 
-            file with the JGoodies dependency entry removed, as
-            "LGoodDatePicker/Project/dependency-reduced-pom.xml".
-
-            Technical details: All dependency class files are automatically packaged into one 
-            "uber jar" (LGoodDatePicker-[version]-core.jar). Also, the jgoodies-forms dependency 
-            is "shaded to a private copy" with the maven-shade-plugin, into the namespace 
-            "com.shadedprivatejgoodies". This ensures that the included classes will not conflict 
-            with any other versions of JGoodies that may be used by projects that use 
-            LGoodDatePicker. For details on how this works, see:
-            https://maven.apache.org/plugins/maven-shade-plugin/examples/class-relocation.html 
-            -->
-            <groupId>com.jgoodies</groupId>
-            <artifactId>jgoodies-forms</artifactId>
-            <version>1.8.0</version>
-        </dependency>
     </dependencies>
     <build>
         
@@ -130,15 +106,7 @@ plugins in this file operate inside the "package" and "install" phases.
                                     <mainClass>com.github.lgooddatepicker.demo.Demo</mainClass>
                                 </transformer>
                             </transformers>
-                            <minimizeJar>true</minimizeJar>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.jgoodies</pattern>
-                                    <shadedPattern>com.shadedprivatejgoodies</shadedPattern>
-                                    <excludes>
-                                    </excludes>
-                                </relocation>
-                            </relocations>
+                            <minimizeJar>true</minimizeJar> 
                         </configuration>
                     </execution>
                 </executions>
@@ -166,12 +134,19 @@ plugins in this file operate inside the "package" and "install" phases.
                         <configuration>
                             <tasks>
                                 <echo message = ">>>>>>>>>>>>>>>>>>>>>>>>>>>>install"/>
+                                <!--
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-unshaded.jar"/>
+                                -->
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar.asc"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc"/>                              
                                 <copy file="${project.build.directory}/pom-for-users.xml" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom"/>
                                 <copy file="${project.build.directory}/pom-for-users.xml.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
                                 <delete file="${project.build.directory}/pom-for-users.xml"/>
@@ -236,31 +211,31 @@ plugins in this file operate inside the "package" and "install" phases.
                 <version>1.4.0</version>
                 <executions>
                     <execution>
-                        <id>install</id>
+                        <id>createbundle</id>
                         <phase>install</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <executable>${env.JAVA_HOME}/bin/jar.exe</executable>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                            <arguments>
+                                <argument>-cvf</argument>
+                                <argument>Bundle-${project.artifactId}-${project.version}.jar</argument>
+                                <argument>${project.artifactId}-${project.version}.pom</argument>
+                                <argument>${project.artifactId}-${project.version}.pom.asc</argument>
+                                <argument>${project.artifactId}-${project.version}.jar</argument>
+                                <argument>${project.artifactId}-${project.version}.jar.asc</argument>
+                                <argument>${project.artifactId}-${project.version}-executable-demo.jar</argument>
+                                <argument>${project.artifactId}-${project.version}-executable-demo.jar.asc</argument>
+                                <argument>${project.artifactId}-${project.version}-javadoc.jar</argument>
+                                <argument>${project.artifactId}-${project.version}-javadoc.jar.asc</argument>
+                                <argument>${project.artifactId}-${project.version}-sources.jar</argument>
+                                <argument>${project.artifactId}-${project.version}-sources.jar.asc</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>${env.JAVA_HOME}/bin/jar.exe</executable>
-                    <workingDirectory>${project.build.directory}</workingDirectory>
-                    <arguments>
-                        <argument>-cvf</argument>
-                        <argument>Bundle-${project.artifactId}-${project.version}.jar</argument>
-                        <argument>${project.artifactId}-${project.version}.pom</argument>
-                        <argument>${project.artifactId}-${project.version}.pom.asc</argument>
-                        <argument>${project.artifactId}-${project.version}-core.jar</argument>
-                        <argument>${project.artifactId}-${project.version}-core.jar.asc</argument>
-                        <argument>${project.artifactId}-${project.version}-executable-demo.jar</argument>
-                        <argument>${project.artifactId}-${project.version}-executable-demo.jar.asc</argument>
-                        <argument>${project.artifactId}-${project.version}-javadoc.jar</argument>
-                        <argument>${project.artifactId}-${project.version}-javadoc.jar.asc</argument>
-                        <argument>${project.artifactId}-${project.version}-sources.jar</argument>
-                        <argument>${project.artifactId}-${project.version}-sources.jar.asc</argument>
-                    </arguments>
-                </configuration>
             </plugin>
             
         </plugins>

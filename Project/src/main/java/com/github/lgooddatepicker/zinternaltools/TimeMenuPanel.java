@@ -1,8 +1,8 @@
 package com.github.lgooddatepicker.zinternaltools;
 
+import com.privatejgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.factories.CC;
 import javax.swing.*;
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.timepicker.TimePicker;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings;

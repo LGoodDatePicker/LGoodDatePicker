@@ -1,8 +1,8 @@
 package com.github.lgooddatepicker.datepicker;
 
+import com.privatejgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.*;
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
 import com.github.lgooddatepicker.zinternaltools.CalendarPanel;
 import java.awt.*;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
