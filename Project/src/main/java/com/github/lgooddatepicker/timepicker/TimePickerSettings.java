@@ -1,8 +1,8 @@
 package com.github.lgooddatepicker.timepicker;
 
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.ConstantSize;
-import com.jgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.ConstantSize;
+import com.privatejgoodies.forms.layout.FormLayout;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.ExtraTimeStrings;

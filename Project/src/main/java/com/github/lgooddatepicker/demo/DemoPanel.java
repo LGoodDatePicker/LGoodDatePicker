@@ -1,10 +1,10 @@
 package com.github.lgooddatepicker.demo;
 
+import com.privatejgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.factories.CC;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
 
 public class DemoPanel extends JPanel {
 

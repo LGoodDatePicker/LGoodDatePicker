@@ -1,7 +1,9 @@
 package com.github.lgooddatepicker.datetimepicker;
 
-import com.jgoodies.forms.factories.CC;
-import com.jgoodies.forms.layout.*;
+import com.privatejgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.layout.ConstantSize;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;

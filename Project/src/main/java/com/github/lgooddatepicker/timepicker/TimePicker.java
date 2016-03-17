@@ -1,7 +1,7 @@
 package com.github.lgooddatepicker.timepicker;
 
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
+import com.privatejgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
 import java.awt.*;
 import javax.swing.border.*;
