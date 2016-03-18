@@ -44,14 +44,14 @@ public class TimeSpinnerTimer {
      * before moving onto the next value in the divisorList.
      */
     final private int[] millisForIndexList = new int[]{
-        4200, 2800, 1900, 1400, 1000, 1000, 1000, 0};
+        3200, 1800, 800, 800, 800, 800, 800, 0};
     /**
      * divisorList, For as long as any particular index in this array remains in effect, the
      * currently used number indicates how many tick calls should pass before the time picker value
      * should be changed. For example, the number 3 indicates that the time picker value should be
      * changed only once for every 3 calls to the tick function.
      */
-    final private int[] divisorList = new int[]{14, 11, 9, 6, 4, 3, 2, 1};
+    final private int[] divisorList = new int[]{12, 10, 8, 6, 4, 3, 2, 1};
     /**
      * startedIndexTimeStamp, This indicates the time that the currently used index in the
      * divisorList started to be used.
