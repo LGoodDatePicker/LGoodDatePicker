@@ -40,16 +40,17 @@ public class TimeSpinnerTimer {
      */
     final private int timerRate = 20;
     /**
-     * millisForIndexList, This indicates how long each value in the divisorList should be used,
+     * millisForDivisorList, This indicates how long each value in the divisorList should be used,
      * before moving onto the next value in the divisorList.
      */
-    final private int[] millisForIndexList = new int[]{
+    final private int[] millisForDivisorList = new int[]{
         3200, 1800, 800, 800, 800, 800, 800, 0};
     /**
      * divisorList, For as long as any particular index in this array remains in effect, the
      * currently used number indicates how many tick calls should pass before the time picker value
      * should be changed. For example, the number 3 indicates that the time picker value should be
-     * changed only once for every 3 calls to the tick function.
+     * changed only once for every 3 calls to the tick function. Higher numbers make the spinner
+     * change slower, lower numbers make the spinner change faster.
      */
     final private int[] divisorList = new int[]{12, 10, 8, 6, 4, 3, 2, 1};
     /**
@@ -107,7 +108,7 @@ public class TimeSpinnerTimer {
             // System.out.println("Divisor: " + divisor);
             // System.out.println("Value: " + timePicker.getTime());
             if ((currentIndex < maximumIndex)
-                    && (timeElapsedSinceIndexStartMilliseconds > millisForIndexList[currentIndex])) {
+                    && (timeElapsedSinceIndexStartMilliseconds > millisForDivisorList[currentIndex])) {
                 ticksSinceIndexChange = 0;
                 ++currentIndex;
                 startedIndexTimeStamp = System.currentTimeMillis();

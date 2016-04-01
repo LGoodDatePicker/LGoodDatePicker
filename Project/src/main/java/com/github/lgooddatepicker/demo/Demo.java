@@ -33,6 +33,7 @@ import com.github.lgooddatepicker.timepicker.TimePickerSettings;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings.TimeIncrement;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Demo, This class contains a demonstration of various features of the DatePicker class.
@@ -332,12 +333,49 @@ public class Demo {
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 11, Custom Format:");
 
+        // Create a time picker: Seconds precision.
+        timeSettings = new TimePickerSettings();
+        timeSettings.setFormatForDisplayTime(PickerUtilities.createFormatterFromPatternString(
+                "HH:mm:ss", timeSettings.getLocale()));
+        timeSettings.setFormatForMenuTimes(PickerUtilities.createFormatterFromPatternString(
+                "HH:mm", timeSettings.getLocale()));
+        timeSettings.initialTime = LocalTime.of(15, 00);
+        timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 12, Seconds precision (ISO format):");
+
+        // Create a time picker: Milliseconds precision.
+        timeSettings = new TimePickerSettings();
+        timeSettings.setFormatForDisplayTime(PickerUtilities.createFormatterFromPatternString(
+                "HH:mm:ss.SSS", timeSettings.getLocale()));
+        timeSettings.setFormatForMenuTimes(PickerUtilities.createFormatterFromPatternString(
+                "HH:mm", timeSettings.getLocale()));
+        timeSettings.initialTime = LocalTime.of(15, 00);
+        timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 13, Millisecond precision (ISO format):");
+
+        // Create a time picker: Nanoseconds precision.
+        timeSettings = new TimePickerSettings();
+        DateTimeFormatter displayTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
+        timeSettings.setFormatForDisplayTime(displayTimeFormatter);
+        timeSettings.setFormatForMenuTimes(PickerUtilities.createFormatterFromPatternString(
+                "HH:mm:00", timeSettings.getLocale()));
+        timeSettings.initialTime = LocalTime.of(15, 00,25, 999999999);
+        timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+                "<html>Time 14, Nanosecond precision:<br/>(ISO format. Use \".\" to type nanoseconds.)</html>");
+
         // Create a time picker: Disallow Keyboard Editing.
         timeSettings = new TimePickerSettings();
         timeSettings.setAllowKeyboardEditing(false);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 12, Disallow Keyboard Editing:");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 15, Disallow Keyboard Editing:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining DateTimePickers.
