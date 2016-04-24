@@ -36,7 +36,7 @@ import javax.swing.border.LineBorder;
 public class IndependentCalendarPanelDemo {
 
     /**
-     * frame, This is our main frame.
+     * frame, This is our main frame. 
      */
     static JFrame frame = new JFrame();
 

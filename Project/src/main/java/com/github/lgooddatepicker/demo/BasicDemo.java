@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
  * This class demonstrates the most basic usage of the date and time picker components. More
  * specifically, this class only demonstrates how to create the components and add them to a form.
  * For a more extensive demonstration of all library components and their various optional settings,
- * see "FullDemo.java".
+ * see "FullDemo.java". 
  */
 public class BasicDemo extends JFrame {
 

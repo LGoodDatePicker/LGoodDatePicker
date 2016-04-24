@@ -8,7 +8,6 @@ Without this configuration present, some functionality in the IDE may be limited
 -->
     <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
         <word>artifactId</word>
-        <word>dd</word>
         <word>deregistering</word>
         <word>enum</word>
         <word>enums</word>

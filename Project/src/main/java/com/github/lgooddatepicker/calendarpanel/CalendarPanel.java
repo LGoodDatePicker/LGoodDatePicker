@@ -26,7 +26,7 @@ import java.time.Year;
 
 /**
  * CalendarPanel,
- *
+ * 
  * This implements a swing component that displays and draws a calendar. The CalendarPanel has
  * controls for changing the current month or year, and for selecting dates.
  *

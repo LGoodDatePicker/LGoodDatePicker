@@ -38,7 +38,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
- * components.
+ * components. 
  *
  * Optional features: Most of the features shown in this demo are optional. The simplest usage only
  * requires creating a date picker instance and adding it to a panel or window. The selected date
