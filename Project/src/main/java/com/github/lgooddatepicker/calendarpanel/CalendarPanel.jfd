@@ -54,9 +54,6 @@ new FormModel {
 						"$alignTop": true
 					} ) {
 						name: "monthAndYearInnerPanel"
-						auxiliary() {
-							"JavaCodeGenerator.variableModifiers": 1
-						}
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "labelMonth"
 							"text": "September"

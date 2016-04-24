@@ -3,7 +3,7 @@ package com.github.lgooddatepicker.datepicker;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.*;
-import com.github.lgooddatepicker.zinternaltools.CalendarPanel;
+import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import java.awt.*;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
@@ -375,10 +375,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Get the last valid date, to pass to the calendar if needed.
         LocalDate selectedDateForCalendar = lastValidDate;
         // Create a new calendar panel.
-        calendarPanel = new CalendarPanel(this, settings);
+        calendarPanel = new CalendarPanel(settings);
         if (selectedDateForCalendar != null) {
-            calendarPanel.setDisplayedSelectedDate(selectedDateForCalendar);
-            calendarPanel.drawCalendar(YearMonth.from(selectedDateForCalendar));
+            calendarPanel.setSelectedDate(selectedDateForCalendar);
+            calendarPanel.setDisplayedYearMonth(YearMonth.from(selectedDateForCalendar));
         }
         // Create a new custom popup.
         popup = new CustomPopup(calendarPanel, SwingUtilities.getWindowAncestor(this),
@@ -779,9 +779,6 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     @Override
     public void zEventCustomPopupWasClosed(CustomPopup popup) {
         popup = null;
-        if (calendarPanel != null) {
-            calendarPanel.clearParent();
-        }
         calendarPanel = null;
         lastPopupCloseTime = Instant.now();
     }

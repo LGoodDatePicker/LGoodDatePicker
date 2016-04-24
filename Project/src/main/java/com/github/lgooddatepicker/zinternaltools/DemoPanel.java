@@ -1,4 +1,4 @@
-package com.github.lgooddatepicker.demo;
+package com.github.lgooddatepicker.zinternaltools;
 
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
@@ -150,7 +150,7 @@ public class DemoPanel extends JPanel {
 	public JTextArea messageTextArea;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
-    void addLabel(JPanel panel, int x, int pickerRow, String labelText) {
+    public void addLabel(JPanel panel, int x, int pickerRow, String labelText) {
 
         ((GridBagLayout)panel.getLayout()).rowHeights[(pickerRow - 3)] = 6;
         JLabel label = new JLabel();
