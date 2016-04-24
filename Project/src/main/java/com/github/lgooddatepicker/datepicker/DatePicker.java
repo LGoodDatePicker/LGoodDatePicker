@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 
 /**
- * DatePicker, This class implements a date picker GUI component.
+ * DatePicker, This class implements a date picker GUI component. 
  *
  * This class supports a complete set of "default functionality" without requiring any
  * DatePickerSettings. However, the settings of a date picker can optionally be customized by

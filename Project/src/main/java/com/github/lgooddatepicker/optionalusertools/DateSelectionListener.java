@@ -5,7 +5,7 @@ import com.github.lgooddatepicker.zinternaltools.DateSelectionEvent;
 /**
  * DateSelectionListener, This interface can be implemented to create a date selection listener. Any
  * date selection listeners that are registered with a CalendarPanel will be notified each time that
- * a date is selected.
+ * a date is selected. 
  */
 public interface DateSelectionListener {
 
