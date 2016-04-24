@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 /**
  * testStart, This is a class used to test various functions while programming. This class is not
- * involved with the normal operation of the date pickers.
+ * involved with the normal operation of the date pickers. 
  */
 public class TestStart {
 
