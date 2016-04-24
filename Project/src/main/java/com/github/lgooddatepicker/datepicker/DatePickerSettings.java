@@ -464,7 +464,15 @@ public class DatePickerSettings {
     }
 
     /**
-     * getVetoPolicy, This returns the veto policy.
+     * getParentDatePicker, Returns the date picker that is the parent of the settings, or
+     * null if no parent has been set.
+     */
+    public DatePicker getParentDatePicker() {
+        return parent;
+    }
+
+    /**
+     * getVetoPolicy, This returns the veto policy or null.
      */
     public DateVetoPolicy getVetoPolicy() {
         return vetoPolicy;

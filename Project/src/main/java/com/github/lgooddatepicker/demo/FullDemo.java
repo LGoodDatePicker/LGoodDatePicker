@@ -1,5 +1,6 @@
 package com.github.lgooddatepicker.demo;
 
+import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -36,29 +37,18 @@ import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Demo, This class contains a demonstration of various features of the DatePicker class.
+ * FullDemo, This class contains a demonstration of various features of the DatePicker library
+ * components.
  *
- * Optional features: Most of the DatePicker features shown in this demo are optional. The simplest
- * usage only requires creating a date picker instance and adding it to a panel or window. The
- * selected date can then be retrieved with the function datePicker.getDate().
- *
- * DatePicker Basic Usage Example:
- * <pre>
- * // Create a new date picker.
- * DatePicker datePicker = new DatePicker();
- *
- * // Add the date picker to a panel. (Or to another window container).
- * JPanel panel = new JPanel();
- * panel.add(datePicker);
- *
- * // Get the selected date.
- * LocalDate date = datePicker.getDate();
- * </pre>
+ * Optional features: Most of the features shown in this demo are optional. The simplest usage only
+ * requires creating a date picker instance and adding it to a panel or window. The selected date
+ * can then be retrieved with the function datePicker.getDate(). For a simpler demo, see
+ * "BasicDemo.java".
  *
  * Running the demo: This is an executable demonstration. To run the demo, click "run file" (or the
- * equivalent command) for the Demo class in your IDE.
+ * equivalent command) for the class in your IDE.
  */
-public class Demo {
+public class FullDemo {
 
     // This holds our main frame.
     static JFrame frame;
@@ -224,7 +214,7 @@ public class Demo {
         timePicker1 = new TimePicker();
         panel.panel2.add(timePicker1, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 1, Default Settings:");
-        
+
         // Create a time picker: With No Buttons.
         timeSettings = new TimePickerSettings();
         timeSettings.setDisplayToggleTimeMenuButton(false);
@@ -232,7 +222,7 @@ public class Demo {
         timePicker2 = new TimePicker(timeSettings);
         panel.panel2.add(timePicker2, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 2, No Buttons:");
-        
+
         // Create a time picker: With Spinner Buttons.
         timeSettings = new TimePickerSettings();
         timeSettings.setDisplayToggleTimeMenuButton(false);
@@ -241,7 +231,7 @@ public class Demo {
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 3, With Spinner Buttons:");
-        
+
         // Create a time picker: With All Buttons.
         timeSettings = new TimePickerSettings();
         timeSettings.setDisplaySpinnerButtons(true);
@@ -265,7 +255,6 @@ public class Demo {
         timeSettings.setVetoPolicy(new SampleTimeVetoPolicy());
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 6, With Veto Policy (Only 9a-5p allowed):");
-
 
         // Create a time picker: Localized (Chinese).
         timeSettings = new TimePickerSettings(Locale.forLanguageTag("zh"));
@@ -299,16 +288,13 @@ public class Demo {
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining TimePickers.
-        
-        
-
         // Create a time picker: Disallow Empty Times.
         timeSettings = new TimePickerSettings();
         timeSettings.setAllowEmptyTimes(false);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 8, Disallow Empty Times:");
-        
+
         // Create a time picker: With TimeChangeListener.
         timeSettings = new TimePickerSettings();
         timePicker = new TimePicker(timeSettings);
@@ -339,8 +325,7 @@ public class Demo {
                 "HH:mm:ss", timeSettings.getLocale()));
         timeSettings.setFormatForMenuTimes(PickerUtilities.createFormatterFromPatternString(
                 "HH:mm", timeSettings.getLocale()));
-        timeSettings.initialTime = LocalTime.of(15, 00);
-        timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
+        timeSettings.initialTime = LocalTime.of(15, 00, 00);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 12, Seconds precision (ISO format):");
@@ -351,8 +336,7 @@ public class Demo {
                 "HH:mm:ss.SSS", timeSettings.getLocale()));
         timeSettings.setFormatForMenuTimes(PickerUtilities.createFormatterFromPatternString(
                 "HH:mm", timeSettings.getLocale()));
-        timeSettings.initialTime = LocalTime.of(15, 00);
-        timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
+        timeSettings.initialTime = LocalTime.of(15, 00, 00, 999000000);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 13, Millisecond precision (ISO format):");
@@ -362,12 +346,11 @@ public class Demo {
         DateTimeFormatter displayTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME;
         timeSettings.setFormatForDisplayTime(displayTimeFormatter);
         timeSettings.setFormatForMenuTimes(PickerUtilities.createFormatterFromPatternString(
-                "HH:mm:00", timeSettings.getLocale()));
-        timeSettings.initialTime = LocalTime.of(15, 00,25, 999999999);
-        timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
+                "HH:mm", timeSettings.getLocale()));
+        timeSettings.initialTime = LocalTime.of(15, 00, 00, 999999999);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
                 "<html>Time 14, Nanosecond precision:<br/>(ISO format. Use \".\" to type nanoseconds.)</html>");
 
         // Create a time picker: Disallow Keyboard Editing.
@@ -442,8 +425,8 @@ public class Demo {
         Locale locale = new Locale(languageCode);
         DatePickerSettings settings = new DatePickerSettings(locale);
         settings.setInitialDateToToday();
-        DatePicker datePicker = new DatePicker(settings);
-        panel.panel4.add(datePicker, getConstraints(1, (rowMarker * rowMultiplier), 1));
+        DatePicker localizedDatePicker = new DatePicker(settings);
+        panel.panel4.add(localizedDatePicker, getConstraints(1, (rowMarker * rowMultiplier), 1));
         panel.addLabel(panel.panel4, 1, (rowMarker * rowMultiplier), labelText);
     }
 
