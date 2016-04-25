@@ -2,7 +2,9 @@
 Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## News:
-[LGoodDatePicker 4.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 17, 2016. The requirements for publishing to the Maven Central repository were added to the project. (Including jar signing, global package name conventions, Pom file specifications, etc.). The project now has an entry [at Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22). This makes the library easier to include in applications that use Apache Maven.
+* [LGoodDatePicker 5.2.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released April 25, 2016. With this release, the CalendarPanel component was added to the library. This component allows the programmer to (optionally) use the calendar panel  controls independently from the DatePicker component. An example for the independent calendar panel was also added to the [demo program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).
+
+* [LGoodDatePicker 4.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 17, 2016. The requirements for publishing to the Maven Central repository were added to the project. (Including jar signing, global package name conventions, Pom file specifications, etc.). The project now has an entry [at Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22). This makes the library easier to include in applications that use Apache Maven.
 
 ## Project Links:
 Demo Application and Downloads in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
@@ -12,7 +14,7 @@ Submit bugs or feature requests: [Issues Section](https://github.com/LGoodDatePi
 General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).  
 
 ## General Features:
-* The included components are the DatePicker, the TimePicker, and the DateTimePicker.
+* The included components are the DatePicker, the TimePicker, the DateTimePicker, and the CalendarPanel.
 * Provides automatic internationalization.  
 (Month names, weekday names, the default first day of the week, default date and time formats, and button text.)
 * Translations include 22 languages.  
