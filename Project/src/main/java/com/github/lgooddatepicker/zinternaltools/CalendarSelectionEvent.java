@@ -1,11 +1,12 @@
 package com.github.lgooddatepicker.zinternaltools;
 
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
+import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import java.time.LocalDate;
 
 /**
  * CalendarSelectionEvent, An instance of this event class is passed to each registered
- * CalendarSelectionListener, each time that a date is selected in a CalendarPanel. 
+ * CalendarSelectionListener, each time that a date is selected in a CalendarPanel.
  */
 public class CalendarSelectionEvent {
 
@@ -52,6 +53,14 @@ public class CalendarSelectionEvent {
      */
     public LocalDate getOldDate() {
         return oldDate;
+    }
+
+    /**
+     * isDuplicate, Returns true if the new date is the same as the old date, or if both values are
+     * null. Otherwise returns false.
+     */
+    public boolean isDuplicate() {
+        return (PickerUtilities.isSameLocalDate(newDate, oldDate));
     }
 
 }

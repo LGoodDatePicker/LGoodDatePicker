@@ -114,12 +114,12 @@ public class CalendarPanelTest {
     private static class SampleCalendarSelectionListener implements CalendarSelectionListener {
 
         /**
-         * dateSelectedInCalendar, This function will be called each time that a date is selected in
-         * the applicable CalendarPanel. The new and old selected dates are supplied in the event
+         * selectionChanged, This function will be called each time that a date is selected in the
+         * applicable CalendarPanel. The new and old selected dates are supplied in the event
          * object. These parameters may contain null, which represents a cleared or empty date.
          */
         @Override
-        public void dateSelectedInCalendar(CalendarSelectionEvent event) {
+        public void selectionChanged(CalendarSelectionEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
             String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");

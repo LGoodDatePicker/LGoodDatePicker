@@ -802,17 +802,19 @@ public class CalendarPanel
      * selected date variable. This will store the supplied selected date and redraw the calendar.
      * If needed, this will notify all calendar selection listeners that the selected date has been
      * changed. This does not perform any other tasks besides those described here.
+     *
+     * By intention, this will fire an event even if the user selects the same value twice. This is
+     * so that programmers can catch all user interactions of interest to them. Duplicate events
+     * can be detected by using the function CalendarSelectionEvent.isDuplicate().
      */
     private void zInternalChangeSelectedDateProcedure(LocalDate newDate) {
         LocalDate oldDate = displayedSelectedDate;
         displayedSelectedDate = newDate;
         drawCalendar(displayedYearMonth);
-        if (!PickerUtilities.isSameLocalDate(newDate, oldDate)) {
-            for (CalendarSelectionListener calendarSelectionListener : calendarSelectionListeners) {
-                CalendarSelectionEvent dateSelectionEvent = new CalendarSelectionEvent(
-                        this, newDate, oldDate);
-                calendarSelectionListener.dateSelectedInCalendar(dateSelectionEvent);
-            }
+        for (CalendarSelectionListener calendarSelectionListener : calendarSelectionListeners) {
+            CalendarSelectionEvent dateSelectionEvent = new CalendarSelectionEvent(
+                    this, newDate, oldDate);
+            calendarSelectionListener.selectionChanged(dateSelectionEvent);
         }
     }
 
