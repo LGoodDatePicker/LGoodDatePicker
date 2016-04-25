@@ -846,18 +846,23 @@ public class FullDemo {
     private static class SampleCalendarSelectionListener implements CalendarSelectionListener {
 
         /**
-         * dateSelectedInCalendar, This function will be called each time that a date is selected in
-         * the independent CalendarPanel. The new and old selected dates are supplied in the event
+         * selectionChanged, This function will be called each time that a date is selected in the
+         * independent CalendarPanel. The new and old selected dates are supplied in the event
          * object. These parameters may contain null, which represents a cleared or empty date.
+         *
+         * By intention, this function will be called even if the user selects the same value twice
+         * in a row. This is so that the programmer can catch all events of interest. Duplicate
+         * events can optionally be detected with the function CalendarSelectionEvent.isDuplicate().
          */
         @Override
-        public void dateSelectedInCalendar(CalendarSelectionEvent event) {
+        public void selectionChanged(CalendarSelectionEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
             String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
             String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
             String messageStart = "\nIndependent Calendar Panel: The selected date has changed from '";
-            String fullMessage = messageStart + oldDateString + "' to '" + newDateString + "'.";
+            String fullMessage = messageStart + oldDateString + "' to '" + newDateString + "'. ";
+            fullMessage += (event.isDuplicate()) ? "(Event marked as duplicate.)" : "";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {
                 panel.messageTextArea.setText("");
             }
