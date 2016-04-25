@@ -40,7 +40,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ![Screenshots DatePicker](/Site/ScreenShots/LGoodDatePicker_Screenshots_1_FullSize.png?raw=true "")
 
-![Screenshots Demo](/Site/ScreenShots/DemoProgramScreenshot1.png?raw=true "")
+![Screenshots Demo](/Site/ScreenShots/DemoProgramScreenshot1.png?raw=true "") 
   
     
 ## Thanks and acknowledgment to:
