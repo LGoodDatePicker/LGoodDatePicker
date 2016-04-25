@@ -29,21 +29,21 @@ import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.datetimepicker.DateTimePicker;
-import com.github.lgooddatepicker.optionalusertools.DateSelectionListener;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.timepicker.TimePicker;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings.TimeIncrement;
-import com.github.lgooddatepicker.zinternaltools.DateSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import com.privatejgoodies.forms.factories.CC;
 import java.time.format.DateTimeFormatter;
 import javax.swing.border.LineBorder;
+import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
- * components. 
+ * components.
  *
  * Optional features: Most of the features shown in this demo are optional. The simplest usage only
  * requires creating a date picker instance and adding it to a panel or window. The selected date
@@ -394,16 +394,15 @@ public class FullDemo {
         addLocalizedPickerAndLabel(++rowMarker, "Swedish:", "sv");
         addLocalizedPickerAndLabel(++rowMarker, "Turkish:", "tr");
         addLocalizedPickerAndLabel(++rowMarker, "Vietnamese:", "vi");
-        
+
         // This section creates an independent CalendarPanel.
-        // This CalendarPanel includes a date selection listener and a border.
+        // This CalendarPanel includes a calendar selection listener and a border.
         DatePickerSettings settings = new DatePickerSettings();
         CalendarPanel calendarPanel = new CalendarPanel(settings);
         calendarPanel.setSelectedDate(LocalDate.now());
-        calendarPanel.addDateSelectionListener(new SampleDateSelectionListener());
+        calendarPanel.addCalendarSelectionListener(new SampleCalendarSelectionListener());
         calendarPanel.setBorder(new LineBorder(Color.lightGray));
         panel.independentCalendarPanel.add(calendarPanel, CC.xy(2, 2));
-        
 
         // Display the frame.
         frame.pack();
@@ -595,7 +594,8 @@ public class FullDemo {
                 + "dates. A click on the month or year label (at the top), will open a menu for "
                 + "changing the month or year.\n\nGeneral features: \n* Automatic "
                 + "internationalization. \n* Relatively compact source code.\n* Creating a "
-                + "DatePicker requires only one line of code.\n* Open source code base.\n\n"
+                + "DatePicker, TimePicker, or DateTimePicker requires only one line of code.\n"
+                + "* Open source code base.\n\n"
                 + "Data types: \nThe standard Java 8 time library is used to store dates, "
                 + "and they are convertible to other data types. \n(The Java 8 time package "
                 + "is also called \"java.time\" or \"JSR-310\", and was developed by the author "
@@ -608,7 +608,14 @@ public class FullDemo {
                 + "If the user types into the text field, any text that is not a valid date will "
                 + "be displayed in red, any vetoed date will have a strikethrough, and valid "
                 + "dates will display in black. When the focus on a date picker is lost, the text "
-                + "is always set to match the last valid date.\n\n\n");
+                + "is always set to match the last valid date.\n\nTimePicker basic features: \n"
+                + "Pressing the up or down arrow keys will change the displayed time by one "
+                + "minute. Holding down the arrow keys, or holding the (optional) timespinner "
+                + "buttons will change the time at an accelerating rate. Clicking the time drop "
+                + "down button (or pressing the right arrow key) will open a time selection menu. "
+                + "The default intervals and range in the time drop down menu may optionally be "
+                + "changed by the programmer (in the TimePickerSettings class)."
+                + "\n\n\n");
         panel.messageTextArea.setCaretPosition(0);
     }
 
@@ -831,20 +838,20 @@ public class FullDemo {
                     time, LocalTime.of(9, 00), LocalTime.of(17, 00), true);
         }
     }
-    
+
     /**
-     * SampleDateSelectionListener, A date selection listener provides a way for a class to receive
-     * notifications whenever a date has been selected in an -independent- CalendarPanel.
+     * SampleCalendarSelectionListener, A calendar selection listener provides a way for a class to
+     * receive notifications whenever a date has been selected in an -independent- CalendarPanel.
      */
-    private static class SampleDateSelectionListener implements DateSelectionListener {
+    private static class SampleCalendarSelectionListener implements CalendarSelectionListener {
 
         /**
-         * dateSelected, This function will be called each time that a date is selected in the
-         * independent CalendarPanel. The new and old selected dates are supplied in the event
+         * dateSelectedInCalendar, This function will be called each time that a date is selected in
+         * the independent CalendarPanel. The new and old selected dates are supplied in the event
          * object. These parameters may contain null, which represents a cleared or empty date.
          */
         @Override
-        public void dateSelected(DateSelectionEvent event) {
+        public void dateSelectedInCalendar(CalendarSelectionEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
             String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");

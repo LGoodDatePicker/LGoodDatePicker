@@ -2,9 +2,8 @@ package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
-import com.github.lgooddatepicker.optionalusertools.DateSelectionListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
-import com.github.lgooddatepicker.zinternaltools.DateSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.awt.Color;
 import java.awt.Component;
@@ -17,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 
 /**
  * IndependentCalendarPanelDemo,
@@ -36,7 +36,7 @@ import javax.swing.border.LineBorder;
 public class CalendarPanelTest {
 
     /**
-     * frame, This is our main frame. 
+     * frame, This is our main frame.
      */
     static JFrame frame = new JFrame();
 
@@ -61,8 +61,8 @@ public class CalendarPanelTest {
         DatePickerSettings settings = new DatePickerSettings();
         CalendarPanel calendarPanel = new CalendarPanel(settings);
 
-        // Add a date selection listener to the CalendarPanel.
-        calendarPanel.addDateSelectionListener(new SampleDateSelectionListener());
+        // Add a calendar selection listener to the CalendarPanel.
+        calendarPanel.addCalendarSelectionListener(new SampleCalendarSelectionListener());
 
         // Add the CalendarPanel to the form.
         container.add(calendarPanel);
@@ -108,18 +108,18 @@ public class CalendarPanelTest {
     }
 
     /**
-     * SampleDateSelectionListener, A date selection listener provides a way for a class to receive
-     * notifications whenever a date has been selected in an independent CalendarPanel.
+     * SampleCalendarSelectionListener, A calendar selection listener provides a way for a class to
+     * receive notifications whenever a date has been selected in an independent CalendarPanel.
      */
-    private static class SampleDateSelectionListener implements DateSelectionListener {
+    private static class SampleCalendarSelectionListener implements CalendarSelectionListener {
 
         /**
-         * dateSelected, This function will be called each time that a date is selected in the
-         * applicable CalendarPanel. The new and old selected dates are supplied in the event
+         * dateSelectedInCalendar, This function will be called each time that a date is selected in
+         * the applicable CalendarPanel. The new and old selected dates are supplied in the event
          * object. These parameters may contain null, which represents a cleared or empty date.
          */
         @Override
-        public void dateSelected(DateSelectionEvent event) {
+        public void dateSelectedInCalendar(CalendarSelectionEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
             String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
