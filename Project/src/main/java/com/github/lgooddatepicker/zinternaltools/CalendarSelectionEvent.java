@@ -4,15 +4,15 @@ import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import java.time.LocalDate;
 
 /**
- * DateSelectionEvent, An instance of this event class is passed to each registered
- * DateSelectionListener, each time that a date is selected in a CalendarPanel. 
+ * CalendarSelectionEvent, An instance of this event class is passed to each registered
+ * CalendarSelectionListener, each time that a date is selected in a CalendarPanel. 
  */
-public class DateSelectionEvent {
+public class CalendarSelectionEvent {
 
     /**
      * Constructor.
      */
-    public DateSelectionEvent(CalendarPanel source, LocalDate newDate, LocalDate oldDate) {
+    public CalendarSelectionEvent(CalendarPanel source, LocalDate newDate, LocalDate oldDate) {
         this.source = source;
         this.newDate = newDate;
         this.oldDate = oldDate;
