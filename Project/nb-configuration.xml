@@ -23,6 +23,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>ss</word>
         <word>strikethrough</word>
         <word>tooltip</word>
+        <word>tooltips</word>
         <word>util</word>
         <word>uuuu</word>
     </spellchecker-wordlist>
