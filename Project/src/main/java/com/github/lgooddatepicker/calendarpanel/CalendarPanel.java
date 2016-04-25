@@ -23,6 +23,7 @@ import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField.IntegerTextFieldNumberChangeListener;
 import java.time.Year;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
+import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 
 /**
  * CalendarPanel,
@@ -418,18 +419,29 @@ public class CalendarPanel
                 DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
                 DateHighlightPolicy highlightPolicy = settings.highlightPolicy;
                 boolean dateIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, currentDate);
-                String highlightStringOrNull = null;
+                HighlightInformation highlightInfo = null;
                 if (highlightPolicy != null) {
-                    highlightStringOrNull = highlightPolicy.getHighlightStringOrNull(currentDate);
+                    highlightInfo = highlightPolicy.getHighlightInformationOrNull(currentDate);
                 }
                 if (dateIsVetoed) {
                     dateLabel.setEnabled(false);
                     dateLabel.setBackground(settings.colorBackgroundVetoedDates);
                 }
-                if ((!dateIsVetoed) && (highlightStringOrNull != null)) {
-                    dateLabel.setBackground(settings.colorBackgroundHighlightedDates);
-                    if (!highlightStringOrNull.isEmpty()) {
-                        dateLabel.setToolTipText(highlightStringOrNull);
+                if ((!dateIsVetoed) && (highlightInfo != null)) {
+                    // Set the highlight background color (always).
+                    Color colorBackground = settings.colorBackgroundHighlightedDates;
+                    if (highlightInfo.colorBackground != null) {
+                        colorBackground = highlightInfo.colorBackground;
+                    }
+                    dateLabel.setBackground(colorBackground);
+                    // If needed, set the highlight text color.
+                    if (highlightInfo.colorText != null) {
+                        dateLabel.setForeground(highlightInfo.colorText);
+                    }
+                    // If needed, set the highlight tooltip text.
+                    if (highlightInfo.tooltipText != null && 
+                            (!(highlightInfo.tooltipText.isEmpty()))) {
+                        dateLabel.setToolTipText(highlightInfo.tooltipText);
                     }
                 }
                 // If needed, save the label for the selected date.
@@ -804,8 +816,8 @@ public class CalendarPanel
      * changed. This does not perform any other tasks besides those described here.
      *
      * By intention, this will fire an event even if the user selects the same value twice. This is
-     * so that programmers can catch all user interactions of interest to them. Duplicate events
-     * can be detected by using the function CalendarSelectionEvent.isDuplicate().
+     * so that programmers can catch all user interactions of interest to them. Duplicate events can
+     * be detected by using the function CalendarSelectionEvent.isDuplicate().
      */
     private void zInternalChangeSelectedDateProcedure(LocalDate newDate) {
         LocalDate oldDate = displayedSelectedDate;
