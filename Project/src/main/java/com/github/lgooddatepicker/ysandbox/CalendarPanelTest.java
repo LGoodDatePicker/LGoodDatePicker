@@ -1,4 +1,4 @@
-package com.github.lgooddatepicker.demo;
+package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
@@ -33,7 +33,7 @@ import javax.swing.border.LineBorder;
  * The DatePicker component automatically creates its own CalendarPanel instances whenever they are
  * needed.
  */
-public class IndependentCalendarPanelDemo {
+public class CalendarPanelTest {
 
     /**
      * frame, This is our main frame. 

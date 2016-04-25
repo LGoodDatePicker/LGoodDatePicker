@@ -26,6 +26,11 @@ public class DemoPanel extends JPanel {
 		panel4 = new JPanel();
 		outerButtonPanel = new JPanel();
 		scrollPaneForButtons = new JScrollPane();
+		independentCalendarOuterPanel = new JPanel();
+		scrollPaneForCalendarPanelNotes = new JScrollPane();
+		calendarPanelNotesTextArea = new JTextArea();
+		scrollPaneForIndependentCalendar = new JScrollPane();
+		independentCalendarPanel = new JPanel();
 		messageTextAreaScrollPane = new JScrollPane();
 		messageTextArea = new JTextArea();
 
@@ -115,12 +120,52 @@ public class DemoPanel extends JPanel {
 			outerButtonPanel.setLayout(new BoxLayout(outerButtonPanel, BoxLayout.X_AXIS));
 			outerButtonPanel.add(scrollPaneForButtons);
 		}
-		add(outerButtonPanel, CC.xywh(2, 7, 5, 1));
+		add(outerButtonPanel, CC.xywh(2, 7, 3, 1));
+
+		//======== independentCalendarOuterPanel ========
+		{
+			independentCalendarOuterPanel.setBorder(new TitledBorder(null, "Independent CalendarPanel Example:", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				new Font("Segoe UI", Font.BOLD, 14)));
+			independentCalendarOuterPanel.setLayout(new FormLayout(
+				"default:grow",
+				"default, $nlgap, fill:default:grow"));
+
+			//======== scrollPaneForCalendarPanelNotes ========
+			{
+				scrollPaneForCalendarPanelNotes.setBorder(new LineBorder(Color.lightGray));
+				scrollPaneForCalendarPanelNotes.setPreferredSize(new Dimension(335, 69));
+
+				//---- calendarPanelNotesTextArea ----
+				calendarPanelNotesTextArea.setText("The CalendarPanel class is used (automatically) inside the DatePicker component. However, the CalendarPanel class may also (optionally) be used as its own independent component.");
+				calendarPanelNotesTextArea.setBackground(new Color(240, 240, 240));
+				calendarPanelNotesTextArea.setEditable(false);
+				calendarPanelNotesTextArea.setWrapStyleWord(true);
+				calendarPanelNotesTextArea.setLineWrap(true);
+				calendarPanelNotesTextArea.setMargin(new Insets(1, 4, 1, 4));
+				scrollPaneForCalendarPanelNotes.setViewportView(calendarPanelNotesTextArea);
+			}
+			independentCalendarOuterPanel.add(scrollPaneForCalendarPanelNotes, CC.xy(1, 1));
+
+			//======== scrollPaneForIndependentCalendar ========
+			{
+
+				//======== independentCalendarPanel ========
+				{
+					independentCalendarPanel.setLayout(new FormLayout(
+						"default:grow, default, pref:grow",
+						"min:grow, default, min:grow"));
+				}
+				scrollPaneForIndependentCalendar.setViewportView(independentCalendarPanel);
+			}
+			independentCalendarOuterPanel.add(scrollPaneForIndependentCalendar, CC.xy(1, 3));
+		}
+		add(independentCalendarOuterPanel, CC.xywh(6, 7, 1, 3));
 
 		//======== messageTextAreaScrollPane ========
 		{
 			messageTextAreaScrollPane.setBorder(new TitledBorder(null, "Messages:", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				new Font("Segoe UI", Font.BOLD, 14)));
+			messageTextAreaScrollPane.setPreferredSize(new Dimension(762, 50));
 
 			//---- messageTextArea ----
 			messageTextArea.setLineWrap(true);
@@ -129,7 +174,7 @@ public class DemoPanel extends JPanel {
 			messageTextArea.setMargin(new Insets(4, 6, 2, 6));
 			messageTextAreaScrollPane.setViewportView(messageTextArea);
 		}
-		add(messageTextAreaScrollPane, CC.xywh(2, 9, 5, 1));
+		add(messageTextAreaScrollPane, CC.xywh(2, 9, 3, 1));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -146,6 +191,11 @@ public class DemoPanel extends JPanel {
 	public JPanel panel4;
 	private JPanel outerButtonPanel;
 	public JScrollPane scrollPaneForButtons;
+	private JPanel independentCalendarOuterPanel;
+	private JScrollPane scrollPaneForCalendarPanelNotes;
+	private JTextArea calendarPanelNotesTextArea;
+	public JScrollPane scrollPaneForIndependentCalendar;
+	public JPanel independentCalendarPanel;
 	private JScrollPane messageTextAreaScrollPane;
 	public JTextArea messageTextArea;
     // JFormDesigner - End of variables declaration  //GEN-END:variables

@@ -105,7 +105,7 @@ new FormModel {
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class javax.swing.BoxLayout ) ) {
 				name: "outerButtonPanel"
-				"border": new javax.swing.border.TitledBorder( null, "Programmatic Control:", 4, 0, new java.awt.Font( "Segoe UI", 1, 14 ), null )
+				"border": new javax.swing.border.TitledBorder( null, "Programmatic Control:", 4, 0, &Font0 new java.awt.Font( "Segoe UI", 1, 14 ), null )
 				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 					name: "scrollPaneForButtons"
 					auxiliary() {
@@ -115,11 +115,58 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 2
 				"gridY": 7
-				"gridWidth": 5
+				"gridWidth": 3
+			} )
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "default:grow"
+				"$rowSpecs": "default, narrowlinegap, fill:default:grow"
+			} ) {
+				name: "independentCalendarOuterPanel"
+				"border": new javax.swing.border.TitledBorder( null, "Independent CalendarPanel Example:", 4, 0, #Font0, null )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPaneForCalendarPanelNotes"
+					"border": new javax.swing.border.LineBorder( sfield java.awt.Color lightGray, 1, false )
+					"preferredSize": new java.awt.Dimension( 335, 69 )
+					add( new FormComponent( "javax.swing.JTextArea" ) {
+						name: "calendarPanelNotesTextArea"
+						"text": "The CalendarPanel class is used (automatically) inside the DatePicker component. However, the CalendarPanel class may also (optionally) be used as its own independent component."
+						"background": new java.awt.Color( 240, 240, 240, 255 )
+						"editable": false
+						"wrapStyleWord": true
+						"lineWrap": true
+						"margin": new java.awt.Insets( 1, 4, 1, 4 )
+					} )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 1
+					"gridY": 1
+				} )
+				add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+					name: "scrollPaneForIndependentCalendar"
+					auxiliary() {
+						"JavaCodeGenerator.variableModifiers": 1
+					}
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "default:grow, default, pref:grow"
+						"$rowSpecs": "min:grow, default, min:grow"
+					} ) {
+						name: "independentCalendarPanel"
+						auxiliary() {
+							"JavaCodeGenerator.variableModifiers": 1
+						}
+					} )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 1
+					"gridY": 3
+				} )
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridY": 7
+				"gridHeight": 3
+				"gridX": 6
 			} )
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "messageTextAreaScrollPane"
 				"border": new javax.swing.border.TitledBorder( null, "Messages:", 4, 0, new java.awt.Font( "Segoe UI", 1, 14 ), null )
+				"preferredSize": new java.awt.Dimension( 762, 50 )
 				add( new FormComponent( "javax.swing.JTextArea" ) {
 					name: "messageTextArea"
 					"lineWrap": true
@@ -133,7 +180,7 @@ new FormModel {
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 2
 				"gridY": 9
-				"gridWidth": 5
+				"gridWidth": 3
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
