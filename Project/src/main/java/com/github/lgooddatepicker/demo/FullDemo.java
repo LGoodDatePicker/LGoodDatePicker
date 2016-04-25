@@ -1,5 +1,6 @@
 package com.github.lgooddatepicker.demo;
 
+import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import javax.swing.JButton;
@@ -28,13 +29,17 @@ import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.datetimepicker.DateTimePicker;
+import com.github.lgooddatepicker.optionalusertools.DateSelectionListener;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.timepicker.TimePicker;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings.TimeIncrement;
+import com.github.lgooddatepicker.zinternaltools.DateSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import com.privatejgoodies.forms.factories.CC;
 import java.time.format.DateTimeFormatter;
+import javax.swing.border.LineBorder;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
@@ -389,6 +394,16 @@ public class FullDemo {
         addLocalizedPickerAndLabel(++rowMarker, "Swedish:", "sv");
         addLocalizedPickerAndLabel(++rowMarker, "Turkish:", "tr");
         addLocalizedPickerAndLabel(++rowMarker, "Vietnamese:", "vi");
+        
+        // This section creates an independent CalendarPanel.
+        // This CalendarPanel includes a date selection listener and a border.
+        DatePickerSettings settings = new DatePickerSettings();
+        CalendarPanel calendarPanel = new CalendarPanel(settings);
+        calendarPanel.setSelectedDate(LocalDate.now());
+        calendarPanel.addDateSelectionListener(new SampleDateSelectionListener());
+        calendarPanel.setBorder(new LineBorder(Color.lightGray));
+        panel.independentCalendarPanel.add(calendarPanel, CC.xy(2, 2));
+        
 
         // Display the frame.
         frame.pack();
@@ -814,6 +829,32 @@ public class FullDemo {
             // Only allow times from 9a to 5p, inclusive.
             return PickerUtilities.isLocalTimeInRange(
                     time, LocalTime.of(9, 00), LocalTime.of(17, 00), true);
+        }
+    }
+    
+    /**
+     * SampleDateSelectionListener, A date selection listener provides a way for a class to receive
+     * notifications whenever a date has been selected in an -independent- CalendarPanel.
+     */
+    private static class SampleDateSelectionListener implements DateSelectionListener {
+
+        /**
+         * dateSelected, This function will be called each time that a date is selected in the
+         * independent CalendarPanel. The new and old selected dates are supplied in the event
+         * object. These parameters may contain null, which represents a cleared or empty date.
+         */
+        @Override
+        public void dateSelected(DateSelectionEvent event) {
+            LocalDate oldDate = event.getOldDate();
+            LocalDate newDate = event.getNewDate();
+            String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
+            String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
+            String messageStart = "\nIndependent Calendar Panel: The selected date has changed from '";
+            String fullMessage = messageStart + oldDateString + "' to '" + newDateString + "'.";
+            if (!panel.messageTextArea.getText().startsWith(messageStart)) {
+                panel.messageTextArea.setText("");
+            }
+            panel.messageTextArea.append(fullMessage);
         }
     }
 
