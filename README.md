@@ -3,7 +3,7 @@ Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localize
 
 ## News:
 
-* [LGoodDatePicker 5.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7Clgooddatepicker).
+* [LGoodDatePicker 5.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).
 
 * [LGoodDatePicker 5.2.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released April 25, 2016. With this release, the CalendarPanel component was added to the library. This component allows the programmer to (optionally) use the calendar panel  controls independently from the DatePicker component. An example for the independent calendar panel was also added to the [demo program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).
 
