@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import javax.swing.border.Border;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.InternalConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -145,27 +146,28 @@ public class DatePickerSettings {
     public DayOfWeek firstDayOfWeek;
 
     /**
-     * fontInvalidDate, This is the text field text font for invalid dates. The default font is
-     * normal.
+     * fontInvalidDate, This is the text field text font for invalid dates. The default font is a
+     * normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See also:
+     * "colorTextInvalidDate".)
      */
-    public Font fontInvalidDate;
+    private Font fontInvalidDate;
 
     /**
-     * fontValidDate, This is the text field text font for valid dates. The default font is normal.
+     * fontValidDate, This is the text field text font for valid dates. The default font is a normal
+     * undecorated font.
      */
-    public Font fontValidDate;
+    private Font fontValidDate;
 
     /**
      * fontVetoedDate, This is the text field text font for vetoed dates. The default font crosses
      * out the vetoed date. (Has a strikethrough font attribute.)
      */
-    public Font fontVetoedDate;
+    private Font fontVetoedDate;
 
     /**
      * formatForDatesCommonEra, This holds the default format that is used to display or parse CE
      * dates in the date picker. The default value is generated using the locale of the settings
-     * instance. A DateTimeFormatter can be created from a pattern string with the convenience
-     * function DateUtilities.createFormatterFromPatternString();
+     * instance.
      */
     private DateTimeFormatter formatForDatesCommonEra;
 
@@ -285,10 +287,43 @@ public class DatePickerSettings {
     public int sizeDatePanelPixelsExtraWidth;
 
     /**
-     * translationArrayMonthNames, This holds an array of month names to use for the calendar panel
-     * header, as translated to the current language. It is not expected that this variable will
-     * need to be changed by the programmer. The default values are generated using the locale of
-     * the settings instance, by retrieving the translated text for the current language from the
+     * sizeTextFieldMinimumWidth, This specifies the minimum width, in pixels, of the DatePicker
+     * text field. (The text field is located to the left of the date picker "popup calendar"
+     * button, and displays the currently selected date.)
+     *
+     * The default value for this setting is null. When this is set to null, a default width for the
+     * date picker text field will be automatically calculated and applied to fit "the largest
+     * possible date" (with a four digit year) that can be displayed with the current date picker
+     * settings. The settings that are used to calculate the default text field width include the
+     * locale (the language), the fontValidDate, and the formatForDatesCommonEra.
+     *
+     * See also: "sizeTextFieldMinimumWidthDefaultOverride".
+     */
+    private Integer sizeTextFieldMinimumWidth = null;
+
+    /**
+     * sizeTextFieldMinimumWidthDefaultOverride, This specifies how the date picker should choose
+     * the appropriate minimum width for the date picker text field. (As described below.)
+     *
+     * If this is true, then the applied minimum width will be the largest of either the default, or
+     * any programmer supplied, minimum widths.
+     *
+     * If this is false, then any programmer supplied minimum width will always override the default
+     * minimum width. (Even if the programmer supplied width is too small to fit the dates that can
+     * be displayed in the DatePicker).
+     *
+     * The default value for this setting is true. This setting only has an effect if
+     * (sizeTextFieldMinimumWidth != null).
+     *
+     * See also: "sizeTextFieldMinimumWidth".
+     */
+    private boolean sizeTextFieldMinimumWidthDefaultOverride = true;
+
+    /**
+     * translationArrayLongMonthNames, This holds an array of month names to use for the calendar
+     * panel header, as translated to the current language. It is not expected that this variable
+     * will need to be changed by the programmer. The default values are generated using the locale
+     * of the settings instance, by retrieving the translated text for the current language from the
      * class called java.text.DateFormatSymbols. This array is indexed with January = 0. The
      * Calendar class month name constants can also be used for indexing. (Calendar.JANUARY, etc).
      *
@@ -296,7 +331,7 @@ public class DatePickerSettings {
      * have a length of 12. Each element should always contain a string that is not null and not
      * empty.
      */
-    public String[] translationArrayMonthNames;
+    public String[] translationArrayStandaloneLongMonthNames;
 
     /**
      * translationArrayShortMonthNames, This holds an array of short month names to use for the
@@ -311,7 +346,7 @@ public class DatePickerSettings {
      * have a length of 12. Each element should always contain a string that is not null and not
      * empty.
      */
-    public String[] translationArrayShortMonthNames;
+    public String[] translationArrayStandaloneShortMonthNames;
 
     /**
      * translationClear, This holds the text of the calendars "Clear" button, as translated to the
@@ -368,9 +403,11 @@ public class DatePickerSettings {
         translationToday = TranslationSource.getTranslation(pickerLocale, "today", "Today");
         translationClear = TranslationSource.getTranslation(pickerLocale, "clear", "Clear");
 
-        // Set the default month names for the current locale.
-        translationArrayMonthNames = ExtraDateStrings.getDefaultMonthNamesForLocale(pickerLocale);
-        translationArrayShortMonthNames = ExtraDateStrings.getDefaultShortMonthNamesForLocale(pickerLocale);
+        // Set the default standalone month names for the current locale.
+        translationArrayStandaloneLongMonthNames
+                = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(pickerLocale);
+        translationArrayStandaloneShortMonthNames
+                = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(pickerLocale);
 
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
@@ -432,6 +469,30 @@ public class DatePickerSettings {
     }
 
     /**
+     * getFontInvalidDate, Returns the value this setting. See the "set" function for setting
+     * information.
+     */
+    public Font getFontInvalidDate() {
+        return fontInvalidDate;
+    }
+
+    /**
+     * getFontValidDate, Returns the value this setting. See the "set" function for setting
+     * information.
+     */
+    public Font getFontValidDate() {
+        return fontValidDate;
+    }
+
+    /**
+     * getFontVetoedDate, Returns the value this setting. See the "set" function for setting
+     * information.
+     */
+    public Font getFontVetoedDate() {
+        return fontVetoedDate;
+    }
+
+    /**
      * getFormatForDatesBeforeCommonEra, Returns the value this setting. See the "set" function for
      * setting information.
      */
@@ -464,11 +525,27 @@ public class DatePickerSettings {
     }
 
     /**
-     * getParentDatePicker, Returns the date picker that is the parent of the settings, or
-     * null if no parent has been set.
+     * getParentDatePicker, Returns the date picker that is the parent of the settings, or null if
+     * no parent has been set.
      */
     public DatePicker getParentDatePicker() {
         return parent;
+    }
+
+    /**
+     * getSizeTextFieldMinimumWidth, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public Integer getSizeTextFieldMinimumWidth() {
+        return sizeTextFieldMinimumWidth;
+    }
+
+    /**
+     * getSizeTextFieldMinimumWidthDefaultOverride, Returns the value of this setting. See the "set"
+     * function for setting information.
+     */
+    public boolean getSizeTextFieldMinimumWidthDefaultOverride() {
+        return sizeTextFieldMinimumWidthDefaultOverride;
     }
 
     /**
@@ -539,10 +616,46 @@ public class DatePickerSettings {
     }
 
     /**
-     * setFormatForDatesBeforeCommonEra, This sets the default format that is used to display or
-     * parse BCE dates in the date picker. The default value is generated using the locale of the
-     * settings instance. A DateTimeFormatter can be created from a pattern string with the
-     * convenience function DateUtilities.createFormatterFromPatternString();
+     * setFontInvalidDate, This sets the text field text font for invalid dates. The default font is
+     * a normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See
+     * also: "colorTextInvalidDate".)
+     */
+    public void setFontInvalidDate(Font fontInvalidDate) {
+        this.fontInvalidDate = fontInvalidDate;
+    }
+
+    /**
+     * setFontValidDate, This sets the text field text font for valid dates. The default font is a
+     * normal undecorated font.
+     *
+     * Note: Changing the font for valid dates may also change the default minimum size for the date
+     * picker. This will not affect the minimum size if it has been overridden by the programmer.
+     */
+    public void setFontValidDate(Font fontValidDate) {
+        this.fontValidDate = fontValidDate;
+        // The font for the valid date can change the default minimum size.
+        // So we recalculate and set the minimum size, if needed.
+        if (parent != null) {
+            parent.zSetAppropriateTextFieldMinimumWidth();
+        }
+    }
+
+    /**
+     * setFontVetoedDate, This sets the text field text font for vetoed dates. The default font
+     * crosses out the vetoed date. (Has a strikethrough font attribute.)
+     */
+    public void setFontVetoedDate(Font fontVetoedDate) {
+        this.fontVetoedDate = fontVetoedDate;
+    }
+
+    /**
+     * setFormatForDatesBeforeCommonEra, This sets the format that is used to display or parse BCE
+     * dates in the date picker, from a DateTimeFormatter instance. The default value for the date
+     * format is generated using the locale of the settings instance.
+     *
+     * For most desired date formats, it would probably be easier to use the other "pattern string"
+     * version of this function. (which accepts a date pattern string instead of a DateTimeFormatter
+     * instance.)
      *
      * Note: It is important to use the letter "u" (astronomical year) instead of "y" (year of era)
      * when creating pattern strings for BCE dates. This is because the DatePicker uses ISO 8601,
@@ -550,6 +663,9 @@ public class DatePickerSettings {
      * "-1" and "1 BC" are not the same thing. Astronomical years are zero-based, and BC dates are
      * one-based. Astronomical year "0", is the same year as "1 BC", and astronomical year "-1" is
      * the same year as "2 BC", and so forth.)
+     *
+     * The various codes for the date pattern string are described at this link:
+     * https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      *
      * If the date picker has already been constructed, then calling this function will cause
      * immediate validation of the text field text.
@@ -562,19 +678,77 @@ public class DatePickerSettings {
     }
 
     /**
-     * setFormatForDatesCommonEra, This sets the default format that is used to display or parse CE
-     * dates in the date picker. The default value is generated using the locale of the settings
-     * instance. If desired, a DateTimeFormatter can be created from a pattern string by using the
-     * convenience function PickerUtilities.createFormatterFromPatternString();
+     * setFormatForDatesBeforeCommonEra, This sets the format that is used to display or parse BCE
+     * dates in the date picker, from a DateTimeFormatter pattern string. The default value for the
+     * date format is generated using the locale of the settings instance.
+     *
+     * Note: It is important to use the letter "u" (astronomical year) instead of "y" (year of era)
+     * when creating pattern strings for BCE dates. This is because the DatePicker uses ISO 8601,
+     * which specifies "Astronomical year numbering". (Additional details: The astronomical year
+     * "-1" and "1 BC" are not the same thing. Astronomical years are zero-based, and BC dates are
+     * one-based. Astronomical year "0", is the same year as "1 BC", and astronomical year "-1" is
+     * the same year as "2 BC", and so forth.)
+     *
+     * The various codes for the date pattern string are described at this link:
+     * https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      *
      * If the date picker has already been constructed, then calling this function will cause
      * immediate validation of the text field text.
+     */
+    public void setFormatForDatesBeforeCommonEra(String patternString) {
+        DateTimeFormatter formatter
+                = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
+        setFormatForDatesBeforeCommonEra(formatter);
+    }
+
+    /**
+     * setFormatForDatesCommonEra, This sets the format that is used to display or parse CE dates in
+     * the date picker, from a DateTimeFormatter instance. The default value for the date format is
+     * generated using the locale of the settings instance.
+     *
+     * For most desired date formats, it would probably be easier to use the other "pattern string"
+     * version of this function. (which accepts a date pattern string instead of a DateTimeFormatter
+     * instance.)
+     *
+     * The various codes for the date pattern string are described at this link:
+     * https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     *
+     * If the date picker has already been constructed, then calling this function will cause
+     * immediate validation of the text field text.
+     *
+     * Note: Changing the format for CE dates may also change the default minimum width of the date
+     * picker text field.
      */
     public void setFormatForDatesCommonEra(DateTimeFormatter formatForDatesCommonEra) {
         this.formatForDatesCommonEra = formatForDatesCommonEra;
         if (parent != null) {
             parent.setTextFieldToValidStateIfNeeded();
         }
+        // Changing the format for AD dates can change the default minimum width of the text field.
+        // So if needed, set the appropriate minimum width.
+        if (parent != null) {
+            parent.zSetAppropriateTextFieldMinimumWidth();
+        }
+    }
+
+    /**
+     * setFormatForDatesCommonEra, This sets the format that is used to display or parse CE dates in
+     * the date picker, from a DateTimeFormatter pattern string. The default value for the date
+     * format is generated using the locale of the settings instance.
+     *
+     * The various codes for the date pattern string are described at this link:
+     * https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     *
+     * If the date picker has already been constructed, then calling this function will cause
+     * immediate validation of the text field text.
+     *
+     * Note: Changing the format for CE dates may also change the default minimum width of the date
+     * picker text field.
+     */
+    public void setFormatForDatesCommonEra(String patternString) {
+        DateTimeFormatter formatter
+                = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
+        setFormatForDatesCommonEra(formatter);
     }
 
     /**
@@ -603,6 +777,47 @@ public class DatePickerSettings {
      */
     void setParentDatePicker(DatePicker parentDatePicker) {
         this.parent = parentDatePicker;
+    }
+
+    /**
+     * setSizeTextFieldMinimumWidth, This sets the minimum width, in pixels, of the DatePicker text
+     * field. (The text field is located to the left of the date picker "popup calendar" button, and
+     * displays the currently selected date.)
+     *
+     * The default value for this setting is null. When this is set to null, a default width for the
+     * date picker text field will be automatically calculated and applied to fit "the largest
+     * possible date" (with a four digit year) that can be displayed with the current date picker
+     * settings. The settings that are used to calculate the default text field width include the
+     * locale (the language), the fontValidDate, and the formatForDatesCommonEra.
+     */
+    public void setSizeTextFieldMinimumWidth(Integer sizeTextFieldMinimumWidth) {
+        this.sizeTextFieldMinimumWidth = sizeTextFieldMinimumWidth;
+        if (parent != null) {
+            parent.zSetAppropriateTextFieldMinimumWidth();
+        }
+    }
+
+    /**
+     * setSizeTextFieldMinimumWidthDefaultOverride, This specifies how the date picker should choose
+     * the appropriate minimum width for the date picker text field. (As described below.)
+     *
+     * If this is true, then the applied minimum width will be the largest of either the default, or
+     * any programmer supplied, minimum widths.
+     *
+     * If this is false, then any programmer supplied minimum width will always override the default
+     * minimum width. (Even if the programmer supplied width is too small to fit the dates that can
+     * be displayed in the DatePicker).
+     *
+     * The default value for this setting is true. This setting only has an effect if
+     * (sizeTextFieldMinimumWidth != null).
+     *
+     * See also: "sizeTextFieldMinimumWidth".
+     */
+    public void setSizeTextFieldMinimumWidthDefaultOverride(boolean defaultShouldOverrideIfNeeded) {
+        this.sizeTextFieldMinimumWidthDefaultOverride = defaultShouldOverrideIfNeeded;
+        if (parent != null) {
+            parent.zSetAppropriateTextFieldMinimumWidth();
+        }
     }
 
     /**

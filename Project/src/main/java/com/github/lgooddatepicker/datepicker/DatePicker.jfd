@@ -4,7 +4,7 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-			"$columnSpecs": "max(pref;125px):grow, max(pref;3px), max(pref;26px)"
+			"$columnSpecs": "pref:grow, max(pref;3px), max(pref;26px)"
 			"$rowSpecs": "fill:pref:grow"
 		} ) {
 			name: "this"

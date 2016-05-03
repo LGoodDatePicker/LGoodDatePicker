@@ -173,33 +173,48 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 7, Change Colors:");
 
-        // Create a date picker: Custom date format.
-        // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
-        // For more details about that, see: DatePickerSettings.formatDatesBeforeCommonEra.
-        dateSettings = new DatePickerSettings();
-        dateSettings.setFormatForDatesCommonEra(PickerUtilities.createFormatterFromPatternString("d MMM yyyy", dateSettings.getLocale()));
-        dateSettings.setFormatForDatesBeforeCommonEra(PickerUtilities.createFormatterFromPatternString("d MMM uuuu", dateSettings.getLocale()));
-        dateSettings.setInitialDateToToday();
-        datePicker = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Date Format:");
-
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
-        dateSettings.fontValidDate = new Font("Monospaced", Font.ITALIC | Font.BOLD, 17);
+        dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
         dateSettings.colorTextValidDate = new Color(0, 100, 0);
         dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Font:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Font:");
+
+        // Create a date picker: Custom Date Format.
+        // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
+        // For more details about that, see: DatePickerSettings.setFormatForDatesBeforeCommonEra().
+        // The various codes for the date pattern string are described at this link:
+        // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+        dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("yyyy/MM/dd");
+        dateSettings.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
+        dateSettings.setInitialDateToToday();
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Date Format:");
+
+        // Create a date picker: Another Custom Date Format.
+        // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
+        // For more details about that, see: DatePickerSettings.setFormatForDatesBeforeCommonEra().
+        // The various codes for the date pattern string are described at this link:
+        // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+        dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("d MMM yyyy");
+        dateSettings.setFormatForDatesBeforeCommonEra("d MMM uuuu");
+        dateSettings.setInitialDateToToday();
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Another Custom Date Format:");
 
         // Create a date picker: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowEmptyDates(false);
         datePicker = new DatePicker(dateSettings);
-        datePicker.addDateChangeListener(new SampleDateChangeListener("datePicker10 (Disallow Empty Dates or Null), "));
+        datePicker.addDateChangeListener(new SampleDateChangeListener("datePicker11 (Disallow Empty Dates or Null), "));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Disallow Empty Dates:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Disallow Empty Dates:");
 
         // Create a date picker: Disallow keyboard editing.
         dateSettings = new DatePickerSettings();
@@ -207,7 +222,7 @@ public class FullDemo {
         dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Disallow Keyboard Editing:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Disallow Keyboard Editing:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
@@ -381,7 +396,6 @@ public class FullDemo {
         addLocalizedPickerAndLabel(++rowMarker, "French:", "fr");
         addLocalizedPickerAndLabel(++rowMarker, "German:", "de");
         addLocalizedPickerAndLabel(++rowMarker, "Greek:", "el");
-        // Note: Hindi requires a full locale specifier. 
         addLocalizedPickerAndLabel(++rowMarker, "Hindi:", "hi");
         addLocalizedPickerAndLabel(++rowMarker, "Italian:", "it");
         addLocalizedPickerAndLabel(++rowMarker, "Indonesian:", "in");
@@ -439,6 +453,9 @@ public class FullDemo {
         // Create the localized date picker and label.
         Locale locale = new Locale(languageCode);
         DatePickerSettings settings = new DatePickerSettings(locale);
+        // Set a minimum size for the localized date pickers, to improve the look of the demo.
+        settings.setSizeTextFieldMinimumWidth(125);
+        settings.setSizeTextFieldMinimumWidthDefaultOverride(true);
         settings.setInitialDateToToday();
         DatePicker localizedDatePicker = new DatePicker(settings);
         panel.panel4.add(localizedDatePicker, getConstraints(1, (rowMarker * rowMultiplier), 1));
