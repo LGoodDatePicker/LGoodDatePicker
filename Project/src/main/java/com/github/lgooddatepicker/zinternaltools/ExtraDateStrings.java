@@ -77,10 +77,10 @@ public class ExtraDateStrings {
     }
 
     /**
-     * getDefaultMonthNamesForLocale, This will return a list of capitalized, translated, standalone
-     * month names for the specified locale. This function will always return a list with 12
-     * elements, and each element will always contain a string. This will never return a null array,
-     * or any null elements.
+     * getDefaultStandaloneLongMonthNamesForLocale, This will return a list of capitalized,
+     * translated, standalone month names for the specified locale. This function will always return
+     * a list with 12 elements, and each element will always contain a string. This will never
+     * return a null array, or any null elements.
      *
      * Implementation note: it was previously required to override the month names in certain
      * languages such as Russian, to get the proper grammar. At this point, a generalized solution
@@ -88,14 +88,14 @@ public class ExtraDateStrings {
      * correctly, unless and until someone reports that it is not working correctly for their
      * language.
      */
-    public static String[] getDefaultMonthNamesForLocale(Locale locale) {
+    public static String[] getDefaultStandaloneLongMonthNamesForLocale(Locale locale) {
         // Get the standalone version of the month names for the specified language.
         String[] monthNames = getStandaloneMonthNamesArray(locale, true, false);
         // Return the array of month names.
         return monthNames;
     }
 
-    public static String[] getDefaultShortMonthNamesForLocale(Locale locale) {
+    public static String[] getDefaultStandaloneShortMonthNamesForLocale(Locale locale) {
         // Get the standalone version of the month names for the specified language.
         String[] monthNames = getStandaloneMonthNamesArray(locale, true, true);
         // Return the array of month names.
@@ -144,6 +144,53 @@ public class ExtraDateStrings {
         ArrayList<String> monthNamesArrayList = new ArrayList<>();
         for (Month monthEnum : monthEnums) {
             monthNamesArrayList.add(getStandaloneMonthName(monthEnum, locale, capitalize, shortVersion));
+        }
+        // Convert the arraylist to a string array, and return the array.
+        String[] monthNames = monthNamesArrayList.toArray(new String[]{});
+        return monthNames;
+    }
+
+    /**
+     * getFormattingMonthName, This returns a "formatting version" month name for the specified
+     * month, in the specified locale. In some languages, including Russian and Czech, the
+     * standalone version of the month name is different from the version of the month name you
+     * would use as part of a full date. (Is different from the formatting version).
+     */
+    private static String getFormattingMonthName(Month month, Locale locale, boolean capitalize,
+            boolean shortVersion) {
+        // Get the "formatting version" of the month name.
+        DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
+        String monthName;
+        if (shortVersion) {
+            monthName = dateSymbols.getShortMonths()[month.getValue() - 1];
+        } else {
+            monthName = dateSymbols.getMonths()[month.getValue() - 1];
+        }
+        // If needed, capitalize the month name.
+        if ((capitalize) && (monthName != null) && (monthName.length() > 0)) {
+            monthName = monthName.substring(0, 1).toUpperCase(locale) + monthName.substring(1);
+        }
+        return monthName;
+    }
+
+    /**
+     * getFormattingMonthNamesArray, This returns an array with the translated, formatting version
+     * of the month names for the specified locale. (The "formatting version" of the month names can
+     * be different from the standalone version in some locales, including Russian and Czech. The
+     * formatting version would be used in a formatted date, and the standalone version would be
+     * used if the month is being specified by itself.)
+     *
+     * capitalize: This specifies whether the month name should be capitalized or not capitalized.
+     * shortVersion: This specifies whether the month names should be the short, or long versions of
+     * the formatting month names.
+     */
+    public static String[] getFormattingMonthNamesArray(Locale locale, boolean capitalize,
+            boolean shortVersion) {
+        Month[] monthEnums = Month.values();
+        ArrayList<String> monthNamesArrayList = new ArrayList<>();
+        for (Month monthEnum : monthEnums) {
+            monthNamesArrayList.add(getFormattingMonthName(
+                    monthEnum, locale, capitalize, shortVersion));
         }
         // Convert the arraylist to a string array, and return the array.
         String[] monthNames = monthNamesArrayList.toArray(new String[]{});

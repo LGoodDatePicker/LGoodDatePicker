@@ -22,9 +22,11 @@ import com.github.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseLis
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.util.ArrayList;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.zinternaltools.CalculateMinimumDateFieldSize;
+import java.util.Locale;
 
 /**
- * DatePicker, This class implements a date picker GUI component. 
+ * DatePicker, This class implements a date picker GUI component.
  *
  * This class supports a complete set of "default functionality" without requiring any
  * DatePickerSettings. However, the settings of a date picker can optionally be customized by
@@ -118,8 +120,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	JTextField dateTextField;
-	JButton toggleCalendarButton;
+    JTextField dateTextField;
+    JButton toggleCalendarButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -150,6 +152,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // was null. (This is because the text would not have changed in that case.)
         // This should be called after the DatePickerSettings have been applied.
         zDrawTextFieldIndicators();
+        // Set an appropriate minimum width for the date picker text field.
+        // This may use a default calculated minimum width, or a programmer supplied minimum width,
+        // as specified in the date picker settings.
+        zSetAppropriateTextFieldMinimumWidth();
     }
 
     /**
@@ -532,6 +538,46 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * zSetAppropriateTextFieldMinimumWidth, This sets the minimum (and preferred) width of the date
+     * picker text field. The width will be determined (or calculated) from the current date picker
+     * settings, as described below.
+     *
+     * If the programmer has not supplied a setting for the minimum size, then a default minimum
+     * size will be calculated from the AD date format, the locale, and the font for valid dates.
+     *
+     * If the programmer has supplied a setting for the text field minimum size, then the programmer
+     * supplied value will be used instead, unless a default override is allowed. (In this case, the
+     * default value will only be used if the default setting is larger than the programmer supplied
+     * setting).
+     *
+     * For additional details, see the javadoc for this function:
+     * DatePickerSettings.getSizeTextFieldMinimumWidthDefaultOverride().
+     */
+    public void zSetAppropriateTextFieldMinimumWidth() {
+        Integer programmerSuppliedWidth = settings.getSizeTextFieldMinimumWidth();
+        // Determine the appropriate minimum width for the text field.
+        int minimumWidthPixels = CalculateMinimumDateFieldSize.getFormattedDateWidthInPixels(
+                settings.getFormatForDatesCommonEra(), settings.getLocale(),
+                settings.getFontValidDate(), 0);
+        if (programmerSuppliedWidth != null) {
+            if (settings.getSizeTextFieldMinimumWidthDefaultOverride()) {
+                minimumWidthPixels = Math.max(programmerSuppliedWidth, minimumWidthPixels);
+            } else {
+                minimumWidthPixels = programmerSuppliedWidth;
+            }
+        }
+        // Apply the minimum and preferred width for the text field.
+        // Note that we only change the width, not the height.
+        Dimension newMinimumSize = dateTextField.getMinimumSize();
+        newMinimumSize.width = minimumWidthPixels;
+        dateTextField.setMinimumSize(newMinimumSize);
+        Dimension newPreferredSize = dateTextField.getPreferredSize();
+        newPreferredSize.width = minimumWidthPixels;
+        dateTextField.setPreferredSize(newPreferredSize);
+        this.validate();
+    }
+
+    /**
      * setTextFieldToValidStateIfNeeded,
      *
      * This function will check the contents of the text field, and when needed, will set the text
@@ -678,38 +724,38 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		dateTextField = new JTextField();
-		toggleCalendarButton = new JButton();
+        dateTextField = new JTextField();
+        toggleCalendarButton = new JButton();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"[125px,pref]:grow, [3px,pref], [26px,pref]",
-			"fill:pref:grow"));
+        //======== this ========
+        setLayout(new FormLayout(
+                "pref:grow, [3px,pref], [26px,pref]",
+                "fill:pref:grow"));
 
-		//---- dateTextField ----
-		dateTextField.setMargin(new Insets(1, 3, 2, 2));
-		dateTextField.setBorder(new CompoundBorder(
-			new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-			new EmptyBorder(1, 3, 2, 2)));
-		dateTextField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				setTextFieldToValidStateIfNeeded();
-			}
-		});
-		add(dateTextField, CC.xy(1, 1));
+        //---- dateTextField ----
+        dateTextField.setMargin(new Insets(1, 3, 2, 2));
+        dateTextField.setBorder(new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
+                new EmptyBorder(1, 3, 2, 2)));
+        dateTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                setTextFieldToValidStateIfNeeded();
+            }
+        });
+        add(dateTextField, CC.xy(1, 1));
 
-		//---- toggleCalendarButton ----
-		toggleCalendarButton.setText("...");
-		toggleCalendarButton.setFocusPainted(false);
-		toggleCalendarButton.setFocusable(false);
-		toggleCalendarButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				zEventToggleCalendarButtonMousePressed(e);
-			}
-		});
-		add(toggleCalendarButton, CC.xy(3, 1));
+        //---- toggleCalendarButton ----
+        toggleCalendarButton.setText("...");
+        toggleCalendarButton.setFocusPainted(false);
+        toggleCalendarButton.setFocusable(false);
+        toggleCalendarButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                zEventToggleCalendarButtonMousePressed(e);
+            }
+        });
+        add(toggleCalendarButton, CC.xy(3, 1));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -727,14 +773,14 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             // the component is disabled.
             dateTextField.setBackground(new Color(240, 240, 240));
             dateTextField.setForeground(new Color(109, 109, 109));
-            dateTextField.setFont(settings.fontValidDate);
+            dateTextField.setFont(settings.getFontValidDate());
             return;
         }
         // Reset all atributes to normal before going further.
         // (Possibility: ValidFullOrEmptyValue)
         dateTextField.setBackground(Color.white);
         dateTextField.setForeground(settings.colorTextValidDate);
-        dateTextField.setFont(settings.fontValidDate);
+        dateTextField.setFont(settings.getFontValidDate());
         // Get the text, and check to see if it is empty.
         String dateText = dateTextField.getText();
         boolean textIsEmpty = dateText.trim().isEmpty();
@@ -754,7 +800,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
             dateTextField.setForeground(settings.colorTextInvalidDate);
-            dateTextField.setFont(settings.fontInvalidDate);
+            dateTextField.setFont(settings.getFontInvalidDate());
             return;
         }
         // The text was parsed to a value.
@@ -763,7 +809,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         if (isDateVetoed) {
             // (Possibility: VetoedValue)
             dateTextField.setForeground(settings.colorTextVetoedDate);
-            dateTextField.setFont(settings.fontVetoedDate);
+            dateTextField.setFont(settings.getFontVetoedDate());
         }
     }
 

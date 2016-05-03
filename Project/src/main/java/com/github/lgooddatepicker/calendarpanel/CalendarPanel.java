@@ -349,10 +349,10 @@ public class CalendarPanel
         DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         // Get the days of the week in the local language.
         String localShortDaysOfWeek[] = symbols.getShortWeekdays();
-        // Get the full name of the month in the current locale.
+        // Get the full month names in the current locale.
         int zeroBasedMonthIndex = (displayedMonth.getValue() - 1);
-        String localizedFullMonth = settings.translationArrayMonthNames[zeroBasedMonthIndex];
-        String localizedShortMonth = settings.translationArrayShortMonthNames[zeroBasedMonthIndex];
+        String localizedFullMonth = settings.translationArrayStandaloneLongMonthNames[zeroBasedMonthIndex];
+        String localizedShortMonth = settings.translationArrayStandaloneShortMonthNames[zeroBasedMonthIndex];
         // Get the first day of the month, and the first day of week.
         LocalDate firstDayOfMonth = LocalDate.of(displayedYear, displayedMonth, 1);
         DayOfWeek firstDayOfWeekOfMonth = firstDayOfMonth.getDayOfWeek();
@@ -362,7 +362,8 @@ public class CalendarPanel
         boolean selectedDateIsInDisplayedMonth = (displayedSelectedDate != null)
                 && (displayedSelectedDate.getYear() == displayedYear)
                 && (displayedSelectedDate.getMonth() == displayedMonth);
-        // Set the month and the year labels.
+        // Set the month and the year labels. 
+        // Use the short month if the user is currently using the keyboard editor for the year.
         if (monthAndYearInnerPanel.isAncestorOf(yearEditorPanel)) {
             labelMonth.setText(localizedShortMonth);
         } else {
@@ -593,7 +594,7 @@ public class CalendarPanel
      */
     private void labelMonthIndicatorMousePressed(MouseEvent e) {
         JPopupMenu monthPopupMenu = new JPopupMenu();
-        String[] allLocalMonths = settings.translationArrayMonthNames;
+        String[] allLocalMonths = settings.translationArrayStandaloneLongMonthNames;
         for (int i = 0; i < allLocalMonths.length; ++i) {
             final String localMonth = allLocalMonths[i];
             final int localMonthZeroBasedIndexTemp = i;
