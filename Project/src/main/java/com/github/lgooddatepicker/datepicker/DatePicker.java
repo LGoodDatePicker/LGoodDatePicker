@@ -726,6 +726,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         dateTextField = new JTextField();
         toggleCalendarButton = new JButton();
+        JPanel dateTextFieldPanel = new JPanel(new GridBagLayout());
 
         //======== this ========
         setLayout(new FormLayout(
@@ -743,7 +744,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 setTextFieldToValidStateIfNeeded();
             }
         });
-        add(dateTextField, CC.xy(1, 1));
+        dateTextFieldPanel.add(dateTextField);
+        add(dateTextFieldPanel, CC.xy(1, 1));
 
         //---- toggleCalendarButton ----
         toggleCalendarButton.setText("...");
@@ -827,5 +829,12 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         popup = null;
         calendarPanel = null;
         lastPopupCloseTime = Instant.now();
+    }
+
+    /** Sets the dimensions of the date field.
+     *
+     * @param dateTextFieldDimension The date field dimension.*/
+    public void setDateTextFieldSize(Dimension dateTextFieldDimension) {
+      dateTextField.setPreferredSize(dateTextFieldDimension);
     }
 }
