@@ -1,19 +1,20 @@
 package com.github.lgooddatepicker.zinternaltools;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import java.awt.GridBagConstraints;
-import java.time.LocalDate;
-import java.time.chrono.IsoChronology;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
-import java.time.LocalTime;
+import java.io.DataInputStream;
+import java.io.InputStream;
 
 /**
  * InternalUtilities, This class contains static functions that are used by the date picker or the
@@ -46,7 +47,7 @@ public class InternalUtilities {
         // This only matches numbers, and it does not include any hyphen "-".
         Pattern pattern = Pattern.compile("\\d+");
         Matcher matcher = pattern.matcher(text);
-        ArrayList<String> unsignedNumbersFound = new ArrayList<>();
+        ArrayList<String> unsignedNumbersFound = new ArrayList<String>();
         while (matcher.find()) {
             String foundString = matcher.group();
             foundString = forceNumberStringToTwoDigits(foundString);
@@ -71,6 +72,24 @@ public class InternalUtilities {
             boolean yearFound = unsignedNumbersFound.remove(parsedYear);
             return yearFound && dayOfMonthFound;
         }
+    }
+
+    /**
+     * getJavaRunningVersionAsDouble, Returns a double with the currently running java version.
+     */
+    public static double getJavaRunningVersionAsDouble() {
+        String version = System.getProperty("java.version");
+        int pos = version.indexOf('.');
+        pos = version.indexOf('.', pos + 1);
+        return Double.parseDouble(version.substring(0, pos));
+    }
+
+    /**
+     * getJavaRunningVersionAsString, Returns a string with the currently running java version.
+     */
+    public static String getJavaRunningVersionAsString() {
+        String version = System.getProperty("java.version");
+        return version;
     }
 
     /**
@@ -112,6 +131,14 @@ public class InternalUtilities {
         DateTimeFormatter formatCE = new DateTimeFormatterBuilder().parseLenient().
                 parseCaseInsensitive().appendLocalized(FormatStyle.LONG, null).
                 toFormatter(pickerLocale);
+        // Get the local language as a string.
+        String language = pickerLocale.getLanguage();
+        // Override the format for the turkish locale to remove the name of the weekday.
+        if ("tr".equals(language)) {
+            formatCE = PickerUtilities.createFormatterFromPatternString(
+                    "dd MMMM yyyy", pickerLocale);
+        }
+        // Return the generated format.
         return formatCE;
     }
 
@@ -127,12 +154,19 @@ public class InternalUtilities {
         String displayFormatterBCPattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
                 FormatStyle.LONG, null, IsoChronology.INSTANCE, pickerLocale);
         displayFormatterBCPattern = displayFormatterBCPattern.replace("y", "u");
-        // Note: We could have used DateUtilities.createFormatterFromPatternString(), which should 
-        // have the same formatter options as this line. We kept this code independent in case 
+        // Note: We could have used DateUtilities.createFormatterFromPatternString(), which should
+        // have the same formatter options as this line. We kept this code independent in case
         // anyone ever mistakenly changes that utility function.
         DateTimeFormatter displayFormatterBC = new DateTimeFormatterBuilder().parseLenient()
                 .parseCaseInsensitive().appendPattern(displayFormatterBCPattern)
                 .toFormatter(pickerLocale);
+        // Get the local language as a string.
+        String language = pickerLocale.getLanguage();
+        // Override the format for the turkish locale to remove the name of the weekday.
+        if ("tr".equals(language)) {
+            displayFormatterBC = PickerUtilities.createFormatterFromPatternString(
+                    "dd MMMM uuuu", pickerLocale);
+        }
         return displayFormatterBC;
     }
 
@@ -164,7 +198,7 @@ public class InternalUtilities {
         }
         if (parsedDate == null) {
             try {
-                // Note: each parse attempt must have its own try/catch block. 
+                // Note: each parse attempt must have its own try/catch block.
                 parsedDate = LocalDate.parse(text, displayFormatterBC);
             } catch (Exception ex) {
             }
@@ -200,7 +234,7 @@ public class InternalUtilities {
         }
         if (parsedTime == null) {
             try {
-                // Note: each parse attempt must have its own try/catch block. 
+                // Note: each parse attempt must have its own try/catch block.
                 parsedTime = LocalTime.parse(timeText, formatForMenuTimes);
             } catch (Exception ex) {
             }
@@ -255,6 +289,51 @@ public class InternalUtilities {
             return false;
         }
         return (!policy.isTimeAllowed(time));
+    }
+
+    /**
+     * getCompiledJavaVersionFromJavaClassFile, Given an input stream to a Java class file, this
+     * will return the major or minor version of Java that was used to compile the file. In a Maven
+     * POM file, this is known as the "target" version of Java that was used to compile the file.
+     *
+     * Getting an input stream for a class file inside a jar file:
+     *
+     * InputStream input = getClass().getResourceAsStream("/classpath/to/my/file.class");
+     */
+    public static int getCompiledJavaVersionFromJavaClassFile(
+            InputStream classByteStream, boolean majorVersionRequested)
+            throws Exception {
+        DataInputStream dataInputStream = new DataInputStream(classByteStream);
+        // Skip the "magic number".
+        dataInputStream.readInt();
+        int minorVersion = dataInputStream.readUnsignedShort();
+        int majorVersion = dataInputStream.readUnsignedShort();
+        return (majorVersionRequested) ? majorVersion : minorVersion;
+    }
+
+    /**
+     * getCompiledJavaMajorVersionFromJavaClassFileAsString, Given an input stream to a Java class
+     * file, this will return the major version of Java that was used to compile the file (as a
+     * string). In a Maven POM file, this is known as the "target" version of Java that was used to
+     * compile the file.
+     *
+     * Getting an input stream for a class file inside a jar file:
+     *
+     * InputStream input = getClass().getResourceAsStream("/classpath/to/my/file.class");
+     */
+    public static String getCompiledJavaMajorVersionFromJavaClassFileAsString(
+            InputStream classByteStream) throws Exception {
+        int majorVersion = getCompiledJavaVersionFromJavaClassFile(classByteStream, true);
+        switch (majorVersion) {
+            case 50:
+                return "Java 6";
+            case 51:
+                return "Java 7";
+            case 52:
+                return "Java 8";
+            default:
+                return "Could not find version string for major version: " + majorVersion;
+        }
     }
 
 }

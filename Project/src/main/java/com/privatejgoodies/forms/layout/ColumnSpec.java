@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.forms.layout;
 
 import static com.privatejgoodies.common.base.Preconditions.checkNotBlank;
@@ -37,15 +36,13 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-
-
 /**
- * Specifies columns in FormLayout by their default orientation,
- * start size and resizing behavior.<p>
+ * Specifies columns in FormLayout by their default orientation, start size and resizing
+ * behavior.<p>
  *
  * <strong>Examples:</strong><br>
- * The following examples specify a column with FILL alignment, a size of
- * 10&nbsp;dlu that won't grow.
+ * The following examples specify a column with FILL alignment, a size of 10&nbsp;dlu that won't
+ * grow.
  * <pre>
  * new ColumnSpec(Sizes.dluX(10));
  * new ColumnSpec(ColumnSpec.FILL, Sizes.dluX(10), 0.0);
@@ -55,19 +52,17 @@ import java.util.Map;
  * ColumnSpec.parse("fill:10dlu:0");
  * </pre><p>
  *
- * The {@link com.privatejgoodies.forms.layout.FormSpecs} provides
- * predefined frequently used ColumnSpec instances.
+ * The {@link com.privatejgoodies.forms.layout.FormSpecs} provides predefined frequently used
+ * ColumnSpec instances.
  *
  * @author	Karsten Lentzsch
  * @version $Revision: 1.20 $
  *
- * @see     com.privatejgoodies.forms.layout.FormSpecs
+ * @see com.privatejgoodies.forms.layout.FormSpecs
  */
 public final class ColumnSpec extends FormSpec {
 
-
     // Horizontal Orientations *********************************************
-
     /**
      * By default put components in the left.
      */
@@ -93,73 +88,63 @@ public final class ColumnSpec extends FormSpec {
      */
     public static final DefaultAlignment DEFAULT = FILL;
 
-
     // Cache ******************************************************************
-
     /**
      * Maps encoded column specifications to ColumnSpec instances.
      */
-    private static final Map<String, ColumnSpec> CACHE =
-        new HashMap<String, ColumnSpec>();
-
+    private static final Map<String, ColumnSpec> CACHE
+            = new HashMap<String, ColumnSpec>();
 
     // Instance Creation ****************************************************
-
     /**
-     * Constructs a ColumnSpec for the given default alignment,
-     * size and resize weight.<p>
+     * Constructs a ColumnSpec for the given default alignment, size and resize weight.<p>
      *
-     * The resize weight must be a non-negative double; you can use
-     * {@code NO_GROW} as a convenience value for no resize.
+     * The resize weight must be a non-negative double; you can use {@code NO_GROW} as a convenience
+     * value for no resize.
      *
      * @param defaultAlignment the column's default alignment
-     * @param size             constant, component size or bounded size
-     * @param resizeWeight     the column's non-negative resize weight
+     * @param size constant, component size or bounded size
+     * @param resizeWeight the column's non-negative resize weight
      *
      * @throws NullPointerException if the {@code size} is {@code null}
-     * @throws IllegalArgumentException if the size is invalid or
-     *      the {@code resizeWeight} is negative
+     * @throws IllegalArgumentException if the size is invalid or the {@code resizeWeight} is
+     * negative
      */
     public ColumnSpec(DefaultAlignment defaultAlignment,
-                        Size size,
-                        double resizeWeight) {
-		super(defaultAlignment, size, resizeWeight);
-	}
-
+            Size size,
+            double resizeWeight) {
+        super(defaultAlignment, size, resizeWeight);
+    }
 
     /**
-     * Constructs a ColumnSpec for the given size using the
-     * default alignment, and no resizing.
+     * Constructs a ColumnSpec for the given size using the default alignment, and no resizing.
      *
-     * @param size             constant size, component size, or bounded size
+     * @param size constant size, component size, or bounded size
      * @throws IllegalArgumentException if the size is invalid
      */
     public ColumnSpec(Size size) {
         super(DEFAULT, size, NO_GROW);
     }
 
-
     /**
-     * Constructs a ColumnSpec from the specified encoded description.
-     * The description will be parsed to set initial values.<p>
+     * Constructs a ColumnSpec from the specified encoded description. The description will be
+     * parsed to set initial values.<p>
      *
-     * Unlike the factory method {@link #decode(String)}, this constructor
-     * does not expand layout variables, and it cannot vend cached objects.
+     * Unlike the factory method {@link #decode(String)}, this constructor does not expand layout
+     * variables, and it cannot vend cached objects.
      *
      * @param encodedDescription	the encoded description
      */
     private ColumnSpec(String encodedDescription) {
-	    super(DEFAULT, encodedDescription);
-	}
-
+        super(DEFAULT, encodedDescription);
+    }
 
     // Factory Methods ********************************************************
-
     /**
-     * Creates and returns a {@link ColumnSpec} that represents a gap with the
-     * specified {@link ConstantSize}.
+     * Creates and returns a {@link ColumnSpec} that represents a gap with the specified
+     * {@link ConstantSize}.
      *
-     * @param gapWidth   specifies the gap width
+     * @param gapWidth specifies the gap width
      * @return a ColumnSpec that describes a horizontal gap
      *
      * @throws NullPointerException if {@code gapWidth} is {@code null}
@@ -170,13 +155,11 @@ public final class ColumnSpec extends FormSpec {
         return new ColumnSpec(DEFAULT, gapWidth, FormSpec.NO_GROW);
     }
 
-
     /**
-     * Parses the encoded column specification and returns a ColumnSpec object
-     * that represents the string. Variables are expanded using the default
-     * LayoutMap.
+     * Parses the encoded column specification and returns a ColumnSpec object that represents the
+     * string. Variables are expanded using the default LayoutMap.
      *
-     * @param encodedColumnSpec    the encoded column specification
+     * @param encodedColumnSpec the encoded column specification
      *
      * @return a ColumnSpec instance for the given specification
      * @throws NullPointerException if {@code encodedColumnSpec} is {@code null}
@@ -190,20 +173,17 @@ public final class ColumnSpec extends FormSpec {
         return decode(encodedColumnSpec, LayoutMap.getRoot());
     }
 
-
     /**
-     * Parses the encoded column specifications and returns a ColumnSpec object
-     * that represents the string. Variables are expanded using the given
-     * LayoutMap.
+     * Parses the encoded column specifications and returns a ColumnSpec object that represents the
+     * string. Variables are expanded using the given LayoutMap.
      *
-     * @param encodedColumnSpec    the encoded column specification
-     * @param layoutMap            expands layout column variables
+     * @param encodedColumnSpec the encoded column specification
+     * @param layoutMap expands layout column variables
      *
      * @return a ColumnSpec instance for the given specification
-     * @throws NullPointerException if {@code encodedColumnSpec} or
-     *     {@code layoutMap} is {@code null}
-     * @throws IllegalArgumentException if {@code encodedColumnSpec} is empty
-     *     or whitespace
+     * @throws NullPointerException if {@code encodedColumnSpec} or {@code layoutMap} is
+     * {@code null}
+     * @throws IllegalArgumentException if {@code encodedColumnSpec} is empty or whitespace
      *
      * @see #decodeSpecs(String, LayoutMap)
      *
@@ -218,14 +198,12 @@ public final class ColumnSpec extends FormSpec {
         return decodeExpanded(layoutMap.expand(lower, true));
     }
 
-
     /**
-     * Decodes an expanded, trimmed, lower case column spec.
-     * Called by the public ColumnSpec factory methods.
-     * Looks up and returns the ColumnSpec object from the cache - if any,
-     * or constructs and returns a new ColumnSpec instance.
+     * Decodes an expanded, trimmed, lower case column spec. Called by the public ColumnSpec factory
+     * methods. Looks up and returns the ColumnSpec object from the cache - if any, or constructs
+     * and returns a new ColumnSpec instance.
      *
-     * @param expandedTrimmedLowerCaseSpec  the encoded column specification
+     * @param expandedTrimmedLowerCaseSpec the encoded column specification
      * @return a ColumnSpec for the given encoded column spec
      */
     static ColumnSpec decodeExpanded(String expandedTrimmedLowerCaseSpec) {
@@ -237,12 +215,11 @@ public final class ColumnSpec extends FormSpec {
         return spec;
     }
 
-
     /**
-     * Parses and splits encoded column specifications using the default
-     * {@link LayoutMap} and returns an array of ColumnSpec objects.
+     * Parses and splits encoded column specifications using the default {@link LayoutMap} and
+     * returns an array of ColumnSpec objects.
      *
-     * @param encodedColumnSpecs  comma separated encoded column specifications
+     * @param encodedColumnSpecs comma separated encoded column specifications
      * @return an array of decoded column specifications
      * @throws NullPointerException if {@code encodedColumnSpecs} is {@code null}
      *
@@ -251,19 +228,18 @@ public final class ColumnSpec extends FormSpec {
      * @see LayoutMap#getRoot()
      */
     public static ColumnSpec[] decodeSpecs(String encodedColumnSpecs) {
-       return decodeSpecs(encodedColumnSpecs, LayoutMap.getRoot());
+        return decodeSpecs(encodedColumnSpecs, LayoutMap.getRoot());
     }
 
-
     /**
-     * Splits and parses the encoded column specifications using the given
-     * {@link LayoutMap} and returns an array of ColumnSpec objects.
+     * Splits and parses the encoded column specifications using the given {@link LayoutMap} and
+     * returns an array of ColumnSpec objects.
      *
-     * @param encodedColumnSpecs  comma separated encoded column specifications
-     * @param layoutMap           expands layout column variables
+     * @param encodedColumnSpecs comma separated encoded column specifications
+     * @param layoutMap expands layout column variables
      * @return an array of decoded column specifications
-     * @throws NullPointerException if {@code encodedColumnSpecs} or
-     *     {@code layoutMap} is {@code null}
+     * @throws NullPointerException if {@code encodedColumnSpecs} or {@code layoutMap} is
+     * {@code null}
      *
      * @see #decodeSpecs(String)
      * @see #decode(String, LayoutMap)
@@ -274,20 +250,16 @@ public final class ColumnSpec extends FormSpec {
         return FormSpecParser.parseColumnSpecs(encodedColumnSpecs, layoutMap);
     }
 
-
     // Implementing Abstract Behavior ***************************************
-
     /**
-     * Returns if this is a horizontal specification (vs. vertical).
-     * Used to distinct between horizontal and vertical dialog units,
-     * which have different conversion factors.
+     * Returns if this is a horizontal specification (vs. vertical). Used to distinct between
+     * horizontal and vertical dialog units, which have different conversion factors.
      *
-     * @return  always {@code true} (for horizontal)
+     * @return always {@code true} (for horizontal)
      */
     @Override
     protected boolean isHorizontal() {
         return true;
     }
-
 
 }

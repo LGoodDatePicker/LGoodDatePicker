@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.forms.layout;
 
 import static com.privatejgoodies.common.base.Preconditions.checkArgument;
@@ -38,13 +37,11 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * An implementation of the {@link Size} interface that represents constant
- * sizes described by a value and unit, for example:
- * 10&nbsp;pixel, 15&nbsp;point or 4&nbsp;dialog units.
- * You can get instances of {@code ConstantSize} using
- * the factory methods and constants in the {@link Sizes} class.
- * Logical constant sizes that vary with the current layout style
- * are delivered by the {@link com.privatejgoodies.forms.util.LayoutStyle} class.<p>
+ * An implementation of the {@link Size} interface that represents constant sizes described by a
+ * value and unit, for example: 10&nbsp;pixel, 15&nbsp;point or 4&nbsp;dialog units. You can get
+ * instances of {@code ConstantSize} using the factory methods and constants in the {@link Sizes}
+ * class. Logical constant sizes that vary with the current layout style are delivered by the
+ * {@link com.privatejgoodies.forms.util.LayoutStyle} class.<p>
  *
  * This class supports different size units:
  * <table>
@@ -56,8 +53,8 @@ import java.util.List;
  * <tr><td>Inch</td><td>in</td><td>25.4 mm</td></tr>
  * <tr><td>DTP Point</td><td>pt</td><td>1/72 in</td></tr>
  * <tr><td>Pixel</td><td>px</td><td>1/(resolution in dpi) in</td></tr>
- * <tr><td>Dialog Unit</td><td>dlu</td><td>honors l&amp;f, resolution, and
- * dialog font size</td></tr>
+ * <tr><td>Dialog Unit</td><td>dlu</td><td>honors l&amp;f, resolution, and dialog font
+ * size</td></tr>
  * </table><p>
  *
  * <strong>Examples:</strong><pre>
@@ -76,83 +73,72 @@ import java.util.List;
 public final class ConstantSize implements Size, Serializable {
 
     // Public Units *********************************************************
-
-    public static final Unit PIXEL          = new Unit("Pixel",          "px",   null,  true);
-    public static final Unit POINT          = new Unit("Point",          "pt",   null,  true);
+    public static final Unit PIXEL = new Unit("Pixel", "px", null, true);
+    public static final Unit POINT = new Unit("Point", "pt", null, true);
     public static final Unit DIALOG_UNITS_X = new Unit("Dialog units X", "dluX", "dlu", true);
     public static final Unit DIALOG_UNITS_Y = new Unit("Dialog units Y", "dluY", "dlu", true);
-    public static final Unit MILLIMETER     = new Unit("Millimeter",     "mm",   null,  false);
-    public static final Unit CENTIMETER     = new Unit("Centimeter",     "cm",   null,  false);
-    public static final Unit INCH           = new Unit("Inch",           "in",   null,  false);
+    public static final Unit MILLIMETER = new Unit("Millimeter", "mm", null, false);
+    public static final Unit CENTIMETER = new Unit("Centimeter", "cm", null, false);
+    public static final Unit INCH = new Unit("Inch", "in", null, false);
 
-    public static final Unit PX             = PIXEL;
-    public static final Unit PT             = POINT;
-    public static final Unit DLUX           = DIALOG_UNITS_X;
-    public static final Unit DLUY           = DIALOG_UNITS_Y;
-    public static final Unit MM             = MILLIMETER;
-    public static final Unit CM             = CENTIMETER;
-    public static final Unit IN             = INCH;
+    public static final Unit PX = PIXEL;
+    public static final Unit PT = POINT;
+    public static final Unit DLUX = DIALOG_UNITS_X;
+    public static final Unit DLUY = DIALOG_UNITS_Y;
+    public static final Unit MM = MILLIMETER;
+    public static final Unit CM = CENTIMETER;
+    public static final Unit IN = INCH;
 
     /**
-     * An array of all enumeration values used to canonicalize
-     * deserialized units.
+     * An array of all enumeration values used to canonicalize deserialized units.
      */
-    private static final Unit[] VALUES =
-        { PIXEL, POINT, DIALOG_UNITS_X, DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH};
-
+    private static final Unit[] VALUES
+            = {PIXEL, POINT, DIALOG_UNITS_X, DIALOG_UNITS_Y, MILLIMETER, CENTIMETER, INCH};
 
     // Fields ***************************************************************
-
     private final double value;
-    private final Unit    unit;
-
+    private final Unit unit;
 
     // Instance Creation ****************************************************
-
     /**
      * Constructs a ConstantSize for the given size and unit.
      *
-     * @param value     the size value interpreted in the given units
-     * @param unit		the size's unit
+     * @param value the size value interpreted in the given units
+     * @param unit	the size's unit
      *
      * @since 1.1
      */
     public ConstantSize(int value, Unit unit) {
         this.value = value;
-        this.unit  = unit;
+        this.unit = unit;
     }
-
 
     /**
      * Constructs a ConstantSize for the given size and unit.
      *
-     * @param value     the size value interpreted in the given units
-     * @param unit      the size's unit
+     * @param value the size value interpreted in the given units
+     * @param unit the size's unit
      *
      * @since 1.1
      */
     public ConstantSize(double value, Unit unit) {
         this.value = value;
-        this.unit  = unit;
+        this.unit = unit;
     }
 
-
     /**
-     * Creates and returns a ConstantSize from the given encoded size
-     * and unit description.
+     * Creates and returns a ConstantSize from the given encoded size and unit description.
      *
-     * @param encodedValueAndUnit  the size's value and unit as string,
-     *                             trimmed and in lower case
-     * @param horizontal		   true for horizontal, false for vertical
+     * @param encodedValueAndUnit the size's value and unit as string, trimmed and in lower case
+     * @param horizontal	true for horizontal, false for vertical
      * @return a constant size for the given encoding and unit description
      *
-     * @throws IllegalArgumentException   if the unit requires integer
-     *    but the value is not an integer
+     * @throws IllegalArgumentException if the unit requires integer but the value is not an integer
      */
     static ConstantSize valueOf(String encodedValueAndUnit, boolean horizontal) {
         String[] split = ConstantSize.splitValueAndUnit(encodedValueAndUnit);
         String encodedValue = split[0];
-        String encodedUnit  = split[1];
+        String encodedUnit = split[1];
         Unit unit = Unit.valueOf(encodedUnit, horizontal);
         double value = Double.parseDouble(encodedValue);
         if (unit.requiresIntegers) {
@@ -162,10 +148,8 @@ public final class ConstantSize implements Size, Serializable {
         return new ConstantSize(value, unit);
     }
 
-
     /**
-     * Creates and returns a ConstantSize for the specified size value
-     * in horizontal dialog units.
+     * Creates and returns a ConstantSize for the specified size value in horizontal dialog units.
      *
      * @param value	size value in horizontal dialog units
      * @return the associated Size instance
@@ -174,21 +158,17 @@ public final class ConstantSize implements Size, Serializable {
         return new ConstantSize(value, DLUX);
     }
 
-
     /**
-     * Creates and returns a ConstantSize for the specified size value
-     * in vertical dialog units.
+     * Creates and returns a ConstantSize for the specified size value in vertical dialog units.
      *
-     * @param value    size value in vertical dialog units
+     * @param value size value in vertical dialog units
      * @return the associated Size instance
      */
     static ConstantSize dluY(int value) {
         return new ConstantSize(value, DLUY);
     }
 
-
     // Accessors ************************************************************
-
     /**
      * Returns this size's value.
      *
@@ -199,7 +179,6 @@ public final class ConstantSize implements Size, Serializable {
     public double getValue() {
         return value;
     }
-
 
     /**
      * Returns this size's unit.
@@ -212,13 +191,11 @@ public final class ConstantSize implements Size, Serializable {
         return unit;
     }
 
-
     // Accessing the Value **************************************************
-
     /**
      * Converts the size if necessary and returns the value in pixels.
      *
-     * @param component  the associated component
+     * @param component the associated component
      * @return the size in pixels
      */
     public int getPixelSize(Component component) {
@@ -241,37 +218,34 @@ public final class ConstantSize implements Size, Serializable {
         }
     }
 
-
     // Implementing the Size Interface **************************************
-
     /**
-     * Returns this size as pixel size. Neither requires the component
-     * list nor the specified measures.<p>
+     * Returns this size as pixel size. Neither requires the component list nor the specified
+     * measures.<p>
      *
-     * Invoked by {@link com.privatejgoodies.forms.layout.FormSpec} to determine
-     * the size of a column or row.
+     * Invoked by {@link com.privatejgoodies.forms.layout.FormSpec} to determine the size of a
+     * column or row.
      *
-     * @param container       the layout container
-     * @param components      the list of components used to compute the size
-     * @param minMeasure      the measure that determines the minimum sizes
-     * @param prefMeasure     the measure that determines the preferred sizes
-     * @param defaultMeasure  the measure that determines the default sizes
+     * @param container the layout container
+     * @param components the list of components used to compute the size
+     * @param minMeasure the measure that determines the minimum sizes
+     * @param prefMeasure the measure that determines the preferred sizes
+     * @param defaultMeasure the measure that determines the default sizes
      * @return the computed maximum size in pixel
      */
     @Override
-	public int maximumSize(Container container,
-                    List components,
-                    FormLayout.Measure minMeasure,
-                    FormLayout.Measure prefMeasure,
-                    FormLayout.Measure defaultMeasure) {
+    public int maximumSize(Container container,
+            List components,
+            FormLayout.Measure minMeasure,
+            FormLayout.Measure prefMeasure,
+            FormLayout.Measure defaultMeasure) {
         return getPixelSize(container);
     }
 
-
     /**
-     * Describes if this Size can be compressed, if container space gets scarce.
-     * Used by the FormLayout size computations in {@code #compressedSizes}
-     * to check whether a column or row can be compressed or not.<p>
+     * Describes if this Size can be compressed, if container space gets scarce. Used by the
+     * FormLayout size computations in {@code #compressedSizes} to check whether a column or row can
+     * be compressed or not.<p>
      *
      * ConstantSizes are incompressible.
      *
@@ -280,22 +254,19 @@ public final class ConstantSize implements Size, Serializable {
      * @since 1.1
      */
     @Override
-	public boolean compressible() {
+    public boolean compressible() {
         return false;
     }
 
-
     // Overriding Object Behavior *******************************************
-
     /**
      * Indicates whether some other ConstantSize is "equal to" this one.
      *
-     * @param o   the Object with which to compare
-     * @return {@code true} if this object is the same as the obj
-     *     argument; {@code false} otherwise.
+     * @param o the Object with which to compare
+     * @return {@code true} if this object is the same as the obj argument; {@code false} otherwise.
      *
-     * @see     java.lang.Object#hashCode()
-     * @see     java.util.Hashtable
+     * @see java.lang.Object#hashCode()
+     * @see java.util.Hashtable
      */
     @Override
     public boolean equals(Object o) {
@@ -307,42 +278,37 @@ public final class ConstantSize implements Size, Serializable {
         }
         ConstantSize size = (ConstantSize) o;
         return this.value == size.value
-             && this.unit  == size.unit;
+                && this.unit == size.unit;
     }
 
-
     /**
-     * Returns a hash code value for the object. This method is
-     * supported for the benefit of hashtables such as those provided by
-     * {@code java.util.Hashtable}.
+     * Returns a hash code value for the object. This method is supported for the benefit of
+     * hashtables such as those provided by {@code java.util.Hashtable}.
      *
-     * @return  a hash code value for this object.
+     * @return a hash code value for this object.
      *
-     * @see     java.lang.Object#equals(java.lang.Object)
-     * @see     java.util.Hashtable
+     * @see java.lang.Object#equals(java.lang.Object)
+     * @see java.util.Hashtable
      */
     @Override
     public int hashCode() {
         return new Double(value).hashCode() + 37 * unit.hashCode();
     }
 
-
     /**
      * Returns a string representation of this size object.
      *
-     * <strong>Note:</strong> This string representation may change
-     * at any time. It is intended for debugging purposes. For parsing,
-     * use {@link #encode()} instead.
+     * <strong>Note:</strong> This string representation may change at any time. It is intended for
+     * debugging purposes. For parsing, use {@link #encode()} instead.
      *
-     * @return  a string representation of the constant size
+     * @return a string representation of the constant size
      */
     @Override
     public String toString() {
         return value == intValue()
-            ? Integer.toString(intValue()) + unit.abbreviation()
-            : Double.toString(value) + unit.abbreviation();
+                ? Integer.toString(intValue()) + unit.abbreviation()
+                : Double.toString(value) + unit.abbreviation();
     }
-
 
     /**
      * Returns a parseable string representation of this constant size.
@@ -352,26 +318,23 @@ public final class ConstantSize implements Size, Serializable {
      * @since 1.2
      */
     @Override
-	public String encode() {
+    public String encode() {
         return value == intValue()
-            ? Integer.toString(intValue()) + unit.encode()
-            : Double.toString(value) + unit.encode();
+                ? Integer.toString(intValue()) + unit.encode()
+                : Double.toString(value) + unit.encode();
     }
 
-
     // Helper Code **********************************************************
-
     private int intValue() {
         return (int) Math.round(value);
     }
 
-
     /**
-     * Splits a string that encodes size with unit into the size and unit
-     * substrings. Returns an array of two strings.
+     * Splits a string that encodes size with unit into the size and unit substrings. Returns an
+     * array of two strings.
      *
-     * @param encodedValueAndUnit  a strings that represents a size with unit,
-     *                             trimmed and in lower case
+     * @param encodedValueAndUnit a strings that represents a size with unit, trimmed and in lower
+     * case
      * @return the first element is size, the second is unit
      */
     private static String[] splitValueAndUnit(String encodedValueAndUnit) {
@@ -380,26 +343,24 @@ public final class ConstantSize implements Size, Serializable {
         int firstLetterIndex = len;
         while (firstLetterIndex > 0
                 && Character.isLetter(encodedValueAndUnit.charAt(firstLetterIndex - 1))) {
-                firstLetterIndex--;
+            firstLetterIndex--;
         }
         result[0] = encodedValueAndUnit.substring(0, firstLetterIndex);
         result[1] = encodedValueAndUnit.substring(firstLetterIndex);
         return result;
     }
 
-
     // Helper Class *********************************************************
-
     /**
-     * An ordinal-based serializable typesafe enumeration for units
-     * as used in instances of {@link ConstantSize}.
+     * An ordinal-based serializable typesafe enumeration for units as used in instances of
+     * {@link ConstantSize}.
      */
     public static final class Unit implements Serializable {
 
         private final transient String name;
         private final transient String abbreviation;
         private final transient String parseAbbreviation;
-                final transient boolean requiresIntegers;
+        final transient boolean requiresIntegers;
 
         private Unit(String name, String abbreviation, String parseAbbreviation, boolean requiresIntegers) {
             this.name = name;
@@ -408,12 +369,11 @@ public final class ConstantSize implements Size, Serializable {
             this.requiresIntegers = requiresIntegers;
         }
 
-
         /**
          * Returns a Unit that corresponds to the specified string.
          *
-         * @param name   the encoded unit, trimmed and in lower case
-         * @param horizontal  true for a horizontal unit, false for vertical
+         * @param name the encoded unit, trimmed and in lower case
+         * @param horizontal true for a horizontal unit, false for vertical
          * @return the corresponding Unit
          * @throws IllegalArgumentException if no Unit exists for the string
          */
@@ -438,26 +398,23 @@ public final class ConstantSize implements Size, Serializable {
                 return CENTIMETER;
             } else {
                 throw new IllegalArgumentException(
-                    "Invalid unit name '" + name + "'. Must be one of: " +
-                    "px, dlu, pt, mm, cm, in");
+                        "Invalid unit name '" + name + "'. Must be one of: "
+                        + "px, dlu, pt, mm, cm, in");
             }
         }
-
 
         /**
          * Returns a string representation of this unit object.
          *
-         * <strong>Note:</strong> This implementation may change at any time.
-         * It is intended for debugging purposes. For parsing, use
-         * {@link #encode()} instead.
+         * <strong>Note:</strong> This implementation may change at any time. It is intended for
+         * debugging purposes. For parsing, use {@link #encode()} instead.
          *
-         * @return  a string representation of the constant size
+         * @return a string representation of the constant size
          */
         @Override
         public String toString() {
             return name;
         }
-
 
         /**
          * Returns a parseable string representation of this unit.
@@ -468,14 +425,13 @@ public final class ConstantSize implements Size, Serializable {
          */
         public String encode() {
             return parseAbbreviation != null
-                ? parseAbbreviation
-                : abbreviation;
+                    ? parseAbbreviation
+                    : abbreviation;
         }
 
-
         /**
-         * Returns the first character of this Unit's name.
-         * Used to identify it in short format strings.
+         * Returns the first character of this Unit's name. Used to identify it in short format
+         * strings.
          *
          * @return the first character of this Unit's name.
          */
@@ -483,9 +439,7 @@ public final class ConstantSize implements Size, Serializable {
             return abbreviation;
         }
 
-
         // Serialization *****************************************************
-
         private static int nextOrdinal = 0;
 
         private final int ordinal = nextOrdinal++;
@@ -495,6 +449,5 @@ public final class ConstantSize implements Size, Serializable {
         }
 
     }
-
 
 }

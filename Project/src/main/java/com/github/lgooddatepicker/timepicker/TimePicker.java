@@ -1,5 +1,9 @@
 package com.github.lgooddatepicker.timepicker;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
@@ -24,8 +28,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.Instant;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -106,7 +108,7 @@ public class TimePicker
      * timeChangeListeners, This holds a list of time change listeners that wish to be notified
      * whenever the last valid time is changed.
      */
-    private ArrayList<TimeChangeListener> timeChangeListeners = new ArrayList<>();
+    private ArrayList<TimeChangeListener> timeChangeListeners = new ArrayList<TimeChangeListener>();
 
     /**
      * timeMenuPanel, This holds the menu panel GUI component of this time picker. This should be
@@ -123,10 +125,10 @@ public class TimePicker
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    JTextField timeTextField;
-    JButton toggleTimeMenuButton;
-    JButton increaseButton;
-    JButton decreaseButton;
+	public JTextField timeTextField;
+	public JButton toggleTimeMenuButton;
+	public JButton increaseButton;
+	public JButton decreaseButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -267,7 +269,7 @@ public class TimePicker
      * that are registered with this TimePicker.
      */
     public ArrayList<TimeChangeListener> getTimeChangeListeners() {
-        return new ArrayList<>(timeChangeListeners);
+        return new ArrayList<TimeChangeListener>(timeChangeListeners);
     }
 
     /**
@@ -934,58 +936,58 @@ public class TimePicker
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        timeTextField = new JTextField();
-        toggleTimeMenuButton = new JButton();
-        increaseButton = new JButton();
-        decreaseButton = new JButton();
+		timeTextField = new JTextField();
+		toggleTimeMenuButton = new JButton();
+		increaseButton = new JButton();
+		decreaseButton = new JButton();
 
-        //======== this ========
-        setLayout(new FormLayout(
-                "[62px,pref]:grow, 3*(pref)",
-                "2*(fill:pref:grow)"));
-        ((FormLayout) getLayout()).setRowGroups(new int[][]{{1, 2}});
+		//======== this ========
+		setLayout(new FormLayout(
+			"[62px,pref]:grow, 3*(pref)",
+			"2*(fill:pref:grow)"));
+		((FormLayout)getLayout()).setRowGroups(new int[][] {{1, 2}});
 
-        //---- timeTextField ----
-        timeTextField.setMargin(new Insets(1, 3, 2, 2));
-        timeTextField.setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-                new EmptyBorder(1, 3, 2, 2)));
-        timeTextField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                setTextFieldToValidStateIfNeeded();
-            }
-        });
-        add(timeTextField, CC.xywh(1, 1, 1, 2));
+		//---- timeTextField ----
+		timeTextField.setMargin(new Insets(1, 3, 2, 2));
+		timeTextField.setBorder(new CompoundBorder(
+			new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
+			new EmptyBorder(1, 3, 2, 2)));
+		timeTextField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				setTextFieldToValidStateIfNeeded();
+			}
+		});
+		add(timeTextField, CC.xywh(1, 1, 1, 2));
 
-        //---- toggleTimeMenuButton ----
-        toggleTimeMenuButton.setText("v");
-        toggleTimeMenuButton.setFocusPainted(false);
-        toggleTimeMenuButton.setFocusable(false);
-        toggleTimeMenuButton.setFont(new Font("Segoe UI", Font.PLAIN, 8));
-        toggleTimeMenuButton.setMinimumSize(new Dimension(26, 23));
-        toggleTimeMenuButton.setPreferredSize(new Dimension(26, 23));
-        toggleTimeMenuButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                zEventToggleTimeMenuButtonMousePressed(e);
-            }
-        });
-        add(toggleTimeMenuButton, CC.xywh(3, 1, 1, 2));
+		//---- toggleTimeMenuButton ----
+		toggleTimeMenuButton.setText("v");
+		toggleTimeMenuButton.setFocusPainted(false);
+		toggleTimeMenuButton.setFocusable(false);
+		toggleTimeMenuButton.setFont(new Font("Segoe UI", Font.PLAIN, 8));
+		toggleTimeMenuButton.setMinimumSize(new Dimension(26, 23));
+		toggleTimeMenuButton.setPreferredSize(new Dimension(26, 23));
+		toggleTimeMenuButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				zEventToggleTimeMenuButtonMousePressed(e);
+			}
+		});
+		add(toggleTimeMenuButton, CC.xywh(3, 1, 1, 2));
 
-        //---- increaseButton ----
-        increaseButton.setFocusPainted(false);
-        increaseButton.setFocusable(false);
-        increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        increaseButton.setText("+");
-        add(increaseButton, CC.xy(4, 1));
+		//---- increaseButton ----
+		increaseButton.setFocusPainted(false);
+		increaseButton.setFocusable(false);
+		increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
+		increaseButton.setText("+");
+		add(increaseButton, CC.xy(4, 1));
 
-        //---- decreaseButton ----
-        decreaseButton.setFocusPainted(false);
-        decreaseButton.setFocusable(false);
-        decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
-        decreaseButton.setText("-");
-        add(decreaseButton, CC.xy(4, 2));
+		//---- decreaseButton ----
+		decreaseButton.setFocusPainted(false);
+		decreaseButton.setFocusable(false);
+		decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
+		decreaseButton.setText("-");
+		add(decreaseButton, CC.xy(4, 2));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

@@ -1,8 +1,9 @@
 package com.github.lgooddatepicker.zinternaltools;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -35,7 +36,7 @@ public class ExtraTimeStrings {
         }
 
         // If no extra parsing formats were found, then return an empty list.
-        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<>();
+        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<DateTimeFormatter>();
         if (definedFormats == null) {
             return extraParsingFormatters;
         }

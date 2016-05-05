@@ -1,5 +1,9 @@
 package com.github.lgooddatepicker.timepicker;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.FormLayout;
@@ -12,10 +16,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -275,7 +275,7 @@ public class TimePickerSettings {
         // Generate default parsing formats.
         FormatStyle[] allFormatStyles = new FormatStyle[]{
             FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
-        formatsForParsing = new ArrayList<>();
+        formatsForParsing = new ArrayList<DateTimeFormatter>();
         formatsForParsing.add(DateTimeFormatter.ISO_LOCAL_TIME);
         for (FormatStyle formatStyle : allFormatStyles) {
             DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().parseLenient().
@@ -324,7 +324,7 @@ public class TimePickerSettings {
         LocalTime startTime = (optionalStartTime == null) ? LocalTime.MIN : optionalStartTime;
         LocalTime endTime = (optionalEndTime == null) ? LocalTime.MAX : optionalEndTime;
         // Initialize our needed variables.
-        potentialMenuTimes = new ArrayList<>();
+        potentialMenuTimes = new ArrayList<LocalTime>();
         int increment = timeIncrement.minutes;
         // Start at midnight, which is the earliest time of day for LocalTime values.
         LocalTime entry = LocalTime.MIDNIGHT;
@@ -352,11 +352,11 @@ public class TimePickerSettings {
      * by this function.
      */
     public void generatePotentialMenuTimes(ArrayList<LocalTime> desiredTimes) {
-        potentialMenuTimes = new ArrayList<>();
+        potentialMenuTimes = new ArrayList<LocalTime>();
         if (desiredTimes == null || desiredTimes.isEmpty()) {
             return;
         }
-        TreeSet<LocalTime> timeSet = new TreeSet<>();
+        TreeSet<LocalTime> timeSet = new TreeSet<LocalTime>();
         for (LocalTime desiredTime : desiredTimes) {
             if (desiredTime != null) {
                 timeSet.add(desiredTime);

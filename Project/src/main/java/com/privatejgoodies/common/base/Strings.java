@@ -27,41 +27,36 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.common.base;
-
 
 /**
  * Provides frequently used static null-safe String testing methods .
  *
- * @author  Karsten Lentzsch
+ * @author Karsten Lentzsch
  */
 public class Strings {
 
     /**
-     * A string with three dots that should is often meant
-     * to be the ellipsis string "\u2026" or character '\u2026'.
-     * 
+     * A string with three dots that should is often meant to be the ellipsis string "\u2026" or
+     * character '\u2026'.
+     *
      * @see #ELLIPSIS_STRING
      * @since 1.7
      */
-    public static final String NO_ELLIPSIS_STRING  = "...";
+    public static final String NO_ELLIPSIS_STRING = "...";
 
     /**
      * The correct ellipsis string.
-     * 
+     *
      * @see #NO_ELLIPSIS_STRING
      */
-    public static final String ELLIPSIS_STRING  = "\u2026";
-    
+    public static final String ELLIPSIS_STRING = "\u2026";
 
     protected Strings() {
         // Override default constructor; prevents direct instantiation.
     }
 
-
     // String Validations ***************************************************
-
     /**
      * Checks if the given string is whitespace, empty ("") or {@code null}.
      *
@@ -74,9 +69,8 @@ public class Strings {
      * Strings.isBlank(" abc ") == false
      * </pre>
      *
-     * @param str   the string to check, may be {@code null}
-     * @return {@code true} if the string is whitespace, empty
-     *    or {@code null}
+     * @param str the string to check, may be {@code null}
+     * @return {@code true} if the string is whitespace, empty or {@code null}
      *
      * @see #isEmpty(String)
      */
@@ -93,10 +87,8 @@ public class Strings {
         return true;
     }
 
-
     /**
-     * Checks if the given string is not empty (""),
-     * not {@code null} and not whitespace only.
+     * Checks if the given string is not empty (""), not {@code null} and not whitespace only.
      *
      * <pre>
      * Strings.isNotBlank(null)    == false
@@ -107,9 +99,8 @@ public class Strings {
      * Strings.isNotBlank(" abc ") == true
      * </pre>
      *
-     * @param str   the string to check, may be {@code null}
-     * @return {@code true} if the string is not empty
-     *    and not {@code null} and not whitespace only
+     * @param str the string to check, may be {@code null}
+     * @return {@code true} if the string is not empty and not {@code null} and not whitespace only
      *
      * @see #isEmpty(String)
      */
@@ -126,7 +117,6 @@ public class Strings {
         return false;
     }
 
-
     /**
      * Checks if the given string is empty ("") or {@code null}.
      *
@@ -137,7 +127,7 @@ public class Strings {
      * Strings.isEmpty("Hi ") == false
      * </pre>
      *
-     * @param str   the string to check, may be {@code null}
+     * @param str the string to check, may be {@code null}
      * @return {@code true} if the string is empty or {@code null}
      *
      * @see #isBlank(String)
@@ -146,10 +136,8 @@ public class Strings {
         return str == null || str.length() == 0;
     }
 
-
     /**
-     * Checks if the given string is not empty ("")
-     * and not {@code null}.
+     * Checks if the given string is not empty ("") and not {@code null}.
      *
      * <pre>
      * Strings.isNotEmpty(null)  == false
@@ -159,7 +147,7 @@ public class Strings {
      * Strings.isNotEmpty("Hi ") == true
      * </pre>
      *
-     * @param str   the string to check, may be {@code null}
+     * @param str the string to check, may be {@code null}
      * @return {@code true} if the string is not empty and not {@code null}
      *
      * @see #isBlank(String)
@@ -168,10 +156,9 @@ public class Strings {
         return str != null && str.length() > 0;
     }
 
-
     /**
-     * Checks if the given string is {@code null}, empty (""),
-     * or the first and last characters are not whitespace.
+     * Checks if the given string is {@code null}, empty (""), or the first and last characters are
+     * not whitespace.
      *
      * <pre>
      * Strings.isTrimmed(null)  == true
@@ -182,9 +169,9 @@ public class Strings {
      * Strings.isTrimmed(" Hi") == false
      * </pre>
      *
-     * @param str   the string to check, may be {@code null}
-     * @return {@code true} if the string is {@code null}, empty,
-     *    or the first and last characters are not whitespace.
+     * @param str the string to check, may be {@code null}
+     * @return {@code true} if the string is {@code null}, empty, or the first and last characters
+     * are not whitespace.
      *
      * @since 1.3
      */
@@ -194,14 +181,12 @@ public class Strings {
             return true;
         }
         return !Character.isWhitespace(str.charAt(0))
-        	&& !Character.isWhitespace(str.charAt(length - 1));
+                && !Character.isWhitespace(str.charAt(length - 1));
     }
 
-
     /**
-     * Checks if {@code str} starts with the given prefix ignoring cases.
-     * {@code null} is handled safely; if both arguments are null, true
-     * is returned, false otherwise.
+     * Checks if {@code str} starts with the given prefix ignoring cases. {@code null} is handled
+     * safely; if both arguments are null, true is returned, false otherwise.
      *
      * <pre>
      * Strings.startsWithIgnoreCase(null, null)      == true
@@ -220,10 +205,10 @@ public class Strings {
      * Strings.startsWithIgnoreCase("John", "Jonny") == false
      * </pre>
      *
-     * @param str      the test string to check, may be null
-     * @param prefix   the prefix to check for, may be null
-     * @return {@code true}, if the string starts with the prefix, ignoring cases,
-     *     {@code false} otherwise
+     * @param str the test string to check, may be null
+     * @param prefix the prefix to check for, may be null
+     * @return {@code true}, if the string starts with the prefix, ignoring cases, {@code false}
+     * otherwise
      *
      * @see String#startsWith(java.lang.String)
      */
@@ -237,11 +222,9 @@ public class Strings {
         return str.regionMatches(true, 0, prefix, 0, prefix.length());
     }
 
-
     /**
-     * Abbreviates the given string if it exceeds the given maximum length
-     * by replacing its center part with an ellipsis ('&hellip;').
-     * If the string is {@code null} or shorter than the limit,
+     * Abbreviates the given string if it exceeds the given maximum length by replacing its center
+     * part with an ellipsis ('&hellip;'). If the string is {@code null} or shorter than the limit,
      * it is returned as is.<p>
      *
      * <pre>
@@ -258,11 +241,10 @@ public class Strings {
      * Strings.abbreviateCenter("abcdefg", 5) == "ab&hellip;fg"
      * </pre>
      *
-     * @param str   the source string
-     * @param maxLength   the maximum length of the result string
-     * @return {@code str} if its length is less than or equal to {@code maxLength},
-     *     an abbreviated string with length {@code maxLength} where
-     *     the center is replaced by an ellipsis
+     * @param str the source string
+     * @param maxLength the maximum length of the result string
+     * @return {@code str} if its length is less than or equal to {@code maxLength}, an abbreviated
+     * string with length {@code maxLength} where the center is replaced by an ellipsis
      */
     public static String abbreviateCenter(String str, int maxLength) {
         if (str == null) {
@@ -278,6 +260,5 @@ public class Strings {
         String tail = str.substring(length - tailLength, length);
         return head + "\u2026" + tail;
     }
-
 
 }

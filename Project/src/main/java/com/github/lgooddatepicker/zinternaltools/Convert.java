@@ -1,10 +1,11 @@
 package com.github.lgooddatepicker.zinternaltools;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.github.lgooddatepicker.datepicker.DatePicker;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 /**
  * Convert, This class allows the programmer to get or set a date picker date, using some other
@@ -52,7 +53,10 @@ public class Convert {
             return null;
         }
         Instant instant = pickerDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-        java.util.Date javaUtilDate = java.util.Date.from(instant);
+        // for backport: java.util.Date javaUtilDate = DateTimeUtils.toDate(instant);
+        // for java.time: java.util.Date javaUtilDate = java.util.Date.from(instant);
+        // This function was created to be compatible with both libraries.
+        java.util.Date javaUtilDate = getJavaUtilDateFromInstant(instant);
         return javaUtilDate;
     }
 
@@ -67,7 +71,10 @@ public class Convert {
             return null;
         }
         Instant instant = pickerDate.atStartOfDay(timezone).toInstant();
-        java.util.Date javaUtilDate = java.util.Date.from(instant);
+        // for backport: java.util.Date javaUtilDate = DateTimeUtils.toDate(instant);
+        // for java.time: java.util.Date javaUtilDate = java.util.Date.from(instant);
+        // This function was created to be compatible with both libraries.
+        java.util.Date javaUtilDate = getJavaUtilDateFromInstant(instant);
         return javaUtilDate;
     }
 
@@ -100,6 +107,24 @@ public class Convert {
         ZonedDateTime zonedDateTime = instant.atZone(timezone);
         LocalDate localDate = zonedDateTime.toLocalDate();
         parentDatePicker.setDate(localDate);
+    }
+
+    /**
+     * getJavaUtilDateFromInstant, Converts a "Java.time" or "backport310" instant to a
+     * java.util.Date. This code was copied from backport310, and should work in both java.time and
+     * backport310.
+     *
+     * Note: Be aware that if applying a specific time zone, then the time zone should be used to
+     * create the instant.
+     */
+    private java.util.Date getJavaUtilDateFromInstant(Instant instant) {
+        java.util.Date javaUtilDate;
+        try {
+            javaUtilDate = new java.util.Date(instant.toEpochMilli());
+        } catch (ArithmeticException ex) {
+            throw new IllegalArgumentException(ex);
+        }
+        return javaUtilDate;
     }
 
 }

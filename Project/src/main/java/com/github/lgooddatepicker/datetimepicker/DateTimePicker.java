@@ -1,5 +1,9 @@
 package com.github.lgooddatepicker.datetimepicker;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.ColumnSpec;
@@ -14,9 +18,6 @@ import com.github.lgooddatepicker.timepicker.TimePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.*;
 
@@ -47,18 +48,19 @@ public class DateTimePicker extends JPanel {
     /**
      * datePicker, This holds the date picker component of this DateTimePicker.
      */
-    private DatePicker datePicker;
+    public DatePicker datePicker;
 
     /**
      * dateTimeChangeListeners, This holds a list of dateTimeChangeListeners that wish to be
      * notified whenever the last valid date or the last valid time has changed.
      */
-    private ArrayList<DateTimeChangeListener> dateTimeChangeListeners = new ArrayList<>();
+    private ArrayList<DateTimeChangeListener> dateTimeChangeListeners = 
+            new ArrayList<DateTimeChangeListener>();
 
     /**
      * timePicker, This holds the time picker component of this DateTimePicker.
      */
-    private TimePicker timePicker;
+    public TimePicker timePicker;
 
     /**
      * Constructor with default settings. This creates a new instance of DateTimePicker, with
@@ -190,7 +192,7 @@ public class DateTimePicker extends JPanel {
      * that are registered with this DateTimePicker.
      */
     public ArrayList<DateTimeChangeListener> getDateTimeChangeListeners() {
-        return new ArrayList<>(dateTimeChangeListeners);
+        return new ArrayList<DateTimeChangeListener>(dateTimeChangeListeners);
     }
 
     /**
@@ -355,10 +357,10 @@ public class DateTimePicker extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 
-        //======== this ========
-        setLayout(new FormLayout(
-                "pref:grow, 5px, pref:grow(0.6)",
-                "fill:pref:grow"));
+		//======== this ========
+		setLayout(new FormLayout(
+			"pref:grow, 5px, pref:grow(0.6)",
+			"fill:pref:grow"));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

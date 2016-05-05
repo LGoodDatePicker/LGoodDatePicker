@@ -1,10 +1,11 @@
 package com.github.lgooddatepicker.zinternaltools;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.swing.JTextField;
 

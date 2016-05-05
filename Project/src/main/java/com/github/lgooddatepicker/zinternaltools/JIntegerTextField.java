@@ -89,8 +89,14 @@ public class JIntegerTextField extends JTextField {
     }
 
     public static void main(String[] args) {
-        JIntegerTextField integerTextField = new JIntegerTextField();
-        SwingUtilities.invokeLater(integerTextField::runDemo);
+        final JIntegerTextField integerTextField = new JIntegerTextField();
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                integerTextField.runDemo();
+            }
+        });
+        // SwingUtilities.invokeLater(integerTextField::runDemo);
     }
 
     private void notifyListenerIfNeeded() {

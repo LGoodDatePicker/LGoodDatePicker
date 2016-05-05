@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.forms.util;
 
 import java.awt.Component;
@@ -37,226 +36,205 @@ import java.awt.Toolkit;
 import com.privatejgoodies.common.bean.Bean;
 
 /**
- * An abstract implementation of the {@link UnitConverter} interface that
- * minimizes the effort required to convert font-dependent sizes to pixels.
+ * An abstract implementation of the {@link UnitConverter} interface that minimizes the effort
+ * required to convert font-dependent sizes to pixels.
  *
  * @author Karsten Lentzsch
  * @version $Revision: 1.8 $
  *
- * @see    DefaultUnitConverter
- * @see    com.privatejgoodies.forms.layout.Size
- * @see    com.privatejgoodies.forms.layout.Sizes
+ * @see DefaultUnitConverter
+ * @see com.privatejgoodies.forms.layout.Size
+ * @see com.privatejgoodies.forms.layout.Sizes
  */
 public abstract class AbstractUnitConverter extends Bean implements UnitConverter {
 
     private static final int DTP_RESOLUTION = 72;
 
-
     // Unit Converter Implementation *********************************************
-
     /**
      * Converts Inches and returns pixels using the specified resolution.
      *
-     * @param in         the Inches
-     * @param component  the component that provides the graphics object
+     * @param in the Inches
+     * @param component the component that provides the graphics object
      * @return the given Inches as pixels
      */
     @Override
-	public int inchAsPixel(double in, Component component) {
+    public int inchAsPixel(double in, Component component) {
         return inchAsPixel(in, getScreenResolution(component));
     }
 
-
     /**
-     * Converts Millimeters and returns pixels using the resolution of the
-     * given component's graphics object.
+     * Converts Millimeters and returns pixels using the resolution of the given component's
+     * graphics object.
      *
-     * @param mm            Millimeters
-     * @param component    the component that provides the graphics object
+     * @param mm Millimeters
+     * @param component the component that provides the graphics object
      * @return the given Millimeters as pixels
      */
     @Override
-	public int millimeterAsPixel(double mm, Component component) {
+    public int millimeterAsPixel(double mm, Component component) {
         return millimeterAsPixel(mm, getScreenResolution(component));
     }
 
-
     /**
-     * Converts Centimeters and returns pixels using the resolution of the
-     * given component's graphics object.
+     * Converts Centimeters and returns pixels using the resolution of the given component's
+     * graphics object.
      *
-     * @param cm            Centimeters
-     * @param component    the component that provides the graphics object
+     * @param cm Centimeters
+     * @param component the component that provides the graphics object
      * @return the given Centimeters as pixels
      */
     @Override
-	public int centimeterAsPixel(double cm, Component component) {
+    public int centimeterAsPixel(double cm, Component component) {
         return centimeterAsPixel(cm, getScreenResolution(component));
     }
 
-
     /**
-     * Converts DTP Points and returns pixels using the resolution of the
-     * given component's graphics object.
+     * Converts DTP Points and returns pixels using the resolution of the given component's graphics
+     * object.
      *
-     * @param pt            DTP Points
-     * @param component    the component that provides the graphics object
+     * @param pt DTP Points
+     * @param component the component that provides the graphics object
      * @return the given Points as pixels
      */
     @Override
-	public int pointAsPixel(int pt, Component component) {
+    public int pointAsPixel(int pt, Component component) {
         return pointAsPixel(pt, getScreenResolution(component));
     }
 
     /**
-     * Converts horizontal dialog units and returns pixels.
-     * Honors the resolution, dialog font size, platform, and l&amp;f.
+     * Converts horizontal dialog units and returns pixels. Honors the resolution, dialog font size,
+     * platform, and l&amp;f.
      *
-     * @param dluX  the horizontal dialog units
-     * @param c 	a Component that provides the font and graphics
+     * @param dluX the horizontal dialog units
+     * @param c a Component that provides the font and graphics
      * @return the given horizontal dialog units as pixels
      */
     @Override
-	public int dialogUnitXAsPixel(int dluX, Component c) {
+    public int dialogUnitXAsPixel(int dluX, Component c) {
         return dialogUnitXAsPixel(dluX, getDialogBaseUnitsX(c));
     }
 
-
     /**
-     * Converts vertical dialog units and returns pixels.
-     * Honors the resolution, dialog font size, platform, and l&amp;f.
+     * Converts vertical dialog units and returns pixels. Honors the resolution, dialog font size,
+     * platform, and l&amp;f.
      *
-     * @param dluY  the vertical dialog units
-     * @param c     a Component that provides the font and graphics
+     * @param dluY the vertical dialog units
+     * @param c a Component that provides the font and graphics
      * @return the given vertical dialog units as pixels
      */
     @Override
-	public int dialogUnitYAsPixel(int dluY, Component c) {
+    public int dialogUnitYAsPixel(int dluY, Component c) {
         return dialogUnitYAsPixel(dluY, getDialogBaseUnitsY(c));
     }
 
-
     // Abstract Behavior *****************************************************
-
     /**
-     * Gets and returns the horizontal dialog base units.
-     * Implementations are encouraged to cache previously computed
-     * dialog base units.
+     * Gets and returns the horizontal dialog base units. Implementations are encouraged to cache
+     * previously computed dialog base units.
      *
-     * @param component   a Component that provides the font and graphics
+     * @param component a Component that provides the font and graphics
      * @return the horizontal dialog base units
      */
     protected abstract double getDialogBaseUnitsX(Component component);
 
-
     /**
-     * Gets and returns the vertical dialog base units.
-     * Implementations are encouraged to cache previously computed
-     * dialog base units.
+     * Gets and returns the vertical dialog base units. Implementations are encouraged to cache
+     * previously computed dialog base units.
      *
-     * @param component   a Component that provides the font and graphics
+     * @param component a Component that provides the font and graphics
      * @return the vertical dialog base units
      */
     protected abstract double getDialogBaseUnitsY(Component component);
 
-
     // Convenience Methods ***************************************************
-
     /**
      * Converts Inches and returns pixels using the specified resolution.
      *
-     * @param in    the Inches
-     * @param dpi   the resolution
+     * @param in the Inches
+     * @param dpi the resolution
      * @return the given Inches as pixels
      */
     protected static final int inchAsPixel(double in, int dpi) {
         return (int) Math.round(dpi * in);
     }
 
-
     /**
      * Converts Millimeters and returns pixels using the specified resolution.
      *
-     * @param mm    Millimeters
-     * @param dpi   the resolution
+     * @param mm Millimeters
+     * @param dpi the resolution
      * @return the given Millimeters as pixels
      */
     protected static final int millimeterAsPixel(double mm, int dpi) {
         return (int) Math.round(dpi * mm * 10 / 254);
     }
 
-
     /**
      * Converts Centimeters and returns pixels using the specified resolution.
      *
-     * @param cm    Centimeters
-     * @param dpi   the resolution
+     * @param cm Centimeters
+     * @param dpi the resolution
      * @return the given Centimeters as pixels
      */
     protected static final int centimeterAsPixel(double cm, int dpi) {
         return (int) Math.round(dpi * cm * 100 / 254);
     }
 
-
     /**
      * Converts DTP Points and returns pixels using the specified resolution.
      *
-     * @param pt    DTP Points
-     * @param dpi   the resolution in dpi
+     * @param pt DTP Points
+     * @param dpi the resolution in dpi
      * @return the given Points as pixels
      */
     protected static final int pointAsPixel(int pt, int dpi) {
         return Math.round(dpi * pt / DTP_RESOLUTION);
     }
 
-
     /**
      * Converts horizontal dialog units and returns pixels.
      *
-     * @param dluX                  the horizontal dialog units
-     * @param dialogBaseUnitsX      the horizontal dialog base units
+     * @param dluX the horizontal dialog units
+     * @param dialogBaseUnitsX the horizontal dialog base units
      * @return the given dialog base units as pixels
      */
     protected int dialogUnitXAsPixel(int dluX, double dialogBaseUnitsX) {
         return (int) Math.round(dluX * dialogBaseUnitsX / 4);
     }
 
-
     /**
      * Converts vertical dialog units and returns pixels.
      *
-     * @param dluY                  the vertical dialog units
-     * @param dialogBaseUnitsY      the vertical dialog base units
+     * @param dluY the vertical dialog units
+     * @param dialogBaseUnitsY the vertical dialog base units
      * @return the given dialog base units as pixels
      */
     protected int dialogUnitYAsPixel(int dluY, double dialogBaseUnitsY) {
         return (int) Math.round(dluY * dialogBaseUnitsY / 8);
     }
 
-
     // Helper Code ************************************************************
-
     /**
-     * Computes and returns the average character width
-     * of the specified test string using the given FontMetrics.
-     * The test string shall represent an "average" text.
+     * Computes and returns the average character width of the specified test string using the given
+     * FontMetrics. The test string shall represent an "average" text.
      *
-     * @param metrics     used to compute the test string's width
-     * @param testString  the string that shall represent an "average" text
+     * @param metrics used to compute the test string's width
+     * @param testString the string that shall represent an "average" text
      * @return the test string's average character width.
      */
     protected double computeAverageCharWidth(
             FontMetrics metrics,
             String testString) {
-         int width = metrics.stringWidth(testString);
-         double average = (double) width / testString.length();
-         //System.out.println("Average width of '" + testString + "'=" + average);
-         return average;
-     }
+        int width = metrics.stringWidth(testString);
+        double average = (double) width / testString.length();
+        //System.out.println("Average width of '" + testString + "'=" + average);
+        return average;
+    }
 
     /**
-     * Returns the components screen resolution or the default screen
-     * resolution if the component is null or has no toolkit assigned yet.
+     * Returns the components screen resolution or the default screen resolution if the component is
+     * null or has no toolkit assigned yet.
      *
      * @param c the component to ask for a toolkit
      * @return the component's screen resolution
@@ -268,13 +246,11 @@ public abstract class AbstractUnitConverter extends Bean implements UnitConverte
 
         Toolkit toolkit = c.getToolkit();
         return toolkit != null
-            ? toolkit.getScreenResolution()
-            : getDefaultScreenResolution();
+                ? toolkit.getScreenResolution()
+                : getDefaultScreenResolution();
     }
 
-
     private static int defaultScreenResolution = -1;
-
 
     /**
      * Computes and returns the default resolution.
@@ -283,11 +259,10 @@ public abstract class AbstractUnitConverter extends Bean implements UnitConverte
      */
     protected int getDefaultScreenResolution() {
         if (defaultScreenResolution == -1) {
-            defaultScreenResolution =
-                Toolkit.getDefaultToolkit().getScreenResolution();
+            defaultScreenResolution
+                    = Toolkit.getDefaultToolkit().getScreenResolution();
         }
         return defaultScreenResolution;
     }
-
 
 }

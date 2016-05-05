@@ -1,10 +1,10 @@
 package com.github.lgooddatepicker.zinternaltools;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import java.text.DateFormatSymbols;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -59,7 +59,7 @@ public class ExtraDateStrings {
         }
 
         // If no extra parsing formats were found, then return an empty list.
-        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<>();
+        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<DateTimeFormatter>();
         if (definedFormats == null) {
             return extraParsingFormatters;
         }
@@ -141,7 +141,7 @@ public class ExtraDateStrings {
     private static String[] getStandaloneMonthNamesArray(Locale locale, boolean capitalize,
             boolean shortVersion) {
         Month[] monthEnums = Month.values();
-        ArrayList<String> monthNamesArrayList = new ArrayList<>();
+        ArrayList<String> monthNamesArrayList = new ArrayList<String>();
         for (Month monthEnum : monthEnums) {
             monthNamesArrayList.add(getStandaloneMonthName(monthEnum, locale, capitalize, shortVersion));
         }
@@ -187,7 +187,7 @@ public class ExtraDateStrings {
     public static String[] getFormattingMonthNamesArray(Locale locale, boolean capitalize,
             boolean shortVersion) {
         Month[] monthEnums = Month.values();
-        ArrayList<String> monthNamesArrayList = new ArrayList<>();
+        ArrayList<String> monthNamesArrayList = new ArrayList<String>();
         for (Month monthEnum : monthEnums) {
             monthNamesArrayList.add(getFormattingMonthName(
                     monthEnum, locale, capitalize, shortVersion));

@@ -1,5 +1,9 @@
 package com.github.lgooddatepicker.demo;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.datetimepicker.DateTimePicker;
@@ -9,8 +13,6 @@ import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.time.DayOfWeek;
-import java.time.LocalTime;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
