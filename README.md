@@ -3,7 +3,7 @@ Java Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## News:
 
-* The [LGoodDatePicker Backport (5.3.2)](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/v5.3.2-Backport) was released on 4 May 2016. With this release, the library can now be used in projects which are built for the older Java versions, Java 6 and Java 7. 
+* The [LGoodDatePicker Backport (5.3.2)](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/v5.3.2-Backport) was released on May 4, 2016. With this release, the library can now be used in projects which are built for the older Java versions, Java 6 and Java 7. 
 
 * [LGoodDatePicker 5.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).
 
