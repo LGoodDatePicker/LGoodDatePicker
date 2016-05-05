@@ -25,8 +25,8 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Translations include 22 languages.  
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
-* Also supports other common data types, such as "java.util.Date".
-* The parallel Backport allows use in the older Java versions, Java 6 and Java 7. 
+* The parallel Backport allows use in projects built for the older Java versions, Java 6 and Java 7. 
+* Supports other legacy and common data types, such as "java.util.Date".
 * Customizable visual elements.  
 (Including calendar size, fonts, colors, and the popup border.)
 * The TimePicker GUI provides the time selection list, up/down arrow key usage, and optional spinner buttons. 
