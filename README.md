@@ -1,5 +1,5 @@
 # LGoodDatePicker
-Java Swing Date Picker. Easy to use, good looking, nice features, and localized.
+Java Swing Date Picker. Easy to use, good looking, nice features, and localized. Uses the JSR-310 standard. 
 
 ## News:
 
