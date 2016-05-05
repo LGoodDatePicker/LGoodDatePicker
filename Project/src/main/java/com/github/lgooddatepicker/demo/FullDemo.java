@@ -1,9 +1,5 @@
 package com.github.lgooddatepicker.demo;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.datepicker.DatePicker;
@@ -24,6 +20,9 @@ import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.WrapLayout;
+import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
+import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
@@ -33,17 +32,24 @@ import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.timepicker.TimePicker;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings.TimeIncrement;
-import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
-import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
-import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.LineBorder;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
+import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
@@ -150,20 +156,13 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 4, Both Policies:");
 
-        // Create a date picker: Change first weekday.
-        dateSettings = new DatePickerSettings();
-        dateSettings.firstDayOfWeek = DayOfWeek.MONDAY;
-        datePicker = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 5, Set First Day Of Week (Mon):");
-
         // Create a date picker: Change calendar size.
         dateSettings = new DatePickerSettings();
         dateSettings.sizeDatePanelMinimumHeight *= 1.6;
         dateSettings.sizeDatePanelMinimumWidth *= 1.6;
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Calendar Size:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 5, Change Calendar Size:");
 
         // Create a date picker: Custom color.
         dateSettings = new DatePickerSettings();
@@ -174,7 +173,24 @@ public class FullDemo {
         dateSettings.colorBackgroundNavigateYearMonthButtons = Color.cyan;
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 7, Change Colors:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Colors:");
+
+        // Create a date picker: Custom button icon.
+        // You can replace the example image with any image file that is desired.
+        // See also: JButton.setPressedIcon() and JButton.setDisabledIcon().
+        // Get the example image icon.
+        URL dateImageURL = FullDemo.class.getResource("/images/datepickerbutton1.png");
+        Image dateExampleImage = Toolkit.getDefaultToolkit().getImage(dateImageURL);
+        ImageIcon dateExampleIcon = new ImageIcon(dateExampleImage);
+        // Create the date picker, and apply the image icon.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setInitialDateToToday();
+        datePicker = new DatePicker(dateSettings);
+        JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
+        datePickerButton.setText("");
+        datePickerButton.setIcon(dateExampleIcon);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 7, Custom Icon:");
 
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
@@ -211,13 +227,20 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Another Custom Date Format:");
 
+        // Create a date picker: Change first weekday.
+        dateSettings = new DatePickerSettings();
+        dateSettings.firstDayOfWeek = DayOfWeek.MONDAY;
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Set First Day Of Week (Mon):");
+
         // Create a date picker: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowEmptyDates(false);
         datePicker = new DatePicker(dateSettings);
-        datePicker.addDateChangeListener(new SampleDateChangeListener("datePicker11 (Disallow Empty Dates or Null), "));
+        datePicker.addDateChangeListener(new SampleDateChangeListener("datePicker12 (Disallow Empty Dates or Null), "));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Disallow Empty Dates:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Disallow Empty Dates:");
 
         // Create a date picker: Disallow keyboard editing.
         dateSettings = new DatePickerSettings();
@@ -225,7 +248,7 @@ public class FullDemo {
         dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Disallow Keyboard Editing:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Disallow Keyboard Editing:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
@@ -273,20 +296,34 @@ public class FullDemo {
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 5, Interval 15 minutes, and 24 hour clock:");
 
-        // Create a time picker: With Veto Policy.
-        timeSettings = new TimePickerSettings();
-        timePicker = new TimePicker(timeSettings);
-        timeSettings.setVetoPolicy(new SampleTimeVetoPolicy());
-        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 6, With Veto Policy (Only 9a-5p allowed):");
-
         // Create a time picker: Localized (Chinese).
         Locale chineseLocale = new Locale("zh");
         timeSettings = new TimePickerSettings(chineseLocale);
         timeSettings.initialTime = LocalTime.now();
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 7, Localized (to Chinese):");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 6, Localized (to Chinese):");
+
+        // Create a time picker: Custom button icon.
+        // You can replace the example image with any desired image file.
+        // See also: JButton.setPressedIcon() and JButton.setDisabledIcon().
+        // Get the example image icon.
+        URL timeIconURL = FullDemo.class.getResource("/images/timepickerbutton1.png");
+        Image timeExampleImage = Toolkit.getDefaultToolkit().getImage(timeIconURL);
+        ImageIcon timeExampleIcon = new ImageIcon(timeExampleImage);
+        // Create the time picker, and apply the image icon.
+        timeSettings = new TimePickerSettings();
+        timeSettings.initialTime = LocalTime.of(15, 00);
+        timePicker = new TimePicker(timeSettings);
+        JButton timePickerButton = timePicker.getComponentToggleTimeMenuButton();
+        timePickerButton.setText("");
+        timePickerButton.setIcon(timeExampleIcon);
+        // Adjust the button size to fit the new icon.
+        Dimension newTimeButtonSize = new Dimension(
+                timeExampleIcon.getIconWidth() + 4, timeExampleIcon.getIconHeight() + 4);
+        timePickerButton.setPreferredSize(newTimeButtonSize);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 7, Custom Icon:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates DateTimePickers. (1 to 5)
@@ -336,13 +373,21 @@ public class FullDemo {
 
         // Create a time picker: Custom Format.
         timeSettings = new TimePickerSettings();
-        timeSettings.setFormatForDisplayTime(PickerUtilities.createFormatterFromPatternString("ha", timeSettings.getLocale()));
-        timeSettings.setFormatForMenuTimes(timeSettings.getFormatForDisplayTime());
+        timeSettings.setFormatForDisplayTime("ha");
+        timeSettings.setFormatForMenuTimes("ha");
         timeSettings.initialTime = LocalTime.of(15, 00);
         timeSettings.generatePotentialMenuTimes(TimeIncrement.OneHour, null, null);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 11, Custom Format:");
+
+        // Create a time picker: With Veto Policy.
+        timeSettings = new TimePickerSettings();
+        timePicker = new TimePicker(timeSettings);
+        timeSettings.setVetoPolicy(new SampleTimeVetoPolicy());
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+                "Time 12, With Veto Policy (Only 9a-5p allowed):");
 
         // Create a time picker: Seconds precision.
         timeSettings = new TimePickerSettings();
@@ -353,7 +398,7 @@ public class FullDemo {
         timeSettings.initialTime = LocalTime.of(15, 00, 00);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 12, Seconds precision (ISO format):");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 13, Seconds precision (ISO format):");
 
         // Create a time picker: Milliseconds precision.
         timeSettings = new TimePickerSettings();
@@ -364,7 +409,7 @@ public class FullDemo {
         timeSettings.initialTime = LocalTime.of(15, 00, 00, 999000000);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 13, Millisecond precision (ISO format):");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 14, Millisecond precision (ISO format):");
 
         // Create a time picker: Nanoseconds precision.
         timeSettings = new TimePickerSettings();
@@ -376,14 +421,14 @@ public class FullDemo {
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
-                "<html>Time 14, Nanosecond precision:<br/>(ISO format. Use \".\" to type nanoseconds.)</html>");
+                "<html>Time 15, Nanosecond precision:<br/>(ISO format. Use \".\" to type nanoseconds.)</html>");
 
         // Create a time picker: Disallow Keyboard Editing.
         timeSettings = new TimePickerSettings();
         timeSettings.setAllowKeyboardEditing(false);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 15, Disallow Keyboard Editing:");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 16, Disallow Keyboard Editing:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining DateTimePickers.

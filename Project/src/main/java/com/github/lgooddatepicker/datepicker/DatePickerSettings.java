@@ -1,9 +1,5 @@
 package com.github.lgooddatepicker.datepicker;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.FormLayout;
@@ -25,6 +21,12 @@ import com.github.lgooddatepicker.zinternaltools.InternalConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
+import java.time.temporal.WeekFields;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized in a date picker.
@@ -893,12 +895,12 @@ public class DatePickerSettings {
      */
     private void zApplyAllowKeyboardEditing() {
         // Set the editability of the date picker text field.
-        parent.dateTextField.setEditable(allowKeyboardEditing);
+        parent.getComponentDateTextField().setEditable(allowKeyboardEditing);
         // Set the text field border color based on whether the text field is editable.
         Color textFieldBorderColor = (allowKeyboardEditing)
                 ? InternalConstants.colorEditableTextFieldBorder
                 : InternalConstants.colorNotEditableTextFieldBorder;
-        parent.dateTextField.setBorder(new CompoundBorder(
+        parent.getComponentDateTextField().setBorder(new CompoundBorder(
                 new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
     }
 

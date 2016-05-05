@@ -1,11 +1,8 @@
 package com.github.lgooddatepicker.zinternaltools;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
+import java.time.LocalDate;
 
 /**
  * CalendarSelectionEvent, An instance of this event class is passed to each registered
