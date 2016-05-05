@@ -1,5 +1,9 @@
 package com.github.lgooddatepicker.zinternaltools;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.*;
@@ -13,8 +17,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class TimeMenuPanel extends JPanel {

@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.forms.layout;
 
 import static com.privatejgoodies.common.base.Preconditions.checkNotNull;
@@ -38,46 +37,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Parses encoded column and row specifications.
- * Returns ColumnSpec or RowSpec arrays if successful,
+ * Parses encoded column and row specifications. Returns ColumnSpec or RowSpec arrays if successful,
  * and aims to provide useful information in case of a syntax error.
  *
  * @author	Karsten Lentzsch
  * @version $Revision: 1.12 $
  *
- * @see     ColumnSpec
- * @see     RowSpec
+ * @see ColumnSpec
+ * @see RowSpec
  */
 public final class FormSpecParser {
 
     // Parser Patterns ******************************************************
+    private static final Pattern MULTIPLIER_PREFIX_PATTERN
+            = Pattern.compile("\\d+\\s*\\*\\s*\\(");
 
-    private static final Pattern MULTIPLIER_PREFIX_PATTERN =
-        Pattern.compile("\\d+\\s*\\*\\s*\\(");
-
-    private static final Pattern DIGIT_PATTERN =
-        Pattern.compile("\\d+");
-
-
+    private static final Pattern DIGIT_PATTERN
+            = Pattern.compile("\\d+");
 
     // Instance Fields ********************************************************
-
     private final String source;
     private final LayoutMap layoutMap;
 
-
     // Instance Creation ******************************************************
-
     /**
-     * Constructs a parser for the given encoded column/row specification,
-     * the given LayoutMap, and orientation.
+     * Constructs a parser for the given encoded column/row specification, the given LayoutMap, and
+     * orientation.
      *
-     * @param source         the raw encoded column or row specification
-     *                       as provided by the user
-     * @param description    describes the source, e.g. "column specification"
-     * @param layoutMap      maps layout variable names to ColumnSpec and
-     *                       RowSpec objects
-     * @param horizontal    {@code true} for columns, {@code false} for rows
+     * @param source the raw encoded column or row specification as provided by the user
+     * @param description describes the source, e.g. "column specification"
+     * @param layoutMap maps layout variable names to ColumnSpec and RowSpec objects
+     * @param horizontal {@code true} for columns, {@code false} for rows
      *
      * @throws NullPointerException if {@code source} or {@code layoutMap} is {@code null}
      */
@@ -92,9 +82,7 @@ public final class FormSpecParser {
         this.source = this.layoutMap.expand(source, horizontal);
     }
 
-
     // Parser API *************************************************************
-
     static ColumnSpec[] parseColumnSpecs(
             String encodedColumnSpecs,
             LayoutMap layoutMap) {
@@ -105,7 +93,6 @@ public final class FormSpecParser {
                 true);
         return parser.parseColumnSpecs();
     }
-
 
     static RowSpec[] parseRowSpecs(
             String encodedRowSpecs,
@@ -118,9 +105,7 @@ public final class FormSpecParser {
         return parser.parseRowSpecs();
     }
 
-
     // Parser Implementation **************************************************
-
     private ColumnSpec[] parseColumnSpecs() {
         List encodedColumnSpecs = split(source, 0);
         int columnCount = encodedColumnSpecs.size();
@@ -131,7 +116,6 @@ public final class FormSpecParser {
         }
         return columnSpecs;
     }
-
 
     private RowSpec[] parseRowSpecs() {
         List encodedRowSpecs = split(source, 0);
@@ -144,9 +128,7 @@ public final class FormSpecParser {
         return rowSpecs;
     }
 
-
     // Parser Implementation **************************************************
-
     private List<String> split(String expression, int offset) {
         List<String> encodedSpecs = new ArrayList<String>();
         int parenthesisLevel = 0;  // number of open '('
@@ -212,7 +194,6 @@ public final class FormSpecParser {
         return encodedSpecs;
     }
 
-
     private void addSpec(List<String> encodedSpecs, String expression, int offset) {
         String trimmedExpression = expression.trim();
         Multiplier multiplier = multiplier(trimmedExpression, offset);
@@ -221,11 +202,10 @@ public final class FormSpecParser {
             return;
         }
         List<String> subTokenList = split(multiplier.expression, offset + multiplier.offset);
-		for (int i = 0; i < multiplier.multiplier; i++) {
-			encodedSpecs.addAll(subTokenList);
-		}
+        for (int i = 0; i < multiplier.multiplier; i++) {
+            encodedSpecs.addAll(subTokenList);
+        }
     }
-
 
     private Multiplier multiplier(String expression, int offset) {
         Matcher matcher = MULTIPLIER_PREFIX_PATTERN.matcher(expression);
@@ -253,26 +233,21 @@ public final class FormSpecParser {
         return new Multiplier(number, subexpression, matcher.end());
     }
 
-
     // Exceptions *************************************************************
-
     public static void fail(String source, int index, String description) {
         throw new FormLayoutParseException(message(source, index, description));
     }
-
 
     private void fail(int index, String description) {
         throw new FormLayoutParseException(
                 message(source, index, description));
     }
 
-
     private void fail(int index, NumberFormatException cause) {
         throw new FormLayoutParseException(
                 message(source, index, "Invalid multiplier"),
                 cause);
     }
-
 
     private static String message(String source, int index, String description) {
         StringBuffer buffer = new StringBuffer('\n');
@@ -287,7 +262,6 @@ public final class FormSpecParser {
         String message = buffer.toString();
         throw new FormLayoutParseException(message);
     }
-
 
     /**
      * Used by the parser for encoded column and row specifications.
@@ -304,12 +278,9 @@ public final class FormSpecParser {
 
     }
 
-
     // Helper Class ***********************************************************
-
     /**
-     * Internal helper class that is returned by
-     * {@link FormSpecParser#multiplier(String, int)}.
+     * Internal helper class that is returned by {@link FormSpecParser#multiplier(String, int)}.
      */
     static final class Multiplier {
 
@@ -324,6 +295,5 @@ public final class FormSpecParser {
         }
 
     }
-
 
 }

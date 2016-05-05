@@ -1,16 +1,15 @@
 package com.github.lgooddatepicker.datepicker;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
-import java.time.DayOfWeek;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.FormatStyle;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -18,7 +17,6 @@ import javax.swing.JTextField;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.ExtraDateStrings;
 import com.github.lgooddatepicker.zinternaltools.TranslationSource;
-import java.time.LocalDate;
 import javax.swing.border.Border;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
@@ -420,7 +418,7 @@ public class DatePickerSettings {
             FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
 
         // Create a set of default parsing formatters for the specified locale.
-        formatsForParsing = new ArrayList<>();
+        formatsForParsing = new ArrayList<DateTimeFormatter>();
         DateTimeFormatter parseFormat;
         for (int i = 0; i < allFormatStyles.length; ++i) {
             parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
@@ -780,18 +778,18 @@ public class DatePickerSettings {
     }
 
     /**
-     * setSizeTextFieldMinimumWidth, This sets the minimum width, in pixels, of the DatePicker text
+     * setSizeTextFieldMinimumWidth, This sets the minimum width in pixels, of the DatePicker text
      * field. (The text field is located to the left of the date picker "popup calendar" button, and
      * displays the currently selected date.)
      *
      * The default value for this setting is null. When this is set to null, a default width for the
      * date picker text field will be automatically calculated and applied to fit "the largest
      * possible date" (with a four digit year) that can be displayed with the current date picker
-     * settings. The settings that are used to calculate the default text field width include the
-     * locale (the language), the fontValidDate, and the formatForDatesCommonEra.
+     * settings. The settings used to calculate the default text field width include the locale (the
+     * language), the fontValidDate, and the formatForDatesCommonEra.
      */
-    public void setSizeTextFieldMinimumWidth(Integer sizeTextFieldMinimumWidth) {
-        this.sizeTextFieldMinimumWidth = sizeTextFieldMinimumWidth;
+    public void setSizeTextFieldMinimumWidth(Integer minimumWidthInPixels) {
+        this.sizeTextFieldMinimumWidth = minimumWidthInPixels;
         if (parent != null) {
             parent.zSetAppropriateTextFieldMinimumWidth();
         }

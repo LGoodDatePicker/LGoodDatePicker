@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.forms.layout;
 
 import static com.privatejgoodies.common.base.Preconditions.checkNotNull;
@@ -39,36 +38,39 @@ import java.util.Map.Entry;
 
 import com.privatejgoodies.forms.util.LayoutStyle;
 
-
 /**
- * Provides a hierarchical variable expansion useful to improve layout
- * consistency, style guide compliance, and layout readability.<p>
+ * Provides a hierarchical variable expansion useful to improve layout consistency, style guide
+ * compliance, and layout readability.<p>
  *
- * A LayoutMap maps variable names to layout expression Strings. The FormLayout,
- * ColumnSpec, and RowSpec parsers expand variables before an encoded layout
- * specification is parsed and converted into ColumnSpec and RowSpec values.
- * Variables start with the '$' character. The variable name can be wrapped
- * by braces ('{' and '}'). For example, you can write:
+ * A LayoutMap maps variable names to layout expression Strings. The FormLayout, ColumnSpec, and
+ * RowSpec parsers expand variables before an encoded layout specification is parsed and converted
+ * into ColumnSpec and RowSpec values. Variables start with the '$' character. The variable name can
+ * be wrapped by braces ('{' and '}'). For example, you can write:
  * <code>new FormLayout("pref, $lcg, pref")</code> or
  * <code>new FormLayout("pref, ${lcg}, pref")</code>.<p>
  *
- * LayoutMaps build a chain; each LayoutMap has an optional parent map.
- * The root is defined by {@link LayoutMap#getRoot()}. Application-wide
- * variables should be defined in the root LayoutMap. If you want to override
- * application-wide variables locally, obtain a LayoutMap using {@code
- * new LayoutMap()}, configure it, and provide it as argument to the
- * FormLayout, ColumnSpec, and RowSpec constructors/factory methods.<p>
+ * LayoutMaps build a chain; each LayoutMap has an optional parent map. The root is defined by
+ * {@link LayoutMap#getRoot()}. Application-wide variables should be defined in the root LayoutMap.
+ * If you want to override application-wide variables locally, obtain a LayoutMap using {@code
+ * new LayoutMap()}, configure it, and provide it as argument to the FormLayout, ColumnSpec, and
+ * RowSpec constructors/factory methods.<p>
  *
  * By default the root LayoutMap provides the following associations:
  * <table border="1">
- * <tr><td><b>Variable Name</b><td><b>Abbreviations</b></td><td><b>Orientation</b></td><td><b>Description</b></td></tr>
- * <tr><td>label-component-gap</td><td>lcg, lcgap</td><td>both</td><td>gap between a label and the labeled component</td></tr>
- * <tr><td>related-gap</td><td>rg, rgap</td><td>both</td><td>gap between two related components</td></tr>
- * <tr><td>unrelated-gap</td><td>ug, ugap</td><td>both</td><td>gap between two unrelated components</td></tr>
+ * <tr><td><b>Variable
+ * Name</b><td><b>Abbreviations</b></td><td><b>Orientation</b></td><td><b>Description</b></td></tr>
+ * <tr><td>label-component-gap</td><td>lcg, lcgap</td><td>both</td><td>gap between a label and the
+ * labeled component</td></tr>
+ * <tr><td>related-gap</td><td>rg, rgap</td><td>both</td><td>gap between two related
+ * components</td></tr>
+ * <tr><td>unrelated-gap</td><td>ug, ugap</td><td>both</td><td>gap between two unrelated
+ * components</td></tr>
  * <tr><td>button</td><td>b</td><td>horizontal</td><td>button column with minimum width</td></tr>
  * <tr><td>line-gap</td><td>lg, lgap</td><td>vertical</td><td>gap between two lines</td></tr>
- * <tr><td>narrow-line-gap</td><td>nlg, nlgap</td><td>vertical</td><td>narrow gap between two lines</td></tr>
- * <tr><td>paragraph</td><td>pg, pgap</td><td>vertical</td><td>gap between two paragraphs/sections</td></tr>
+ * <tr><td>narrow-line-gap</td><td>nlg, nlgap</td><td>vertical</td><td>narrow gap between two
+ * lines</td></tr>
+ * <tr><td>paragraph</td><td>pg, pgap</td><td>vertical</td><td>gap between two
+ * paragraphs/sections</td></tr>
  * </table><p>
  *
  * <strong>Examples:</strong>
@@ -97,22 +99,22 @@ import com.privatejgoodies.forms.util.LayoutStyle;
  *     "p, $lcgap, $table");
  * </pre>
  *
- * LayoutMap holds two internal Maps that associate key Strings with expression
- * Strings for the columns and rows respectively. Null values are not allowed.<p>
+ * LayoutMap holds two internal Maps that associate key Strings with expression Strings for the
+ * columns and rows respectively. Null values are not allowed.<p>
  *
  * <strong>Tips:</strong><ul>
- * <li>You should carefully override predefined variables,
- *     because variable users may expect that these don't change.
+ * <li>You should carefully override predefined variables, because variable users may expect that
+ * these don't change.
  * <li>Set custom variables in the root LayoutMap.
  * <li>Avoid aliases for custom variables.
  * </ul>
  *
- * @author  Karsten Lentzsch
+ * @author Karsten Lentzsch
  * @version $Revision: 1.24 $
  *
- * @see     FormLayout
- * @see     ColumnSpec
- * @see     RowSpec
+ * @see FormLayout
+ * @see ColumnSpec
+ * @see RowSpec
  *
  * @since 1.2
  */
@@ -123,65 +125,56 @@ public final class LayoutMap {
      */
     private static final char VARIABLE_PREFIX_CHAR = '$';
 
-
     /**
      * Maps column aliases to their default name, for example
      * {@code "rgap"} -> {@code "related-gap"}.
      */
-    private static final Map<String, String> COLUMN_ALIASES =
-        new HashMap<String, String>();
-
+    private static final Map<String, String> COLUMN_ALIASES
+            = new HashMap<String, String>();
 
     /**
-     * Maps row aliases to their default name, for example
-     * {@code "rgap"} -> {@code "related-gap"}.
+     * Maps row aliases to their default name, for example {@code "rgap"} -> {@code "related-gap"}.
      */
     private static final Map<String, String> ROW_ALIASES
-        = new HashMap<String, String>();
-
+            = new HashMap<String, String>();
 
     /**
      * Holds the lazily initialized root map.
      */
     private static LayoutMap root = null;
 
-
     // Instance Fields ********************************************************
-
     /**
-     * Refers to the parent map that is used to look up values
-     * if this map contains no association for a given key.
-     * The parent maps can build chains.
+     * Refers to the parent map that is used to look up values if this map contains no association
+     * for a given key. The parent maps can build chains.
      */
     private final LayoutMap parent;
 
     /**
-     * Holds the raw associations from variable names to expressions.
-     * The expression may contain variables that are not expanded.
+     * Holds the raw associations from variable names to expressions. The expression may contain
+     * variables that are not expanded.
      */
     private final Map<String, String> columnMap;
 
     /**
-     * Holds the cached associations from variable names to expressions.
-     * The expression are fully expanded and contain no variables.
+     * Holds the cached associations from variable names to expressions. The expression are fully
+     * expanded and contain no variables.
      */
     private final Map<String, String> columnMapCache;
 
     /**
-     * Holds the raw associations from variable names to expressions.
-     * The expression may contain variables that are not expanded.
+     * Holds the raw associations from variable names to expressions. The expression may contain
+     * variables that are not expanded.
      */
     private final Map<String, String> rowMap;
 
     /**
-     * Holds the cached associations from variable names to expressions.
-     * The expression are fully expanded and contain no variables.
+     * Holds the cached associations from variable names to expressions. The expression are fully
+     * expanded and contain no variables.
      */
     private final Map<String, String> rowMapCache;
 
-
     // Instance Creation ******************************************************
-
     /**
      * Constructs a LayoutMap that has the root LayoutMap as parent.
      */
@@ -189,26 +182,23 @@ public final class LayoutMap {
         this(getRoot());
     }
 
-
     /**
      * Constructs a LayoutMap with the given optional parent.
      *
-     * @param parent   the parent LayoutMap, may be {@code null}
+     * @param parent the parent LayoutMap, may be {@code null}
      */
     public LayoutMap(LayoutMap parent) {
         this.parent = parent;
-        columnMap      = new HashMap<String, String>();
-        rowMap         = new HashMap<String, String>();
+        columnMap = new HashMap<String, String>();
+        rowMap = new HashMap<String, String>();
         columnMapCache = new HashMap<String, String>();
-        rowMapCache    = new HashMap<String, String>();
+        rowMapCache = new HashMap<String, String>();
     }
 
-
     // Default ****************************************************************
-
     /**
-     * Lazily initializes and returns the LayoutMap that is used
-     * for variable expansion, if no custom LayoutMap is provided.
+     * Lazily initializes and returns the LayoutMap that is used for variable expansion, if no
+     * custom LayoutMap is provided.
      *
      * @return the LayoutMap that is used, if no custom LayoutMap is provided
      */
@@ -219,16 +209,13 @@ public final class LayoutMap {
         return root;
     }
 
-
     // Column Mapping *********************************************************
-
     /**
-     * Returns {@code true} if this map or a parent map - if any - contains
-     * a mapping for the specified key.
+     * Returns {@code true} if this map or a parent map - if any - contains a mapping for the
+     * specified key.
      *
      * @param key key whose presence in this LayoutMap chain is to be tested.
-     * @return {@code true} if this map contains a column mapping
-     *         for the specified key.
+     * @return {@code true} if this map contains a column mapping for the specified key.
      *
      * @throws NullPointerException if the key is {@code null}.
      *
@@ -236,22 +223,20 @@ public final class LayoutMap {
      */
     public boolean columnContainsKey(String key) {
         String resolvedKey = resolveColumnKey(key);
-        return  columnMap.containsKey(resolvedKey)
-            || parent != null && parent.columnContainsKey(resolvedKey);
+        return columnMap.containsKey(resolvedKey)
+                || parent != null && parent.columnContainsKey(resolvedKey);
     }
 
-
     /**
-     * Looks up and returns the String associated with the given key.
-     * First looks for an association in this LayoutMap. If there's no
-     * association, the lookup continues with the parent map - if any.
+     * Looks up and returns the String associated with the given key. First looks for an association
+     * in this LayoutMap. If there's no association, the lookup continues with the parent map - if
+     * any.
      *
      * @param key key whose associated value is to be returned.
-     * @return the column String associated with the {@code key},
-     *         or {@code null} if no LayoutMap in the parent chain
-     *         contains an association.
+     * @return the column String associated with the {@code key}, or {@code null} if no LayoutMap in
+     * the parent chain contains an association.
      *
-     * @throws NullPointerException  if {@code key} is {@code null}
+     * @throws NullPointerException if {@code key} is {@code null}
      *
      * @see Map#get(Object)
      */
@@ -273,24 +258,21 @@ public final class LayoutMap {
         return expandedString;
     }
 
-
     /**
-     * Associates the specified column String with the specified key
-     * in this map.
-     * If the map previously contained a mapping for this key, the old value
-     * is replaced by the specified value. The value set in this map
-     * overrides an association - if any - in the chain of parent LayoutMaps.<p>
+     * Associates the specified column String with the specified key in this map. If the map
+     * previously contained a mapping for this key, the old value is replaced by the specified
+     * value. The value set in this map overrides an association - if any - in the chain of parent
+     * LayoutMaps.<p>
      *
-     * The {@code value} must not be {@code null}. To remove
-     * an association from this map use {@link #columnRemove(String)}.
+     * The {@code value} must not be {@code null}. To remove an association from this map use
+     * {@link #columnRemove(String)}.
      *
      * @param key key with which the specified value is to be associated.
      * @param value column expression value to be associated with the specified key.
-     * @return previous String associated with specified key,
-     *         or {@code null} if there was no mapping for key.
+     * @return previous String associated with specified key, or {@code null} if there was no
+     * mapping for key.
      *
-     * @throws NullPointerException if the {@code key} or {@code value}
-     *         is {@code null}.
+     * @throws NullPointerException if the {@code key} or {@code value} is {@code null}.
      *
      * @see Map#put(Object, Object)
      */
@@ -303,29 +285,24 @@ public final class LayoutMap {
                 value.toLowerCase(Locale.ENGLISH));
     }
 
-
     public String columnPut(String key, ColumnSpec value) {
         return columnPut(key, value.encode());
     }
-
 
     public String columnPut(String key, Size value) {
         return columnPut(key, value.encode());
     }
 
-
     /**
-     * Removes the column value mapping for this key from this map if it is
-     * present.<p>
+     * Removes the column value mapping for this key from this map if it is present.<p>
      *
-     * Returns the value to which the map previously associated the key,
-     * or {@code null} if the map contained no mapping for this key.
-     * The map will not contain a String mapping for the specified key
-     * once the call returns.
+     * Returns the value to which the map previously associated the key, or {@code null} if the map
+     * contained no mapping for this key. The map will not contain a String mapping for the
+     * specified key once the call returns.
      *
      * @param key key whose mapping is to be removed from the map.
-     * @return previous value associated with specified key, or {@code null}
-     *         if there was no mapping for key.
+     * @return previous value associated with specified key, or {@code null} if there was no mapping
+     * for key.
      *
      * @throws NullPointerException if {@code key} is {@code null}.
      *
@@ -337,16 +314,13 @@ public final class LayoutMap {
         return columnMap.remove(resolvedKey);
     }
 
-
     // Row Mapping ************************************************************
-
     /**
-     * Returns {@code true} if this map or a parent map - if any - contains
-     * a RowSpec mapping for the specified key.
+     * Returns {@code true} if this map or a parent map - if any - contains a RowSpec mapping for
+     * the specified key.
      *
      * @param key key whose presence in this LayoutMap chain is to be tested.
-     * @return {@code true} if this map contains a row mapping
-     *         for the specified key.
+     * @return {@code true} if this map contains a row mapping for the specified key.
      *
      * @throws NullPointerException if the key is {@code null}.
      *
@@ -354,22 +328,20 @@ public final class LayoutMap {
      */
     public boolean rowContainsKey(String key) {
         String resolvedKey = resolveRowKey(key);
-        return  rowMap.containsKey(resolvedKey)
-            || parent != null && parent.rowContainsKey(resolvedKey);
+        return rowMap.containsKey(resolvedKey)
+                || parent != null && parent.rowContainsKey(resolvedKey);
     }
 
-
     /**
-     * Looks up and returns the RowSpec associated with the given key.
-     * First looks for an association in this LayoutMap. If there's no
-     * association, the lookup continues with the parent map - if any.
+     * Looks up and returns the RowSpec associated with the given key. First looks for an
+     * association in this LayoutMap. If there's no association, the lookup continues with the
+     * parent map - if any.
      *
      * @param key key whose associated value is to be returned.
-     * @return the row specification associated with the {@code key},
-     *         or {@code null} if no LayoutMap in the parent chain
-     *         contains an association.
+     * @return the row specification associated with the {@code key}, or {@code null} if no
+     * LayoutMap in the parent chain contains an association.
      *
-     * @throws NullPointerException  if {@code key} is {@code null}
+     * @throws NullPointerException if {@code key} is {@code null}
      *
      * @see Map#get(Object)
      */
@@ -391,7 +363,6 @@ public final class LayoutMap {
         return expandedString;
     }
 
-
     public String rowPut(String key, String value) {
         checkNotNull(value, "The row expression value must not be null.");
         String resolvedKey = resolveRowKey(key);
@@ -401,23 +372,21 @@ public final class LayoutMap {
                 value.toLowerCase(Locale.ENGLISH));
     }
 
-
     /**
-     * Associates the specified ColumnSpec with the specified key in this map.
-     * If the map previously contained a mapping for this key, the old value
-     * is replaced by the specified value. The RowSpec set in this map
-     * override an association - if any - in the chain of parent LayoutMaps.<p>
+     * Associates the specified ColumnSpec with the specified key in this map. If the map previously
+     * contained a mapping for this key, the old value is replaced by the specified value. The
+     * RowSpec set in this map override an association - if any - in the chain of parent
+     * LayoutMaps.<p>
      *
-     * The RowSpec must not be {@code null}. To remove an association
-     * from this map use {@link #rowRemove(String)}.
+     * The RowSpec must not be {@code null}. To remove an association from this map use
+     * {@link #rowRemove(String)}.
      *
      * @param key key with which the specified value is to be associated.
      * @param value ColumnSpec to be associated with the specified key.
-     * @return previous ColumnSpec associated with specified key,
-     *         or {@code null} if there was no mapping for key.
+     * @return previous ColumnSpec associated with specified key, or {@code null} if there was no
+     * mapping for key.
      *
-     * @throws NullPointerException if the {@code key} or {@code value}
-     *         is {@code null}.
+     * @throws NullPointerException if the {@code key} or {@code value} is {@code null}.
      *
      * @see Map#put(Object, Object)
      */
@@ -425,24 +394,20 @@ public final class LayoutMap {
         return rowPut(key, value.encode());
     }
 
-
     public String rowPut(String key, Size value) {
         return rowPut(key, value.encode());
     }
 
-
     /**
-     * Removes the row value mapping for this key from this map if it is
-     * present.<p>
+     * Removes the row value mapping for this key from this map if it is present.<p>
      *
-     * Returns the value to which the map previously associated the key,
-     * or {@code null} if the map contained no mapping for this key.
-     * The map will not contain a String mapping for the specified key
-     * once the call returns.
+     * Returns the value to which the map previously associated the key, or {@code null} if the map
+     * contained no mapping for this key. The map will not contain a String mapping for the
+     * specified key once the call returns.
      *
      * @param key key whose mapping is to be removed from the map.
-     * @return previous value associated with specified key, or {@code null}
-     *         if there was no mapping for key.
+     * @return previous value associated with specified key, or {@code null} if there was no mapping
+     * for key.
      *
      * @throws NullPointerException if {@code key} is {@code null}.
      *
@@ -454,12 +419,9 @@ public final class LayoutMap {
         return rowMap.remove(resolvedKey);
     }
 
-
     // Overriding Object Behavior *********************************************
-
     /**
-     * Returns a string representation of this LayoutMap that lists
-     * the column and row associations.
+     * Returns a string representation of this LayoutMap that lists the column and row associations.
      *
      * @return a string representation
      */
@@ -483,9 +445,7 @@ public final class LayoutMap {
         return buffer.toString();
     }
 
-
     // String Expansion *******************************************************
-
     String expand(String expression, boolean horizontal) {
         int cursor = 0;
         int start = expression.indexOf(LayoutMap.VARIABLE_PREFIX_CHAR, cursor);
@@ -504,7 +464,6 @@ public final class LayoutMap {
         return buffer.toString();
     }
 
-
     private static String nextVariableName(String expression, int start) {
         int length = expression.length();
         if (length <= start) {
@@ -519,12 +478,11 @@ public final class LayoutMap {
         }
         int end = start + 1;
         while (end < length
-            && Character.isUnicodeIdentifierPart(expression.charAt(end))) {
+                && Character.isUnicodeIdentifierPart(expression.charAt(end))) {
             end++;
         }
         return expression.substring(start + 1, end);
     }
-
 
     private String expansion(String variableName, boolean horizontal) {
         String key = stripBraces(variableName);
@@ -536,16 +494,13 @@ public final class LayoutMap {
         return expansion;
     }
 
-
     private static String stripBraces(String variableName) {
         return variableName.charAt(0) == '{'
-            ? variableName.substring(1, variableName.length() - 1)
-            : variableName;
+                ? variableName.substring(1, variableName.length() - 1)
+                : variableName;
     }
 
-
     // Helper Code ************************************************************
-
     private static String resolveColumnKey(String key) {
         checkNotNull(key, "The column key must not be null.");
         String lowercaseKey = key.toLowerCase(Locale.ENGLISH);
@@ -553,14 +508,12 @@ public final class LayoutMap {
         return defaultKey == null ? lowercaseKey : defaultKey;
     }
 
-
     private static String resolveRowKey(String key) {
         checkNotNull(key, "The row key must not be null.");
         String lowercaseKey = key.toLowerCase(Locale.ENGLISH);
         String defaultKey = ROW_ALIASES.get(lowercaseKey);
         return defaultKey == null ? lowercaseKey : defaultKey;
     }
-
 
     private static LayoutMap createRoot() {
         LayoutMap map = new LayoutMap(null);
@@ -642,7 +595,6 @@ public final class LayoutMap {
         return map;
     }
 
-
     private void columnPut(String key, String[] aliases, ColumnSpec value) {
         ensureLowerCase(key);
         columnPut(key, value);
@@ -651,7 +603,6 @@ public final class LayoutMap {
             COLUMN_ALIASES.put(aliase, key);
         }
     }
-
 
     private void rowPut(String key, String[] aliases, RowSpec value) {
         ensureLowerCase(key);
@@ -662,7 +613,6 @@ public final class LayoutMap {
         }
     }
 
-
     private static void ensureLowerCase(String str) {
         String lowerCase = str.toLowerCase(Locale.ENGLISH);
         if (!lowerCase.equals(str)) {
@@ -670,6 +620,5 @@ public final class LayoutMap {
                     "The string \"" + str + "\" should be lower case.");
         }
     }
-
 
 }

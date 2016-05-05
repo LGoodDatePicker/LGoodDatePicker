@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.common.internal;
 
 import java.awt.FontMetrics;
@@ -48,15 +47,14 @@ import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 /**
- * Provides convenience behavior for drawing strings, underline chars,
- * and accessing font metrics.<p>
+ * Provides convenience behavior for drawing strings, underline chars, and accessing font
+ * metrics.<p>
  *
- * <strong>Note:</strong> This class is not part of the public
- * JGoodies Common API.
- * It should be treated as library internal and should not be used by
- * API users. It may be removed or changed without further notice.
+ * <strong>Note:</strong> This class is not part of the public JGoodies Common API. It should be
+ * treated as library internal and should not be used by API users. It may be removed or changed
+ * without further notice.
  *
- * @author  Karsten Lentzsch
+ * @author Karsten Lentzsch
  */
 public final class RenderingUtils {
 
@@ -70,8 +68,7 @@ public final class RenderingUtils {
     private static Method drawStringMethod = null;
 
     /**
-     * Holds the public static method
-     * {@code SwingUtilities2#drawStringUnderlinedAt}.
+     * Holds the public static method {@code SwingUtilities2#drawStringUnderlinedAt}.
      */
     private static Method drawStringUnderlineCharAtMethod = null;
 
@@ -81,19 +78,17 @@ public final class RenderingUtils {
     private static Method getFontMetricsMethod = null;
 
     static {
-        drawStringMethod                = getMethodDrawString();
+        drawStringMethod = getMethodDrawString();
         drawStringUnderlineCharAtMethod = getMethodDrawStringUnderlineCharAt();
-        getFontMetricsMethod            = getMethodGetFontMetrics();
+        getFontMetricsMethod = getMethodGetFontMetrics();
     }
-
 
     private RenderingUtils() {
         // Overrides default constructor; prevents instantiation.
     }
 
     /**
-     * Draws the string at the specified location underlining the specified
-     * character.
+     * Draws the string at the specified location underlining the specified character.
      *
      * @param c JComponent that will display the string, may be null
      * @param g Graphics to draw the text to
@@ -123,10 +118,8 @@ public final class RenderingUtils {
         }
     }
 
-
     /**
-     * Draws the string at the specified location underlining the specified
-     * character.
+     * Draws the string at the specified location underlining the specified character.
      *
      * @param c JComponent that will display the string, may be null
      * @param g Graphics to draw the text to
@@ -136,12 +129,12 @@ public final class RenderingUtils {
      * @param y Y coordinate to draw the text at
      */
     public static void drawStringUnderlineCharAt(JComponent c, Graphics g,
-                           String text, int underlinedIndex, int x, int y) {
+            String text, int underlinedIndex, int x, int y) {
         if (drawStringUnderlineCharAtMethod != null) {
             try {
                 drawStringUnderlineCharAtMethod.invoke(null,
-                        new Object[] {c, g, text, new Integer(underlinedIndex),
-                                      new Integer(x), new Integer(y)});
+                        new Object[]{c, g, text, new Integer(underlinedIndex),
+                            new Integer(x), new Integer(y)});
                 return;
             } catch (IllegalArgumentException e) {
                 // Use the BasicGraphicsUtils as fallback
@@ -159,19 +152,15 @@ public final class RenderingUtils {
         }
     }
 
-
     /**
-     * Returns the FontMetrics for the current Font of the passed
-     * in Graphics.  This method is used when a Graphics
-     * is available, typically when painting.  If a Graphics is not
-     * available the JComponent method of the same name should be used.
+     * Returns the FontMetrics for the current Font of the passed in Graphics. This method is used
+     * when a Graphics is available, typically when painting. If a Graphics is not available the
+     * JComponent method of the same name should be used.
      * <p>
-     * Callers should pass in a non-null JComponent, the exception
-     * to this is if a JComponent is not readily available at the time of
-     * painting.
+     * Callers should pass in a non-null JComponent, the exception to this is if a JComponent is not
+     * readily available at the time of painting.
      * <p>
-     * This does not necessarily return the FontMetrics from the
-     * Graphics.
+     * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c JComponent requesting FontMetrics, may be null
      * @param g Graphics Graphics
@@ -180,7 +169,7 @@ public final class RenderingUtils {
     public static FontMetrics getFontMetrics(JComponent c, Graphics g) {
         if (getFontMetricsMethod != null) {
             try {
-                return (FontMetrics) getFontMetricsMethod.invoke(null, new Object[] {c, g});
+                return (FontMetrics) getFontMetricsMethod.invoke(null, new Object[]{c, g});
             } catch (IllegalArgumentException e) {
                 // Use the fallback
             } catch (IllegalAccessException e) {
@@ -192,16 +181,14 @@ public final class RenderingUtils {
         return c.getFontMetrics(g.getFont());
     }
 
-
     // Private Helper Code ****************************************************
-
     private static Method getMethodDrawString() {
         try {
             Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
             return clazz.getMethod(
                     "drawString",
-                    new Class[] {JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE}
-                    );
+                    new Class[]{JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE}
+            );
         } catch (ClassNotFoundException e) {
             // returns null
         } catch (SecurityException e) {
@@ -211,15 +198,14 @@ public final class RenderingUtils {
         }
         return null;
     }
-
 
     private static Method getMethodDrawStringUnderlineCharAt() {
         try {
             Class clazz = Class.forName(SWING_UTILITIES2_NAME);
             return clazz.getMethod(
                     "drawStringUnderlineCharAt",
-                    new Class[] {JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE}
-                    );
+                    new Class[]{JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE}
+            );
         } catch (ClassNotFoundException e) {
             // returns null
         } catch (SecurityException e) {
@@ -229,15 +215,14 @@ public final class RenderingUtils {
         }
         return null;
     }
-
 
     private static Method getMethodGetFontMetrics() {
         try {
             Class clazz = Class.forName(SWING_UTILITIES2_NAME);
             return clazz.getMethod(
                     "getFontMetrics",
-                    new Class[] {JComponent.class, Graphics.class}
-                    );
+                    new Class[]{JComponent.class, Graphics.class}
+            );
         } catch (ClassNotFoundException e) {
             // returns null
         } catch (SecurityException e) {
@@ -247,7 +232,6 @@ public final class RenderingUtils {
         }
         return null;
     }
-
 
     private static Map installDesktopHints(Graphics2D g2) {
         Map oldRenderingHints = null;
@@ -264,7 +248,6 @@ public final class RenderingUtils {
         return oldRenderingHints;
     }
 
-
     private static Map desktopHints(Graphics2D g2) {
         if (isPrinting(g2)) {
             return null;
@@ -279,18 +262,16 @@ public final class RenderingUtils {
         // It is possible to get a non-empty map but with disabled AA.
         if (desktopHints != null) {
             Object aaHint = desktopHints.get(RenderingHints.KEY_TEXT_ANTIALIASING);
-            if (   aaHint == RenderingHints.VALUE_TEXT_ANTIALIAS_OFF
-            	|| aaHint == RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT) {
+            if (aaHint == RenderingHints.VALUE_TEXT_ANTIALIAS_OFF
+                    || aaHint == RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT) {
                 desktopHints = null;
             }
         }
         return desktopHints;
     }
 
-
     private static boolean isPrinting(Graphics g) {
         return g instanceof PrintGraphics || g instanceof PrinterGraphics;
     }
-
 
 }

@@ -27,35 +27,30 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.common.internal;
 
 import javax.swing.Action;
 
-
 /**
  * Describes an object that can look up an Action for a given Action name.<p>
  *
- * <strong>Note:</strong> This class is intended for predefined and
- * custom binder implementations as used by the JGoodies Binding API.
- * Application developers won't use this interface directly.
+ * <strong>Note:</strong> This class is intended for predefined and custom binder implementations as
+ * used by the JGoodies Binding API. Application developers won't use this interface directly.
  *
- * @author  Karsten Lentzsch
+ * @author Karsten Lentzsch
  *
  * @since 1.4
  */
 public interface IActionObject {
 
-
     /**
      * Looks up and returns an Action for the given action name.
      *
-     * @param actionName   the string used to look up the Action
+     * @param actionName the string used to look up the Action
      * @return the Action with the given action name - if any
      *
      * @throws NullPointerException if {@code actionName} is {@code null}
      */
     Action getAction(String actionName);
-
 
 }

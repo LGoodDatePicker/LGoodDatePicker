@@ -27,43 +27,35 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.common.base;
 
 import java.util.Formatter;
 
-
-
 /**
- * Reduces the code necessary to check preconditions on method state and
- * parameters.
+ * Reduces the code necessary to check preconditions on method state and parameters.
  *
- * @author  Karsten Lentzsch
+ * @author Karsten Lentzsch
  */
 public final class Preconditions {
-
 
     private Preconditions() {
         // Override default constructor; prevents instantiation.
     }
 
-
     // Tests that throw IllegalArgumentExceptions *****************************
-
     /**
      * Checks the truth of the given expression and throws a customized
-     * {@link IllegalArgumentException} if it is false. Intended for doing
-     * parameter validation in methods and constructors, e.g.:
+     * {@link IllegalArgumentException} if it is false. Intended for doing parameter validation in
+     * methods and constructors, e.g.:
      * <blockquote><pre>
      * public void foo(int count) {
      *    Preconditions.checkArgument(count > 0, "count must be positive.");
      * }
      * </pre></blockquote>
      *
-     * @param expression    the precondition to check involving one ore more
-     *                      parameters to the calling method or constructor
-     * @param message       the detail message to be used in the event that
-     *                      an exception is thrown
+     * @param expression the precondition to check involving one ore more parameters to the calling
+     * method or constructor
+     * @param message the detail message to be used in the event that an exception is thrown
      * @throws IllegalArgumentException if {@code expression} is false
      */
     public static void checkArgument(boolean expression, String message) {
@@ -72,23 +64,22 @@ public final class Preconditions {
         }
     }
 
-
     /**
      * Checks the truth of the given expression and throws a customized
-     * {@link IllegalArgumentException} if it is false. Intended for doing
-     * parameter validation in methods and constructors, e.g.:
+     * {@link IllegalArgumentException} if it is false. Intended for doing parameter validation in
+     * methods and constructors, e.g.:
      * <blockquote><pre>
      * public void foo(int count) {
      *    Preconditions.checkArgument(count > 0, "count must be positive: %s.", count);
      * }
      * </pre></blockquote>
      *
-     * @param expression    the precondition to check involving one ore more
-     *                      parameters to the calling method or constructor
-     * @param messageFormat a {@link Formatter format} string for the detail message to be used
-     *                      in the event that an exception is thrown.
-     * @param messageArgs   the arguments referenced by the format specifiers
-     *                      in the {@code messageFormat}
+     * @param expression the precondition to check involving one ore more parameters to the calling
+     * method or constructor
+     * @param messageFormat a {@link Formatter format} string for the detail message to be used in
+     * the event that an exception is thrown.
+     * @param messageArgs the arguments referenced by the format specifiers in the
+     * {@code messageFormat}
      * @throws IllegalArgumentException if {@code expression} is false
      */
     public static void checkArgument(
@@ -98,14 +89,11 @@ public final class Preconditions {
         }
     }
 
-
     // Tests Throwing NullPointerExceptions ***********************************
-
     /**
-     * Checks that the given object reference is not {@code null}
-     * and throws a customized {@link NullPointerException} if it is.
-     * Intended for doing parameter validation in methods and constructors,
-     * e.g.:
+     * Checks that the given object reference is not {@code null} and throws a customized
+     * {@link NullPointerException} if it is. Intended for doing parameter validation in methods and
+     * constructors, e.g.:
      * <blockquote><pre>
      * public void foo(Bar bar, Baz baz) {
      *      this.bar = Preconditions.checkNotNull(bar, "bar must not be null.");
@@ -113,9 +101,8 @@ public final class Preconditions {
      * }
      * </pre></blockquote>
      *
-     * @param reference  the object reference to check for being {@code null}
-     * @param message       the detail message to be used in the event that
-     *                      an exception is thrown
+     * @param reference the object reference to check for being {@code null}
+     * @param message the detail message to be used in the event that an exception is thrown
      * @param <T> the type of the reference
      * @return {@code reference} if not {@code null}
      * @throws NullPointerException if {@code reference} is {@code null}
@@ -127,12 +114,10 @@ public final class Preconditions {
         return reference;
     }
 
-
     /**
-     * Checks that the given object reference is not {@code null}
-     * and throws a customized {@link NullPointerException} if it is.
-     * Intended for doing parameter validation in methods and constructors,
-     * e.g.:
+     * Checks that the given object reference is not {@code null} and throws a customized
+     * {@link NullPointerException} if it is. Intended for doing parameter validation in methods and
+     * constructors, e.g.:
      * <blockquote><pre>
      * public void foo(Bar bar, Baz baz) {
      *      this.bar = Preconditions.checkNotNull(bar, "bar must not be null.");
@@ -140,11 +125,11 @@ public final class Preconditions {
      * }
      * </pre></blockquote>
      *
-     * @param reference  the object reference to check for being {@code null}
-     * @param messageFormat a {@link Formatter format} string for the detail message to be used
-     *                      in the event that an exception is thrown.
-     * @param messageArgs   the arguments referenced by the format specifiers
-     *                      in the {@code messageFormat}
+     * @param reference the object reference to check for being {@code null}
+     * @param messageFormat a {@link Formatter format} string for the detail message to be used in
+     * the event that an exception is thrown.
+     * @param messageArgs the arguments referenced by the format specifiers in the
+     * {@code messageFormat}
      * @param <T> the type of the reference
      * @return {@code reference} if not {@code null}
      * @throws NullPointerException if {@code reference} is {@code null}
@@ -157,24 +142,20 @@ public final class Preconditions {
         return reference;
     }
 
-
     // Tests Throwing IllegalStateExceptions **********************************
-
     /**
      * Checks the truth of the given expression and throws a customized
-     * {@link IllegalStateException} if it is false. Intended for doing
-     * validation in methods involving the state of the calling instance,
-     * but not involving parameters of the calling method, e.g.:
+     * {@link IllegalStateException} if it is false. Intended for doing validation in methods
+     * involving the state of the calling instance, but not involving parameters of the calling
+     * method, e.g.:
      * <blockquote><pre>
      * public void unlock() {
      *    Preconditions.checkState(locked, "Must be locked to be unlocked.");
      * }
      * </pre></blockquote>
      *
-     * @param expression    the precondition to check involving the state
-     *                      of the calling instance
-     * @param message       the detail message to be used in the event that
-     *                      an exception is thrown
+     * @param expression the precondition to check involving the state of the calling instance
+     * @param message the detail message to be used in the event that an exception is thrown
      * @throws IllegalStateException if {@code expression} is false
      */
     public static void checkState(boolean expression, String message) {
@@ -183,12 +164,11 @@ public final class Preconditions {
         }
     }
 
-
     /**
      * Checks the truth of the given expression and throws a customized
-     * {@link IllegalStateException} if it is false. Intended for doing
-     * validation in methods involving the state of the calling instance,
-     * but not involving parameters of the calling method, e.g.:
+     * {@link IllegalStateException} if it is false. Intended for doing validation in methods
+     * involving the state of the calling instance, but not involving parameters of the calling
+     * method, e.g.:
      * <blockquote><pre>
      * public void unlock() {
      *    Preconditions.checkState(locked,
@@ -197,12 +177,11 @@ public final class Preconditions {
      * }
      * </pre></blockquote>
      *
-     * @param expression    the precondition to check involving the state
-     *                      of the calling instance
-     * @param messageFormat a {@link Formatter format} string for the detail message to be used
-     *                      in the event that an exception is thrown.
-     * @param messageArgs   the arguments referenced by the format specifiers
-     *                      in the {@code messageFormat}
+     * @param expression the precondition to check involving the state of the calling instance
+     * @param messageFormat a {@link Formatter format} string for the detail message to be used in
+     * the event that an exception is thrown.
+     * @param messageArgs the arguments referenced by the format specifiers in the
+     * {@code messageFormat}
      * @throws IllegalStateException if {@code expression} is false
      */
     public static void checkState(
@@ -212,26 +191,22 @@ public final class Preconditions {
         }
     }
 
-
     // Combined Tests Throwing Multiple Exceptions ****************************
-
     /**
      * Checks that the given string is not blank and throws a customized
      * {@link NullPointerException} if it is {@code null}, and a customized
-     * {@link IllegalArgumentException} if it is empty or whitespace.
-     * Intended for doing parameter validation in methods and constructors,
-     * e.g.:
+     * {@link IllegalArgumentException} if it is empty or whitespace. Intended for doing parameter
+     * validation in methods and constructors, e.g.:
      * <blockquote><pre>
      * public void foo(String text) {
      *      checkNotBlank(text, "The text must not be null, empty or whitespace.");
      * }
      * </pre></blockquote>
      *
-     * @param str           the string to check for being blank
-     * @param message       the detail message to be used in the event that
-     *                      an exception is thrown
+     * @param str the string to check for being blank
+     * @param message the detail message to be used in the event that an exception is thrown
      * @return {@code str} if not {@code null}
-     * @throws NullPointerException     if {@code str} is {@code null}
+     * @throws NullPointerException if {@code str} is {@code null}
      * @throws IllegalArgumentException if {@code str} is empty or whitespace
      */
     public static String checkNotBlank(String str, String message) {
@@ -240,13 +215,11 @@ public final class Preconditions {
         return str;
     }
 
-
     /**
      * Checks that the given string is not blank and throws a customized
      * {@link NullPointerException} if it is {@code null}, and a customized
-     * {@link IllegalArgumentException} if it is empty or whitespace.
-     * Intended for doing parameter validation in methods and constructors,
-     * e.g.:
+     * {@link IllegalArgumentException} if it is empty or whitespace. Intended for doing parameter
+     * validation in methods and constructors, e.g.:
      * <blockquote><pre>
      * public void foo(String text, String id) {
      *      checkNotBlank(
@@ -256,13 +229,13 @@ public final class Preconditions {
      * }
      * </pre></blockquote>
      *
-     * @param str           the string to check for being blank
-     * @param messageFormat a {@link Formatter format} string for the detail message to be used
-     *                      in the event that an exception is thrown.
-     * @param messageArgs   the arguments referenced by the format specifiers
-     *                      in the {@code messageFormat}
+     * @param str the string to check for being blank
+     * @param messageFormat a {@link Formatter format} string for the detail message to be used in
+     * the event that an exception is thrown.
+     * @param messageArgs the arguments referenced by the format specifiers in the
+     * {@code messageFormat}
      * @return {@code str} if not {@code null}
-     * @throws NullPointerException     if {@code str} is {@code null}
+     * @throws NullPointerException if {@code str} is {@code null}
      * @throws IllegalArgumentException if {@code str} is empty or whitespace
      */
     public static String checkNotBlank(
@@ -272,12 +245,9 @@ public final class Preconditions {
         return str;
     }
 
-
     // Helper Code ************************************************************
-
     static String format(String messageFormat, Object... messageArgs) {
         return String.format(messageFormat, messageArgs);
     }
-
 
 }

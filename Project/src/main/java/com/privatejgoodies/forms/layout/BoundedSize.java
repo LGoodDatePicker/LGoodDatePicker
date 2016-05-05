@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.forms.layout;
 
 import static com.privatejgoodies.common.base.Preconditions.checkNotNull;
@@ -37,8 +36,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Describes sizes that provide lower and upper bounds
- * as used by the JGoodies FormLayout.
+ * Describes sizes that provide lower and upper bounds as used by the JGoodies FormLayout.
  *
  * @author Karsten Lentzsch
  * @version $Revision: 1.21 $
@@ -63,24 +61,21 @@ public final class BoundedSize implements Size, Serializable {
      */
     private final Size upperBound;
 
-
     // Instance Creation ****************************************************
-
     /**
-     * Constructs a BoundedSize for the given basis using the
-     * specified lower and upper bounds.
+     * Constructs a BoundedSize for the given basis using the specified lower and upper bounds.
      *
-     * @param basis  the base size
-     * @param lowerBound  the lower bound size
-     * @param upperBound  the upper bound size
+     * @param basis the base size
+     * @param lowerBound the lower bound size
+     * @param upperBound the upper bound size
      *
-     * @throws NullPointerException if {@code basis}, {@code lowerBound},
-     *     or {@code upperBound} is {@code null}
+     * @throws NullPointerException if {@code basis}, {@code lowerBound}, or {@code upperBound} is
+     * {@code null}
      *
      * @since 1.1
      */
     public BoundedSize(Size basis, Size lowerBound, Size upperBound) {
-        this.basis      = checkNotNull(basis,      "The basis must not be null.");
+        this.basis = checkNotNull(basis, "The basis must not be null.");
         this.lowerBound = lowerBound;
         this.upperBound = upperBound;
         if (lowerBound == null && upperBound == null) {
@@ -89,9 +84,7 @@ public final class BoundedSize implements Size, Serializable {
         }
     }
 
-
     // Accessors ************************************************************
-
     /**
      * Returns the base size, which is not-{@code null}.
      *
@@ -102,7 +95,6 @@ public final class BoundedSize implements Size, Serializable {
     public Size getBasis() {
         return basis;
     }
-
 
     /**
      * Returns the optional lower bound.
@@ -115,7 +107,6 @@ public final class BoundedSize implements Size, Serializable {
         return lowerBound;
     }
 
-
     /**
      * Returns the optional upper bound.
      *
@@ -127,59 +118,56 @@ public final class BoundedSize implements Size, Serializable {
         return upperBound;
     }
 
-
     // Implementation of the Size Interface *********************************
-
     /**
-     * Returns this size as pixel size. Neither requires the component
-     * list nor the specified measures. Honors the lower and upper bound.<p>
+     * Returns this size as pixel size. Neither requires the component list nor the specified
+     * measures. Honors the lower and upper bound.<p>
      *
-     * Invoked by {@code FormSpec} to determine the size of a column or
-     * row.
+     * Invoked by {@code FormSpec} to determine the size of a column or row.
      *
-     * @param container       the layout container
-     * @param components      the list of components to measure
-     * @param minMeasure      the measure used to determine the minimum size
-     * @param prefMeasure     the measure used to determine the preferred size
-     * @param defaultMeasure  the measure used to determine the default size
+     * @param container the layout container
+     * @param components the list of components to measure
+     * @param minMeasure the measure used to determine the minimum size
+     * @param prefMeasure the measure used to determine the preferred size
+     * @param defaultMeasure the measure used to determine the default size
      * @return the maximum size in pixels
-     * @see FormSpec#maximumSize(Container, List, FormLayout.Measure, FormLayout.Measure, FormLayout.Measure)
+     * @see FormSpec#maximumSize(Container, List, FormLayout.Measure, FormLayout.Measure,
+     * FormLayout.Measure)
      */
     @Override
-	public int maximumSize(Container container,
-                    List components,
-                    FormLayout.Measure minMeasure,
-                    FormLayout.Measure prefMeasure,
-                    FormLayout.Measure defaultMeasure) {
+    public int maximumSize(Container container,
+            List components,
+            FormLayout.Measure minMeasure,
+            FormLayout.Measure prefMeasure,
+            FormLayout.Measure defaultMeasure) {
         int size = basis.maximumSize(container,
-                                     components,
-                                     minMeasure,
-                                     prefMeasure,
-                                     defaultMeasure);
+                components,
+                minMeasure,
+                prefMeasure,
+                defaultMeasure);
         if (lowerBound != null) {
             size = Math.max(size, lowerBound.maximumSize(
-                                     container,
-                                     components,
-                                     minMeasure,
-                                     prefMeasure,
-                                     defaultMeasure));
+                    container,
+                    components,
+                    minMeasure,
+                    prefMeasure,
+                    defaultMeasure));
         }
         if (upperBound != null) {
             size = Math.min(size, upperBound.maximumSize(
-                                     container,
-                                     components,
-                                     minMeasure,
-                                     prefMeasure,
-                                     defaultMeasure));
+                    container,
+                    components,
+                    minMeasure,
+                    prefMeasure,
+                    defaultMeasure));
         }
         return size;
     }
 
-
     /**
-     * Describes if this Size can be compressed, if container space gets scarce.
-     * Used by the FormLayout size computations in {@code #compressedSizes}
-     * to check whether a column or row can be compressed or not.<p>
+     * Describes if this Size can be compressed, if container space gets scarce. Used by the
+     * FormLayout size computations in {@code #compressedSizes} to check whether a column or row can
+     * be compressed or not.<p>
      *
      * BoundedSizes are compressible if the base Size is compressible.
      *
@@ -188,21 +176,19 @@ public final class BoundedSize implements Size, Serializable {
      * @since 1.1
      */
     @Override
-	public boolean compressible() {
+    public boolean compressible() {
         return getBasis().compressible();
     }
 
-
     // Overriding Object Behavior *******************************************
-
     /**
      * Indicates whether some other BoundedSize is "equal to" this one.
      *
-     * @param object   the object with which to compare
-     * @return {@code true} if this object is the same as the object
-     *     argument, {@code false} otherwise.
-     * @see     Object#hashCode()
-     * @see     java.util.Hashtable
+     * @param object the object with which to compare
+     * @return {@code true} if this object is the same as the object argument, {@code false}
+     * otherwise.
+     * @see Object#hashCode()
+     * @see java.util.Hashtable
      */
     @Override
     public boolean equals(Object object) {
@@ -214,20 +200,19 @@ public final class BoundedSize implements Size, Serializable {
         }
         BoundedSize size = (BoundedSize) object;
         return basis.equals(size.basis)
-             && (   lowerBound == null && size.lowerBound == null
-                 || lowerBound != null && lowerBound.equals(size.lowerBound))
-             && (   upperBound == null && size.upperBound == null
-                 || upperBound != null && upperBound.equals(size.upperBound));
+                && (lowerBound == null && size.lowerBound == null
+                || lowerBound != null && lowerBound.equals(size.lowerBound))
+                && (upperBound == null && size.upperBound == null
+                || upperBound != null && upperBound.equals(size.upperBound));
     }
 
     /**
-     * Returns a hash code value for the object. This method is
-     * supported for the benefit of hashtables such as those provided by
-     * {@code java.util.Hashtable}.
+     * Returns a hash code value for the object. This method is supported for the benefit of
+     * hashtables such as those provided by {@code java.util.Hashtable}.
      *
-     * @return  a hash code value for this object.
-     * @see     Object#equals(Object)
-     * @see     java.util.Hashtable
+     * @return a hash code value for this object.
+     * @see Object#equals(Object)
+     * @see java.util.Hashtable
      */
     @Override
     public int hashCode() {
@@ -244,17 +229,15 @@ public final class BoundedSize implements Size, Serializable {
     /**
      * Returns a string representation of this size object.<p>
      *
-     * <strong>Note:</strong> This string representation may change
-     * at any time. It is intended for debugging purposes. For parsing,
-     * use {@link #encode()} instead.
+     * <strong>Note:</strong> This string representation may change at any time. It is intended for
+     * debugging purposes. For parsing, use {@link #encode()} instead.
      *
-     * @return  a string representation of this bounded size
+     * @return a string representation of this bounded size
      */
     @Override
     public String toString() {
         return encode();
     }
-
 
     /**
      * Returns a parseable string representation of this bounded size.
@@ -264,7 +247,7 @@ public final class BoundedSize implements Size, Serializable {
      * @since 1.2
      */
     @Override
-	public String encode() {
+    public String encode() {
         StringBuffer buffer = new StringBuffer("[");
         if (lowerBound != null) {
             buffer.append(lowerBound.encode());
@@ -278,6 +261,5 @@ public final class BoundedSize implements Size, Serializable {
         buffer.append(']');
         return buffer.toString();
     }
-
 
 }

@@ -1,15 +1,15 @@
 package com.github.lgooddatepicker.demo;
 
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
-import java.time.LocalTime;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Locale;
 import java.awt.Color;
 import java.awt.Font;
@@ -37,10 +37,13 @@ import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import com.privatejgoodies.forms.factories.CC;
-import java.time.format.DateTimeFormatter;
 import javax.swing.border.LineBorder;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import java.awt.event.ActionListener;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
@@ -278,7 +281,8 @@ public class FullDemo {
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 6, With Veto Policy (Only 9a-5p allowed):");
 
         // Create a time picker: Localized (Chinese).
-        timeSettings = new TimePickerSettings(Locale.forLanguageTag("zh"));
+        Locale chineseLocale = new Locale("zh");
+        timeSettings = new TimePickerSettings(chineseLocale);
         timeSettings.initialTime = LocalTime.now();
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
@@ -564,22 +568,58 @@ public class FullDemo {
         // Create each demo button, and add it to the panel.
         // Add an action listener to link it to its appropriate function.
         JButton showIntro = new JButton("Show Introduction Message");
-        showIntro.addActionListener(e -> showIntroductionClicked(e));
+        showIntro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showIntroductionClicked(e);
+            }
+        });
+        // showIntro.addActionListener(e -> showIntroductionClicked(e));
         buttonPanel.add(showIntro);
         JButton setTwoWithY2K = new JButton("Set DatePicker Two with New Years Day 2000");
-        setTwoWithY2K.addActionListener(e -> setTwoWithY2KButtonClicked(e));
+        setTwoWithY2K.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setTwoWithY2KButtonClicked(e);
+            }
+        });
+        // setTwoWithY2K.addActionListener(e -> setTwoWithY2KButtonClicked(e));
         buttonPanel.add(setTwoWithY2K);
         JButton setDateOneWithTwo = new JButton("Set DatePicker One with the date in Two");
-        setDateOneWithTwo.addActionListener(e -> setOneWithTwoButtonClicked(e));
+        setDateOneWithTwo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setOneWithTwoButtonClicked(e);
+            }
+        });
+        // setDateOneWithTwo.addActionListener(e -> setOneWithTwoButtonClicked(e));
         buttonPanel.add(setDateOneWithTwo);
-        JButton setOneWithFeb31 = new JButton("Set Text in DatePicker One to February 31, 1950");
-        setOneWithFeb31.addActionListener(e -> setOneWithFeb31ButtonClicked(e));
+        JButton setOneWithFeb31 = new JButton("Set Text in DatePicker One to Feb 31, 1950");
+        setOneWithFeb31.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setOneWithFeb31ButtonClicked(e);
+            }
+        });
+        // setOneWithFeb31.addActionListener(e -> setOneWithFeb31ButtonClicked(e));
         buttonPanel.add(setOneWithFeb31);
         JButton getOneAndShow = new JButton("Get and show the date in DatePicker One");
-        getOneAndShow.addActionListener(e -> getOneAndShowButtonClicked(e));
+        getOneAndShow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getOneAndShowButtonClicked(e);
+            }
+        });
+        // getOneAndShow.addActionListener(e -> getOneAndShowButtonClicked(e));
         buttonPanel.add(getOneAndShow);
         JButton clearOneAndTwo = new JButton("Clear DatePickers One and Two");
-        clearOneAndTwo.addActionListener(e -> clearOneAndTwoButtonClicked(e));
+        clearOneAndTwo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                clearOneAndTwoButtonClicked(e);
+            }
+        });
+        // clearOneAndTwo.addActionListener(e -> clearOneAndTwoButtonClicked(e));
         buttonPanel.add(clearOneAndTwo);
         JButton toggleButton = new JButton("Toggle DatePicker One");
         toggleButton.addMouseListener(new MouseAdapter() {
@@ -590,7 +630,13 @@ public class FullDemo {
         });
         buttonPanel.add(toggleButton);
         JButton setTimeOneWithTwo = new JButton("TimePickers: Set TimePicker One with the time in Two");
-        setTimeOneWithTwo.addActionListener(e -> setTimeOneWithTimeTwoButtonClicked(e));
+        setTimeOneWithTwo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setTimeOneWithTimeTwoButtonClicked(e);
+            }
+        });
+        // setTimeOneWithTwo.addActionListener(e -> setTimeOneWithTimeTwoButtonClicked(e));
         buttonPanel.add(setTimeOneWithTwo);
         JButton timeToggleButton = new JButton("Toggle TimePicker One");
         timeToggleButton.addMouseListener(new MouseAdapter() {
@@ -600,6 +646,16 @@ public class FullDemo {
             }
         });
         buttonPanel.add(timeToggleButton);
+
+        // Add a button for showing system information.
+        JButton showSystemInformationButton = new JButton("JDK Versions");
+        showSystemInformationButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                showSystemInformationButtonClicked();
+            }
+        });
+        buttonPanel.add(showSystemInformationButton);
     }
 
     /**
@@ -654,6 +710,25 @@ public class FullDemo {
         timePicker1.togglePopup();
         String message = "The timePicker1 menu popup is ";
         message += (timePicker1.isPopupOpen()) ? "open!" : "closed!";
+        panel.messageTextArea.setText(message);
+    }
+
+    /**
+     * showSystemInformationButtonClicked, This shows the current system information.
+     */
+    private static void showSystemInformationButtonClicked() {
+        String message = "";
+        message += "LGoodDatePicker is running in Java Version: "
+                + InternalUtilities.getJavaRunningVersionAsString();
+        try {
+            InputStream input = FullDemo.class.getResourceAsStream(
+                    "/com/github/lgooddatepicker/demo/FullDemo.class");
+            String targetVersion
+                    = InternalUtilities.getCompiledJavaMajorVersionFromJavaClassFileAsString(input);
+            message += "\nLGoodDatePicker was compiled for a minimum Java version of: " + targetVersion;
+        } catch (Exception ex) {
+            Logger.getLogger(FullDemo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         panel.messageTextArea.setText(message);
     }
 

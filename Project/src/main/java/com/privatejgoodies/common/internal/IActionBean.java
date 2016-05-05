@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.common.internal;
 
 import com.privatejgoodies.common.bean.ObservableBean2;
@@ -35,16 +34,14 @@ import com.privatejgoodies.common.bean.ObservableBean2;
 /**
  * Describes beans that can look up an Action for a given Action name.<p>
  *
- * <strong>Note:</strong> This class is intended for predefined and
- * custom binder implementations as used by the JGoodies Binding API.
- * Application developers won't use this interface directly.
+ * <strong>Note:</strong> This class is intended for predefined and custom binder implementations as
+ * used by the JGoodies Binding API. Application developers won't use this interface directly.
  *
- * @author  Karsten Lentzsch
+ * @author Karsten Lentzsch
  *
  * @since 1.4
  */
 public interface IActionBean extends ObservableBean2, IActionObject {
 
     // Just a combined interface
-
 }

@@ -1,8 +1,9 @@
 package com.github.lgooddatepicker.ysandbox;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
+import java.time.*;
+import java.time.format.*;
+import java.time.chrono.*;
+import java.time.temporal.*;
 import java.util.Locale;
 import java.util.TreeSet;
 
@@ -13,7 +14,7 @@ import java.util.TreeSet;
 public class GetAllLanguages {
 
     public static void main(String[] args) {
-        TreeSet<String> languageCodes = new TreeSet<>();
+        TreeSet<String> languageCodes = new TreeSet<String>();
         for (Locale locale : Locale.getAvailableLocales()) {
             languageCodes.add(locale.getLanguage());
 
@@ -22,7 +23,9 @@ public class GetAllLanguages {
         LocalTime localTime = LocalTime.of(17, 30, 20);
 
         for (String languageCode : languageCodes) {
-            Locale localeForLanguage = Locale.forLanguageTag(languageCode);
+
+            Locale localeForLanguage = new Locale(languageCode);
+            // Locale localeForLanguage = Locale.forLanguageTag(languageCode);
             DateTimeFormatter format = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(localeForLanguage);
             System.out.print(localeForLanguage.getDisplayLanguage() + ": ");
             System.out.print(format.format(localTime) + "\n");

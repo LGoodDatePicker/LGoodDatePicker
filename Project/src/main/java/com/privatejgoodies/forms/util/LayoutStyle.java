@@ -27,7 +27,6 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package com.privatejgoodies.forms.util;
 
 import com.privatejgoodies.common.base.SystemUtils;
@@ -35,14 +34,12 @@ import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.Size;
 
 /**
- * An abstract class that describes a layout and design style guide.
- * It provides constants used to lay out panels consistently.<p>
+ * An abstract class that describes a layout and design style guide. It provides constants used to
+ * lay out panels consistently.<p>
  *
- * <strong>Note:</strong> This class is work in progress and
- * the API may change without notice. Therefore it is recommended
- * to not write custom subclasses for production code.
- * A future version of this class may collaborate with a class
- * {@code LogicalSize} or {@code StyledSize}.
+ * <strong>Note:</strong> This class is work in progress and the API may change without notice.
+ * Therefore it is recommended to not write custom subclasses for production code. A future version
+ * of this class may collaborate with a class {@code LogicalSize} or {@code StyledSize}.
  *
  * @author Karsten Lentzsch
  * @version $Revision: 1.15 $
@@ -58,25 +55,20 @@ public abstract class LayoutStyle {
      */
     private static LayoutStyle current = initialLayoutStyle();
 
-
     // Computing the initial layout style *************************************
-
     /**
-     * Computes and returns the initial {@code LayoutStyle}.
-     * Checks the OS name and returns {@code MacLayoutStyle}
-     * on Mac OS X and {@code WindowLayoutStyle} on all other platforms.
+     * Computes and returns the initial {@code LayoutStyle}. Checks the OS name and returns
+     * {@code MacLayoutStyle} on Mac OS X and {@code WindowLayoutStyle} on all other platforms.
      *
      * @return MacLayoutStyle on Mac, WindowsLayoutStyle on all other platforms
      */
     private static LayoutStyle initialLayoutStyle() {
         return SystemUtils.IS_OS_MAC
-            ? MacLayoutStyle.INSTANCE
-            : WindowsLayoutStyle.INSTANCE;
+                ? MacLayoutStyle.INSTANCE
+                : WindowsLayoutStyle.INSTANCE;
     }
 
-
     // Accessing the current style ******************************************
-
     /**
      * Returns the current {@code LayoutStyle}.
      *
@@ -86,19 +78,16 @@ public abstract class LayoutStyle {
         return current;
     }
 
-
     /**
      * Set a new {@code LayoutStyle}.
      *
-     * @param newLayoutStyle   the style to be set
+     * @param newLayoutStyle the style to be set
      */
     public static void setCurrent(LayoutStyle newLayoutStyle) {
         current = newLayoutStyle;
     }
 
-
     // Layout Sizes *********************************************************
-
     /**
      * Returns this style's default button width.
      *
@@ -108,7 +97,6 @@ public abstract class LayoutStyle {
      */
     public abstract Size getDefaultButtonWidth();
 
-
     /**
      * Returns this style's default button height.
      *
@@ -117,7 +105,6 @@ public abstract class LayoutStyle {
      * @see #getDefaultButtonWidth()
      */
     public abstract Size getDefaultButtonHeight();
-
 
     /**
      * Returns this style's horizontal margin for general dialogs.
@@ -129,7 +116,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getDialogMarginX();
 
-
     /**
      * Returns this style's vertical margin for general dialogs.
      *
@@ -140,10 +126,8 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getDialogMarginY();
 
-
     /**
-     * Returns this style's horizontal margin for dialogs that consist of
-     * a tabbed pane.
+     * Returns this style's horizontal margin for dialogs that consist of a tabbed pane.
      *
      * @return the horizontal margin for dialogs that consist of a tabbed pane
      *
@@ -154,10 +138,8 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getTabbedDialogMarginX();
 
-
     /**
-     * Returns this style's vertical margin for dialogs that consist of
-     * a tabbed pane.
+     * Returns this style's vertical margin for dialogs that consist of a tabbed pane.
      *
      * @return the vertical margin for dialogs that consist of a tabbed pane
      *
@@ -168,7 +150,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getTabbedDialogMarginY();
 
-
     /**
      * Returns a gap used to separate a label and associated control.
      *
@@ -178,7 +159,6 @@ public abstract class LayoutStyle {
      * @see #getUnrelatedComponentsPadX()
      */
     public abstract ConstantSize getLabelComponentPadX();
-
 
     /**
      * Returns a gap used to separate a label and associated control.
@@ -192,7 +172,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getLabelComponentPadY();
 
-
     /**
      * Returns a horizontal gap used to separate related controls.
      *
@@ -204,7 +183,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getRelatedComponentsPadX();
 
-
     /**
      * Returns a vertical gap used to separate related controls.
      *
@@ -214,7 +192,6 @@ public abstract class LayoutStyle {
      * @see #getUnrelatedComponentsPadY()
      */
     public abstract ConstantSize getRelatedComponentsPadY();
-
 
     /**
      * Returns a horizontal gap used to separate unrelated controls.
@@ -227,7 +204,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getUnrelatedComponentsPadX();
 
-
     /**
      * Returns a vertical gap used to separate unrelated controls.
      *
@@ -237,7 +213,6 @@ public abstract class LayoutStyle {
      * @see #getRelatedComponentsPadY()
      */
     public abstract ConstantSize getUnrelatedComponentsPadY();
-
 
     /**
      * Returns a narrow vertical pad used to separate lines.
@@ -249,7 +224,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getNarrowLinePad();
 
-
     /**
      * Returns a narrow vertical pad used to separate lines.
      *
@@ -260,7 +234,6 @@ public abstract class LayoutStyle {
      */
     public abstract ConstantSize getLinePad();
 
-
     /**
      * Returns a pad used to separate paragraphs.
      *
@@ -270,7 +243,6 @@ public abstract class LayoutStyle {
      * @see #getLinePad()
      */
     public abstract ConstantSize getParagraphPad();
-
 
     /**
      * Returns a pad used to separate a button bar from a component.
@@ -283,6 +255,5 @@ public abstract class LayoutStyle {
      * @since 1.0.3
      */
     public abstract ConstantSize getButtonBarPad();
-
 
 }
