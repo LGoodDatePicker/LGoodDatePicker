@@ -1,7 +1,9 @@
 # LGoodDatePicker
-Java 8 Swing Date Picker. Easy to use, good looking, nice features, and localized.
+Java Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## News:
+
+* The [LGoodDatePicker Backport](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/v5.3.2-Backport) was released on 4 May 2016. With this release, the library can now be used in projects which are built for the older Java versions, Java 6 and Java 7. 
 
 * [LGoodDatePicker 5.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).
 
@@ -23,6 +25,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Translations include 22 languages.  
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
+* The parallel Backport allows the library to be run in older Java versions, Java 6 and Java 7. 
 * Also supports other common data types, such as "java.util.Date".
 * Customizable visual elements.  
 (Including calendar size, fonts, colors, and the popup border.)
