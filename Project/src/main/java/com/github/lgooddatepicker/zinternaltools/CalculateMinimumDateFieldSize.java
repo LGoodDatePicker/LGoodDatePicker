@@ -1,11 +1,10 @@
 package com.github.lgooddatepicker.zinternaltools;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.swing.JTextField;
 
@@ -15,15 +14,15 @@ import javax.swing.JTextField;
  *
  * The size that is returned is designed to be the smallest size that will hold the longest
  * displayable date under current DatePickerSettings, without cropping the text. The "longest date",
- * needs to take into account the following factors: The longest (in characters) month name in the
+ * needs to take into account the following factors: The longest (in pixels) month name in the
  * current locale, the font object for valid dates (including the font type and size), and the
  * currently set display format for AD dates.
  */
 public class CalculateMinimumDateFieldSize {
 
     /**
-     * getFormattedDateWidthInPixels, This returns the width (in pixels) of the longest (in
-     * characters) formatted date, using the supplied DateTimeFormatter instance, locale, and font.
+     * getFormattedDateWidthInPixels, This returns the width (in pixels) of the longest formatted
+     * date, using the supplied DateTimeFormatter instance, locale, and font.
      *
      * The month that will be used for the length calculation will be the "longest text month"
      * according to the function getLongestTextMonthInLocale().

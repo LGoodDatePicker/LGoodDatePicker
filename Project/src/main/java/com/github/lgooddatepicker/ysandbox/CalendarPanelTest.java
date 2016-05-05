@@ -1,9 +1,5 @@
 package com.github.lgooddatepicker.ysandbox;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
@@ -20,6 +16,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
+import java.time.LocalDate;
 
 /**
  * IndependentCalendarPanelDemo,

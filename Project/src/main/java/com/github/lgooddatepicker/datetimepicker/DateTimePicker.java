@@ -1,9 +1,5 @@
 package com.github.lgooddatepicker.datetimepicker;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.ColumnSpec;
@@ -18,8 +14,11 @@ import com.github.lgooddatepicker.timepicker.TimePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import javax.swing.*;
+import javax.swing.JPanel;
 
 /**
  * DateTimePicker, This class combines a date picker with a time picker. This class provides

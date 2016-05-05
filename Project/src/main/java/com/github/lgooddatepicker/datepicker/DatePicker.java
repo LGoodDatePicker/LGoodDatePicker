@@ -1,28 +1,30 @@
 package com.github.lgooddatepicker.datepicker;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
+import java.awt.event.*;
 import javax.swing.border.*;
+import com.github.lgooddatepicker.zinternaltools.*;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
-import java.awt.*;
-import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
-import java.awt.event.*;
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import com.github.lgooddatepicker.zinternaltools.Convert;
-import com.github.lgooddatepicker.zinternaltools.CustomPopup;
-import com.github.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
-import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.util.ArrayList;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalculateMinimumDateFieldSize;
+import com.github.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.chrono.IsoEra;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 /**
  * DatePicker, This class implements a date picker GUI component.
@@ -119,8 +121,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	public JTextField dateTextField;
-	public JButton toggleCalendarButton;
+    private JTextField dateTextField;
+    private JButton toggleCalendarButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -198,6 +200,47 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     public Convert convert() {
         return convert;
+    }
+
+    /**
+     * getComponentToggleCalendarButton, Returns the "toggle calendar" button for this date picker.
+     * Direct access to the calendar button is provided so that the programmer can optionally assign
+     * an image to the button, or perform advanced or unusual modifications to the date picker's
+     * appearance and behavior.
+     *
+     * Note: This function should not be used to programmatically open or close the date picker
+     * calendar. The following functions are provided for that purpose: openPopup(), closePopup(),
+     * and togglePopup().
+     */
+    public JButton getComponentToggleCalendarButton() {
+        return toggleCalendarButton;
+    }
+
+    /**
+     * getComponentDateTextField, Returns the date text field for this date picker. It is not
+     * expected that most programmers will need or want to use this function.
+     *
+     * Important Note: Direct access to the text field is provided so the programmer can perform
+     * advanced or unusual modifications of the date picker's appearance or behavior. However, this
+     * function should be used only as a last resort, to implement functionality that is not
+     * available from other functions or settings.
+     *
+     * The DatePickerSettings class provides multiple ways to customize the date picker text field,
+     * and those functions should be preferred for the needs they address. It is suggested that the
+     * programmer become familiar with the functions and settings in DatePickerSettings class before
+     * directly accessing the date picker text field.
+     *
+     * The DatePickerSettings class can customize the following text field attributes: The text
+     * field width, the background and foreground colors, the fonts, font size, and font colors, and
+     * the date formats.
+     *
+     * Warning: To ensure proper behavior of the date picker, the text field should not be used to
+     * get or set the the date (or text) values of the date picker. Instead, the programmer should
+     * use the DatePicker.getDate() and DatePicker.getText() (and Set) functions for those purposes.
+     * The DateChangeListener interface can be used to listen for changes to the date value.
+     */
+    public JTextField getComponentDateTextField() {
+        return dateTextField;
     }
 
     /**
@@ -550,7 +593,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * setting).
      *
      * For additional details, see the javadoc for this function:
-     * DatePickerSettings.getSizeTextFieldMinimumWidthDefaultOverride().
+     * DatePickerSettings.setSizeTextFieldMinimumWidthDefaultOverride().
      */
     public void zSetAppropriateTextFieldMinimumWidth() {
         Integer programmerSuppliedWidth = settings.getSizeTextFieldMinimumWidth();
@@ -565,7 +608,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 minimumWidthPixels = programmerSuppliedWidth;
             }
         }
-        // Apply the minimum and preferred width for the text field.
+        // Apply the minimum and preferred width to the text field.
         // Note that we only change the width, not the height.
         Dimension newMinimumSize = dateTextField.getMinimumSize();
         newMinimumSize.width = minimumWidthPixels;
@@ -723,38 +766,38 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		dateTextField = new JTextField();
-		toggleCalendarButton = new JButton();
+        dateTextField = new JTextField();
+        toggleCalendarButton = new JButton();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"pref:grow, [3px,pref], [26px,pref]",
-			"fill:pref:grow"));
+        //======== this ========
+        setLayout(new FormLayout(
+                "pref:grow, [3px,pref], [26px,pref]",
+                "fill:pref:grow"));
 
-		//---- dateTextField ----
-		dateTextField.setMargin(new Insets(1, 3, 2, 2));
-		dateTextField.setBorder(new CompoundBorder(
-			new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-			new EmptyBorder(1, 3, 2, 2)));
-		dateTextField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				setTextFieldToValidStateIfNeeded();
-			}
-		});
-		add(dateTextField, CC.xy(1, 1));
+        //---- dateTextField ----
+        dateTextField.setMargin(new Insets(1, 3, 2, 2));
+        dateTextField.setBorder(new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
+                new EmptyBorder(1, 3, 2, 2)));
+        dateTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                setTextFieldToValidStateIfNeeded();
+            }
+        });
+        add(dateTextField, CC.xy(1, 1));
 
-		//---- toggleCalendarButton ----
-		toggleCalendarButton.setText("...");
-		toggleCalendarButton.setFocusPainted(false);
-		toggleCalendarButton.setFocusable(false);
-		toggleCalendarButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				zEventToggleCalendarButtonMousePressed(e);
-			}
-		});
-		add(toggleCalendarButton, CC.xy(3, 1));
+        //---- toggleCalendarButton ----
+        toggleCalendarButton.setText("...");
+        toggleCalendarButton.setFocusPainted(false);
+        toggleCalendarButton.setFocusable(false);
+        toggleCalendarButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                zEventToggleCalendarButtonMousePressed(e);
+            }
+        });
+        add(toggleCalendarButton, CC.xy(3, 1));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

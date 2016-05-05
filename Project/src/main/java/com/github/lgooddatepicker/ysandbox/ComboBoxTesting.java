@@ -2,7 +2,8 @@ package com.github.lgooddatepicker.ysandbox;
 
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.*;
 
 public class ComboBoxTesting extends JPanel {

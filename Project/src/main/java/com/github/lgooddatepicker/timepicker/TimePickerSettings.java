@@ -1,9 +1,5 @@
 package com.github.lgooddatepicker.timepicker;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.FormLayout;
@@ -16,6 +12,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
@@ -208,6 +208,39 @@ public class TimePickerSettings {
      * generatePotentialMenuTimes() functions with your desired parameters.
      */
     private ArrayList<LocalTime> potentialMenuTimes;
+
+    /**
+     * sizeTextFieldMinimumWidth, This specifies the minimum width, in pixels, of the TimePicker
+     * text field. (The text field is located to the left of the time picker "open time menu"
+     * button, and displays the currently selected time.)
+     *
+     * The default value for this setting is null. When this is set to null, a default width for the
+     * time picker text field will be automatically calculated and applied to fit "the largest
+     * possible time" that can be displayed with the current time picker settings. The settings that
+     * are used to calculate the default text field width include the locale (the language), the
+     * fontValidTime, and the format for valid times.
+     *
+     * See also: "sizeTextFieldMinimumWidthDefaultOverride".
+     */
+    private Integer sizeTextFieldMinimumWidth = null;
+
+    /**
+     * sizeTextFieldMinimumWidthDefaultOverride, This specifies how the time picker should choose
+     * the appropriate minimum width for the time picker text field. (As described below.)
+     *
+     * If this is true, then the applied minimum width will be the largest of either the default, or
+     * any programmer supplied, minimum widths.
+     *
+     * If this is false, then any programmer supplied minimum width will always override the default
+     * minimum width. (Even if the programmer supplied width is too small to fit the times that can
+     * be displayed in the TimePicker).
+     *
+     * The default value for this setting is true. This setting only has an effect if
+     * (sizeTextFieldMinimumWidth != null).
+     *
+     * See also: "sizeTextFieldMinimumWidth".
+     */
+    private boolean sizeTextFieldMinimumWidthDefaultOverride = true;
 
     /**
      * timeLocale, This is the locale of the time picker, which is used to generate some of the
@@ -455,6 +488,22 @@ public class TimePickerSettings {
     }
 
     /**
+     * getSizeTextFieldMinimumWidth, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public Integer getSizeTextFieldMinimumWidth() {
+        return sizeTextFieldMinimumWidth;
+    }
+
+    /**
+     * getSizeTextFieldMinimumWidthDefaultOverride, Returns the value of this setting. See the "set"
+     * function for setting information.
+     */
+    public boolean getSizeTextFieldMinimumWidthDefaultOverride() {
+        return sizeTextFieldMinimumWidthDefaultOverride;
+    }
+
+    /**
      * getVetoPolicy, This returns the veto policy.
      */
     public TimeVetoPolicy getVetoPolicy() {
@@ -540,10 +589,13 @@ public class TimePickerSettings {
     }
 
     /**
-     * setFormatForDisplayTime, This sets the default format that is used to display or parse the
-     * text field time times in the time picker. The default value is generated using the locale of
-     * the settings instance. If desired, a DateTimeFormatter can be created from a pattern string
-     * by using the convenience function PickerUtilities.createFormatterFromPatternString();
+     * setFormatForDisplayTime, This sets the format that is used to display or parse the text field
+     * time times in the time picker, using a DateTimeFormatter instance. The default format is
+     * generated using the locale of the settings instance. For most formats, it may be easier to
+     * use the version of this function that accepts a pattern string.
+     *
+     * Available pattern strings can be found in the Javadocs for the DateTimeFormatter class, at
+     * this URL: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      *
      * If the time picker has already been constructed, then calling this function will cause
      * immediate validation of the text field text.
@@ -556,10 +608,30 @@ public class TimePickerSettings {
     }
 
     /**
-     * setFormatForMenuTimes, This sets the default format that is used to display or parse menu
-     * times in the time picker. The default value is generated using the locale of the settings
-     * instance. If desired, a DateTimeFormatter can be created from a pattern string by using the
-     * convenience function PickerUtilities.createFormatterFromPatternString();
+     * setFormatForDisplayTime, This sets the format that is used to display or parse the text field
+     * time times in the time picker, using a pattern string. The default format is generated using
+     * the locale of the settings instance.
+     *
+     * Available pattern strings can be found in the Javadocs for the DateTimeFormatter class, at
+     * this URL: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     *
+     * If the time picker has already been constructed, then calling this function will cause
+     * immediate validation of the text field text.
+     */
+    public void setFormatForDisplayTime(String patternString) {
+        DateTimeFormatter formatter
+                = PickerUtilities.createFormatterFromPatternString(patternString, locale);
+        setFormatForDisplayTime(formatter);
+    }
+
+    /**
+     * setFormatForMenuTimes, This sets the format that is used to display or parse menu times in
+     * the time picker, using a DateTimeFormatter instance. The default format is generated using
+     * the locale of the settings instance. For most formats, it may be easier to use the version of
+     * this function that accepts a pattern string.
+     *
+     * Available pattern strings can be found in the Javadocs for the DateTimeFormatter class, at
+     * this URL: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
      *
      * If the time picker has already been constructed, then calling this function will cause
      * immediate validation of the text field text.
@@ -569,6 +641,23 @@ public class TimePickerSettings {
         if (parent != null) {
             parent.setTextFieldToValidStateIfNeeded();
         }
+    }
+
+    /**
+     * setFormatForMenuTimes, This sets the format that is used to display or parse menu times in
+     * the time picker, using a pattern string. The default format is generated using the locale of
+     * the settings instance.
+     *
+     * Available pattern strings can be found in the Javadocs for the DateTimeFormatter class, at
+     * this URL: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     *
+     * If the time picker has already been constructed, then calling this function will cause
+     * immediate validation of the text field text.
+     */
+    public void setFormatForMenuTimes(String patternString) {
+        DateTimeFormatter formatter
+                = PickerUtilities.createFormatterFromPatternString(patternString, locale);
+        setFormatForMenuTimes(formatter);
     }
 
     /**
@@ -614,6 +703,46 @@ public class TimePickerSettings {
      */
     void setParentTimePicker(TimePicker parentTimePicker) {
         this.parent = parentTimePicker;
+    }
+
+    /**
+     * setSizeTextFieldMinimumWidth, This sets the minimum width in pixels, of the TimePicker text
+     * field.
+     *
+     * The default value for this setting is null. When this is set to null, a default width for the
+     * time picker text field will be automatically calculated and applied to fit "the largest
+     * possible time" that can be displayed with the current time picker settings. The settings used
+     * to calculate the default text field width include the locale (the language), the
+     * fontValidTime, and the format for valid times.
+     */
+    public void setSizeTextFieldMinimumWidth(Integer minimumWidthInPixels) {
+        this.sizeTextFieldMinimumWidth = minimumWidthInPixels;
+        if (parent != null) {
+            parent.zSetAppropriateTextFieldMinimumWidth();
+        }
+    }
+
+    /**
+     * setSizeTextFieldMinimumWidthDefaultOverride, This specifies how the time picker should choose
+     * the appropriate minimum width for the time picker text field. (As described below.)
+     *
+     * If this is true, then the applied minimum width will be the largest of either the default, or
+     * any programmer supplied, minimum widths.
+     *
+     * If this is false, then any programmer supplied minimum width will always override the default
+     * minimum width. (Even if the programmer supplied width is too small to fit the times that can
+     * be displayed in the TimePicker).
+     *
+     * The default value for this setting is true. This setting only has an effect if
+     * (sizeTextFieldMinimumWidth != null).
+     *
+     * See also: "sizeTextFieldMinimumWidth".
+     */
+    public void setSizeTextFieldMinimumWidthDefaultOverride(boolean defaultShouldOverrideIfNeeded) {
+        this.sizeTextFieldMinimumWidthDefaultOverride = defaultShouldOverrideIfNeeded;
+        if (parent != null) {
+            parent.zSetAppropriateTextFieldMinimumWidth();
+        }
     }
 
     /**
@@ -711,12 +840,12 @@ public class TimePickerSettings {
      */
     private void zApplyAllowKeyboardEditing() {
         // Set the editability of the time picker text field.
-        parent.timeTextField.setEditable(allowKeyboardEditing);
+        parent.getComponentTimeTextField().setEditable(allowKeyboardEditing);
         // Set the text field border color based on whether the text field is editable.
         Color textFieldBorderColor = (allowKeyboardEditing)
                 ? InternalConstants.colorEditableTextFieldBorder
                 : InternalConstants.colorNotEditableTextFieldBorder;
-        parent.timeTextField.setBorder(new CompoundBorder(
+        parent.getComponentTimeTextField().setBorder(new CompoundBorder(
                 new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
     }
 
@@ -727,10 +856,10 @@ public class TimePickerSettings {
         if (parent == null) {
             return;
         }
-        parent.decreaseButton.setEnabled(displaySpinnerButtons);
-        parent.decreaseButton.setVisible(displaySpinnerButtons);
-        parent.increaseButton.setEnabled(displaySpinnerButtons);
-        parent.increaseButton.setVisible(displaySpinnerButtons);
+        parent.getComponentDecreaseSpinnerButton().setEnabled(displaySpinnerButtons);
+        parent.getComponentDecreaseSpinnerButton().setVisible(displaySpinnerButtons);
+        parent.getComponentIncreaseSpinnerButton().setEnabled(displaySpinnerButtons);
+        parent.getComponentIncreaseSpinnerButton().setVisible(displaySpinnerButtons);
     }
 
     /**
@@ -740,8 +869,8 @@ public class TimePickerSettings {
         if (parent == null) {
             return;
         }
-        parent.toggleTimeMenuButton.setEnabled(displayToggleTimeMenuButton);
-        parent.toggleTimeMenuButton.setVisible(displayToggleTimeMenuButton);
+        parent.getComponentToggleTimeMenuButton().setEnabled(displayToggleTimeMenuButton);
+        parent.getComponentToggleTimeMenuButton().setVisible(displayToggleTimeMenuButton);
     }
 
     /**
@@ -790,15 +919,15 @@ public class TimePickerSettings {
         if (parent == null) {
             return;
         }
-        Dimension decreaseButtonPreferredSize = parent.decreaseButton.getPreferredSize();
-        Dimension increaseButtonPreferredSize = parent.increaseButton.getPreferredSize();
+        Dimension decreaseButtonPreferredSize = parent.getComponentDecreaseSpinnerButton().getPreferredSize();
+        Dimension increaseButtonPreferredSize = parent.getComponentIncreaseSpinnerButton().getPreferredSize();
         int width = Math.max(decreaseButtonPreferredSize.width, increaseButtonPreferredSize.width);
         int height = Math.max(decreaseButtonPreferredSize.height, increaseButtonPreferredSize.height);
         int minimumWidth = minimumSpinnerButtonWidthInPixels;
         width = (width < minimumWidth) ? minimumWidth : width;
         Dimension newSize = new Dimension(width, height);
-        parent.decreaseButton.setPreferredSize(newSize);
-        parent.increaseButton.setPreferredSize(newSize);
+        parent.getComponentDecreaseSpinnerButton().setPreferredSize(newSize);
+        parent.getComponentIncreaseSpinnerButton().setPreferredSize(newSize);
     }
 
     /**
@@ -809,13 +938,13 @@ public class TimePickerSettings {
         if (parent == null) {
             return;
         }
-        Dimension menuButtonPreferredSize = parent.toggleTimeMenuButton.getPreferredSize();
+        Dimension menuButtonPreferredSize = parent.getComponentToggleTimeMenuButton().getPreferredSize();
         int width = menuButtonPreferredSize.width;
         int height = menuButtonPreferredSize.height;
         int minimumWidth = minimumToggleTimeMenuButtonWidthInPixels;
         width = (width < minimumWidth) ? minimumWidth : width;
         Dimension newSize = new Dimension(width, height);
-        parent.toggleTimeMenuButton.setPreferredSize(newSize);
+        parent.getComponentToggleTimeMenuButton().setPreferredSize(newSize);
     }
 
     /**

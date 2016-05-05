@@ -1,12 +1,11 @@
 package com.github.lgooddatepicker.zinternaltools;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import com.github.lgooddatepicker.datetimepicker.DateTimePicker;
 import com.github.lgooddatepicker.timepicker.TimePicker;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 /**
  * DateTimeChangeEvent, An instance of this event class is passed to each registered

@@ -1,9 +1,5 @@
 package com.github.lgooddatepicker.timepicker;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
@@ -12,6 +8,7 @@ import javax.swing.border.*;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
+import com.github.lgooddatepicker.zinternaltools.CalculateMinimumTimeFieldSize;
 import com.github.lgooddatepicker.zinternaltools.CustomPopup;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
@@ -28,6 +25,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.Instant;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -125,10 +124,11 @@ public class TimePicker
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	public JTextField timeTextField;
-	public JButton toggleTimeMenuButton;
-	public JButton increaseButton;
-	public JButton decreaseButton;
+    private JTextField timeTextField;
+    private JButton toggleTimeMenuButton;
+    private JPanel spinnerPanel;
+    private JButton increaseButton;
+    private JButton decreaseButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -153,7 +153,7 @@ public class TimePicker
         // Shrink the toggle menu button to a reasonable size.
         toggleTimeMenuButton.setMargin(new java.awt.Insets(4, 4, 4, 4));
 
-        // Set up the increment buttons.
+        // Set up the spinner buttons.
         decreaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
         increaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
         decreaseButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -188,8 +188,8 @@ public class TimePicker
             public void mouseReleased(MouseEvent event) {
                 // Do nothing if the mouse was released inside the toggle button.
                 Point mousePositionOnScreen = MouseInfo.getPointerInfo().getLocation();
-                Rectangle toggleBoundsOnScreen = toggleTimeMenuButton.getBounds();
-                toggleBoundsOnScreen.setLocation(toggleTimeMenuButton.getLocationOnScreen());
+                Rectangle toggleBoundsOnScreen = getComponentToggleTimeMenuButton().getBounds();
+                toggleBoundsOnScreen.setLocation(getComponentToggleTimeMenuButton().getLocationOnScreen());
                 if (toggleBoundsOnScreen.contains(mousePositionOnScreen)) {
                     return;
                 }
@@ -202,6 +202,11 @@ public class TimePicker
         // Draw the text field attributes, because they may not have been drawn if the initialTime
         // was null. (This is because the text would not have changed in that case.)
         zDrawTextFieldIndicators();
+        
+        // Set an appropriate minimum width for the time picker text field.
+        // This may use a default calculated minimum width, or a programmer supplied minimum width,
+        // as specified in the time picker settings.
+        zSetAppropriateTextFieldMinimumWidth();
     }
 
     /**
@@ -235,6 +240,89 @@ public class TimePicker
             // TimePicker.zEventcustomPopupWasClosed() function.
             popup.hide();
         }
+    }
+
+    /**
+     * getComponentDecreaseSpinnerButton, Returns the decrease spinner button that is used by this
+     * time picker. The spinner buttons are only visible if the programmer has enabled them in the
+     * TimePickerSettings.
+     *
+     * Note: Direct access to the time picker components is provided so the programmer can perform
+     * advanced or unusual modifications of the time picker's appearance or behavior. However,
+     * directly accessing the components should be used only as a last resort, to implement
+     * functionality that is not available from other functions or settings.
+     */
+    public JButton getComponentDecreaseSpinnerButton() {
+        return decreaseButton;
+    }
+
+    /**
+     * getComponentIncreaseSpinnerButton, Returns the increase spinner button that is used by this
+     * time picker. The spinner buttons are only visible if the programmer has enabled them in the
+     * TimePickerSettings.
+     *
+     * Note: Direct access to the time picker components is provided so the programmer can perform
+     * advanced or unusual modifications of the time picker's appearance or behavior. However,
+     * directly accessing the components should be used only as a last resort, to implement
+     * functionality that is not available from other functions or settings.
+     */
+    public JButton getComponentIncreaseSpinnerButton() {
+        return increaseButton;
+    }
+
+    /**
+     * getComponentSpinnerPanel, Returns the panel that holds the spinner buttons in this time
+     * picker. The spinner buttons (and panel) are only visible if the programmer has enabled them
+     * in the TimePickerSettings.
+     *
+     * Note: Direct access to the time picker components is provided so the programmer can perform
+     * advanced or unusual modifications of the time picker's appearance or behavior. However,
+     * directly accessing the components should be used only as a last resort, to implement
+     * functionality that is not available from other functions or settings.
+     */
+    public JPanel getComponentSpinnerPanel() {
+        return spinnerPanel;
+    }
+
+    /**
+     * getComponentTimeTextField, Returns the time text field that is used by this time picker. It
+     * is not expected that most programmers will need or want to use this function.
+     *
+     * Important Note: Direct access to the text field is provided so the programmer can perform
+     * advanced or unusual modifications of the time picker's appearance or behavior. However, this
+     * function should be used only as a last resort, to implement functionality that is not
+     * available from other functions or settings.
+     *
+     * The TimePickerSettings class provides multiple ways to customize the time picker, and those
+     * functions should be preferred for the needs they address. It is suggested that the programmer
+     * become familiar with the functions and settings in TimePickerSettings class before directly
+     * accessing the time picker text field.
+     *
+     * The TimePickerSettings class can customize the following text field attributes: The
+     * background and foreground colors, the fonts, font size, and font colors, and the time
+     * formats.
+     *
+     * Warning: To ensure proper behavior of the time picker, the text field should not be used to
+     * get or set the the time (or text) values of the time picker. Instead, the programmer should
+     * use the TimePicker.getTime() and TimePicker.getText() (and Set) functions for those purposes.
+     * The TimeChangeListener interface can be used to listen for changes to the time value.
+     */
+    public JTextField getComponentTimeTextField() {
+        return timeTextField;
+    }
+
+    /**
+     * getComponentToggleTimeMenuButton, Returns the toggle time menu button that is used by this
+     * time picker. Direct access to the time menu button is provided so that the programmer can
+     * optionally assign an image to the button, or perform advanced or unusual modifications to the
+     * time picker's appearance and behavior.
+     *
+     * Note: This should not be used to programmatically open or close the time picker menu. The
+     * following functions are provided for that purpose: openPopup(), closePopup(), and
+     * togglePopup().
+     */
+    public JButton getComponentToggleTimeMenuButton() {
+        return toggleTimeMenuButton;
     }
 
     /**
@@ -810,7 +898,7 @@ public class TimePicker
                 if (getTime() == null) {
                     setTime(LocalTime.NOON);
                 }
-                if (event.getSource() == decreaseButton) {
+                if (event.getSource() == getComponentDecreaseSpinnerButton()) {
                     setTime(getTime().plusMinutes(-1));
                     decreaseTimer.start();
                 } else {
@@ -824,7 +912,7 @@ public class TimePicker
              */
             @Override
             public void mouseReleased(MouseEvent event) {
-                if (event.getSource() == decreaseButton) {
+                if (event.getSource() == getComponentDecreaseSpinnerButton()) {
                     decreaseTimer.stop();
                 } else {
                     increaseTimer.stop();
@@ -872,6 +960,46 @@ public class TimePicker
         if (!InternalUtilities.isTimeVetoed(settings.getVetoPolicy(), timeToTry)) {
             setTime(timeToTry);
         }
+    }
+
+    /**
+     * zSetAppropriateTextFieldMinimumWidth, This sets the minimum (and preferred) width of the time
+     * picker text field. The width will be determined (or calculated) from the current time picker
+     * settings, as described below.
+     *
+     * If the programmer has not supplied a setting for the minimum size, then a default minimum
+     * size will be calculated from the current display format (which includes the locale
+     * information), and the font for valid times.
+     *
+     * If the programmer has supplied a setting for the text field minimum size, then the programmer
+     * supplied value will be used instead, unless a default override is allowed. (In this case, the
+     * default value will only be used if the default setting is larger than the programmer supplied
+     * setting).
+     *
+     * For additional details, see the javadoc for this function:
+     * TimePickerSettings.setSizeTextFieldMinimumWidthDefaultOverride().
+     */
+    public void zSetAppropriateTextFieldMinimumWidth() {
+        Integer programmerSuppliedWidth = settings.getSizeTextFieldMinimumWidth();
+        // Determine the appropriate minimum width for the text field.
+        int minimumWidthPixels = CalculateMinimumTimeFieldSize.getFormattedTimeWidthInPixels(
+                settings.getFormatForDisplayTime(), settings.fontValidTime, 0);
+        if (programmerSuppliedWidth != null) {
+            if (settings.getSizeTextFieldMinimumWidthDefaultOverride()) {
+                minimumWidthPixels = Math.max(programmerSuppliedWidth, minimumWidthPixels);
+            } else {
+                minimumWidthPixels = programmerSuppliedWidth;
+            }
+        }
+        // Apply the minimum and preferred width to the text field.
+        // Note that we only change the width, not the height.
+        Dimension newMinimumSize = timeTextField.getMinimumSize();
+        newMinimumSize.width = minimumWidthPixels;
+        timeTextField.setMinimumSize(newMinimumSize);
+        Dimension newPreferredSize = timeTextField.getPreferredSize();
+        newPreferredSize.width = minimumWidthPixels;
+        timeTextField.setPreferredSize(newPreferredSize);
+        this.validate();
     }
 
     /**
@@ -936,58 +1064,65 @@ public class TimePicker
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		timeTextField = new JTextField();
-		toggleTimeMenuButton = new JButton();
-		increaseButton = new JButton();
-		decreaseButton = new JButton();
+        timeTextField = new JTextField();
+        toggleTimeMenuButton = new JButton();
+        spinnerPanel = new JPanel();
+        increaseButton = new JButton();
+        decreaseButton = new JButton();
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"[62px,pref]:grow, 3*(pref)",
-			"2*(fill:pref:grow)"));
-		((FormLayout)getLayout()).setRowGroups(new int[][] {{1, 2}});
+        //======== this ========
+        setLayout(new FormLayout(
+                "pref:grow, 3*(pref)",
+                "fill:pref:grow"));
 
-		//---- timeTextField ----
-		timeTextField.setMargin(new Insets(1, 3, 2, 2));
-		timeTextField.setBorder(new CompoundBorder(
-			new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-			new EmptyBorder(1, 3, 2, 2)));
-		timeTextField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				setTextFieldToValidStateIfNeeded();
-			}
-		});
-		add(timeTextField, CC.xywh(1, 1, 1, 2));
+        //---- timeTextField ----
+        timeTextField.setMargin(new Insets(1, 3, 2, 2));
+        timeTextField.setBorder(new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
+                new EmptyBorder(1, 3, 2, 2)));
+        timeTextField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                setTextFieldToValidStateIfNeeded();
+            }
+        });
+        add(timeTextField, CC.xy(1, 1));
 
-		//---- toggleTimeMenuButton ----
-		toggleTimeMenuButton.setText("v");
-		toggleTimeMenuButton.setFocusPainted(false);
-		toggleTimeMenuButton.setFocusable(false);
-		toggleTimeMenuButton.setFont(new Font("Segoe UI", Font.PLAIN, 8));
-		toggleTimeMenuButton.setMinimumSize(new Dimension(26, 23));
-		toggleTimeMenuButton.setPreferredSize(new Dimension(26, 23));
-		toggleTimeMenuButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				zEventToggleTimeMenuButtonMousePressed(e);
-			}
-		});
-		add(toggleTimeMenuButton, CC.xywh(3, 1, 1, 2));
+        //---- toggleTimeMenuButton ----
+        toggleTimeMenuButton.setText("v");
+        toggleTimeMenuButton.setFocusPainted(false);
+        toggleTimeMenuButton.setFocusable(false);
+        toggleTimeMenuButton.setFont(new Font("Segoe UI", Font.PLAIN, 8));
+        toggleTimeMenuButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                zEventToggleTimeMenuButtonMousePressed(e);
+            }
+        });
+        add(toggleTimeMenuButton, CC.xy(3, 1));
 
-		//---- increaseButton ----
-		increaseButton.setFocusPainted(false);
-		increaseButton.setFocusable(false);
-		increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
-		increaseButton.setText("+");
-		add(increaseButton, CC.xy(4, 1));
+        //======== spinnerPanel ========
+        {
+            spinnerPanel.setLayout(new FormLayout(
+                    "default",
+                    "fill:pref:grow, fill:default:grow"));
+            ((FormLayout) spinnerPanel.getLayout()).setRowGroups(new int[][]{{1, 2}});
 
-		//---- decreaseButton ----
-		decreaseButton.setFocusPainted(false);
-		decreaseButton.setFocusable(false);
-		decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
-		decreaseButton.setText("-");
-		add(decreaseButton, CC.xy(4, 2));
+            //---- increaseButton ----
+            increaseButton.setFocusPainted(false);
+            increaseButton.setFocusable(false);
+            increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
+            increaseButton.setText("+");
+            spinnerPanel.add(increaseButton, CC.xy(1, 1));
+
+            //---- decreaseButton ----
+            decreaseButton.setFocusPainted(false);
+            decreaseButton.setFocusable(false);
+            decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
+            decreaseButton.setText("-");
+            spinnerPanel.add(decreaseButton, CC.xy(1, 2));
+        }
+        add(spinnerPanel, CC.xy(4, 1));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

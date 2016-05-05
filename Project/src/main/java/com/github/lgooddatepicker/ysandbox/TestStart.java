@@ -1,13 +1,10 @@
 package com.github.lgooddatepicker.ysandbox;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.datepicker.DatePicker;
-import com.github.lgooddatepicker.zinternaltools.CalculateMinimumDateFieldSize;
 import java.awt.GraphicsEnvironment;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Locale;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,8 +27,7 @@ public class TestStart {
         Locale datePickerLocale = new Locale("en");
         DatePickerSettings settings = new DatePickerSettings(datePickerLocale);
         settings.initialDate = LocalDate.of(2016, Month.APRIL, 15);
-        int longestDateInPixels = CalculateMinimumDateFieldSize.getFormattedDateWidthInPixels(settings.getFormatForDatesCommonEra(), settings.getLocale(), settings.getFontValidDate(), 0);
-
+        
         DatePicker datePicker = new DatePicker(settings);
         panel.add(datePicker);
 

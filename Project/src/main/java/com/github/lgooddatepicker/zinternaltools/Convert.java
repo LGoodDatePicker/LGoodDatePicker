@@ -1,11 +1,10 @@
 package com.github.lgooddatepicker.zinternaltools;
 
-import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.github.lgooddatepicker.datepicker.DatePicker;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * Convert, This class allows the programmer to get or set a date picker date, using some other
