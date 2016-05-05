@@ -36,7 +36,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Can optionally disallow keyboard editing. 
 * Relatively compact source code.
 * Simple usage. Creating a picker requires only one line of code.
-* Includes [Demo Program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases). (Found in the Github release files.)
+* Includes the [Demo Program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases). (Found in the Github release files.)
 * Code and usage examples.
 * Complete Javadoc documentation.
 * Active developer support. 
