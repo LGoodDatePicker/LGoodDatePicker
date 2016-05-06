@@ -766,7 +766,7 @@ public class FullDemo {
         String targetJavaVersion = InternalUtilities.getJavaTargetVersionFromPom();
         String projectVersion = InternalUtilities.getProjectVersionString();
         boolean isBackport = ("1.6".equals(targetJavaVersion));
-        String message = "";
+        String message = ""; 
         message += "## Current configuration ##";
         message += "\nLGoodDatePicker version: \"LGoodDatePicker ";
         message += (isBackport) ? ("Backport " + projectVersion) : (projectVersion + " (Standard)");
