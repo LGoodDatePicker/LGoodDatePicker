@@ -1,6 +1,14 @@
 # LGoodDatePicker
 Java Swing Date Picker. Easy to use, good looking, nice features, and localized. Uses the JSR-310 standard. 
 
+## Project Links:
+Demo Application and Downloads in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
+Maven Central repository pages: [Page 1](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), [Page 2](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).  
+Subscribe for release updates: <a href="https://feedburner.google.com/fb/a/mailverify?uri=LGoodDatePickerUpdates&amp;loc=en_US">Subscribe to LGoodDatePicker Updates by Email</a><br>
+Contact the primary developer: [Email Form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
+Submit bugs or feature requests: [Issues Section](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).  
+General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).  
+
 ## News:
 
 * The [LGoodDatePicker Backport (5.3.2)](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/v5.3.2-Backport) was released on May 4, 2016. With this release, the library can now be used in projects which are built for the older Java versions, Java 6 and Java 7. 
@@ -10,14 +18,6 @@ Java Swing Date Picker. Easy to use, good looking, nice features, and localized.
 * [LGoodDatePicker 5.2.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released April 25, 2016. This release adds the CalendarPanel component to the library. This component allows the programmer to (optionally) use the calendar panel controls independently from the DatePicker component. An example for the independent calendar panel was also added to the [demo program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).
 
 * [LGoodDatePicker 4.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 17, 2016. The requirements for publishing to the Maven Central repository were added to the project. (Including jar signing, global package name conventions, Pom file specifications, etc.). The project now has an entry [at Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22). This makes the library easier to include in applications that use Apache Maven.
-
-## Project Links:
-Demo Application and Downloads in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
-Maven Central repository pages: [Page 1](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), [Page 2](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).  
-Subscribe for release updates: <a href="https://feedburner.google.com/fb/a/mailverify?uri=LGoodDatePickerUpdates&amp;loc=en_US">Subscribe to LGoodDatePicker Updates by Email</a><br>
-Contact the primary developer: [Email Form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
-Submit bugs or feature requests: [Issues Section](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).  
-General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGoodDatePicker/issues/2).  
 
 ## General Features:
 * The included components are the DatePicker, the TimePicker, the DateTimePicker, and the CalendarPanel.
