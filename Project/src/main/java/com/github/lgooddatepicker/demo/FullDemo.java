@@ -386,7 +386,7 @@ public class FullDemo {
         timePicker = new TimePicker(timeSettings);
         timeSettings.setVetoPolicy(new SampleTimeVetoPolicy());
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
                 "Time 12, With Veto Policy (Only 9a-5p allowed):");
 
         // Create a time picker: Seconds precision.
@@ -762,18 +762,20 @@ public class FullDemo {
      * showSystemInformationButtonClicked, This shows the current system information.
      */
     private static void showSystemInformationButtonClicked() {
+        String runningJavaVersion = InternalUtilities.getJavaRunningVersionAsString();
+        String targetJavaVersion = InternalUtilities.getJavaTargetVersionFromPom();
+        String projectVersion = InternalUtilities.getProjectVersionString();
+        boolean isBackport = ("1.6".equals(targetJavaVersion));
         String message = "";
-        message += "LGoodDatePicker is running in Java Version: "
-                + InternalUtilities.getJavaRunningVersionAsString();
-        try {
-            InputStream input = FullDemo.class.getResourceAsStream(
-                    "/com/github/lgooddatepicker/demo/FullDemo.class");
-            String targetVersion
-                    = InternalUtilities.getCompiledJavaMajorVersionFromJavaClassFileAsString(input);
-            message += "\nLGoodDatePicker was compiled for a minimum Java version of: " + targetVersion;
-        } catch (Exception ex) {
-            Logger.getLogger(FullDemo.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        message += "## Current configuration ##";
+        message += "\nLGoodDatePicker version: \"LGoodDatePicker ";
+        message += (isBackport) ? ("Backport " + projectVersion) : (projectVersion + " (Standard)");
+        message += "\".";
+        message += "\nJava target version: Java " + targetJavaVersion;
+        message += "\nJava running version: " + runningJavaVersion;
+        message += "\n\nMinimum Requirements:"
+                + "\n\"LGoodDatePicker Standard\" requires Java 1.8 (or above). "
+                + "\n\"LGoodDatePicker Backport\" requires Java 1.6 or 1.7.";
         panel.messageTextArea.setText(message);
     }
 
