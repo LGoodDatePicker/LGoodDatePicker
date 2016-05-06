@@ -95,6 +95,21 @@ public class InternalUtilities {
     }
 
     /**
+     * getJavaTargetVersionFromPom, Returns a string with the java "target" version, as it was
+     * specified in the pom file at compile time.
+     */
+    public static String getJavaTargetVersionFromPom() {
+        try {
+            Properties properties = new Properties();
+            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            properties.load(classLoader.getResourceAsStream("project.properties"));
+            return "" + properties.getProperty("targetJavaVersion");
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
+    /**
      * getProjectVersionString, Returns a string with the project version number.
      */
     public static String getProjectVersionString() {
@@ -102,7 +117,7 @@ public class InternalUtilities {
             Properties properties = new Properties();
             ClassLoader classLoader = ClassLoader.getSystemClassLoader();
             properties.load(classLoader.getResourceAsStream("project.properties"));
-            return "v" + properties.getProperty("version");
+            return "v" + properties.getProperty("projectVersion");
         } catch (Exception ex) {
             return "";
         }
