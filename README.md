@@ -25,8 +25,8 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 (Month names, weekday names, the default first day of the week, default date and time formats, and button text.)
 * Translations include 22 languages.  
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
-* Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".
-* Can also run in Java 6 or Java 7, using the [Parallel Backport](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports). 
+* Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".<br/>
+(Can also run in Java 6 or Java 7, using the [Parallel Backport](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).) 
 * Supports other legacy and common data types, such as "java.util.Date".
 * Customizable visual elements.  
 (Including button icons, calendar size, fonts, colors, and the popup border.)
