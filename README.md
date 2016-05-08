@@ -11,9 +11,9 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
-* The [LGoodDatePicker Backport (5.3.2)](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/v5.3.2-Backport) was released on May 4, 2016. With this release, the library can now be used in projects which are built for older Java versions, Java 6 or 7. 
+* [LGoodDatePicker 5.4.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).
 
-* [LGoodDatePicker 5.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).
+* The [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports) were released on May 4, 2016. With these releases, the library can now be used in projects which are built for older Java versions, Java 6 or 7. 
 
 * [LGoodDatePicker 5.2.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released April 25, 2016. This release adds the CalendarPanel component to the library. This component allows the programmer to (optionally) use the calendar panel controls independently from the DatePicker component. An example for the independent calendar panel was also added to the [demo program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).
 
