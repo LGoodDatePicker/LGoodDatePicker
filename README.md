@@ -11,7 +11,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
-* The [LGoodDatePicker Backport (5.3.2)](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/v5.3.2-Backport) was released on May 4, 2016. With this release, the library can now be used in projects which are built for older Java versions, Java 6 and Java 7. 
+* The [LGoodDatePicker Backport (5.3.2)](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/v5.3.2-Backport) was released on May 4, 2016. With this release, the library can now be used in projects which are built for older Java versions, Java 6 or 7. 
 
 * [LGoodDatePicker 5.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).
 
@@ -26,7 +26,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Translations include 22 languages.  
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".<br/>
-(Can also run in Java 6 or Java 7, using the [Parallel Backport](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).) 
+(Can also run in Java 6 or 7, using the [Parallel Backport](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).) 
 * Supports other legacy and common data types, such as "java.util.Date".
 * Customizable visual elements.  
 (Including button icons, calendar size, fonts, colors, and the popup border.)
