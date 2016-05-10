@@ -79,7 +79,7 @@ public class BasicDemo extends JFrame {
 
         // Create a date picker with some custom settings. 
         DatePickerSettings dateSettings = new DatePickerSettings();
-        dateSettings.firstDayOfWeek = DayOfWeek.MONDAY;
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         DatePicker datePicker2 = new DatePicker(dateSettings);
         // To display this picker, uncomment this line.
         // add(datePicker2);

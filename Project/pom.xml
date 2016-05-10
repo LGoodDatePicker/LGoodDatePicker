@@ -11,10 +11,10 @@ plugins in this file operate inside the "package" and "install" phases.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>5.4.2</version>
+    <version>7.1.1</version>
     <packaging>jar</packaging>
     <name>LGoodDatePicker</name>
-    <description>Java 8 Swing Date Picker. Easy to use, good looking, nice features, and 
+    <description>Java Swing Date Picker. Easy to use, good looking, nice features, and 
         localized. Uses the JSR-310 standard.</description>
     <url>https://github.com/LGoodDatePicker/LGoodDatePicker</url>
     <licenses>

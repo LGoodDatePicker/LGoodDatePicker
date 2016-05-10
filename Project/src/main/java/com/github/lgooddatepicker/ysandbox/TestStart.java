@@ -1,8 +1,14 @@
 package com.github.lgooddatepicker.ysandbox;
 
+import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.datepicker.DatePicker;
+import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import java.awt.Color;
 import java.awt.GraphicsEnvironment;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Locale;
@@ -24,11 +30,19 @@ public class TestStart {
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel);
 
-        Locale datePickerLocale = new Locale("en");
-        DatePickerSettings settings = new DatePickerSettings(datePickerLocale);
-        settings.initialDate = LocalDate.of(2016, Month.APRIL, 15);
+        DatePickerSettings settings = new DatePickerSettings();
+        settings.setAllowEmptyDates(false);
+        CalendarPanel calendarPanel = new CalendarPanel(settings);
+        boolean isSelectedDateAllowed = settings.setVetoPolicy(new SampleDateVetoPolicy());
+        settings.setHighlightPolicy(new SampleHighlightPolicy());
+        settings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        panel.add(calendarPanel);
         
-        DatePicker datePicker = new DatePicker(settings);
+
+        Locale datePickerLocale = new Locale("en");
+        DatePickerSettings datePickerSettings = new DatePickerSettings(datePickerLocale);
+        datePickerSettings.setInitialDate(LocalDate.of(2016, Month.APRIL, 15));
+        DatePicker datePicker = new DatePicker(datePickerSettings);
         panel.add(datePicker);
 
         // Display the frame.
@@ -40,4 +54,71 @@ public class TestStart {
         frame.setLocation(maxWidth / 2, maxHeight / 2);
         frame.setVisible(true);
     }
+    
+    
+
+    /**
+     * SampleDateVetoPolicy, A veto policy is a way to disallow certain dates from being selected in
+     * calendar. A vetoed date cannot be selected by using the keyboard or the mouse.
+     */
+    private static class SampleDateVetoPolicy implements DateVetoPolicy {
+
+        /**
+         * isDateAllowed, Return true if a date should be allowed, or false if a date should be
+         * vetoed.
+         */
+        @Override
+        public boolean isDateAllowed(LocalDate date) {
+            // Disallow days 7 to 11.
+            if ((date.getDayOfMonth() >= 7) && (date.getDayOfMonth() <= 11)) {
+                return false;
+            }
+            // Disallow odd numbered saturdays.
+            if ((date.getDayOfWeek() == DayOfWeek.SATURDAY) && ((date.getDayOfMonth() % 2) == 1)) {
+                return false;
+            }
+            // Allow all other days.
+            return true;
+        }
+    }
+
+    /**
+     * SampleHighlightPolicy, A highlight policy is a way to visually highlight certain dates in the
+     * calendar. These may be holidays, or weekends, or other significant dates.
+     */
+    private static class SampleHighlightPolicy implements DateHighlightPolicy {
+
+        /**
+         * getHighlightInformationOrNull, Implement this function to indicate if a date should be
+         * highlighted, and what highlighting details should be used for the highlighted date.
+         *
+         * If a date should be highlighted, then return an instance of HighlightInformation. If the
+         * date should not be highlighted, then return null.
+         *
+         * You may (optionally) fill out the fields in the HighlightInformation class to give any
+         * particular highlighted day a unique foreground color, background color, or tooltip text.
+         * If the color fields are null, then the default highlighting colors will be used. If the
+         * tooltip field is null (or empty), then no tooltip will be displayed.
+         *
+         * Dates that are passed to this function will never be null.
+         */
+        @Override
+        public HighlightInformation getHighlightInformationOrNull(LocalDate date) {
+            // Highlight a chosen date, with a tooltip and a red background color.
+            if (date.getDayOfMonth() == 25) {
+                return new HighlightInformation(Color.red, null, "It's the 25th!");
+            }
+            // Highlight all Saturdays with a unique background and foreground color.
+            if (date.getDayOfWeek() == DayOfWeek.SATURDAY) {
+                return new HighlightInformation(Color.orange, Color.yellow, "It's Saturday!");
+            }
+            // Highlight all Sundays with default colors and a tooltip.
+            if (date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                return new HighlightInformation(null, null, "It's Sunday!");
+            }
+            // All other days should not be highlighted.
+            return null;
+        }
+    }
+
 }

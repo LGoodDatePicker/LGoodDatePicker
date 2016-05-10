@@ -1,9 +1,6 @@
 package com.github.lgooddatepicker.calendarpanel;
 
 import java.time.*;
-import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.datepicker.DatePicker;
@@ -22,6 +19,7 @@ import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField.IntegerTextFieldNumberChangeListener;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import com.privatejgoodies.forms.layout.CellConstraints;
 
 /**
  * CalendarPanel,
@@ -53,8 +51,26 @@ public class CalendarPanel
      * calendarSelectionListeners, This holds a list of calendar selection listeners that wish to be
      * notified each time that a date is selected in the calendar panel.
      */
-    private ArrayList<CalendarSelectionListener> calendarSelectionListeners = 
-            new ArrayList<CalendarSelectionListener>();
+    private ArrayList<CalendarSelectionListener> calendarSelectionListeners
+            = new ArrayList<CalendarSelectionListener>();
+
+    /**
+     * constantFirstWeekdayLabelCell, This constant indicates the location of the first weekday
+     * label inside of the center panel.
+     */
+    static private final Point constantFirstWeekdayLabelCell = new Point(2, 1);
+
+    /**
+     * constantFirstDateLabelCell, This constant indicates the location of the first date label
+     * inside of the center panel.
+     */
+    static private final Point constantFirstDateLabelCell = new Point(2, 5);
+
+    /**
+     * constantSizeOfCenterPanelBorders, This constant indicates the (total) size of all the borders
+     * in the center panel, in pixels.
+     */
+    static private final Dimension constantSizeOfCenterPanelBorders = new Dimension(2, 5);
 
     /**
      * displayedSelectedDate, This stores a date that will be highlighted in the calendar as the
@@ -70,6 +86,13 @@ public class CalendarPanel
      * current year and month. This will never be null.
      */
     private YearMonth displayedYearMonth = YearMonth.now();
+
+    /**
+     * isIndependentCalendarPanel, This indicates whether or not this is an independent calendar
+     * panel. This is true if this is an independent calendar panel, or false if this is a private
+     * calendar panel for a DatePicker instance.
+     */
+    private boolean isIndependentCalendarPanel;
 
     /**
      * labelIndicatorEmptyBorder, This stores the empty border and the empty border size for the
@@ -107,38 +130,74 @@ public class CalendarPanel
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	private JPanel headerControlsPanel;
-	private JButton buttonPreviousYear;
-	private JButton buttonPreviousMonth;
-	private JPanel monthAndYearOuterPanel;
-	private JPanel monthAndYearInnerPanel;
-	private JLabel labelMonth;
-	private JLabel labelYear;
-	private JButton buttonNextMonth;
-	private JButton buttonNextYear;
-	private JPanel weekDaysPanel;
-	private JPanel datesPanel;
-	private JPanel footerPanel;
-	private JLabel labelSetDateToToday;
-	private JLabel labelClearDate;
-	private JPanel yearEditorPanel;
-	private JButton doneEditingYearButton;
+    private JPanel headerControlsPanel;
+    private JButton buttonPreviousYear;
+    private JButton buttonPreviousMonth;
+    private JPanel monthAndYearOuterPanel;
+    private JPanel monthAndYearInnerPanel;
+    private JLabel labelMonth;
+    private JLabel labelYear;
+    private JButton buttonNextMonth;
+    private JButton buttonNextYear;
+    private JPanel centerPanel;
+    private JPanel footerPanel;
+    private JLabel labelSetDateToToday;
+    private JLabel labelClearDate;
+    private JPanel yearEditorPanel;
+    private JButton doneEditingYearButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
-     * Constructor, This creates a calendar panel and stores the parent date picker.
+     * Constructor, Independent CalendarPanel with default settings. This creates an independent
+     * calendar panel with a default set of DatePickerSettings. The calendar panel will use the
+     * default operating system locale and language.
+     */
+    public CalendarPanel() {
+        this(null, true);
+    }
+
+    /**
+     * Constructor, Independent CalendarPanel with supplied settings. This creates This creates an
+     * independent calendar panel with the supplied date picker settings. If the datePickerSettings
+     * are null, then a default settings instance will be created and applied to the CalendarPanel.
+     */
+    public CalendarPanel(DatePickerSettings settings) {
+        this(settings, true);
+    }
+
+    /**
+     * Constructor, Private CalendarPanel For DatePicker. Important Note: This function is only
+     * intended to be called from the DatePicker class. This creates a calendar panel from an
+     * existing DatePicker, for internal usage by that DatePicker instance. This will use the
+     * settings from the DatePicker instance.
      *
      * Technical note: This constructor is only called from the DatePicker.openPopup() function. A
      * new CalendarPanel is created every time the popup is opened. Therefore, any
      * DatePickerSettings variables that are initialized in this constructor are automatically able
      * to correctly handle being set either before or after, a DatePicker is constructed.
      */
-    public CalendarPanel(DatePickerSettings datePickerSettings) {
+    public CalendarPanel(DatePicker parentDatePicker) {
+        this(parentDatePicker.getSettings(), false);
+    }
+
+    /**
+     * Constructor, Private Full Constructor. This will create the calendar panel instance. This
+     * constructor is private and can only be called from other CalendarPanel constructors.
+     */
+    private CalendarPanel(DatePickerSettings datePickerSettings,
+            boolean isIndependentCalendarPanelInstance) {
+        // If no settings were supplied, then create a default settings instance.
         if (datePickerSettings == null) {
-            throw new RuntimeException("CalendarPanel Constructor, "
-                    + "Cannot create a calendar panel with null DatePickerSettings");
+            datePickerSettings = new DatePickerSettings();
         }
+        // Save the constructor parameters.
         this.settings = datePickerSettings;
+        this.isIndependentCalendarPanel = isIndependentCalendarPanelInstance;
+        // If this is an independent calendar panel, store the parent calendar panel in the 
+        // settings instance.
+        if (isIndependentCalendarPanel) {
+            settings.zSetParentCalendarPanel(this);
+        }
         // Initialize the components.
         initComponents();
 
@@ -161,21 +220,8 @@ public class CalendarPanel
         // Set the calendar panel to be opaque.
         setOpaque(true);
 
-        // Set the component colors
-        Color calendarPanelBackgroundColor = settings.colorBackgroundCalendarPanel;
-        setBackground(calendarPanelBackgroundColor);
-        headerControlsPanel.setBackground(calendarPanelBackgroundColor);
-        monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
-        footerPanel.setBackground(calendarPanelBackgroundColor);
-        Color navigationButtonsColor = settings.colorBackgroundNavigateYearMonthButtons;
-        if (navigationButtonsColor != null) {
-            buttonPreviousYear.setBackground(navigationButtonsColor);
-            buttonNextYear.setBackground(navigationButtonsColor);
-            buttonPreviousMonth.setBackground(navigationButtonsColor);
-            buttonNextMonth.setBackground(navigationButtonsColor);
-        }
-
         // Generate and add the date labels and weekday labels.
+        // These are only generated once.
         addDateLabels();
         addWeekdayLabels();
 
@@ -191,14 +237,23 @@ public class CalendarPanel
         labelIndicatorSetBorderToDefaultState(labelSetDateToToday);
         labelIndicatorSetBorderToDefaultState(labelClearDate);
 
-        // Set the size of the month and year panel to be big enough to hold the largest month text.
-        setSizeOfMonthYearPanel();
+        // If this is an an independent calendar panel, apply the needed settings at 
+        // independent CalendarPanel construction.
+        if (isIndependentCalendarPanel) {
+            settings.yApplyNeededSettingsAtIndependentCalendarPanelConstruction();
+        }
 
-        // Set the size of the cell that contains the date panel.
-        setSizeOfDatePanelCell();
-
-        // Set the calendar to show the current month and year by default.
-        CalendarPanel.this.drawCalendar(YearMonth.now());
+        // If the selected date is null, set the calendar to show the current month and year.
+        // If the selected date is not null (probably because it was changed by independent 
+        // calendar panel settings), then set the calendar to show the year and month of the 
+        // selected date.
+        if (displayedSelectedDate == null) {
+            drawCalendar(YearMonth.now());
+        } else {
+            YearMonth selectedDateYearMonth = YearMonth.of(
+                    displayedSelectedDate.getYear(), displayedSelectedDate.getMonth());
+            drawCalendar(selectedDateYearMonth);
+        }
     }
 
     /**
@@ -209,8 +264,8 @@ public class CalendarPanel
     private void addDateLabels() {
         dateLabels = new ArrayList<JLabel>();
         for (int i = 0; i < 42; ++i) {
-            int dateLabelColumnX = ((i % 7));
-            int dateLabelRowY = ((i / 7) + 1);
+            int dateLabelColumnX = ((i % 7)) + constantFirstDateLabelCell.x;
+            int dateLabelRowY = ((i / 7) + constantFirstDateLabelCell.y);
             JLabel dateLabel = new JLabel();
             dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
             dateLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -218,9 +273,8 @@ public class CalendarPanel
             dateLabel.setBorder(null);
             dateLabel.setOpaque(true);
             dateLabel.setText("" + i);
-            GridBagConstraints gc = InternalUtilities.getConstraints(
-                    dateLabelColumnX, dateLabelRowY);
-            datesPanel.add(dateLabel, gc);
+            CellConstraints constraints = CC.xy(dateLabelColumnX, dateLabelRowY);
+            centerPanel.add(dateLabel, constraints);
             dateLabels.add(dateLabel);
             // Add a mouse click listener for every date label, even the blank ones.
             dateLabel.addMouseListener(new MouseAdapter() {
@@ -233,35 +287,57 @@ public class CalendarPanel
     }
 
     /**
-     * addCalendarSelectionListener, This adds a calendar selection listener to this calendar panel.
-     * For additional details, see the CalendarSelectionListener class documentation.
-     */
-    public void addCalendarSelectionListener(CalendarSelectionListener listener) {
-        calendarSelectionListeners.add(listener);
-    }
-
-    /**
      * addWeekdayLabels, This adds a set of 7 weekday labels to the calendar panel. The text of
      * these labels is set with locale sensitive weekday names each time that the calendar is
      * redrawn.
      */
     private void addWeekdayLabels() {
-        weekDaysPanel.setBackground(settings.colorBackgroundWeekdayLabels);
         weekdayLabels = new ArrayList<JLabel>();
+        int weekdayLabelRowY = constantFirstWeekdayLabelCell.y;
+        int weekdayLabelHeightInCells = 3;
         for (int i = 0; i < 7; ++i) {
-            int weekdayLabelColumnX = (i);
-            int weekdayLabelRowY = 0;
+            int weekdayLabelColumnX = (i + constantFirstWeekdayLabelCell.x);
             JLabel weekdayLabel = new JLabel();
             weekdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
             weekdayLabel.setVerticalAlignment(SwingConstants.CENTER);
-            weekdayLabel.setBackground(settings.colorBackgroundWeekdayLabels);
+            weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
+            weekdayLabel.setBorder(new EmptyBorder(0, 2, 0, 2));
             weekdayLabel.setOpaque(true);
             weekdayLabel.setText("wd" + i);
-            GridBagConstraints gc = InternalUtilities.getConstraints(
-                    weekdayLabelColumnX, weekdayLabelRowY);
-            weekDaysPanel.add(weekdayLabel, gc);
+            CellConstraints constraints = CC.xywh(weekdayLabelColumnX, weekdayLabelRowY,
+                    1, weekdayLabelHeightInCells);
+            centerPanel.add(weekdayLabel, constraints);
             weekdayLabels.add(weekdayLabel);
         }
+        // Add two blank extra weekday labels to cover up the beginning and the end of the row.
+        {
+            JLabel weekdayLabel = new JLabel();
+            weekdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            weekdayLabel.setVerticalAlignment(SwingConstants.CENTER);
+            weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
+            weekdayLabel.setOpaque(true);
+            CellConstraints constraints = CC.xywh((constantFirstWeekdayLabelCell.x - 1), weekdayLabelRowY,
+                    1, weekdayLabelHeightInCells);
+            centerPanel.add(weekdayLabel, constraints);
+        }
+        {
+            JLabel weekdayLabel = new JLabel();
+            weekdayLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            weekdayLabel.setVerticalAlignment(SwingConstants.CENTER);
+            weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
+            weekdayLabel.setOpaque(true);
+            CellConstraints constraints = CC.xywh((constantFirstWeekdayLabelCell.x + 7), weekdayLabelRowY,
+                    1, weekdayLabelHeightInCells);
+            centerPanel.add(weekdayLabel, constraints);
+        }
+    }
+
+    /**
+     * addCalendarSelectionListener, This adds a calendar selection listener to this calendar panel.
+     * For additional details, see the CalendarSelectionListener class documentation.
+     */
+    public void addCalendarSelectionListener(CalendarSelectionListener listener) {
+        calendarSelectionListeners.add(listener);
     }
 
     /**
@@ -350,8 +426,8 @@ public class CalendarPanel
         String localShortDaysOfWeek[] = symbols.getShortWeekdays();
         // Get the full month names in the current locale.
         int zeroBasedMonthIndex = (displayedMonth.getValue() - 1);
-        String localizedFullMonth = settings.translationArrayStandaloneLongMonthNames[zeroBasedMonthIndex];
-        String localizedShortMonth = settings.translationArrayStandaloneShortMonthNames[zeroBasedMonthIndex];
+        String localizedFullMonth = settings.getTranslationArrayStandaloneLongMonthNames()[zeroBasedMonthIndex];
+        String localizedShortMonth = settings.getTranslationArrayStandaloneShortMonthNames()[zeroBasedMonthIndex];
         // Get the first day of the month, and the first day of week.
         LocalDate firstDayOfMonth = LocalDate.of(displayedYear, displayedMonth, 1);
         DayOfWeek firstDayOfWeekOfMonth = firstDayOfMonth.getDayOfWeek();
@@ -361,6 +437,19 @@ public class CalendarPanel
         boolean selectedDateIsInDisplayedMonth = (displayedSelectedDate != null)
                 && (displayedSelectedDate.getYear() == displayedYear)
                 && (displayedSelectedDate.getMonth() == displayedMonth);
+        // Set the component colors
+        Color calendarPanelBackgroundColor = settings.getColorBackgroundCalendarPanel();
+        setBackground(calendarPanelBackgroundColor);
+        headerControlsPanel.setBackground(calendarPanelBackgroundColor);
+        monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
+        footerPanel.setBackground(calendarPanelBackgroundColor);
+        Color navigationButtonsColor = settings.getColorBackgroundNavigateYearMonthButtons();
+        if (navigationButtonsColor != null) {
+            buttonPreviousYear.setBackground(navigationButtonsColor);
+            buttonNextYear.setBackground(navigationButtonsColor);
+            buttonPreviousMonth.setBackground(navigationButtonsColor);
+            buttonNextMonth.setBackground(navigationButtonsColor);
+        }
         // Set the month and the year labels. 
         // Use the short month if the user is currently using the keyboard editor for the year.
         if (monthAndYearInnerPanel.isAncestorOf(yearEditorPanel)) {
@@ -377,7 +466,7 @@ public class CalendarPanel
         }
         // Set the days of the week labels, and create an array to represent the weekday positions.
         ArrayList<DayOfWeek> daysOfWeekAsDisplayed = new ArrayList<DayOfWeek>();
-        int isoFirstDayOfWeekValue = settings.firstDayOfWeek.getValue();
+        int isoFirstDayOfWeekValue = settings.getFirstDayOfWeek().getValue();
         int isoLastDayOfWeekOverflowed = isoFirstDayOfWeekValue + 6;
         int weekdayLabelArrayIndex = 0;
         for (int dayOfWeek = isoFirstDayOfWeekValue; dayOfWeek <= isoLastDayOfWeekOverflowed; dayOfWeek++) {
@@ -385,7 +474,8 @@ public class CalendarPanel
             int isoDayOfWeek = (dayOfWeek > 7) ? (dayOfWeek - 7) : dayOfWeek;
             DayOfWeek currentDayOfWeek = DayOfWeek.of(isoDayOfWeek);
             daysOfWeekAsDisplayed.add(currentDayOfWeek);
-            weekdayLabels.get(weekdayLabelArrayIndex).setText(localShortDaysOfWeek[localShortDaysOfWeekArrayIndex]);
+            weekdayLabels.get(weekdayLabelArrayIndex)
+                    .setText(localShortDaysOfWeek[localShortDaysOfWeekArrayIndex]);
             ++weekdayLabelArrayIndex;
         }
         // Set the dates of the month labels.
@@ -417,7 +507,7 @@ public class CalendarPanel
                 // Get a local date object for the current date.
                 LocalDate currentDate = LocalDate.of(displayedYear, displayedMonth, dayOfMonth);
                 DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
-                DateHighlightPolicy highlightPolicy = settings.highlightPolicy;
+                DateHighlightPolicy highlightPolicy = settings.getHighlightPolicy();
                 boolean dateIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, currentDate);
                 HighlightInformation highlightInfo = null;
                 if (highlightPolicy != null) {
@@ -425,11 +515,11 @@ public class CalendarPanel
                 }
                 if (dateIsVetoed) {
                     dateLabel.setEnabled(false);
-                    dateLabel.setBackground(settings.colorBackgroundVetoedDates);
+                    dateLabel.setBackground(settings.getColorBackgroundVetoedDates());
                 }
                 if ((!dateIsVetoed) && (highlightInfo != null)) {
                     // Set the highlight background color (always).
-                    Color colorBackground = settings.colorBackgroundHighlightedDates;
+                    Color colorBackground = settings.getColorBackgroundHighlightedDates();
                     if (highlightInfo.colorBackground != null) {
                         colorBackground = highlightInfo.colorBackground;
                     }
@@ -439,8 +529,8 @@ public class CalendarPanel
                         dateLabel.setForeground(highlightInfo.colorText);
                     }
                     // If needed, set the highlight tooltip text.
-                    if (highlightInfo.tooltipText != null && 
-                            (!(highlightInfo.tooltipText.isEmpty()))) {
+                    if (highlightInfo.tooltipText != null
+                            && (!(highlightInfo.tooltipText.isEmpty()))) {
                         dateLabel.setToolTipText(highlightInfo.tooltipText);
                     }
                 }
@@ -463,8 +553,8 @@ public class CalendarPanel
             selectedDateLabel.setBorder(new LineBorder(new Color(99, 130, 191)));
         }
         // Set the label for the today button.
-        String todayDateString = settings.formatForTodayButton.format(LocalDate.now());
-        String todayLabel = settings.translationToday + ":  " + todayDateString;
+        String todayDateString = settings.getFormatForTodayButton().format(LocalDate.now());
+        String todayLabel = settings.getTranslationToday() + ":  " + todayDateString;
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
         DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
@@ -480,7 +570,13 @@ public class CalendarPanel
         labelClearDate.setVisible(shouldEnableClearButton);
 
         // Set the label for the clear button.
-        labelClearDate.setText(settings.translationClear);
+        labelClearDate.setText(settings.getTranslationClear());
+
+        // Set the size of the month and year panel to be big enough to hold the largest month text.
+        setSizeOfMonthYearPanel();
+
+        // Set the size of the cell that contains the date panel.
+        setSizeOfDatePanelCell();
 
     }
 
@@ -577,10 +673,10 @@ public class CalendarPanel
             return;
         }
         if (label == labelMonth || label == labelYear) {
-            label.setBackground(settings.colorBackgroundMonthAndYear);
-            monthAndYearInnerPanel.setBackground(settings.colorBackgroundMonthAndYear);
+            label.setBackground(settings.getColorBackgroundMonthAndYear());
+            monthAndYearInnerPanel.setBackground(settings.getColorBackgroundMonthAndYear());
         } else {
-            label.setBackground(settings.colorBackgroundTodayAndClear);
+            label.setBackground(settings.getColorBackgroundTodayAndClear());
         }
         label.setBorder(new CompoundBorder(
                 new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));
@@ -593,7 +689,7 @@ public class CalendarPanel
      */
     private void labelMonthIndicatorMousePressed(MouseEvent e) {
         JPopupMenu monthPopupMenu = new JPopupMenu();
-        String[] allLocalMonths = settings.translationArrayStandaloneLongMonthNames;
+        String[] allLocalMonths = settings.getTranslationArrayStandaloneLongMonthNames();
         for (int i = 0; i < allLocalMonths.length; ++i) {
             final String localMonth = allLocalMonths[i];
             final int localMonthZeroBasedIndexTemp = i;
@@ -708,35 +804,24 @@ public class CalendarPanel
      * setSizeOfDatePanelCell, This sets the size of the cell holds date panel. By default, the size
      * is set in such a way that the grid layout of the date panel will always touch the inside
      * edges of the cell. At the time of this writing, the cell that contains the date panel is:
-     * x=1, y=4, in the calendar panel.
+     * x=1, y=3, in the calendar panel.
      */
     private void setSizeOfDatePanelCell() {
         // Get the minimum desired size of the date panel.
-        int minimumHeight = settings.sizeDatePanelMinimumHeight;
-        int minimumWidth = settings.sizeDatePanelMinimumWidth;
-        // Redraw the panel, to make sure the panel is the "default layout size" before starting.
-        this.doLayout();
-        this.validate();
+        int minimumHeight = settings.getSizeDatePanelMinimumHeight();
+        int minimumWidth = settings.getSizeDatePanelMinimumWidth();
         // Get the layout for the calendar panel.
         GridBagLayout layout = ((GridBagLayout) getLayout());
-        // Get the current height and width of the date panel.
-        Dimension previousDatesPanelSize = datesPanel.getSize();
-        int panelHeight = previousDatesPanelSize.height;
-        int panelWidth = previousDatesPanelSize.width;
-        // Apply the desired minimum size of the date panel.
-        panelHeight = (panelHeight < minimumHeight) ? minimumHeight : panelHeight;
-        panelWidth = (panelWidth < minimumWidth) ? minimumWidth : panelWidth;
-        // Force the new size to be multiples of 7 for the columns, and multiples of 6 for the rows.
-        panelHeight += (panelHeight % 6);
+        // Initialize the minimum height and width of the date panel cell.
+        int panelHeight = minimumHeight;
+        int panelWidth = minimumWidth;
+        // Force the new size to be multiples of 7 for the columns and rows.
+        panelHeight += (panelHeight % 7);
         panelWidth += (panelWidth % 7);
-        // Extra pixels appears to be required to make the date labels touch the inside edges 
-        // of the date panel.
-        panelHeight += settings.sizeDatePanelPixelsExtraHeight;
-        panelWidth += settings.sizeDatePanelPixelsExtraWidth;
-        // Set the containing cell to be the desired size.
-        layout.rowHeights[4] = panelHeight;
-        layout.columnWidths[1] = panelWidth;
-        // Redraw the panel.
+        // Set the containing cell to be the desired minimum size.
+        layout.rowHeights[3] = panelHeight + constantSizeOfCenterPanelBorders.height;
+        layout.columnWidths[1] = panelWidth + constantSizeOfCenterPanelBorders.width;
+        // Ask the components to layout and redraw themselves.
         this.doLayout();
         this.validate();
     }
@@ -848,258 +933,258 @@ public class CalendarPanel
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		headerControlsPanel = new JPanel();
-		buttonPreviousYear = new JButton();
-		buttonPreviousMonth = new JButton();
-		monthAndYearOuterPanel = new JPanel();
-		monthAndYearInnerPanel = new JPanel();
-		labelMonth = new JLabel();
-		labelYear = new JLabel();
-		buttonNextMonth = new JButton();
-		buttonNextYear = new JButton();
-		weekDaysPanel = new JPanel();
-		datesPanel = new JPanel();
-		footerPanel = new JPanel();
-		labelSetDateToToday = new JLabel();
-		labelClearDate = new JLabel();
-		yearEditorPanel = new JPanel();
-		doneEditingYearButton = new JButton();
+        headerControlsPanel = new JPanel();
+        buttonPreviousYear = new JButton();
+        buttonPreviousMonth = new JButton();
+        monthAndYearOuterPanel = new JPanel();
+        monthAndYearInnerPanel = new JPanel();
+        labelMonth = new JLabel();
+        labelYear = new JLabel();
+        buttonNextMonth = new JButton();
+        buttonNextYear = new JButton();
+        centerPanel = new JPanel();
+        footerPanel = new JPanel();
+        labelSetDateToToday = new JLabel();
+        labelClearDate = new JLabel();
+        yearEditorPanel = new JPanel();
+        doneEditingYearButton = new JButton();
 
-		//======== this ========
-		setLayout(new GridBagLayout());
-		((GridBagLayout)getLayout()).columnWidths = new int[] {5, 0, 5, 0};
-		((GridBagLayout)getLayout()).rowHeights = new int[] {6, 0, 5, 22, 80, 5, 0, 5, 0};
-		((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-		((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+        //======== this ========
+        setLayout(new GridBagLayout());
+        ((GridBagLayout) getLayout()).columnWidths = new int[]{5, 0, 5, 0};
+        ((GridBagLayout) getLayout()).rowHeights = new int[]{6, 0, 5, 80, 5, 0, 5, 0};
+        ((GridBagLayout) getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
+        ((GridBagLayout) getLayout()).rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
-		//======== headerControlsPanel ========
-		{
-			headerControlsPanel.setLayout(new FormLayout(
-				"3*(pref), pref:grow, 3*(pref)",
-				"fill:pref"));
-			((FormLayout)headerControlsPanel.getLayout()).setColumnGroups(new int[][] {{1, 2, 6, 7}});
+        //======== headerControlsPanel ========
+        {
+            headerControlsPanel.setLayout(new FormLayout(
+                    "3*(pref), pref:grow, 3*(pref)",
+                    "fill:pref"));
+            ((FormLayout) headerControlsPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 6, 7}});
 
-			//---- buttonPreviousYear ----
-			buttonPreviousYear.setText("<<");
-			buttonPreviousYear.setFocusable(false);
-			buttonPreviousYear.setFocusPainted(false);
-			buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
-			buttonPreviousYear.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonPreviousYearActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
+            //---- buttonPreviousYear ----
+            buttonPreviousYear.setText("<<");
+            buttonPreviousYear.setFocusable(false);
+            buttonPreviousYear.setFocusPainted(false);
+            buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
+            buttonPreviousYear.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonPreviousYearActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
-			//---- buttonPreviousMonth ----
-			buttonPreviousMonth.setText("<");
-			buttonPreviousMonth.setFocusable(false);
-			buttonPreviousMonth.setFocusPainted(false);
-			buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
-			buttonPreviousMonth.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonPreviousMonthActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
+            //---- buttonPreviousMonth ----
+            buttonPreviousMonth.setText("<");
+            buttonPreviousMonth.setFocusable(false);
+            buttonPreviousMonth.setFocusPainted(false);
+            buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
+            buttonPreviousMonth.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonPreviousMonthActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
-			//======== monthAndYearOuterPanel ========
-			{
-				monthAndYearOuterPanel.setLayout(new GridBagLayout());
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).rowHeights = new int[] {0, 0};
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+            //======== monthAndYearOuterPanel ========
+            {
+                monthAndYearOuterPanel.setLayout(new GridBagLayout());
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWidths = new int[]{0, 0, 0, 0};
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowHeights = new int[]{0, 0};
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 1.0, 1.0E-4};
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
-				//======== monthAndYearInnerPanel ========
-				{
-					monthAndYearInnerPanel.setLayout(new GridBagLayout());
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).columnWidths = new int[] {0, 1, 0, 0};
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).rowHeights = new int[] {0, 0};
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+                //======== monthAndYearInnerPanel ========
+                {
+                    monthAndYearInnerPanel.setLayout(new GridBagLayout());
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWidths = new int[]{0, 1, 0, 0};
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowHeights = new int[]{0, 0};
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
-					//---- labelMonth ----
-					labelMonth.setText("September");
-					labelMonth.setHorizontalAlignment(SwingConstants.RIGHT);
-					labelMonth.setOpaque(true);
-					labelMonth.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseEntered(MouseEvent e) {
-							labelIndicatorMouseEntered(e);
-						}
-						@Override
-						public void mouseExited(MouseEvent e) {
-							labelIndicatorMouseExited(e);
-						}
-						@Override
-						public void mousePressed(MouseEvent e) {
-							labelMonthIndicatorMousePressed(e);
-						}
-					});
-					monthAndYearInnerPanel.add(labelMonth, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(0, 0, 0, 0), 0, 0));
+                    //---- labelMonth ----
+                    labelMonth.setText("September");
+                    labelMonth.setHorizontalAlignment(SwingConstants.RIGHT);
+                    labelMonth.setOpaque(true);
+                    labelMonth.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            labelIndicatorMouseEntered(e);
+                        }
 
-					//---- labelYear ----
-					labelYear.setText("2100");
-					labelYear.setOpaque(true);
-					labelYear.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseEntered(MouseEvent e) {
-							labelIndicatorMouseEntered(e);
-						}
-						@Override
-						public void mouseExited(MouseEvent e) {
-							labelIndicatorMouseExited(e);
-						}
-						@Override
-						public void mousePressed(MouseEvent e) {
-							labelYearIndicatorMousePressed(e);
-						}
-					});
-					monthAndYearInnerPanel.add(labelYear, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(0, 0, 0, 0), 0, 0));
-				}
-				monthAndYearOuterPanel.add(monthAndYearInnerPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 0, 0), 0, 0));
-			}
-			headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                            labelIndicatorMouseExited(e);
+                        }
 
-			//---- buttonNextMonth ----
-			buttonNextMonth.setText(">");
-			buttonNextMonth.setFocusable(false);
-			buttonNextMonth.setFocusPainted(false);
-			buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
-			buttonNextMonth.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonNextMonthActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+                            labelMonthIndicatorMousePressed(e);
+                        }
+                    });
+                    monthAndYearInnerPanel.add(labelMonth, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 0, 0), 0, 0));
 
-			//---- buttonNextYear ----
-			buttonNextYear.setText(">>");
-			buttonNextYear.setFocusable(false);
-			buttonNextYear.setFocusPainted(false);
-			buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
-			buttonNextYear.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonNextYearActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
-		}
-		add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+                    //---- labelYear ----
+                    labelYear.setText("2100");
+                    labelYear.setOpaque(true);
+                    labelYear.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            labelIndicatorMouseEntered(e);
+                        }
 
-		//======== weekDaysPanel ========
-		{
-			weekDaysPanel.setBorder(new EmptyBorder(0, 4, 0, 4));
-			weekDaysPanel.setBackground(new Color(51, 51, 255));
-			weekDaysPanel.setLayout(new GridLayout(1, 7, 5, 0));
-		}
-		add(weekDaysPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                            labelIndicatorMouseExited(e);
+                        }
 
-		//======== datesPanel ========
-		{
-			datesPanel.setBorder(new LineBorder(new Color(99, 130, 191)));
-			datesPanel.setBackground(Color.white);
-			datesPanel.setLayout(new GridLayout(6, 7));
-		}
-		add(datesPanel, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+                            labelYearIndicatorMousePressed(e);
+                        }
+                    });
+                    monthAndYearInnerPanel.add(labelYear, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 0, 0), 0, 0));
+                }
+                monthAndYearOuterPanel.add(monthAndYearInnerPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                        new Insets(0, 0, 0, 0), 0, 0));
+            }
+            headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
 
-		//======== footerPanel ========
-		{
-			footerPanel.setLayout(new GridBagLayout());
-			((GridBagLayout)footerPanel.getLayout()).columnWidths = new int[] {6, 0, 0, 0, 6, 0};
-			((GridBagLayout)footerPanel.getLayout()).rowHeights = new int[] {0, 0};
-			((GridBagLayout)footerPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
-			((GridBagLayout)footerPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+            //---- buttonNextMonth ----
+            buttonNextMonth.setText(">");
+            buttonNextMonth.setFocusable(false);
+            buttonNextMonth.setFocusPainted(false);
+            buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
+            buttonNextMonth.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonNextMonthActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
 
-			//---- labelSetDateToToday ----
-			labelSetDateToToday.setText("Today: Feb 12, 2016");
-			labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
-			labelSetDateToToday.setOpaque(true);
-			labelSetDateToToday.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					labelSetDateToTodayMouseClicked(e);
-				}
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					labelIndicatorMouseEntered(e);
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					labelIndicatorMouseExited(e);
-				}
-			});
-			footerPanel.add(labelSetDateToToday, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+            //---- buttonNextYear ----
+            buttonNextYear.setText(">>");
+            buttonNextYear.setFocusable(false);
+            buttonNextYear.setFocusPainted(false);
+            buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
+            buttonNextYear.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonNextYearActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
+        }
+        add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
 
-			//---- labelClearDate ----
-			labelClearDate.setText("Clear");
-			labelClearDate.setOpaque(true);
-			labelClearDate.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					labelClearDateMouseClicked(e);
-				}
-				@Override
-				public void mouseEntered(MouseEvent e) {
-					labelIndicatorMouseEntered(e);
-				}
-				@Override
-				public void mouseExited(MouseEvent e) {
-					labelIndicatorMouseExited(e);
-				}
-			});
-			footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
-		}
-		add(footerPanel, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+        //======== centerPanel ========
+        {
+            centerPanel.setBackground(new Color(99, 130, 191));
+            centerPanel.setLayout(new FormLayout(
+                    "1px, 7*(default:grow), 1px",
+                    "2px, fill:default:grow, 2*(1px), 6*(fill:default:grow), 1px"));
+            ((FormLayout) centerPanel.getLayout()).setColumnGroups(new int[][]{{2, 3, 4, 5, 6, 7, 8}});
+            ((FormLayout) centerPanel.getLayout()).setRowGroups(new int[][]{{2, 5, 6, 7, 8, 9, 10}});
+        }
+        add(centerPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
 
-		//======== yearEditorPanel ========
-		{
-			yearEditorPanel.setLayout(new GridBagLayout());
-			((GridBagLayout)yearEditorPanel.getLayout()).columnWidths = new int[] {40, 1, 26, 0};
-			((GridBagLayout)yearEditorPanel.getLayout()).rowHeights = new int[] {0, 0};
-			((GridBagLayout)yearEditorPanel.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
-			((GridBagLayout)yearEditorPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+        //======== footerPanel ========
+        {
+            footerPanel.setLayout(new GridBagLayout());
+            ((GridBagLayout) footerPanel.getLayout()).columnWidths = new int[]{6, 0, 0, 0, 6, 0};
+            ((GridBagLayout) footerPanel.getLayout()).rowHeights = new int[]{0, 0};
+            ((GridBagLayout) footerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout) footerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
-			//---- doneEditingYearButton ----
-			doneEditingYearButton.setFocusPainted(false);
-			doneEditingYearButton.setFocusable(false);
-			doneEditingYearButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					doneEditingYearButtonActionPerformed(e);
-				}
-			});
-			yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
-		}
+            //---- labelSetDateToToday ----
+            labelSetDateToToday.setText("Today: Feb 12, 2016");
+            labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSetDateToToday.setOpaque(true);
+            labelSetDateToToday.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    labelSetDateToTodayMouseClicked(e);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    labelIndicatorMouseEntered(e);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    labelIndicatorMouseExited(e);
+                }
+            });
+            footerPanel.add(labelSetDateToToday, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+
+            //---- labelClearDate ----
+            labelClearDate.setText("Clear");
+            labelClearDate.setOpaque(true);
+            labelClearDate.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    labelClearDateMouseClicked(e);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    labelIndicatorMouseEntered(e);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    labelIndicatorMouseExited(e);
+                }
+            });
+            footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+        }
+        add(footerPanel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
+
+        //======== yearEditorPanel ========
+        {
+            yearEditorPanel.setLayout(new GridBagLayout());
+            ((GridBagLayout) yearEditorPanel.getLayout()).columnWidths = new int[]{40, 1, 26, 0};
+            ((GridBagLayout) yearEditorPanel.getLayout()).rowHeights = new int[]{0, 0};
+            ((GridBagLayout) yearEditorPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout) yearEditorPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+
+            //---- doneEditingYearButton ----
+            doneEditingYearButton.setFocusPainted(false);
+            doneEditingYearButton.setFocusable(false);
+            doneEditingYearButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    doneEditingYearButtonActionPerformed(e);
+                }
+            });
+            yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

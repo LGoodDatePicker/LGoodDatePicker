@@ -1,11 +1,11 @@
-JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_60" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_91" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "5, 0, 5"
-			"$rowSpecs": "center:6, 0, center:5, 22, 80, center:5, 0, center:5"
+			"$rowSpecs": "center:6, 0, center:5, 80, center:5, 0, center:5"
 			"$alignTop": true
 			"$alignLeft": true
 		} ) {
@@ -108,27 +108,17 @@ new FormModel {
 				"gridx": 1
 				"gridy": 1
 			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
-				"columns": 7
-				"hgap": 5
+			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+				"$columnSpecs": "1px, default:grow, default:grow, default:grow, default:grow, default:grow, default:grow, default:grow, 1px"
+				"$rowSpecs": "2px, fill:default:grow, 1px, 1px, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, 1px"
+				"$columnGroupIds": "0, 1, 1, 1, 1, 1, 1, 1, 0"
+				"$rowGroupIds": "0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0"
 			} ) {
-				name: "weekDaysPanel"
-				"border": new javax.swing.border.EmptyBorder( 0, 4, 0, 4 )
-				"background": new java.awt.Color( 51, 51, 255, 255 )
+				name: "centerPanel"
+				"background": new java.awt.Color( 99, 130, 191, 255 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 3
-			} )
-			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridLayout ) {
-				"columns": 7
-				"rows": 6
-			} ) {
-				name: "datesPanel"
-				"border": new javax.swing.border.LineBorder( new java.awt.Color( 99, 130, 191, 255 ), 1, false )
-				"background": new java.awt.Color( 255, 255, 255, 255 )
-			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-				"gridx": 1
-				"gridy": 4
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 				"$columnSpecs": "6, 0, 0:1.0, 0, 6"
@@ -160,7 +150,7 @@ new FormModel {
 				} )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
-				"gridy": 6
+				"gridy": 5
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
