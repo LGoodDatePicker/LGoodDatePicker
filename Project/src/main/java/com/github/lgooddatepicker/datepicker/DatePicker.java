@@ -104,7 +104,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     /**
      * settings, This holds the settings instance for this date picker. Default settings are
      * generated automatically. Custom settings may optionally be supplied in the DatePicker
-     * constructor.
+     * constructor. This will never return null.
      */
     private DatePickerSettings settings;
 
@@ -139,7 +139,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     public DatePicker(DatePickerSettings settings) {
         settings = (settings == null) ? new DatePickerSettings() : settings;
-        settings.setParentDatePicker(this);
+        settings.zSetParentDatePicker(this);
         this.settings = settings;
         this.convert = new Convert(this);
         initComponents();
@@ -381,8 +381,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return settings.getAllowEmptyDates();
         }
         // Try to get a parsed date.
-        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(text, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(),
-                settings.formatsForParsing, settings.getLocale());
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(text, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(), settings.getFormatsForParsing(), settings.getLocale());
 
         // If the date could not be parsed, return false.
         if (parsedDate == null) {
@@ -422,15 +421,18 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Get the last valid date, to pass to the calendar if needed.
         LocalDate selectedDateForCalendar = lastValidDate;
-        // Create a new calendar panel.
-        calendarPanel = new CalendarPanel(settings);
+        // Create a new calendar panel. 
+        // Use the CalendarPanel constructor that is made for the DatePicker class.
+        DatePicker thisDatePicker = this;
+        calendarPanel = new CalendarPanel(thisDatePicker);
+        // If needed, apply the selected date to the calendar.
         if (selectedDateForCalendar != null) {
             calendarPanel.setSelectedDate(selectedDateForCalendar);
             calendarPanel.setDisplayedYearMonth(YearMonth.from(selectedDateForCalendar));
         }
         // Create a new custom popup.
         popup = new CustomPopup(calendarPanel, SwingUtilities.getWindowAncestor(this),
-                this, settings.borderCalendarPopup);
+                this, settings.getBorderCalendarPopup());
         int popupX = toggleCalendarButton.getLocationOnScreen().x
                 + toggleCalendarButton.getBounds().width - popup.getBounds().width - 2;
         int popupY = toggleCalendarButton.getLocationOnScreen().y
@@ -729,8 +731,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // If the text is not empty, then try to parse the date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
-            parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(),
-                    settings.formatsForParsing, settings.getLocale());
+            parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(), settings.getFormatsForParsing(), settings.getLocale());
         }
         // If the date was parsed successfully, then check it against the veto policy.
         boolean dateIsVetoed = false;
@@ -821,7 +822,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Reset all atributes to normal before going further.
         // (Possibility: ValidFullOrEmptyValue)
         dateTextField.setBackground(Color.white);
-        dateTextField.setForeground(settings.colorTextValidDate);
+        dateTextField.setForeground(settings.getColorTextValidDate());
         dateTextField.setFont(settings.getFontValidDate());
         // Get the text, and check to see if it is empty.
         String dateText = dateTextField.getText();
@@ -837,11 +838,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return;
         }
         // The text is not empty.
-        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(),
-                settings.formatsForParsing, settings.getLocale());
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(), settings.getFormatsForParsing(), settings.getLocale());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
-            dateTextField.setForeground(settings.colorTextInvalidDate);
+            dateTextField.setForeground(settings.getColorTextInvalidDate());
             dateTextField.setFont(settings.getFontInvalidDate());
             return;
         }
@@ -850,7 +850,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         boolean isDateVetoed = InternalUtilities.isDateVetoed(vetoPolicy, parsedDate);
         if (isDateVetoed) {
             // (Possibility: VetoedValue)
-            dateTextField.setForeground(settings.colorTextVetoedDate);
+            dateTextField.setForeground(settings.getColorTextVetoedDate());
             dateTextField.setFont(settings.getFontVetoedDate());
         }
     }

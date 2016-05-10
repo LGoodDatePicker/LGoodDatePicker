@@ -135,7 +135,7 @@ public class FullDemo {
         // Create a date picker: With highlight policy.
         dateSettings = new DatePickerSettings();
         datePicker2 = new DatePicker(dateSettings);
-        dateSettings.highlightPolicy = new SampleHighlightPolicy();
+        dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
         panel.panel1.add(datePicker2, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 2, Highlight Policy:");
 
@@ -151,26 +151,28 @@ public class FullDemo {
         // Note: Veto policies can only be set after constructing the date picker.
         dateSettings = new DatePickerSettings();
         datePicker = new DatePicker(dateSettings);
-        dateSettings.highlightPolicy = new SampleHighlightPolicy();
+        dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 4, Both Policies:");
 
         // Create a date picker: Change calendar size.
         dateSettings = new DatePickerSettings();
-        dateSettings.sizeDatePanelMinimumHeight *= 1.6;
-        dateSettings.sizeDatePanelMinimumWidth *= 1.6;
+        int newHeight = (int) (dateSettings.getSizeDatePanelMinimumHeight() * 1.6);
+        int newWidth = (int) (dateSettings.getSizeDatePanelMinimumWidth() * 1.6);
+        dateSettings.setSizeDatePanelMinimumHeight(newHeight);
+        dateSettings.setSizeDatePanelMinimumWidth(newWidth);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 5, Change Calendar Size:");
 
         // Create a date picker: Custom color.
         dateSettings = new DatePickerSettings();
-        dateSettings.colorBackgroundCalendarPanel = Color.green;
-        dateSettings.colorBackgroundWeekdayLabels = Color.orange;
-        dateSettings.colorBackgroundMonthAndYear = Color.yellow;
-        dateSettings.colorBackgroundTodayAndClear = Color.yellow;
-        dateSettings.colorBackgroundNavigateYearMonthButtons = Color.cyan;
+        dateSettings.setColorBackgroundCalendarPanel(Color.green);
+        dateSettings.setColorBackgroundWeekdayLabels(Color.orange);
+        dateSettings.setColorBackgroundMonthAndYear(Color.yellow);
+        dateSettings.setColorBackgroundTodayAndClear(Color.yellow);
+        dateSettings.setColorBackgroundNavigateYearMonthButtons(Color.cyan);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Colors:");
@@ -195,7 +197,7 @@ public class FullDemo {
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
         dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
-        dateSettings.colorTextValidDate = new Color(0, 100, 0);
+        dateSettings.setColorTextValidDate(new Color(0, 100, 0));
         dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
@@ -229,7 +231,7 @@ public class FullDemo {
 
         // Create a date picker: Change first weekday.
         dateSettings = new DatePickerSettings();
-        dateSettings.firstDayOfWeek = DayOfWeek.MONDAY;
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Set First Day Of Week (Mon):");
@@ -238,7 +240,8 @@ public class FullDemo {
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowEmptyDates(false);
         datePicker = new DatePicker(dateSettings);
-        datePicker.addDateChangeListener(new SampleDateChangeListener("datePicker12 (Disallow Empty Dates or Null), "));
+        datePicker.addDateChangeListener(
+                new SampleDateChangeListener("datePicker12 (Disallow Empty Dates or Null), "));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Disallow Empty Dates:");
 
@@ -331,7 +334,8 @@ public class FullDemo {
         // Create a DateTimePicker: Default settings
         dateTimePicker1 = new DateTimePicker();
         panel.panel2.add(dateTimePicker1, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "DateTimePicker 1, Default settings:");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+                "DateTimePicker 1, Default settings:");
 
         // Create a DateTimePicker: Disallow empty dates and times.
         dateSettings = new DatePickerSettings();
@@ -340,13 +344,16 @@ public class FullDemo {
         timeSettings.setAllowEmptyTimes(false);
         dateTimePicker2 = new DateTimePicker(dateSettings, timeSettings);
         panel.panel2.add(dateTimePicker2, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "DateTimePicker 2, Disallow empty dates and times:");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+                "DateTimePicker 2, Disallow empty dates and times:");
 
         // Create a DateTimePicker: With change listener.
         dateTimePicker3 = new DateTimePicker();
-        dateTimePicker3.addDateTimeChangeListener(new SampleDateTimeChangeListener("dateTimePicker3"));
+        dateTimePicker3.addDateTimeChangeListener(new SampleDateTimeChangeListener(
+                "dateTimePicker3"));
         panel.panel2.add(dateTimePicker3, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "DateTimePicker 3, With Change Listener:");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+                "DateTimePicker 3, With Change Listener:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining TimePickers.
@@ -766,7 +773,7 @@ public class FullDemo {
         String targetJavaVersion = InternalUtilities.getJavaTargetVersionFromPom();
         String projectVersion = InternalUtilities.getProjectVersionString();
         boolean isBackport = ("1.6".equals(targetJavaVersion));
-        String message = ""; 
+        String message = "";
         message += "## Current configuration ##";
         message += "\nLGoodDatePicker version: \"LGoodDatePicker ";
         message += (isBackport) ? ("Backport " + projectVersion) : (projectVersion + " (Standard)");
