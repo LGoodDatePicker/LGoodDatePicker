@@ -132,9 +132,6 @@ new FormModel {
 					"text": "Today: Feb 12, 2016"
 					"horizontalAlignment": 0
 					"opaque": true
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "labelSetDateToTodayMouseClicked", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 					"gridx": 1
 				} )
@@ -142,9 +139,6 @@ new FormModel {
 					name: "labelClearDate"
 					"text": "Clear"
 					"opaque": true
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseClicked", "labelClearDateMouseClicked", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
-					addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
 				}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 					"gridx": 3
 				} )

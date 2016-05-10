@@ -848,7 +848,9 @@ public class DatePickerSettings {
      */
     public void setColorBackgroundMonthAndYear(Color colorBackgroundMonthAndYear) {
         this.colorBackgroundMonthAndYear = colorBackgroundMonthAndYear;
-        zDrawIndependentCalendarPanelIfNeeded();
+        if (parentCalendarPanel != null) {
+            parentCalendarPanel.zLabelIndicatorsAllSetColorsToDefaultState();
+        }
     }
 
     /**
@@ -867,7 +869,9 @@ public class DatePickerSettings {
      */
     public void setColorBackgroundTodayAndClear(Color colorBackgroundTodayAndClear) {
         this.colorBackgroundTodayAndClear = colorBackgroundTodayAndClear;
-        zDrawIndependentCalendarPanelIfNeeded();
+        if (parentCalendarPanel != null) {
+            parentCalendarPanel.zLabelIndicatorsAllSetColorsToDefaultState();
+        }
     }
 
     /**
@@ -885,7 +889,9 @@ public class DatePickerSettings {
      */
     public void setColorBackgroundWeekdayLabels(Color colorBackgroundWeekdayLabels) {
         this.colorBackgroundWeekdayLabels = colorBackgroundWeekdayLabels;
-        zDrawIndependentCalendarPanelIfNeeded();
+        if (parentCalendarPanel != null) {
+            parentCalendarPanel.zRedrawWeekdayLabelColors();
+        }
     }
 
     /**
@@ -1193,7 +1199,7 @@ public class DatePickerSettings {
      * The default value for this setting is true. This setting only has an effect if
      * (sizeTextFieldMinimumWidth != null).
      *
-     * See also: "sizeTextFieldMinimumWidth".
+     * See also: "setSizeTextFieldMinimumWidth()".
      */
     public void setSizeTextFieldMinimumWidthDefaultOverride(boolean defaultShouldOverrideIfNeeded) {
         this.sizeTextFieldMinimumWidthDefaultOverride = defaultShouldOverrideIfNeeded;

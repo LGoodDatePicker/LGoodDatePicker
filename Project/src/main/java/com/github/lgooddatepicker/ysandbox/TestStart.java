@@ -2,7 +2,6 @@ package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
-import com.github.lgooddatepicker.datepicker.DatePicker;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
@@ -10,8 +9,6 @@ import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.Locale;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -29,21 +26,21 @@ public class TestStart {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel);
-
-        DatePickerSettings settings = new DatePickerSettings();
-        settings.setAllowEmptyDates(false);
-        CalendarPanel calendarPanel = new CalendarPanel(settings);
-        boolean isSelectedDateAllowed = settings.setVetoPolicy(new SampleDateVetoPolicy());
-        settings.setHighlightPolicy(new SampleHighlightPolicy());
-        settings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        panel.add(calendarPanel);
         
-
-        Locale datePickerLocale = new Locale("en");
-        DatePickerSettings datePickerSettings = new DatePickerSettings(datePickerLocale);
-        datePickerSettings.setInitialDate(LocalDate.of(2016, Month.APRIL, 15));
-        DatePicker datePicker = new DatePicker(datePickerSettings);
-        panel.add(datePicker);
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // This section creates CalendarPanels, with various features. (presetting preferred.)
+        //
+        int rowMultiplier = 4;
+        CalendarPanel calendarPanel;
+        DatePickerSettings dateSettings;
+        int row = rowMultiplier;
+        
+        // Create a CalendarPanel: With highlight policy.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
+        calendarPanel = new CalendarPanel(dateSettings);
+        panel.add(calendarPanel);
 
         // Display the frame.
         frame.pack();
