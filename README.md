@@ -11,7 +11,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
-* [LGoodDatePicker 7.1.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).
+* [LGoodDatePicker 7.1.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22).
 
 * The [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports) were released on May 4, 2016. With these backports, the library can now be used in projects which are built for older Java versions, Java 6 or 7. 
 
