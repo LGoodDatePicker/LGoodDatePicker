@@ -2,14 +2,17 @@ package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,14 +30,13 @@ public class CalendarPanelAssortmentTest {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel);
-        
-        
+
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates CalendarPanels, with various features. (presetting preferred.)
         //
         int rowMultiplier = 4;
         CalendarPanel calendarPanel;
-        
+
         // Create a settings variable for repeated use.
         DatePickerSettings dateSettings;
         int row = rowMultiplier;
@@ -46,12 +48,14 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: With highlight policy.
         dateSettings = new DatePickerSettings();
         dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: With veto policy.
         // Note: Veto policies can only be set after constructing the CalendarPanel.
         dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
         panel.add(calendarPanel);
@@ -60,6 +64,7 @@ public class CalendarPanelAssortmentTest {
         // Note: Veto policies can only be set after constructing the CalendarPanel.
         dateSettings = new DatePickerSettings();
         dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
         panel.add(calendarPanel);
@@ -70,50 +75,106 @@ public class CalendarPanelAssortmentTest {
         int newWidth = (int) (dateSettings.getSizeDatePanelMinimumWidth() * 1.7);
         dateSettings.setSizeDatePanelMinimumHeight(newHeight);
         dateSettings.setSizeDatePanelMinimumWidth(newWidth);
+        dateSettings.setWeekNumbersDisplayed(true, true);
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: Custom color.
         dateSettings = new DatePickerSettings();
         dateSettings.setColorBackgroundCalendarPanel(Color.BLUE);
-        dateSettings.setColorBackgroundWeekdayLabels(Color.PINK);
+        dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
+        dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
+        dateSettings.setColorBackgroundTopLeftLabel(Color.PINK);
         dateSettings.setColorBackgroundMonthAndYear(Color.ORANGE);
         dateSettings.setColorBackgroundTodayAndClear(Color.ORANGE);
         dateSettings.setColorBackgroundNavigateYearMonthButtons(Color.MAGENTA);
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: Change first weekday.
         dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.THURSDAY);
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowEmptyDates(false);
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
-        
 
         // Create a CalendarPanel: Localized (Greek)
         Locale datePickerLocale = new Locale("el");
         dateSettings = new DatePickerSettings(datePickerLocale);
         dateSettings.setInitialDate(LocalDate.of(2016, Month.APRIL, 15));
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
-        
-        
+
+        // Create a CalendarPanel: With crazy border properties.
+        dateSettings = new DatePickerSettings();
+        // Create a list to hold the border properties.
+        ArrayList<CalendarBorderProperties> customPropertiesList
+                = new ArrayList<CalendarBorderProperties>();
+        // Set the borders properties for everything to Blue.
+        CalendarBorderProperties weekdayLabelBorderProperties = new CalendarBorderProperties(
+                new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);
+        customPropertiesList.add(weekdayLabelBorderProperties);
+        // Make the top border extra thick.
+        // Notice that all borders in the same row or column will be displayed with the same 
+        // thickness as the thickest individual border that is in the same line. 
+        CalendarBorderProperties topBorderProperties = new CalendarBorderProperties(
+                new Point(4, 1), new Point(4, 1), Color.YELLOW, 15);
+        customPropertiesList.add(topBorderProperties);
+        // Set the borders properties for the date box.
+        CalendarBorderProperties dateBoxBorderProperties = new CalendarBorderProperties(
+                new Point(3, 3), new Point(5, 5), Color.GREEN, 10);
+        customPropertiesList.add(dateBoxBorderProperties);
+        // Set borders properties for the week number labels.
+        // Note: Week number borders are always hidden unless the the week numbers are displayed.
+        // ("Week number borders" are any borders located in columns 1 and 2.)
+        CalendarBorderProperties weekNumberBorderProperties = new CalendarBorderProperties(
+                new Point(1, 1), new Point(2, 5), Color.ORANGE, 10);
+        customPropertiesList.add(weekNumberBorderProperties);
+        // Set the corner borders of the date box individually.
+        CalendarBorderProperties cornerProp;
+        cornerProp = new CalendarBorderProperties(new Point(3, 3), new Point(3, 3), Color.BLUE, 1);
+        customPropertiesList.add(cornerProp);
+        cornerProp = new CalendarBorderProperties(new Point(3, 5), new Point(3, 5), Color.BLUE, 1);
+        customPropertiesList.add(cornerProp);
+        cornerProp = new CalendarBorderProperties(new Point(5, 3), new Point(5, 3), Color.BLUE, 1);
+        customPropertiesList.add(cornerProp);
+        cornerProp = new CalendarBorderProperties(new Point(5, 5), new Point(5, 5), Color.BLUE, 1);
+        customPropertiesList.add(cornerProp);
+        // Save the border properties to the settings.
+        dateSettings.setBorderPropertiesList(customPropertiesList);
+        dateSettings.setWeekNumbersDisplayed(true, false);
+        calendarPanel = new CalendarPanel(dateSettings);
+        panel.add(calendarPanel);
+
+        // Create a CalendarPanel: With week numbers displayed, and custom week number rules.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
+        // dateSettings.setWeekNumbersForceFirstDayOfWeekToMatch(false);
+        // dateSettings.setWeekNumberRules(WeekFields.ISO);
+        calendarPanel = new CalendarPanel(dateSettings);
+        panel.add(calendarPanel);
+
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates CalendarPanels, with various features. (postsetting preferred.)
         //
-
         // Create a CalendarPanel: With default settings
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel();
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: With highlight policy.
         dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
         panel.add(calendarPanel);
@@ -121,6 +182,7 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: With veto policy.
         // Note: Veto policies can only be set after constructing the CalendarPanel.
         dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
         panel.add(calendarPanel);
@@ -128,6 +190,7 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: With both policies.
         // Note: Veto policies can only be set after constructing the CalendarPanel.
         dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
@@ -135,6 +198,7 @@ public class CalendarPanelAssortmentTest {
 
         // Create a CalendarPanel: Change calendar size.
         dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         int newHeight2 = (int) (dateSettings.getSizeDatePanelMinimumHeight() * 1.7);
         int newWidth2 = (int) (dateSettings.getSizeDatePanelMinimumWidth() * 1.7);
@@ -144,9 +208,12 @@ public class CalendarPanelAssortmentTest {
 
         // Create a CalendarPanel: Custom color.
         dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setColorBackgroundCalendarPanel(Color.BLUE);
-        dateSettings.setColorBackgroundWeekdayLabels(Color.PINK);
+        dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
+        dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
+        dateSettings.setColorBackgroundTopLeftLabel(Color.PINK);
         dateSettings.setColorBackgroundMonthAndYear(Color.ORANGE);
         dateSettings.setColorBackgroundTodayAndClear(Color.ORANGE);
         dateSettings.setColorBackgroundNavigateYearMonthButtons(Color.MAGENTA);
@@ -154,6 +221,7 @@ public class CalendarPanelAssortmentTest {
 
         // Create a CalendarPanel: Change first weekday.
         dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setFirstDayOfWeek(DayOfWeek.THURSDAY);
         panel.add(calendarPanel);
@@ -161,15 +229,65 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowEmptyDates(false);
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
-        
 
         // Create a CalendarPanel: Localized (Greek)
         Locale datePickerLocale2 = new Locale("el");
         dateSettings = new DatePickerSettings(datePickerLocale2);
         dateSettings.setInitialDate(LocalDate.of(2016, Month.APRIL, 15));
+        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
+        panel.add(calendarPanel);
+
+        // Create a CalendarPanel: With crazy border properties.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
+        calendarPanel = new CalendarPanel(dateSettings);
+        // Create a list to hold the border properties.
+        ArrayList<CalendarBorderProperties> customPropertiesList2
+                = new ArrayList<CalendarBorderProperties>();
+        // Set the borders properties for everything to Blue.
+        CalendarBorderProperties weekdayLabelBorderProperties2 = new CalendarBorderProperties(
+                new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);
+        customPropertiesList2.add(weekdayLabelBorderProperties2);
+        // Make the top border extra thick.
+        // Notice that all borders in the same row or column will be displayed with the same 
+        // thickness as the thickest individual border that is in the same line. 
+        CalendarBorderProperties topBorderProperties2 = new CalendarBorderProperties(
+                new Point(4, 1), new Point(4, 1), Color.YELLOW, 15);
+        customPropertiesList2.add(topBorderProperties2);
+        // Set the borders properties for the date box.
+        CalendarBorderProperties dateBoxBorderProperties2 = new CalendarBorderProperties(
+                new Point(3, 3), new Point(5, 5), Color.GREEN, 10);
+        customPropertiesList2.add(dateBoxBorderProperties2);
+        // Set borders properties for the week number labels.
+        // Note: Week number borders are always hidden unless the the week numbers are displayed.
+        // ("Week number borders" are any borders located in columns 1 and 2.)
+        CalendarBorderProperties weekNumberBorderProperties2 = new CalendarBorderProperties(
+                new Point(1, 1), new Point(2, 5), Color.ORANGE, 10);
+        customPropertiesList2.add(weekNumberBorderProperties2);
+        // Set the corner borders of the date box individually.
+        CalendarBorderProperties cornerProp2;
+        cornerProp2 = new CalendarBorderProperties(new Point(3, 3), new Point(3, 3), Color.BLUE, 1);
+        customPropertiesList2.add(cornerProp2);
+        cornerProp2 = new CalendarBorderProperties(new Point(3, 5), new Point(3, 5), Color.BLUE, 1);
+        customPropertiesList2.add(cornerProp2);
+        cornerProp2 = new CalendarBorderProperties(new Point(5, 3), new Point(5, 3), Color.BLUE, 1);
+        customPropertiesList2.add(cornerProp2);
+        cornerProp2 = new CalendarBorderProperties(new Point(5, 5), new Point(5, 5), Color.BLUE, 1);
+        customPropertiesList2.add(cornerProp2);
+        // Save the border properties to the settings.
+        dateSettings.setBorderPropertiesList(customPropertiesList2);
+        panel.add(calendarPanel);
+
+        // Create a CalendarPanel: With week numbers displayed, and custom week number rules.
+        dateSettings = new DatePickerSettings();
+        calendarPanel = new CalendarPanel(dateSettings);
+        dateSettings.setWeekNumbersDisplayed(true, true);
+        // dateSettings.setWeekNumbersForceFirstDayOfWeekToMatch(false);
+        // dateSettings.setWeekNumberRules(WeekFields.ISO);
         panel.add(calendarPanel);
 
         // Display the frame.
@@ -179,10 +297,9 @@ public class CalendarPanelAssortmentTest {
         int maxHeight = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height;
         frame.setSize(640, 480);
         frame.setLocation(maxWidth / 2, maxHeight / 2);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setVisible(true);
     }
-    
-    
 
     /**
      * SampleDateVetoPolicy, A veto policy is a way to disallow certain dates from being selected in

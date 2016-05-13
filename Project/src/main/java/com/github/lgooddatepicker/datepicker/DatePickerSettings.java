@@ -1,6 +1,7 @@
 package com.github.lgooddatepicker.datepicker;
 
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
+import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.FormLayout;
@@ -19,6 +20,7 @@ import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.InternalConstants;
+import java.awt.Point;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
@@ -72,10 +74,42 @@ public class DatePickerSettings {
     private boolean allowKeyboardEditing = true;
 
     /**
-     * borderCalendarPopup, This is the border for the calendar popup window. If this is null, a
-     * default border will be provided by the CustomPopup class. The default value is null.
+     * borderCalendarPopup, This is the (outside) border for the calendar popup window. If this is
+     * null, a default border will be provided by the CustomPopup class. The default value is null.
      */
     private Border borderCalendarPopup = null;
+
+    /**
+     * borderPropertiesList, This contains the list of border properties objects that specifies the
+     * colors and thicknesses of the borders in the CalendarPanel. By default, a default set of
+     * border properties is stored in the borderPropertiesList.
+     *
+     * Passing in "null" when setting this property will restore the default border properties. If
+     * you don't want the default border properties but wish to truly "clear" the border properties
+     * list, you could pass in an empty ArrayList.
+     *
+     * To modify the calendar borders (including individual border colors, thickness, or
+     * visibility), you can supply your own ArrayList of border properties. Border properties
+     * objects are applied in the order that they appear in the ArrayList. To learn how to set the
+     * CalendarBorderProperties objects, see the CalendarBorderProperties class javadocs.
+     *
+     * The default border properties have a one pixel blue border around the date labels, and two
+     * vertical light blue borders near the weekday labels (which match the color of the weekday
+     * labels). The outer top horizontal border and the outer left vertical border are invisible by
+     * default.
+     *
+     * The default border properties also include borders above and below the "week numbers" column
+     * which match the color of the week numbers labels. (However, these borders are only displayed
+     * when the week numbers are displayed.)
+     *
+     * Whenever the border properties list is applied, the borders are first "cleared" by setting
+     * all borders to the following settings: Invisible, and black color. This is true of both the
+     * default border properties and any programmer supplied border properties.
+     *
+     * Note: If weekNumbersDisplayed is set to false, then the borders located in the week number
+     * columns (Columns 1 and 2) will always be hidden.
+     */
+    private ArrayList<CalendarBorderProperties> borderPropertiesList;
 
     /**
      * colorBackgroundCalendarPanel, This is the background color for the entire calendar panel. The
@@ -121,6 +155,19 @@ public class DatePickerSettings {
     private Color colorBackgroundWeekdayLabels = new Color(184, 207, 229);
 
     /**
+     * colorBackgroundWeekNumberLabels, This is the calendar background color for the week number
+     * labels. The default color is a medium sky blue.
+     */
+    private Color colorBackgroundWeekNumberLabels = new Color(184, 207, 229);
+
+    /**
+     * colorBackgroundTopLeftLabel, This is the calendar background color for the label that is used
+     * to fill the top left corner of the calendar whenever the week numbers are displayed. The
+     * default color is a medium sky blue.
+     */
+    private Color colorBackgroundTopLeftLabel = new Color(184, 207, 229);
+
+    /**
      * colorTextInvalidDate, This is the text field text color for invalid dates. The default color
      * is red.
      */
@@ -143,6 +190,11 @@ public class DatePickerSettings {
      * firstDayOfWeek, This holds the day of the week that will be displayed in the far left column
      * of the CalendarPanel, as the "first day of the week". The default value is generated using
      * the locale of the settings instance.
+     *
+     * By default, If weekNumbersDisplayed is set to true, then the first day of the week will not
+     * match the setting. (weekNumbersDisplayed is false by default.) For additional details, see
+     * the javadocs for the following settings: "weekNumbersDisplayed", and
+     * "weekNumbersForceFirstDayOfWeekToMatch".
      */
     private DayOfWeek firstDayOfWeek;
 
@@ -384,6 +436,69 @@ public class DatePickerSettings {
     private DateVetoPolicy vetoPolicy = null;
 
     /**
+     * weekNumbersRules, This contains the week number rules that will be used to show the week
+     * numbers (the weeks of the year), whenever the week numbers are displayed on this calendar.
+     *
+     * The definitions for the first day of the week, and for the minimum number of days that
+     * constitutes the first week of the year, varies between locales. The Java time WeekFields
+     * class specifies those rules.
+     *
+     * If you set this setting to null, then the weekNumberRules will be set to match the
+     * DatePickerSettings locale. By default, the week number rules will match the
+     * DatePickerSettings locale.
+     *
+     * If you would like the week number rules to be the same for all calendars regardless of the
+     * locale, then you should consider setting the weekNumberRules to be one of these two commonly
+     * used rule sets: WeekFields.ISO or WeekFields.SUNDAY_START.
+     */
+    private WeekFields weekNumberRules;
+
+    /**
+     * weekNumbersDisplayed, This specifies whether or not numbers for the "week of the year" should
+     * be displayed on the calendar panel. The week numbers will be shown if this is true, or they
+     * will not be shown if this is false. This is false by default.
+     *
+     * The week numbers are locale sensitive, because the definition of the first day of the week,
+     * and the definition for the minimum number of days in the first week of the year, varies
+     * between locales.
+     *
+     * By default, when "weekNumbersDisplayed" is true, the first day of the week used by the
+     * calendar will always match the weekNumberRules definition for first day of the week. This
+     * behavior can be changed by modifying the setting "weekNumbersForceFirstDayOfWeekToMatch".
+     *
+     * Note: When weekNumbersDisplayed is set to false, then the borders located in the week number
+     * columns (Columns 1 and 2) will always be set to be hidden.
+     */
+    private boolean weekNumbersDisplayed = false;
+
+    /**
+     * weekNumbersForceFirstDayOfWeekToMatch, This setting determines if the first day of the week
+     * should be forced to match the weekNumberRules for the first day of the week, whenever
+     * weekNumbersDisplayed is true.
+     *
+     * If weekNumbersDisplayed is false, then the week numbers will not be displayed, and the
+     * setting will not have any effect.
+     *
+     * If this setting is true and weekNumbersDisplayed is true, then the first day of the week that
+     * is shown on the calendar will always match the weekNumberRules definition for "first day of
+     * the week". (And all the dates in each row will always belong to the displayed week number.)
+     *
+     * If this setting is false and weekNumbersDisplayed is true, then the week numbers will be
+     * determined by a "majority rules" system, which is described below. (In this system, up to 3
+     * dates in each row may not belong to the displayed week number.)
+     *
+     * Description of the "majority rules" system: If this setting is false, and if the first day of
+     * the week is set to be different than the first day of the week defined by the
+     * weekNumberRules, then the dates in a single row of the calendar may not all belong to the
+     * same week number. In this circumstance, the displayed week number for each row will be
+     * determined by a "majority rules" system. More specifically, the calendar will count the
+     * number of days in each row that belong to each week number. Four or more days in a particular
+     * row will always match a particular week number, and that is the week number that will be
+     * displayed next to the row.
+     */
+    private boolean weekNumbersForceFirstDayOfWeekToMatch = true;
+
+    /**
      * Constructor with Default Locale, This constructs a date picker settings instance using the
      * system default locale and language. The constructor populates all the settings with default
      * values.
@@ -404,6 +519,9 @@ public class DatePickerSettings {
 
         // Save the date picker locale.
         this.locale = pickerLocale;
+
+        // Set the default week number rules.
+        weekNumberRules = WeekFields.of(locale);
 
         // Set the default translations for the locale.
         translationToday = TranslationSource.getTranslation(pickerLocale, "today", "Today");
@@ -454,6 +572,12 @@ public class DatePickerSettings {
         Map attributes = fontVetoedDate.getAttributes();
         attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
         fontVetoedDate = new Font(attributes);
+
+        // Set the default border properties.
+        // (Setting this to null will create and save, (and apply when needed) a default set of
+        // border properties. I don't think there would be any parent to apply them to when called 
+        // from the DatePickerSettings constructor though.)
+        setBorderPropertiesList(null);
     }
 
     /**
@@ -478,6 +602,14 @@ public class DatePickerSettings {
      */
     public Border getBorderCalendarPopup() {
         return borderCalendarPopup;
+    }
+
+    /**
+     * getBorderPropertiesList, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public ArrayList<CalendarBorderProperties> getBorderPropertiesList() {
+        return borderPropertiesList;
     }
 
     /**
@@ -521,11 +653,27 @@ public class DatePickerSettings {
     }
 
     /**
+     * getColorBackgroundTopLeftLabel, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public Color getColorBackgroundTopLeftLabel() {
+        return colorBackgroundTopLeftLabel;
+    }
+
+    /**
      * getColorBackgroundVetoedDates, Returns the value of this setting. See the "set" function for
      * setting information.
      */
     public Color getColorBackgroundVetoedDates() {
         return colorBackgroundVetoedDates;
+    }
+
+    /**
+     * getColorBackgroundWeekNumberLabels, Returns the value of this setting. See the "set" function
+     * for setting information.
+     */
+    public Color getColorBackgroundWeekNumberLabels() {
+        return colorBackgroundWeekNumberLabels;
     }
 
     /**
@@ -561,10 +709,24 @@ public class DatePickerSettings {
     }
 
     /**
-     * getFirstDayOfWeek, Returns the value of this setting. See the "set" function for setting
-     * information.
+     * getFirstDayOfWeekDisplayedOnCalendar, Returns the first day of the week as it will be
+     * displayed on the calendar. Note that this setting may or may not match the first day of the
+     * week setting. See also: "weekNumbersDisplayed", and "weekNumbersForceFirstDayOfWeekToMatch".
      */
-    public DayOfWeek getFirstDayOfWeek() {
+    public DayOfWeek getFirstDayOfWeekDisplayedOnCalendar() {
+        if (weekNumbersDisplayed && weekNumbersForceFirstDayOfWeekToMatch
+                && (weekNumberRules != null)) {
+            return weekNumberRules.getFirstDayOfWeek();
+        }
+        return firstDayOfWeek;
+    }
+
+    /**
+     * getFirstDayOfWeekSetting, Returns the value of of the setting for the first day of the week.
+     * Note that this setting may or may not match the first day of the week that is displayed on
+     * the calendar. See also: "weekNumbersDisplayed", and "weekNumbersForceFirstDayOfWeekToMatch".
+     */
+    public DayOfWeek getFirstDayOfWeekSetting() {
         return firstDayOfWeek;
     }
 
@@ -743,6 +905,30 @@ public class DatePickerSettings {
     }
 
     /**
+     * getWeekNumberRules, Returns the value of this setting. See the "set" function for setting
+     * information.
+     */
+    public WeekFields getWeekNumberRules() {
+        return weekNumberRules;
+    }
+
+    /**
+     * getWeekNumbersDisplayed, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public boolean getWeekNumbersDisplayed() {
+        return weekNumbersDisplayed;
+    }
+
+    /**
+     * getWeekNumbersForceFirstDayOfWeekToMatch, Returns the value of this setting. See the "set"
+     * function for setting information.
+     */
+    public boolean getWeekNumbersForceFirstDayOfWeekToMatch() {
+        return weekNumbersForceFirstDayOfWeekToMatch;
+    }
+
+    /**
      * hasParent, This returns true if this settings instance has a parent, otherwise returns false.
      * A settings instance will have a parent if the settings instance has already been used to
      * construct a DatePicker, or to construct an independent CalendarPanel. Note that settings
@@ -825,6 +1011,44 @@ public class DatePickerSettings {
     }
 
     /**
+     * setBorderPropertiesList, This sets the list of border properties objects that specifies the
+     * colors and thicknesses of the borders in the CalendarPanel. By default, a default set of
+     * border properties is stored in the borderPropertiesList.
+     *
+     * Passing in "null" when setting this property will restore the default border properties. If
+     * you don't want the default border properties but wish to truly "clear" the border properties
+     * list, you could pass in an empty ArrayList.
+     *
+     * To modify the calendar borders (including individual border colors, thickness, or
+     * visibility), you can supply your own ArrayList of border properties. Border properties
+     * objects are applied in the order that they appear in the ArrayList. To learn how to set the
+     * CalendarBorderProperties objects, see the CalendarBorderProperties class javadocs.
+     *
+     * The default border properties have a one pixel blue border around the date labels, and two
+     * vertical light blue borders near the weekday labels (which match the color of the weekday
+     * labels). The outer top horizontal border and the outer left vertical border are invisible by
+     * default.
+     *
+     * The default border properties also include borders above and below the "week numbers" column
+     * which match the color of the week numbers labels. (However, these borders are only displayed
+     * when the week numbers are displayed.)
+     *
+     * Whenever the border properties list is applied, the borders are first "cleared" by setting
+     * all borders to the following settings: Invisible, and black color. This is true of both the
+     * default border properties and any programmer supplied border properties.
+     *
+     * Note: If weekNumbersDisplayed is set to false, then the borders located in the week number
+     * columns (Columns 1 and 2) will always be hidden.
+     */
+    public void setBorderPropertiesList(ArrayList<CalendarBorderProperties> borderPropertiesList) {
+        if (borderPropertiesList == null) {
+            borderPropertiesList = zGetDefaultBorderPropertiesList();
+        }
+        this.borderPropertiesList = borderPropertiesList;
+        zApplyBorderPropertiesList();
+    }
+
+    /**
      * setColorBackgroundCalendarPanel, This sets the background color for the entire calendar
      * panel. The default color is a very light gray.
      */
@@ -875,6 +1099,31 @@ public class DatePickerSettings {
     }
 
     /**
+     * setColorBackgroundTopLeftLabel, This sets the calendar background color for the label that is
+     * used to fill the top left corner of the calendar whenever the week numbers are displayed. The
+     * default color is a medium sky blue.
+     */
+    public void setColorBackgroundTopLeftLabel(Color colorBackgroundTopLeftLabel) {
+        this.colorBackgroundTopLeftLabel = colorBackgroundTopLeftLabel;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setColorBackgroundWeekNumberLabels, This sets the calendar background color for the week
+     * number labels. The default color is a medium sky blue.
+     */
+    public void setColorBackgroundWeekNumberLabels(Color colorBackgroundWeekNumberLabels,
+            boolean applyMatchingDefaultBorders) {
+        this.colorBackgroundWeekNumberLabels = colorBackgroundWeekNumberLabels;
+        if (applyMatchingDefaultBorders) {
+            setBorderPropertiesList(null);
+        }
+        if (parentCalendarPanel != null) {
+            parentCalendarPanel.zRedrawWeekNumberLabelColors();
+        }
+    }
+
+    /**
      * setColorBackgroundVetoedDates, This sets the calendar background color for dates which are
      * vetoed by a veto policy. The default color is light gray.
      */
@@ -886,9 +1135,21 @@ public class DatePickerSettings {
     /**
      * setColorBackgroundWeekdayLabels, This sets the calendar background color for the weekday
      * labels. The default color is a medium sky blue.
+     *
+     * @param applyMatchingDefaultBorders, This determines if this function will update the border
+     * label properties to show the appropriate default borders. The default border label settings
+     * are different, depending on the "colorBackgroundWeekdayLabels". If you have not customized
+     * the border label properties, then it is recommended that you always set the
+     * "applyMatchingDefaultBorders" parameter to true. This will ensure that the calendar borders
+     * will always use the correct default settings. If you set this parameter to false, than the
+     * current border settings will not be changed by this function.
      */
-    public void setColorBackgroundWeekdayLabels(Color colorBackgroundWeekdayLabels) {
+    public void setColorBackgroundWeekdayLabels(Color colorBackgroundWeekdayLabels,
+            boolean applyMatchingDefaultBorders) {
         this.colorBackgroundWeekdayLabels = colorBackgroundWeekdayLabels;
+        if (applyMatchingDefaultBorders) {
+            setBorderPropertiesList(null);
+        }
         if (parentCalendarPanel != null) {
             parentCalendarPanel.zRedrawWeekdayLabelColors();
         }
@@ -923,6 +1184,11 @@ public class DatePickerSettings {
      * setFirstDayOfWeek, This sets the day of the week that will be displayed in the far left
      * column of the CalendarPanel, as the "first day of the week". The default value is generated
      * using the locale of the settings instance.
+     *
+     * By default, If weekNumbersDisplayed is set to true, then the first day of the week will not
+     * match the setting. (weekNumbersDisplayed is false by default.) For additional details, see
+     * the javadocs for the following settings: "weekNumbersDisplayed", and
+     * "weekNumbersForceFirstDayOfWeekToMatch".
      */
     public void setFirstDayOfWeek(DayOfWeek firstDayOfWeek) {
         this.firstDayOfWeek = firstDayOfWeek;
@@ -1312,12 +1578,101 @@ public class DatePickerSettings {
     }
 
     /**
+     * setWeekNumberRules, This sets the week number rules that will be used to show the week
+     * numbers (the weeks of the year), whenever the week numbers are displayed on this calendar.
+     *
+     * The definitions for the first day of the week, and for the minimum number of days that
+     * constitutes the first week of the year, varies between locales. The Java time WeekFields
+     * class specifies those rules.
+     *
+     * If you set this setting to null, then the weekNumberRules will be set to match the
+     * DatePickerSettings locale. By default, the week number rules will match the
+     * DatePickerSettings locale.
+     *
+     * If you would like the week number rules to be the same for all calendars (regardless of the
+     * locale), then you should consider setting the weekNumberRules to one of these two widely used
+     * rule sets: WeekFields.ISO or WeekFields.SUNDAY_START.
+     */
+    public void setWeekNumberRules(WeekFields weekNumberRules) {
+        if (weekNumberRules == null) {
+            weekNumberRules = WeekFields.of(locale);
+        }
+        this.weekNumberRules = weekNumberRules;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setWeekNumbersDisplayed, This specifies whether or not numbers for the "week of the year"
+     * should be displayed on the calendar panel. The week numbers will be shown if this is true, or
+     * they will not be shown if this is false. This is false by default.
+     *
+     * The week numbers are locale sensitive, because the definition of the first day of the week,
+     * and the definition for the minimum number of days in the first week of the year, varies
+     * between locales.
+     *
+     * By default, when "weekNumbersDisplayed" is true, the first day of the week used by the
+     * calendar will always match the weekNumberRules definition for first day of the week. This
+     * behavior can be changed by modifying the setting "weekNumbersForceFirstDayOfWeekToMatch".
+     *
+     * @param weekNumbersDisplayed, This determines whether the week numbers should be displayed on
+     * the calendar. They will be shown if this is true, or not shown that this is false
+     *
+     * @param applyMatchingDefaultBorders, This determines if this function will update the border
+     * label properties to show the appropriate default borders. The default border label settings
+     * are different, depending on "showWeekNumbers". If you have not customized the border label
+     * properties, then it is recommended that you always set the "applyMatchingDefaultBorders"
+     * parameter to true. This will ensure that the calendar borders will always use the correct
+     * default settings. If you set this parameter to false, than the current border settings will
+     * not be changed by this function.
+     */
+    public void setWeekNumbersDisplayed(boolean weekNumbersDisplayed,
+            boolean applyMatchingDefaultBorders) {
+        this.weekNumbersDisplayed = weekNumbersDisplayed;
+        if (applyMatchingDefaultBorders) {
+            setBorderPropertiesList(null);
+        }
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setWeekNumbersForceFirstDayOfWeekToMatch, This setting determines if the first day of the
+     * week should be forced to match the weekNumberRules for the first day of the week, whenever
+     * weekNumbersDisplayed is true.
+     *
+     * If weekNumbersDisplayed is false, then the week numbers will not be displayed, and the
+     * setting will not have any effect.
+     *
+     * If this setting is true and weekNumbersDisplayed is true, then the first day of the week that
+     * is shown on the calendar will always match the weekNumberRules definition for "first day of
+     * the week". (And all the dates in each row will always belong to the displayed week number.)
+     *
+     * If this setting is false and weekNumbersDisplayed is true, then the week numbers will be
+     * determined by a "majority rules" system, which is described below. (In this system, up to 3
+     * dates in each row may not belong to the displayed week number.)
+     *
+     * Description of the "majority rules" system: If this setting is false, and if the first day of
+     * the week is set to be different than the first day of the week defined by the
+     * weekNumberRules, then the dates in a single row of the calendar may not all belong to the
+     * same week number. In this circumstance, the displayed week number for each row will be
+     * determined by a "majority rules" system. More specifically, the calendar will count the
+     * number of days in each row that belong to each week number. Four or more days in a particular
+     * row will always match a particular week number, and that is the week number that will be
+     * displayed next to the row.
+     */
+    public void setWeekNumbersForceFirstDayOfWeekToMatch(boolean forceFirstDayOfWeekToMatch) {
+        this.weekNumbersForceFirstDayOfWeekToMatch = forceFirstDayOfWeekToMatch;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
      * yApplyNeededSettingsAtDatePickerConstruction, This is called from the date picker constructor
      * to apply various settings in this settings instance to the date picker. Only the settings
      * that are needed at the time of date picker construction, are applied in this function.
      */
     void yApplyNeededSettingsAtDatePickerConstruction() {
         // Run the needed "apply" functions.
+        // Note: The border properties list does not need to be applied here, because it is 
+        // applied whenever the date picker calendar panel is opened.
         zApplyGapBeforeButtonPixels();
         zApplyAllowKeyboardEditing();
         zApplyInitialDate();
@@ -1337,6 +1692,7 @@ public class DatePickerSettings {
         // Run the needed "apply" functions.
         zApplyInitialDate();
         zApplyAllowEmptyDates();
+        zApplyBorderPropertiesList();
     }
 
     /**
@@ -1385,6 +1741,18 @@ public class DatePickerSettings {
                 : InternalConstants.colorNotEditableTextFieldBorder;
         parentDatePicker.getComponentDateTextField().setBorder(new CompoundBorder(
                 new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
+    }
+
+    /**
+     * zApplyBorderPropertiesList, This applies the named setting to the parent component.
+     */
+    private void zApplyBorderPropertiesList() {
+        // This only needs to be applied to independent calendar panels. 
+        // For the date picker, the setting is automatically applied each time the calendar panel 
+        // is opened.
+        if (parentCalendarPanel != null) {
+            parentCalendarPanel.zApplyBorderPropertiesList();
+        }
     }
 
     /**
@@ -1465,6 +1833,39 @@ public class DatePickerSettings {
                     + "of both. )");
         }
         this.parentCalendarPanel = parentCalendarPanel;
+    }
+
+    /**
+     * zGetDefaultBorderPropertiesList, This creates and returns a list of default border properties
+     * for the calendar. The default border properties will be slightly different depending on
+     * whether or not the week numbers are currently displayed in the calendar.
+     *
+     * Technical notes: This does not save the default border properties to the date picker settings
+     * class. This does not clear the existing borders. This does not apply the border properties
+     * list to the calendar. This does not set the upper left corner calendar label to be visible or
+     * invisible.
+     */
+    private ArrayList<CalendarBorderProperties> zGetDefaultBorderPropertiesList() {
+        ArrayList<CalendarBorderProperties> results = new ArrayList<CalendarBorderProperties>();
+        Color defaultDateBoxBorderColor = new Color(99, 130, 191);
+        Color defaultWeekdayEndcapsBorderColor = colorBackgroundWeekdayLabels;
+        Color defaultWeekNumberEndcapsBorderColor = colorBackgroundWeekNumberLabels;
+        // Set the borders properties for the date box.
+        CalendarBorderProperties dateBoxBorderProperties = new CalendarBorderProperties(
+                new Point(3, 3), new Point(5, 5), defaultDateBoxBorderColor, 1);
+        results.add(dateBoxBorderProperties);
+        // Set the borders properties for the weekday label endcaps.
+        CalendarBorderProperties weekdayLabelBorderProperties = new CalendarBorderProperties(
+                new Point(3, 2), new Point(5, 2), defaultWeekdayEndcapsBorderColor, 1);
+        results.add(weekdayLabelBorderProperties);
+        // Set the border properties for borders above and below the week numbers.
+        // Note that the week number borders are only displayed when the week numbers are also
+        // displayed. (This is true of any borders located in columns 1 and 2.)
+        CalendarBorderProperties weekNumberBorderProperties = new CalendarBorderProperties(
+                new Point(2, 3), new Point(2, 5), defaultWeekNumberEndcapsBorderColor, 1);
+        results.add(weekNumberBorderProperties);
+        // Return the results.
+        return results;
     }
 
     /**

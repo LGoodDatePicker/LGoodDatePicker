@@ -17,6 +17,10 @@ import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * InternalUtilities, This class contains static functions that are used by the date picker or the
@@ -107,6 +111,35 @@ public class InternalUtilities {
         } catch (Exception ex) {
             return "";
         }
+    }
+
+    /**
+     * getMostCommonElementInList, This returns the most common element in the supplied list. In the
+     * event of a tie, any element that is tied as the "largest element" may be returned. If the
+     * list has no elements, or if the list is null, then this will return null. This can also
+     * return null if null happens to be the most common element in the source list.
+     */
+    public static <T> T getMostCommonElementInList(List<T> sourceList) {
+        if (sourceList == null || sourceList.isEmpty()) {
+            return null;
+        }
+        Map<T, Integer> hashMap = new HashMap<>();
+        for (T element : sourceList) {
+            Integer countOrNull = hashMap.get(element);
+            int newCount = (countOrNull == null) ? 1 : (countOrNull + 1);
+            hashMap.put(element, newCount);
+        }
+        // Find the largest entry. 
+        // In the event of a tie, the first entry (the first entry in the hash map, not in the list) 
+        // with the maximum count will be returned. 
+        Entry<T, Integer> largestEntry = null;
+        for (Entry<T, Integer> currentEntry : hashMap.entrySet()) {
+            if (largestEntry == null || currentEntry.getValue() > largestEntry.getValue()) {
+                largestEntry = currentEntry;
+            }
+        }
+        T result = (largestEntry == null) ? null : largestEntry.getKey();
+        return result;
     }
 
     /**

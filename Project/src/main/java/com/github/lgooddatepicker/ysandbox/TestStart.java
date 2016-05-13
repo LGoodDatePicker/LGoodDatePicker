@@ -5,11 +5,15 @@ import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import com.github.lgooddatepicker.zinternaltools.MouseLiberalAdapter;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -26,8 +30,24 @@ public class TestStart {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel);
-        
-        
+
+        JLabel labelSingleClick = new JLabel("Single click me.");
+        JLabel labelDoubleClick = new JLabel("Double click me.");
+        labelSingleClick.addMouseListener(new MouseLiberalAdapter() {
+            @Override
+            public void mouseLiberalClick(MouseEvent e) {
+                JOptionPane.showMessageDialog(null, "Single click detected.");
+            }
+        });
+        labelDoubleClick.addMouseListener(new MouseLiberalAdapter() {
+            @Override
+            public void mouseLiberalDoubleClick(MouseEvent e) {
+                JOptionPane.showMessageDialog(null, "Double click detected.");
+            }
+        });
+        panel.add(labelSingleClick);
+        panel.add(labelDoubleClick);
+
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates CalendarPanels, with various features. (presetting preferred.)
         //
@@ -35,7 +55,7 @@ public class TestStart {
         CalendarPanel calendarPanel;
         DatePickerSettings dateSettings;
         int row = rowMultiplier;
-        
+
         // Create a CalendarPanel: With highlight policy.
         dateSettings = new DatePickerSettings();
         dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
@@ -51,8 +71,6 @@ public class TestStart {
         frame.setLocation(maxWidth / 2, maxHeight / 2);
         frame.setVisible(true);
     }
-    
-    
 
     /**
      * SampleDateVetoPolicy, A veto policy is a way to disallow certain dates from being selected in
