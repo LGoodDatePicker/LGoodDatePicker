@@ -5,6 +5,7 @@ import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -21,6 +22,7 @@ import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.zinternaltools.MouseLiberalAdapter;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import com.privatejgoodies.forms.layout.CellConstraints;
+import java.time.temporal.WeekFields;
 
 /**
  * CalendarPanel,
@@ -43,10 +45,53 @@ public class CalendarPanel
 
     /**
      * dateLabels, This holds a list of all the date labels in the calendar, including ones that
-     * currently have dates or ones that are blank. This should always have exactly 42 labels. Date
-     * labels are reused when the currently displayed month or year is changed.
+     * currently have dates or ones that are blank. This will always have exactly 42 labels. Date
+     * labels are reused when the currently displayed month or year is changed. The first date label
+     * is at index zero.
      */
     private ArrayList<JLabel> dateLabels;
+
+    /**
+     * topLeftLabel, This holds the top left label, which lies at the intersection of the weekday
+     * labels row and the week number labels column.
+     */
+    private JLabel topLeftLabel;
+
+    /**
+     * weekdayLabels, This holds a list of all the weekday labels in the calendar. This will always
+     * have exactly 7 labels. Individual weekday labels can display different days of the week
+     * depending on the currently set "first day of the week". Weekday labels are reused when the
+     * currently displayed month or year is changed. The first weekday label is at index zero.
+     */
+    private ArrayList<JLabel> weekdayLabels;
+
+    /**
+     * weekNumberLabels, This holds a list of all the week number labels in the calendar. This will
+     * always have exactly 6 labels. These are used to display the "week number of the year" for the
+     * calendar rows (the calendar weeks). These labels may or may not be visible, depending on the
+     * current DatePickerSettings. Week number labels are reused when the currently displayed month
+     * or year is changed. The first week number label is at index zero.
+     */
+    private ArrayList<JLabel> weekNumberLabels;
+
+    /**
+     * borderLabels, This holds a two dimensional array of all the border labels in the calendar.
+     * Row 0 and Column 0 of the array will always contain null. Some of the other array elements
+     * will also always contain null.
+     *
+     * Below is a visual representation of the location of the border labels inside this array. The
+     * character 'X' represents a border label, and 'o' represents null.
+     * <pre>
+     * ~012345
+     * 0oooooo
+     * 1oXXXXX
+     * 2oXoXoX
+     * 3oXXXXX
+     * 4oXoXoX
+     * 5oXXXXX
+     * </pre>
+     */
+    private JLabel[][] borderLabels;
 
     /**
      * calendarSelectionListeners, This holds a list of calendar selection listeners that wish to be
@@ -59,13 +104,19 @@ public class CalendarPanel
      * constantFirstWeekdayLabelCell, This constant indicates the location of the first weekday
      * label inside of the center panel.
      */
-    static private final Point constantFirstWeekdayLabelCell = new Point(2, 1);
+    static private final Point constantFirstWeekdayLabelCell = new Point(4, 2);
+
+    /**
+     * constantFirstWeekNumberLabelCell, This constant indicates the location of the first week
+     * number label inside of the center panel.
+     */
+    static private final Point constantFirstWeekNumberLabelCell = new Point(2, 6);
 
     /**
      * constantFirstDateLabelCell, This constant indicates the location of the first date label
      * inside of the center panel.
      */
-    static private final Point constantFirstDateLabelCell = new Point(2, 5);
+    static private final Point constantFirstDateLabelCell = new Point(4, 6);
 
     /**
      * constantSizeOfCenterPanelBorders, This constant indicates the (total) size of all the borders
@@ -112,19 +163,6 @@ public class CalendarPanel
     private DatePickerSettings settings;
 
     /**
-     * weekdayLabels, This holds a list of all the weekday labels in the calendar. This should
-     * always have exactly 7 labels. Weekday labels are reused when the currently displayed month or
-     * year is changed.
-     */
-    private ArrayList<JLabel> weekdayLabels;
-
-    /**
-     * weekdayLabelExtras, This holds the extra labels in the weekday area, which do not hold days
-     * of the week, but must match the color scheme of the weekday labels.
-     */
-    private ArrayList<JLabel> weekdayLabelExtras;
-
-    /**
      * yearTextField, The year text field is displayed any time that the user clicks the ellipsis
      * (...) inside the year selection drop down menu. This field allows the user to type year
      * numbers using the keyboard when desired.
@@ -137,21 +175,21 @@ public class CalendarPanel
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-	private JPanel headerControlsPanel;
-	private JButton buttonPreviousYear;
-	private JButton buttonPreviousMonth;
-	private JPanel monthAndYearOuterPanel;
-	private JPanel monthAndYearInnerPanel;
-	private JLabel labelMonth;
-	private JLabel labelYear;
-	private JButton buttonNextMonth;
-	private JButton buttonNextYear;
-	private JPanel centerPanel;
-	private JPanel footerPanel;
-	private JLabel labelSetDateToToday;
-	private JLabel labelClearDate;
-	private JPanel yearEditorPanel;
-	private JButton doneEditingYearButton;
+    private JPanel headerControlsPanel;
+    private JButton buttonPreviousYear;
+    private JButton buttonPreviousMonth;
+    private JPanel monthAndYearOuterPanel;
+    private JPanel monthAndYearInnerPanel;
+    private JLabel labelMonth;
+    private JLabel labelYear;
+    private JButton buttonNextMonth;
+    private JButton buttonNextYear;
+    private JPanel centerPanel;
+    private JPanel footerPanel;
+    private JLabel labelSetDateToToday;
+    private JLabel labelClearDate;
+    private JPanel yearEditorPanel;
+    private JButton doneEditingYearButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -230,10 +268,13 @@ public class CalendarPanel
         // Set the calendar panel to be opaque.
         setOpaque(true);
 
-        // Generate and add the date labels and weekday labels.
+        // Generate and add the date labels, weekday labels, and week number labels.
         // These are only generated once.
         addDateLabels();
         addWeekdayLabels();
+        addWeekNumberLabels();
+        addTopLeftLabel();
+        addBorderLabels();
 
         // Shrink the buttons for previous and next year and month.
         buttonPreviousYear.setMargin(new java.awt.Insets(1, 2, 1, 2));
@@ -246,6 +287,8 @@ public class CalendarPanel
 
         // If this is an an independent calendar panel, apply the needed settings at 
         // independent CalendarPanel construction.
+        // At the time of this writing, the "applied needed settings" included:
+        // The initial date, allow empty dates, and the border properties list.
         if (isIndependentCalendarPanel) {
             settings.yApplyNeededSettingsAtIndependentCalendarPanelConstruction();
         }
@@ -260,6 +303,58 @@ public class CalendarPanel
             YearMonth selectedDateYearMonth = YearMonth.of(
                     displayedSelectedDate.getYear(), displayedSelectedDate.getMonth());
             drawCalendar(selectedDateYearMonth);
+        }
+    }
+
+    /**
+     * addBorderLabels, This adds the border labels to the calendar panel and to the two dimensional
+     * border labels array.
+     *
+     * Below is a visual representation of the location of the border labels inside this array. The
+     * character 'X' represents a border label, and 'o' represents null.
+     * <pre>
+     * ~012345
+     * 0oooooo
+     * 1oXXXXX
+     * 2oXoXoX
+     * 3oXXXXX
+     * 4oXoXoX
+     * 5oXXXXX
+     */
+    private void addBorderLabels() {
+        borderLabels = new JLabel[6][6];
+        // These two arrays represent the cell location of every border label.
+        // Note that some coordinate combinations from these arrays are not used.
+        // The array index is based on the border label index (not the cell location).
+        int[] labelLocations_X_forColumn = new int[]{0, 1, 2, 3, 4, 11};
+        int[] labelLocations_Y_forRow = new int[]{0, 1, 2, 5, 6, 12};
+        // These integers represent the dimensions of every border label. 
+        // Note that some dimension combinations from these arrays are not used.
+        // The array index is based on the border label index (not the cell location).
+        int[] labelWidthsInCells_forColumn = new int[]{0, 1, 1, 1, 7, 1};
+        int[] labelHeightsInCells_forRow = new int[]{0, 1, 3, 1, 6, 1};
+        // These points represent border label indexes that should be created and used.
+        Point[] allBorderLabelIndexes = new Point[]{
+            new Point(1, 1), new Point(2, 1), new Point(3, 1), new Point(4, 1), new Point(5, 1),
+            new Point(1, 2), new Point(3, 2), new Point(5, 2),
+            new Point(1, 3), new Point(2, 3), new Point(3, 3), new Point(4, 3), new Point(5, 3),
+            new Point(1, 4), new Point(3, 4), new Point(5, 4),
+            new Point(1, 5), new Point(2, 5), new Point(3, 5), new Point(4, 5), new Point(5, 5)};
+        // Create all the border labels.
+        for (Point index : allBorderLabelIndexes) {
+            Point labelLocationCell = new Point(labelLocations_X_forColumn[index.x],
+                    labelLocations_Y_forRow[index.y]);
+            Dimension labelSizeInCells = new Dimension(labelWidthsInCells_forColumn[index.x],
+                    labelHeightsInCells_forRow[index.y]);
+            JLabel label = new JLabel();
+            // The only properties we need on instantiation are that the label is opaque, and 
+            // that it is not visible by default. The other default border properties will be 
+            // set later.
+            label.setOpaque(true);
+            label.setVisible(false);
+            borderLabels[index.x][index.y] = label;
+            centerPanel.add(label, CC.xywh(labelLocationCell.x, labelLocationCell.y,
+                    labelSizeInCells.width, labelSizeInCells.height));
         }
     }
 
@@ -294,6 +389,33 @@ public class CalendarPanel
     }
 
     /**
+     * addWeekNumberLabels, This adds a set of 6 week number labels to the calendar panel. The text
+     * of these labels is set with locale sensitive week numbers each time that the calendar is
+     * redrawn.
+     */
+    private void addWeekNumberLabels() {
+        weekNumberLabels = new ArrayList<JLabel>();
+        int weekNumberLabelColumnX = constantFirstWeekNumberLabelCell.x;
+        int weekNumberLabelWidthInCells = 1;
+        int weekNumberLabelHeightInCells = 1;
+        for (int i = 0; i < 6; ++i) {
+            int weekNumberLabelRowY = (i + constantFirstWeekNumberLabelCell.y);
+            JLabel weekNumberLabel = new JLabel();
+            weekNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            weekNumberLabel.setVerticalAlignment(SwingConstants.CENTER);
+            weekNumberLabel.setBackground(settings.getColorBackgroundWeekNumberLabels());
+            weekNumberLabel.setBorder(new EmptyBorder(0, 6, 0, 6));
+            weekNumberLabel.setOpaque(true);
+            weekNumberLabel.setText("3" + i);
+            weekNumberLabel.setVisible(false);
+            CellConstraints constraints = CC.xywh(weekNumberLabelColumnX, weekNumberLabelRowY,
+                    weekNumberLabelWidthInCells, weekNumberLabelHeightInCells);
+            centerPanel.add(weekNumberLabel, constraints);
+            weekNumberLabels.add(weekNumberLabel);
+        }
+    }
+
+    /**
      * addWeekdayLabels, This adds a set of 7 weekday labels to the calendar panel. The text of
      * these labels is set with locale sensitive weekday names each time that the calendar is
      * redrawn.
@@ -301,6 +423,7 @@ public class CalendarPanel
     private void addWeekdayLabels() {
         weekdayLabels = new ArrayList<JLabel>();
         int weekdayLabelRowY = constantFirstWeekdayLabelCell.y;
+        int weekdayLabelWidthInCells = 1;
         int weekdayLabelHeightInCells = 3;
         for (int i = 0; i < 7; ++i) {
             int weekdayLabelColumnX = (i + constantFirstWeekdayLabelCell.x);
@@ -312,34 +435,21 @@ public class CalendarPanel
             weekdayLabel.setOpaque(true);
             weekdayLabel.setText("wd" + i);
             CellConstraints constraints = CC.xywh(weekdayLabelColumnX, weekdayLabelRowY,
-                    1, weekdayLabelHeightInCells);
+                    weekdayLabelWidthInCells, weekdayLabelHeightInCells);
             centerPanel.add(weekdayLabel, constraints);
             weekdayLabels.add(weekdayLabel);
         }
-        // Add two blank extra weekday labels to cover up the beginning and the end of the row.
-        weekdayLabelExtras = new ArrayList<JLabel>();
-        {
-            JLabel weekdayLabelExtra = new JLabel();
-            weekdayLabelExtra.setHorizontalAlignment(SwingConstants.CENTER);
-            weekdayLabelExtra.setVerticalAlignment(SwingConstants.CENTER);
-            weekdayLabelExtra.setBackground(settings.getColorBackgroundWeekdayLabels());
-            weekdayLabelExtra.setOpaque(true);
-            CellConstraints constraints = CC.xywh((constantFirstWeekdayLabelCell.x - 1), weekdayLabelRowY,
-                    1, weekdayLabelHeightInCells);
-            centerPanel.add(weekdayLabelExtra, constraints);
-            weekdayLabelExtras.add(weekdayLabelExtra);
-        }
-        {
-            JLabel weekdayLabelExtra = new JLabel();
-            weekdayLabelExtra.setHorizontalAlignment(SwingConstants.CENTER);
-            weekdayLabelExtra.setVerticalAlignment(SwingConstants.CENTER);
-            weekdayLabelExtra.setBackground(settings.getColorBackgroundWeekdayLabels());
-            weekdayLabelExtra.setOpaque(true);
-            CellConstraints constraints = CC.xywh((constantFirstWeekdayLabelCell.x + 7), weekdayLabelRowY,
-                    1, weekdayLabelHeightInCells);
-            centerPanel.add(weekdayLabelExtra, constraints);
-            weekdayLabelExtras.add(weekdayLabelExtra);
-        }
+    }
+
+    /**
+     * addTopLeftLabel, This adds the top left label to the center panel.
+     */
+    private void addTopLeftLabel() {
+        topLeftLabel = new JLabel();
+        topLeftLabel.setBackground(settings.getColorBackgroundTopLeftLabel());
+        topLeftLabel.setOpaque(true);
+        topLeftLabel.setVisible(false);
+        centerPanel.add(topLeftLabel, CC.xywh(2, 2, 1, 3));
     }
 
     /**
@@ -476,7 +586,7 @@ public class CalendarPanel
         }
         // Set the days of the week labels, and create an array to represent the weekday positions.
         ArrayList<DayOfWeek> daysOfWeekAsDisplayed = new ArrayList<DayOfWeek>();
-        int isoFirstDayOfWeekValue = settings.getFirstDayOfWeek().getValue();
+        int isoFirstDayOfWeekValue = settings.getFirstDayOfWeekDisplayedOnCalendar().getValue();
         int isoLastDayOfWeekOverflowed = isoFirstDayOfWeekValue + 6;
         int weekdayLabelArrayIndex = 0;
         for (int dayOfWeek = isoFirstDayOfWeekValue; dayOfWeek <= isoLastDayOfWeekOverflowed; dayOfWeek++) {
@@ -490,6 +600,8 @@ public class CalendarPanel
         }
         // Set the dates of the month labels.
         // Also save the label for the selected date, if one is present in the current month.
+        // Also save the first date in each used row, for later use while displaying week numbers.
+        ArrayList<LocalDate> firstDateInEachUsedRow = new ArrayList<LocalDate>();
         boolean insideValidRange = false;
         int dayOfMonth = 1;
         JLabel selectedDateLabel = null;
@@ -499,7 +611,7 @@ public class CalendarPanel
             // Reset the state of every label to a default state.
             dateLabel.setBackground(Color.white);
             dateLabel.setForeground(Color.black);
-            dateLabel.setBorder(null);
+            dateLabel.setBorder(new EmptyBorder(1, 1, 1, 1));
             dateLabel.setEnabled(true);
             dateLabel.setToolTipText(null);
             // Calculate the index to use on the daysOfWeekAsDisplayed array.
@@ -516,6 +628,22 @@ public class CalendarPanel
             if (insideValidRange) {
                 // Get a local date object for the current date.
                 LocalDate currentDate = LocalDate.of(displayedYear, displayedMonth, dayOfMonth);
+
+                // Save the first date of each used calendar row, for getting week numbers.
+                // Notes: The first day of the month will always be in the first row. 
+                // The first day of the month will only occur once while inside the valid range.
+                if (dayOfMonth == 1) {
+                    // The first date of the first row will often be a date from the previous month. 
+                    // The first date label will often not have a displayed date.
+                    LocalDate firstDateOfFirstRow = currentDate.minusDays(dateLabelArrayIndex);
+                    firstDateInEachUsedRow.add(firstDateOfFirstRow);
+                } else if ((dateLabelArrayIndex % 7) == 0) {
+                    // If we are not in the first row, and we are in the first label of a row, then 
+                    // add the current date to the firstDateInEachRow array.
+                    firstDateInEachUsedRow.add(currentDate);
+                }
+
+                // Get the veto policy and highlight policy information for this date.
                 DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
                 DateHighlightPolicy highlightPolicy = settings.getHighlightPolicy();
                 boolean dateIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, currentDate);
@@ -562,6 +690,30 @@ public class CalendarPanel
             selectedDateLabel.setBackground(new Color(163, 184, 204));
             selectedDateLabel.setBorder(new LineBorder(new Color(99, 130, 191)));
         }
+
+        // If needed, draw the week numbers.
+        boolean showWeekNumbers = settings.getWeekNumbersDisplayed();
+        int usedRowCount = firstDateInEachUsedRow.size();
+        WeekFields weekNumberRules = settings.getWeekNumberRules();
+        topLeftLabel.setVisible(showWeekNumbers);
+        for (int weekNumberLabelIndex = 0; weekNumberLabelIndex < weekNumberLabels.size();
+                ++weekNumberLabelIndex) {
+            JLabel currentLabel = weekNumberLabels.get(weekNumberLabelIndex);
+            currentLabel.setVisible(showWeekNumbers);
+            currentLabel.setText("");
+            // If needed, populate the week number label with a week number.
+            if ((showWeekNumbers) && (weekNumberRules != null)
+                    && (weekNumberLabelIndex < usedRowCount)) {
+                LocalDate firstDateInRow = firstDateInEachUsedRow.get(weekNumberLabelIndex);
+                int weekNumber = zGetWeekNumberForASevenDayRange(
+                        firstDateInRow, weekNumberRules, false);
+                currentLabel.setText("" + weekNumber);
+            }
+        }
+
+        // Set the background color for the topLeftLabel.
+        topLeftLabel.setBackground(settings.getColorBackgroundTopLeftLabel());
+
         // Set the label for the today button.
         String todayDateString = settings.getFormatForTodayButton().format(LocalDate.now());
         String todayLabel = settings.getTranslationToday() + ":  " + todayDateString;
@@ -983,9 +1135,16 @@ public class CalendarPanel
             weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
             weekdayLabel.repaint();
         }
-        for (JLabel weekdayLabelExtra : weekdayLabelExtras) {
-            weekdayLabelExtra.setBackground(settings.getColorBackgroundWeekdayLabels());
-            weekdayLabelExtra.repaint();
+    }
+
+    /**
+     * zRedrawWeekNumberLabelColors, This is called to redraw the week number label colors any time
+     * that those colors are changed in the settings.
+     */
+    public void zRedrawWeekNumberLabelColors() {
+        for (JLabel weekNumberLabel : weekNumberLabels) {
+            weekNumberLabel.setBackground(settings.getColorBackgroundWeekNumberLabels());
+            weekNumberLabel.repaint();
         }
     }
 
@@ -1007,223 +1166,356 @@ public class CalendarPanel
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-		headerControlsPanel = new JPanel();
-		buttonPreviousYear = new JButton();
-		buttonPreviousMonth = new JButton();
-		monthAndYearOuterPanel = new JPanel();
-		monthAndYearInnerPanel = new JPanel();
-		labelMonth = new JLabel();
-		labelYear = new JLabel();
-		buttonNextMonth = new JButton();
-		buttonNextYear = new JButton();
-		centerPanel = new JPanel();
-		footerPanel = new JPanel();
-		labelSetDateToToday = new JLabel();
-		labelClearDate = new JLabel();
-		yearEditorPanel = new JPanel();
-		doneEditingYearButton = new JButton();
+        headerControlsPanel = new JPanel();
+        buttonPreviousYear = new JButton();
+        buttonPreviousMonth = new JButton();
+        monthAndYearOuterPanel = new JPanel();
+        monthAndYearInnerPanel = new JPanel();
+        labelMonth = new JLabel();
+        labelYear = new JLabel();
+        buttonNextMonth = new JButton();
+        buttonNextYear = new JButton();
+        centerPanel = new JPanel();
+        footerPanel = new JPanel();
+        labelSetDateToToday = new JLabel();
+        labelClearDate = new JLabel();
+        yearEditorPanel = new JPanel();
+        doneEditingYearButton = new JButton();
 
-		//======== this ========
-		setLayout(new GridBagLayout());
-		((GridBagLayout)getLayout()).columnWidths = new int[] {5, 0, 5, 0};
-		((GridBagLayout)getLayout()).rowHeights = new int[] {6, 0, 5, 80, 5, 0, 5, 0};
-		((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-		((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+        //======== this ========
+        setLayout(new GridBagLayout());
+        ((GridBagLayout) getLayout()).columnWidths = new int[]{5, 0, 5, 0};
+        ((GridBagLayout) getLayout()).rowHeights = new int[]{6, 0, 5, 80, 5, 0, 5, 0};
+        ((GridBagLayout) getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
+        ((GridBagLayout) getLayout()).rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
-		//======== headerControlsPanel ========
-		{
-			headerControlsPanel.setLayout(new FormLayout(
-				"3*(pref), pref:grow, 3*(pref)",
-				"fill:pref"));
-			((FormLayout)headerControlsPanel.getLayout()).setColumnGroups(new int[][] {{1, 2, 6, 7}});
+        //======== headerControlsPanel ========
+        {
+            headerControlsPanel.setLayout(new FormLayout(
+                    "3*(pref), pref:grow, 3*(pref)",
+                    "fill:pref"));
+            ((FormLayout) headerControlsPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 6, 7}});
 
-			//---- buttonPreviousYear ----
-			buttonPreviousYear.setText("<<");
-			buttonPreviousYear.setFocusable(false);
-			buttonPreviousYear.setFocusPainted(false);
-			buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
-			buttonPreviousYear.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonPreviousYearActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
+            //---- buttonPreviousYear ----
+            buttonPreviousYear.setText("<<");
+            buttonPreviousYear.setFocusable(false);
+            buttonPreviousYear.setFocusPainted(false);
+            buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
+            buttonPreviousYear.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonPreviousYearActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
-			//---- buttonPreviousMonth ----
-			buttonPreviousMonth.setText("<");
-			buttonPreviousMonth.setFocusable(false);
-			buttonPreviousMonth.setFocusPainted(false);
-			buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
-			buttonPreviousMonth.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonPreviousMonthActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
+            //---- buttonPreviousMonth ----
+            buttonPreviousMonth.setText("<");
+            buttonPreviousMonth.setFocusable(false);
+            buttonPreviousMonth.setFocusPainted(false);
+            buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
+            buttonPreviousMonth.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonPreviousMonthActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
-			//======== monthAndYearOuterPanel ========
-			{
-				monthAndYearOuterPanel.setLayout(new GridBagLayout());
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).rowHeights = new int[] {0, 0};
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
-				((GridBagLayout)monthAndYearOuterPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+            //======== monthAndYearOuterPanel ========
+            {
+                monthAndYearOuterPanel.setLayout(new GridBagLayout());
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWidths = new int[]{0, 0, 0, 0};
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowHeights = new int[]{0, 0};
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 1.0, 1.0E-4};
+                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
-				//======== monthAndYearInnerPanel ========
-				{
-					monthAndYearInnerPanel.setLayout(new GridBagLayout());
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).columnWidths = new int[] {0, 1, 0, 0};
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).rowHeights = new int[] {0, 0};
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
-					((GridBagLayout)monthAndYearInnerPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+                //======== monthAndYearInnerPanel ========
+                {
+                    monthAndYearInnerPanel.setLayout(new GridBagLayout());
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWidths = new int[]{0, 1, 0, 0};
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowHeights = new int[]{0, 0};
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
+                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
-					//---- labelMonth ----
-					labelMonth.setText("September");
-					labelMonth.setHorizontalAlignment(SwingConstants.RIGHT);
-					labelMonth.setOpaque(true);
-					labelMonth.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseEntered(MouseEvent e) {
-							labelIndicatorMouseEntered(e);
-						}
-						@Override
-						public void mouseExited(MouseEvent e) {
-							labelIndicatorMouseExited(e);
-						}
-						@Override
-						public void mousePressed(MouseEvent e) {
-							labelMonthIndicatorMousePressed(e);
-						}
-					});
-					monthAndYearInnerPanel.add(labelMonth, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(0, 0, 0, 0), 0, 0));
+                    //---- labelMonth ----
+                    labelMonth.setText("September");
+                    labelMonth.setHorizontalAlignment(SwingConstants.RIGHT);
+                    labelMonth.setOpaque(true);
+                    labelMonth.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            labelIndicatorMouseEntered(e);
+                        }
 
-					//---- labelYear ----
-					labelYear.setText("2100");
-					labelYear.setOpaque(true);
-					labelYear.addMouseListener(new MouseAdapter() {
-						@Override
-						public void mouseEntered(MouseEvent e) {
-							labelIndicatorMouseEntered(e);
-						}
-						@Override
-						public void mouseExited(MouseEvent e) {
-							labelIndicatorMouseExited(e);
-						}
-						@Override
-						public void mousePressed(MouseEvent e) {
-							labelYearIndicatorMousePressed(e);
-						}
-					});
-					monthAndYearInnerPanel.add(labelYear, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-						new Insets(0, 0, 0, 0), 0, 0));
-				}
-				monthAndYearOuterPanel.add(monthAndYearInnerPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-					new Insets(0, 0, 0, 0), 0, 0));
-			}
-			headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                            labelIndicatorMouseExited(e);
+                        }
 
-			//---- buttonNextMonth ----
-			buttonNextMonth.setText(">");
-			buttonNextMonth.setFocusable(false);
-			buttonNextMonth.setFocusPainted(false);
-			buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
-			buttonNextMonth.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonNextMonthActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+                            labelMonthIndicatorMousePressed(e);
+                        }
+                    });
+                    monthAndYearInnerPanel.add(labelMonth, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 0, 0), 0, 0));
 
-			//---- buttonNextYear ----
-			buttonNextYear.setText(">>");
-			buttonNextYear.setFocusable(false);
-			buttonNextYear.setFocusPainted(false);
-			buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
-			buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
-			buttonNextYear.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					buttonNextYearActionPerformed(e);
-				}
-			});
-			headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
-		}
-		add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+                    //---- labelYear ----
+                    labelYear.setText("2100");
+                    labelYear.setOpaque(true);
+                    labelYear.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseEntered(MouseEvent e) {
+                            labelIndicatorMouseEntered(e);
+                        }
 
-		//======== centerPanel ========
-		{
-			centerPanel.setBackground(new Color(99, 130, 191));
-			centerPanel.setLayout(new FormLayout(
-				"1px, 7*(default:grow), 1px",
-				"2px, fill:default:grow, 2*(1px), 6*(fill:default:grow), 1px"));
-			((FormLayout)centerPanel.getLayout()).setColumnGroups(new int[][] {{2, 3, 4, 5, 6, 7, 8}});
-			((FormLayout)centerPanel.getLayout()).setRowGroups(new int[][] {{2, 5, 6, 7, 8, 9, 10}});
-		}
-		add(centerPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+                        @Override
+                        public void mouseExited(MouseEvent e) {
+                            labelIndicatorMouseExited(e);
+                        }
 
-		//======== footerPanel ========
-		{
-			footerPanel.setLayout(new GridBagLayout());
-			((GridBagLayout)footerPanel.getLayout()).columnWidths = new int[] {6, 0, 0, 0, 6, 0};
-			((GridBagLayout)footerPanel.getLayout()).rowHeights = new int[] {0, 0};
-			((GridBagLayout)footerPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
-			((GridBagLayout)footerPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+                        @Override
+                        public void mousePressed(MouseEvent e) {
+                            labelYearIndicatorMousePressed(e);
+                        }
+                    });
+                    monthAndYearInnerPanel.add(labelYear, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                            new Insets(0, 0, 0, 0), 0, 0));
+                }
+                monthAndYearOuterPanel.add(monthAndYearInnerPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                        new Insets(0, 0, 0, 0), 0, 0));
+            }
+            headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
 
-			//---- labelSetDateToToday ----
-			labelSetDateToToday.setText("Today: Feb 12, 2016");
-			labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
-			labelSetDateToToday.setOpaque(true);
-			footerPanel.add(labelSetDateToToday, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
+            //---- buttonNextMonth ----
+            buttonNextMonth.setText(">");
+            buttonNextMonth.setFocusable(false);
+            buttonNextMonth.setFocusPainted(false);
+            buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
+            buttonNextMonth.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonNextMonthActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
 
-			//---- labelClearDate ----
-			labelClearDate.setText("Clear");
-			labelClearDate.setOpaque(true);
-			footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
-		}
-		add(footerPanel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
-			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-			new Insets(0, 0, 0, 0), 0, 0));
+            //---- buttonNextYear ----
+            buttonNextYear.setText(">>");
+            buttonNextYear.setFocusable(false);
+            buttonNextYear.setFocusPainted(false);
+            buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
+            buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
+            buttonNextYear.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    buttonNextYearActionPerformed(e);
+                }
+            });
+            headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
+        }
+        add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
 
-		//======== yearEditorPanel ========
-		{
-			yearEditorPanel.setLayout(new GridBagLayout());
-			((GridBagLayout)yearEditorPanel.getLayout()).columnWidths = new int[] {40, 1, 26, 0};
-			((GridBagLayout)yearEditorPanel.getLayout()).rowHeights = new int[] {0, 0};
-			((GridBagLayout)yearEditorPanel.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
-			((GridBagLayout)yearEditorPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
+        //======== centerPanel ========
+        {
+            centerPanel.setBackground(new Color(210, 210, 210));
+            centerPanel.setLayout(new FormLayout(
+                    "3*(min), 7*(default:grow), min",
+                    "fill:min, fill:2px, fill:default:grow, fill:1px, fill:min, 6*(fill:default:grow), fill:min"));
+            ((FormLayout) centerPanel.getLayout()).setColumnGroups(new int[][]{{4, 5, 6, 7, 8, 9, 10}});
+            ((FormLayout) centerPanel.getLayout()).setRowGroups(new int[][]{{3, 6, 7, 8, 9, 10, 11}});
+        }
+        add(centerPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
 
-			//---- doneEditingYearButton ----
-			doneEditingYearButton.setFocusPainted(false);
-			doneEditingYearButton.setFocusable(false);
-			doneEditingYearButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					doneEditingYearButtonActionPerformed(e);
-				}
-			});
-			yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-				new Insets(0, 0, 0, 0), 0, 0));
-		}
+        //======== footerPanel ========
+        {
+            footerPanel.setLayout(new GridBagLayout());
+            ((GridBagLayout) footerPanel.getLayout()).columnWidths = new int[]{6, 0, 0, 0, 6, 0};
+            ((GridBagLayout) footerPanel.getLayout()).rowHeights = new int[]{0, 0};
+            ((GridBagLayout) footerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout) footerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+
+            //---- labelSetDateToToday ----
+            labelSetDateToToday.setText("Today: Feb 12, 2016");
+            labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
+            labelSetDateToToday.setOpaque(true);
+            footerPanel.add(labelSetDateToToday, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+
+            //---- labelClearDate ----
+            labelClearDate.setText("Clear");
+            labelClearDate.setOpaque(true);
+            footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+        }
+        add(footerPanel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
+
+        //======== yearEditorPanel ========
+        {
+            yearEditorPanel.setLayout(new GridBagLayout());
+            ((GridBagLayout) yearEditorPanel.getLayout()).columnWidths = new int[]{40, 1, 26, 0};
+            ((GridBagLayout) yearEditorPanel.getLayout()).rowHeights = new int[]{0, 0};
+            ((GridBagLayout) yearEditorPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 0.0, 1.0E-4};
+            ((GridBagLayout) yearEditorPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+
+            //---- doneEditingYearButton ----
+            doneEditingYearButton.setFocusPainted(false);
+            doneEditingYearButton.setFocusable(false);
+            doneEditingYearButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    doneEditingYearButtonActionPerformed(e);
+                }
+            });
+            yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                    new Insets(0, 0, 0, 0), 0, 0));
+        }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
+    }
+
+    /**
+     * zApplyBorderPropertiesInstance, This will apply the supplied border properties instance to
+     * this calendar. See the CalendarBorderProperties class for information about the meaning of
+     * the border properties instance fields. This function should only be called from the
+     * CalendarPanel.zAppliedBorderPropertiesList() function.
+     *
+     * This function will throw an exception if the border coordinates are outside the valid range
+     * (1 to 5), or if the lowerRight point has smaller coordinate values than the upperLeft point.
+     */
+    private void zApplyBorderPropertiesInstance(CalendarBorderProperties borderProperties) {
+        Point ul = borderProperties.upperLeft;
+        Point lr = borderProperties.lowerRight;
+        Color color = borderProperties.backgroundColor;
+        Integer thickness = borderProperties.thicknessInPixels;
+        if ((ul == null) || (lr == null) || (ul.x < 1) || (ul.x > 5) || (ul.y < 1) || (ul.y > 5)
+                || (lr.x < 1) || (lr.x > 5) || (lr.y < 1) || (lr.y > 5) || (ul.x > lr.x)
+                || (ul.y > lr.y)) {
+            throw new RuntimeException("CalendarPanel.setBorderProperties(), "
+                    + "The supplied points cannot be null, and they must have x and y "
+                    + "coordinates with values in the range of 1 to 5 (inclusive). Additionally, "
+                    + "the upper left point values must be less than or equal to the lower right "
+                    + "point values.");
+        }
+        for (int x = ul.x; x <= lr.x; ++x) {
+            for (int y = ul.y; y <= lr.y; ++y) {
+                JLabel borderLabel = borderLabels[x][y];
+                if (borderLabel == null) {
+                    continue;
+                }
+                if (color != null) {
+                    borderLabel.setBackground(color);
+                }
+                if (thickness != null) {
+                    boolean isVisible = (thickness > 0);
+                    borderLabel.setVisible(isVisible);
+                    Dimension minimumSize = (isVisible)
+                            ? new Dimension(thickness, thickness) : new Dimension(1, 1);
+                    borderLabel.setMinimumSize(minimumSize);
+                }
+            }
+        }
+    }
+
+    /**
+     * zApplyBorderPropertiesList, This applies the currently stored border property list to this
+     * calendar. The border property list is retrieved from the current date picker settings.
+     *
+     * Before the Borders properties list is applied, the existing border labels will be cleared.
+     * "Clearing" the labels means that the JLabel properties are set as follows: visible = false,
+     * color = black, minimumSize = (1,1).
+     *
+     * Note: If weekNumbersDisplayed is set to false, then the borders located in the week number
+     * columns (Columns 1 and 2) will always be set to be hidden.
+     */
+    public void zApplyBorderPropertiesList() {
+        // Clear the current borders. (Set them to be invisible and black.)
+        CalendarBorderProperties clearBordersProperties = new CalendarBorderProperties(
+                new Point(1, 1), new Point(5, 5), Color.black, 0);
+        zApplyBorderPropertiesInstance(clearBordersProperties);
+        // Apply the current borderPropertiesList settings.
+        for (CalendarBorderProperties borderProperties : settings.getBorderPropertiesList()) {
+            zApplyBorderPropertiesInstance(borderProperties);
+        }
+        if (!(settings.getWeekNumbersDisplayed())) {
+            CalendarBorderProperties hideWeekNumberBorders = new CalendarBorderProperties(
+                    new Point(1, 1), new Point(2, 5), Color.black, 0);
+            zApplyBorderPropertiesInstance(hideWeekNumberBorders);
+        }
+        drawCalendar();
+    }
+
+    /**
+     * zGetWeekNumberForASevenDayRange, This returns a week number for the specified seven day
+     * range, according to the supplied weekFieldRules.
+     *
+     * If all seven days fall on the same week number, then that week number will be returned.
+     *
+     * If "requireUnanimousWeekNumber" is true and the supplied range falls across two week numbers,
+     * then null is returned.
+     *
+     * If "requireUnanimousWeekNumber" is false and the supplied range falls across two week
+     * numbers, then the "majority rules" system is used for determining the returned week number.
+     *
+     * The majority rules system means that the most common week number in the seven day range will
+     * be returned. For example: If days 1 and 2 are in week 30, and days 3 through 7 are in week
+     * 31, then the week number 31 will be returned. There is no possibility of a "tie" week number,
+     * because the number of days in the range is seven (an odd number). Additionally, the returned
+     * week number will always be the correct week number for a minimum of four days out of the
+     * seven day range.
+     *
+     * To make sure that all seven days in the range -can- fall on the same week number, the caller
+     * of the function would need to supply a seven day range that starts on the same "first day of
+     * the week" that is used by the supplied weekFieldRules. I don't know if there are any special
+     * cases where these matching parameters are supplied, but the result is still not a unanimous
+     * week number.
+     *
+     * The week fields object can be created from a specific locale, (including Locale.ISO if
+     * desired), or the week fields can be configured to match any desired week field rules.
+     *
+     * Examples of creating week field instances: WeekFields weekFields = WeekFields.of(Locale
+     * locale); WeekFields weekFields = WeekFields.of(DayOfWeek firstDayOfWeek, int
+     * minimalDaysInFirstWeek);
+     */
+    public Integer zGetWeekNumberForASevenDayRange(LocalDate firstDateInRange,
+            WeekFields weekFieldRules, boolean requireUnanimousWeekNumber) {
+        // Get the week number for each of the seven days in the range. 
+        ArrayList<Integer> weekNumbersList = new ArrayList<Integer>();
+        for (int daysIntoTheFuture = 0; daysIntoTheFuture <= 6; ++daysIntoTheFuture) {
+            LocalDate currentDateInRange = firstDateInRange.plusDays(daysIntoTheFuture);
+            int currentWeekNumber = currentDateInRange.get(weekFieldRules.weekOfWeekBasedYear());
+            weekNumbersList.add(currentWeekNumber);
+        }
+        // Find out if all the week numbers are the same. 
+        // We can check for a unanimous sequence by looking at the first and last number. 
+        boolean isUnanimous = (Objects.equals(weekNumbersList.get(0), weekNumbersList.get(6)));
+        // If the week numbers are unanimous, then return the unanimous week number. 
+        if (isUnanimous) {
+            return weekNumbersList.get(0);
+        }
+        // The week number is not unanimous. 
+        // If unanimous week numbers are required, then return null.
+        if (requireUnanimousWeekNumber) {
+            return null;
+        }
+        // Otherwise, return the most common week number.
+        int mostCommonWeekNumber = InternalUtilities.getMostCommonElementInList(weekNumbersList);
+        return mostCommonWeekNumber;
     }
 
 }

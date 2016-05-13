@@ -109,13 +109,13 @@ new FormModel {
 				"gridy": 1
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-				"$columnSpecs": "1px, default:grow, default:grow, default:grow, default:grow, default:grow, default:grow, default:grow, 1px"
-				"$rowSpecs": "2px, fill:default:grow, 1px, 1px, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, 1px"
-				"$columnGroupIds": "0, 1, 1, 1, 1, 1, 1, 1, 0"
-				"$rowGroupIds": "0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0"
+				"$columnSpecs": "min, min, min, default:grow, default:grow, default:grow, default:grow, default:grow, default:grow, default:grow, min"
+				"$rowSpecs": "fill:min, fill:2px, fill:default:grow, fill:1px, fill:min, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, fill:default:grow, fill:min"
+				"$columnGroupIds": "0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0"
+				"$rowGroupIds": "0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0"
 			} ) {
 				name: "centerPanel"
-				"background": new java.awt.Color( 99, 130, 191, 255 )
+				"background": new java.awt.Color( 210, 210, 210, 255 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 3
@@ -148,7 +148,7 @@ new FormModel {
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )
-			"size": new java.awt.Dimension( 370, 240 )
+			"size": new java.awt.Dimension( 360, 295 )
 		} )
 		add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
 			"$columnSpecs": "40:1.0, 1, 26"
@@ -166,7 +166,7 @@ new FormModel {
 				"gridx": 2
 			} )
 		}, new FormLayoutConstraints( null ) {
-			"location": new java.awt.Point( 0, 250 )
+			"location": new java.awt.Point( 0, 315 )
 			"size": new java.awt.Dimension( 115, 25 )
 		} )
 	}

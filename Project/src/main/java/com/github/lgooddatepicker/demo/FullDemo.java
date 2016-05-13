@@ -46,6 +46,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import javax.swing.ImageIcon;
 
 /**
@@ -166,7 +167,7 @@ public class FullDemo {
         // Create a date picker: Custom color.
         dateSettings = new DatePickerSettings();
         dateSettings.setColorBackgroundCalendarPanel(Color.green);
-        dateSettings.setColorBackgroundWeekdayLabels(Color.orange);
+        dateSettings.setColorBackgroundWeekdayLabels(Color.orange, true);
         dateSettings.setColorBackgroundMonthAndYear(Color.yellow);
         dateSettings.setColorBackgroundTodayAndClear(Color.yellow);
         dateSettings.setColorBackgroundNavigateYearMonthButtons(Color.cyan);
@@ -249,6 +250,22 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Disallow Keyboard Editing:");
+
+        // Create a date picker: Show Week Numbers.
+        // This will display week numbers on the left side of the calendar.
+        // By default, the week number rules are specific to the locale of the settings instance.
+        // For custom configuration of week numbers, see also these DatePickerSettings: 
+        // setWeekNumberRules(), and setWeekNumbersForceFirstDayOfWeekToMatch();
+        dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
+        // If you would like the week numbers to be the same for all calendars, (instead of using
+        // the default rules for the settings locale), then you could set the weekNumberRules to
+        // one of these two widely used rule sets: WeekFields.ISO or WeekFields.SUNDAY_START.
+        // dateSettings.setWeekNumberRules(WeekFields.SUNDAY_START);
+        // dateSettings.setWeekNumberRules(WeekFields.ISO);
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Show Week Numbers:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
