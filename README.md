@@ -33,6 +33,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * The TimePicker GUI provides the time selection list, up/down arrow key usage, and optional spinner buttons. 
 * Automatic date and time validation on all components.
 * Optional highlight policies and veto policies.
+* Optional week of the year numbers.
 * Can allow or disallow empty values. (Null dates or times.)
 * Can optionally disallow keyboard editing. 
 * Relatively compact source code.
