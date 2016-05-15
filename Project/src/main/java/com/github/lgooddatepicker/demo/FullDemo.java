@@ -237,23 +237,6 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Set First Day Of Week (Mon):");
 
-        // Create a date picker: No empty dates. (aka null)
-        dateSettings = new DatePickerSettings();
-        dateSettings.setAllowEmptyDates(false);
-        datePicker = new DatePicker(dateSettings);
-        datePicker.addDateChangeListener(
-                new SampleDateChangeListener("datePicker12 (Disallow Empty Dates or Null), "));
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Disallow Empty Dates:");
-
-        // Create a date picker: Disallow keyboard editing.
-        dateSettings = new DatePickerSettings();
-        dateSettings.setAllowKeyboardEditing(false);
-        dateSettings.setInitialDateToToday();
-        datePicker = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Disallow Keyboard Editing:");
-
         // Create a date picker: Show Week Numbers.
         // This will display week numbers on the left side of the calendar.
         // By default, the week number rules are specific to the locale of the settings instance.
@@ -268,7 +251,24 @@ public class FullDemo {
         // dateSettings.setWeekNumberRules(WeekFields.ISO);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Show Week Numbers:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Show Week Numbers:");
+
+        // Create a date picker: No empty dates. (aka null)
+        dateSettings = new DatePickerSettings();
+        dateSettings.setAllowEmptyDates(false);
+        datePicker = new DatePicker(dateSettings);
+        datePicker.addDateChangeListener(
+                new SampleDateChangeListener("datePicker13 (Disallow Empty Dates or Null), "));
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Disallow Empty Dates:");
+
+        // Create a date picker: Disallow keyboard editing.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setAllowKeyboardEditing(false);
+        dateSettings.setInitialDateToToday();
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Disallow Keyboard Editing:");
 
         // Create a Custom Border Properties List.
         // These border properties will be used for the next two date picker examples.
