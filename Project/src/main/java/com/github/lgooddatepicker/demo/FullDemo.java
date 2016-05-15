@@ -29,6 +29,7 @@ import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.datetimepicker.DateTimePicker;
+import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.timepicker.TimePicker;
 import com.github.lgooddatepicker.timepicker.TimePickerSettings;
@@ -39,6 +40,7 @@ import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -47,7 +49,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
@@ -171,7 +173,7 @@ public class FullDemo {
         dateSettings.setColorBackgroundWeekdayLabels(Color.orange, true);
         dateSettings.setColor(Area.BackgroundMonthAndYearLabelButtons, Color.yellow);
         dateSettings.setColor(Area.BackgroundTodayAndClearButtons, Color.yellow);
-        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons,Color.cyan);
+        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons, Color.cyan);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Colors:");
@@ -196,7 +198,7 @@ public class FullDemo {
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
         dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
-        dateSettings.setColor(Area.DatePickerTextValidDate,new Color(0, 100, 0));
+        dateSettings.setColor(Area.DatePickerTextValidDate, new Color(0, 100, 0));
         dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
@@ -267,6 +269,49 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Show Week Numbers:");
+
+        // Create a Custom Border Properties List.
+        // These border properties will be used for the next two date picker examples.
+        // Create a list to hold our border properties. Borders properties will be applied to the
+        // calendar in the order that they appear this list.
+        ArrayList<CalendarBorderProperties> borderProperties
+                = new ArrayList<CalendarBorderProperties>();
+        // Set all borders to be yellow, and 10 pixels thick. 
+        // (Parts of the yellow border will be overwritten by other border settings.)
+        borderProperties.add(new CalendarBorderProperties(
+                new Point(1, 1), new Point(5, 5), Color.YELLOW, 10));
+        // Make the top center border extra thick. Note: All borders in the same row or column will 
+        // be displayed with the same thickness as the thickest border in the same line. 
+        borderProperties.add(new CalendarBorderProperties(
+                new Point(4, 1), new Point(4, 1), Color.YELLOW, 15));
+        // Set the borders surrounding the date box to be green.
+        borderProperties.add(new CalendarBorderProperties(
+                new Point(3, 3), new Point(5, 5), Color.GREEN, 10));
+        // Individually set the borders in the top corners of the date box to be blue.
+        borderProperties.add(new CalendarBorderProperties(
+                new Point(3, 3), new Point(3, 3), Color.BLUE, 1));
+        borderProperties.add(new CalendarBorderProperties(
+                new Point(5, 3), new Point(5, 3), Color.BLUE, 1));
+
+        // Create a date picker: Custom Borders.
+        // Note: Week number borders are always hidden (invisible) unless the the week numbers are 
+        // displayed. ("Week number borders" are all borders located in columns 1 and 2.)
+        dateSettings = new DatePickerSettings();
+        dateSettings.setBorderPropertiesList(borderProperties);
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 15, Custom Borders:");
+
+        // Create a date picker: Custom Borders with Week Numbers.
+        // Note: Week number borders are always hidden (invisible) unless the the week numbers are 
+        // displayed. ("Week number borders" are all borders located in columns 1 and 2.)
+        dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
+        dateSettings.setBorderPropertiesList(borderProperties);
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), 
+                "Date 16, Custom Borders with Week Numbers:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
@@ -349,7 +394,7 @@ public class FullDemo {
         // Create a DateTimePicker: Default settings
         dateTimePicker1 = new DateTimePicker();
         panel.panel2.add(dateTimePicker1, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
                 "DateTimePicker 1, Default settings:");
 
         // Create a DateTimePicker: Disallow empty dates and times.
@@ -359,7 +404,7 @@ public class FullDemo {
         timeSettings.setAllowEmptyTimes(false);
         dateTimePicker2 = new DateTimePicker(dateSettings, timeSettings);
         panel.panel2.add(dateTimePicker2, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
                 "DateTimePicker 2, Disallow empty dates and times:");
 
         // Create a DateTimePicker: With change listener.
@@ -367,7 +412,7 @@ public class FullDemo {
         dateTimePicker3.addDateTimeChangeListener(new SampleDateTimeChangeListener(
                 "dateTimePicker3"));
         panel.panel2.add(dateTimePicker3, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
                 "DateTimePicker 3, With Change Listener:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
