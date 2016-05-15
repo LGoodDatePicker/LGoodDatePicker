@@ -126,6 +126,18 @@ public class CalendarPanel
     static private final Dimension constantSizeOfCenterPanelBorders = new Dimension(2, 5);
 
     /**
+     * constantTopLeftLabelCell, This constant indicates the location of the topLeftLabel inside the
+     * center panel.
+     */
+    static private final Point constantTopLeftLabelCell = new Point(2, 2);
+
+    /**
+     * constantWeekNumberLabelInsets, This is the size of the border of the week number
+     * labels, in pixels.
+     */
+    static private final Insets constantWeekNumberLabelInsets = new Insets(0, 6, 0, 5);
+
+    /**
      * displayedSelectedDate, This stores a date that will be highlighted in the calendar as the
      * "selected date", or it holds null if no date has been selected. This date is copied from the
      * date picker when the calendar is opened. This should not be confused with the "lastValidDate"
@@ -176,21 +188,21 @@ public class CalendarPanel
      * program.
      */
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JPanel headerControlsPanel;
-    private JButton buttonPreviousYear;
-    private JButton buttonPreviousMonth;
-    private JPanel monthAndYearOuterPanel;
-    private JPanel monthAndYearInnerPanel;
-    private JLabel labelMonth;
-    private JLabel labelYear;
-    private JButton buttonNextMonth;
-    private JButton buttonNextYear;
-    private JPanel centerPanel;
-    private JPanel footerPanel;
-    private JLabel labelSetDateToToday;
-    private JLabel labelClearDate;
-    private JPanel yearEditorPanel;
-    private JButton doneEditingYearButton;
+	private JPanel headerControlsPanel;
+	private JButton buttonPreviousYear;
+	private JButton buttonPreviousMonth;
+	private JPanel monthAndYearOuterPanel;
+	private JPanel monthAndYearInnerPanel;
+	private JLabel labelMonth;
+	private JLabel labelYear;
+	private JButton buttonNextMonth;
+	private JButton buttonNextYear;
+	private JPanel centerPanel;
+	private JPanel footerPanel;
+	private JLabel labelSetDateToToday;
+	private JLabel labelClearDate;
+	private JPanel yearEditorPanel;
+	private JButton doneEditingYearButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     /**
@@ -276,7 +288,7 @@ public class CalendarPanel
         addWeekNumberLabels();
         addTopLeftLabel();
         addBorderLabels();
-        
+
         // Apply the border properties settings any time a CalendarPanel is constructed.
         zApplyBorderPropertiesList();
 
@@ -408,7 +420,7 @@ public class CalendarPanel
             weekNumberLabel.setHorizontalAlignment(SwingConstants.CENTER);
             weekNumberLabel.setVerticalAlignment(SwingConstants.CENTER);
             weekNumberLabel.setBackground(settings.getColorBackgroundWeekNumberLabels());
-            weekNumberLabel.setBorder(new EmptyBorder(0, 6, 0, 6));
+            weekNumberLabel.setBorder(new EmptyBorder(constantWeekNumberLabelInsets));
             weekNumberLabel.setOpaque(true);
             weekNumberLabel.setText("3" + i);
             weekNumberLabel.setVisible(false);
@@ -417,6 +429,7 @@ public class CalendarPanel
             centerPanel.add(weekNumberLabel, constraints);
             weekNumberLabels.add(weekNumberLabel);
         }
+        setSizeOfWeekNumberLabels();
     }
 
     /**
@@ -453,7 +466,8 @@ public class CalendarPanel
         topLeftLabel.setBackground(settings.getColor(Area.BackgroundTopLeftLabelAboveWeekNumbers));
         topLeftLabel.setOpaque(true);
         topLeftLabel.setVisible(false);
-        centerPanel.add(topLeftLabel, CC.xywh(2, 2, 1, 3));
+        centerPanel.add(topLeftLabel, CC.xywh(
+                constantTopLeftLabelCell.x, constantTopLeftLabelCell.y, 1, 3));
     }
 
     /**
@@ -992,6 +1006,26 @@ public class CalendarPanel
     }
 
     /**
+     * setSizeOfWeekNumberLabels, This sets the minimum and preferred size of the week number
+     * labels, to be able to hold largest week number in the current week number label font.
+     *
+     * Note: The week number labels need to be added to the panel before this method can be called.
+     */
+    private void setSizeOfWeekNumberLabels() {
+        JLabel firstLabel = weekNumberLabels.get(0);
+        Font font = firstLabel.getFont();
+        FontMetrics fontMetrics = firstLabel.getFontMetrics(font);
+        int width = fontMetrics.stringWidth("53 ");
+        width += constantWeekNumberLabelInsets.left;
+        width += constantWeekNumberLabelInsets.right;
+        Dimension size = new Dimension(width, 1);
+        for (JLabel currentLabel : weekNumberLabels) {
+            currentLabel.setMinimumSize(size);
+            currentLabel.setPreferredSize(size);
+        }
+    }
+
+    /**
      * setSizeOfMonthYearPanel, This sets the size of the panel at the top of the calendar that
      * holds the month and the year label. The size is calculated from the largest month name (in
      * pixels), that exists in locale and language that is being used by the date picker.
@@ -1170,226 +1204,222 @@ public class CalendarPanel
      */
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        headerControlsPanel = new JPanel();
-        buttonPreviousYear = new JButton();
-        buttonPreviousMonth = new JButton();
-        monthAndYearOuterPanel = new JPanel();
-        monthAndYearInnerPanel = new JPanel();
-        labelMonth = new JLabel();
-        labelYear = new JLabel();
-        buttonNextMonth = new JButton();
-        buttonNextYear = new JButton();
-        centerPanel = new JPanel();
-        footerPanel = new JPanel();
-        labelSetDateToToday = new JLabel();
-        labelClearDate = new JLabel();
-        yearEditorPanel = new JPanel();
-        doneEditingYearButton = new JButton();
+		headerControlsPanel = new JPanel();
+		buttonPreviousYear = new JButton();
+		buttonPreviousMonth = new JButton();
+		monthAndYearOuterPanel = new JPanel();
+		monthAndYearInnerPanel = new JPanel();
+		labelMonth = new JLabel();
+		labelYear = new JLabel();
+		buttonNextMonth = new JButton();
+		buttonNextYear = new JButton();
+		centerPanel = new JPanel();
+		footerPanel = new JPanel();
+		labelSetDateToToday = new JLabel();
+		labelClearDate = new JLabel();
+		yearEditorPanel = new JPanel();
+		doneEditingYearButton = new JButton();
 
-        //======== this ========
-        setLayout(new GridBagLayout());
-        ((GridBagLayout) getLayout()).columnWidths = new int[]{5, 0, 5, 0};
-        ((GridBagLayout) getLayout()).rowHeights = new int[]{6, 0, 5, 80, 5, 0, 5, 0};
-        ((GridBagLayout) getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
-        ((GridBagLayout) getLayout()).rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+		//======== this ========
+		setLayout(new GridBagLayout());
+		((GridBagLayout)getLayout()).columnWidths = new int[] {5, 0, 5, 0};
+		((GridBagLayout)getLayout()).rowHeights = new int[] {6, 0, 5, 80, 5, 0, 5, 0};
+		((GridBagLayout)getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+		((GridBagLayout)getLayout()).rowWeights = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
 
-        //======== headerControlsPanel ========
-        {
-            headerControlsPanel.setLayout(new FormLayout(
-                    "3*(pref), pref:grow, 3*(pref)",
-                    "fill:pref"));
-            ((FormLayout) headerControlsPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 6, 7}});
+		//======== headerControlsPanel ========
+		{
+			headerControlsPanel.setLayout(new FormLayout(
+				"3*(pref), pref:grow, 3*(pref)",
+				"fill:pref"));
+			((FormLayout)headerControlsPanel.getLayout()).setColumnGroups(new int[][] {{1, 2, 6, 7}});
 
-            //---- buttonPreviousYear ----
-            buttonPreviousYear.setText("<<");
-            buttonPreviousYear.setFocusable(false);
-            buttonPreviousYear.setFocusPainted(false);
-            buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
-            buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
-            buttonPreviousYear.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonPreviousYearActionPerformed(e);
-                }
-            });
-            headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
+			//---- buttonPreviousYear ----
+			buttonPreviousYear.setText("<<");
+			buttonPreviousYear.setFocusable(false);
+			buttonPreviousYear.setFocusPainted(false);
+			buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
+			buttonPreviousYear.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					buttonPreviousYearActionPerformed(e);
+				}
+			});
+			headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
-            //---- buttonPreviousMonth ----
-            buttonPreviousMonth.setText("<");
-            buttonPreviousMonth.setFocusable(false);
-            buttonPreviousMonth.setFocusPainted(false);
-            buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
-            buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
-            buttonPreviousMonth.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonPreviousMonthActionPerformed(e);
-                }
-            });
-            headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
+			//---- buttonPreviousMonth ----
+			buttonPreviousMonth.setText("<");
+			buttonPreviousMonth.setFocusable(false);
+			buttonPreviousMonth.setFocusPainted(false);
+			buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
+			buttonPreviousMonth.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					buttonPreviousMonthActionPerformed(e);
+				}
+			});
+			headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
-            //======== monthAndYearOuterPanel ========
-            {
-                monthAndYearOuterPanel.setLayout(new GridBagLayout());
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWidths = new int[]{0, 0, 0, 0};
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowHeights = new int[]{0, 0};
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 1.0, 1.0E-4};
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+			//======== monthAndYearOuterPanel ========
+			{
+				monthAndYearOuterPanel.setLayout(new GridBagLayout());
+				((GridBagLayout)monthAndYearOuterPanel.getLayout()).columnWidths = new int[] {0, 0, 0, 0};
+				((GridBagLayout)monthAndYearOuterPanel.getLayout()).rowHeights = new int[] {0, 0};
+				((GridBagLayout)monthAndYearOuterPanel.getLayout()).columnWeights = new double[] {1.0, 0.0, 1.0, 1.0E-4};
+				((GridBagLayout)monthAndYearOuterPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-                //======== monthAndYearInnerPanel ========
-                {
-                    monthAndYearInnerPanel.setLayout(new GridBagLayout());
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWidths = new int[]{0, 1, 0, 0};
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowHeights = new int[]{0, 0};
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+				//======== monthAndYearInnerPanel ========
+				{
+					monthAndYearInnerPanel.setLayout(new GridBagLayout());
+					((GridBagLayout)monthAndYearInnerPanel.getLayout()).columnWidths = new int[] {0, 1, 0, 0};
+					((GridBagLayout)monthAndYearInnerPanel.getLayout()).rowHeights = new int[] {0, 0};
+					((GridBagLayout)monthAndYearInnerPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 0.0, 1.0E-4};
+					((GridBagLayout)monthAndYearInnerPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-                    //---- labelMonth ----
-                    labelMonth.setText("September");
-                    labelMonth.setHorizontalAlignment(SwingConstants.RIGHT);
-                    labelMonth.setOpaque(true);
-                    labelMonth.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-                            labelIndicatorMouseEntered(e);
-                        }
+					//---- labelMonth ----
+					labelMonth.setText("September");
+					labelMonth.setHorizontalAlignment(SwingConstants.RIGHT);
+					labelMonth.setOpaque(true);
+					labelMonth.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							labelIndicatorMouseEntered(e);
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							labelIndicatorMouseExited(e);
+						}
+						@Override
+						public void mousePressed(MouseEvent e) {
+							labelMonthIndicatorMousePressed(e);
+						}
+					});
+					monthAndYearInnerPanel.add(labelMonth, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0));
 
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-                            labelIndicatorMouseExited(e);
-                        }
+					//---- labelYear ----
+					labelYear.setText("2100");
+					labelYear.setOpaque(true);
+					labelYear.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseEntered(MouseEvent e) {
+							labelIndicatorMouseEntered(e);
+						}
+						@Override
+						public void mouseExited(MouseEvent e) {
+							labelIndicatorMouseExited(e);
+						}
+						@Override
+						public void mousePressed(MouseEvent e) {
+							labelYearIndicatorMousePressed(e);
+						}
+					});
+					monthAndYearInnerPanel.add(labelYear, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0));
+				}
+				monthAndYearOuterPanel.add(monthAndYearInnerPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+					GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+					new Insets(0, 0, 0, 0), 0, 0));
+			}
+			headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
 
-                        @Override
-                        public void mousePressed(MouseEvent e) {
-                            labelMonthIndicatorMousePressed(e);
-                        }
-                    });
-                    monthAndYearInnerPanel.add(labelMonth, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 0, 0), 0, 0));
+			//---- buttonNextMonth ----
+			buttonNextMonth.setText(">");
+			buttonNextMonth.setFocusable(false);
+			buttonNextMonth.setFocusPainted(false);
+			buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
+			buttonNextMonth.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					buttonNextMonthActionPerformed(e);
+				}
+			});
+			headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
 
-                    //---- labelYear ----
-                    labelYear.setText("2100");
-                    labelYear.setOpaque(true);
-                    labelYear.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseEntered(MouseEvent e) {
-                            labelIndicatorMouseEntered(e);
-                        }
+			//---- buttonNextYear ----
+			buttonNextYear.setText(">>");
+			buttonNextYear.setFocusable(false);
+			buttonNextYear.setFocusPainted(false);
+			buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
+			buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
+			buttonNextYear.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					buttonNextYearActionPerformed(e);
+				}
+			});
+			headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
+		}
+		add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
-                        @Override
-                        public void mouseExited(MouseEvent e) {
-                            labelIndicatorMouseExited(e);
-                        }
+		//======== centerPanel ========
+		{
+			centerPanel.setBackground(new Color(210, 210, 210));
+			centerPanel.setLayout(new FormLayout(
+				"3*(min), 7*(default:grow), min",
+				"fill:min, fill:2px, fill:default:grow, fill:1px, fill:min, 6*(fill:default:grow), fill:min"));
+			((FormLayout)centerPanel.getLayout()).setColumnGroups(new int[][] {{4, 5, 6, 7, 8, 9, 10}});
+			((FormLayout)centerPanel.getLayout()).setRowGroups(new int[][] {{3, 6, 7, 8, 9, 10, 11}});
+		}
+		add(centerPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
-                        @Override
-                        public void mousePressed(MouseEvent e) {
-                            labelYearIndicatorMousePressed(e);
-                        }
-                    });
-                    monthAndYearInnerPanel.add(labelYear, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 0, 0), 0, 0));
-                }
-                monthAndYearOuterPanel.add(monthAndYearInnerPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
-            }
-            headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
+		//======== footerPanel ========
+		{
+			footerPanel.setLayout(new GridBagLayout());
+			((GridBagLayout)footerPanel.getLayout()).columnWidths = new int[] {6, 0, 0, 0, 6, 0};
+			((GridBagLayout)footerPanel.getLayout()).rowHeights = new int[] {0, 0};
+			((GridBagLayout)footerPanel.getLayout()).columnWeights = new double[] {0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
+			((GridBagLayout)footerPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-            //---- buttonNextMonth ----
-            buttonNextMonth.setText(">");
-            buttonNextMonth.setFocusable(false);
-            buttonNextMonth.setFocusPainted(false);
-            buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
-            buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
-            buttonNextMonth.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonNextMonthActionPerformed(e);
-                }
-            });
-            headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
+			//---- labelSetDateToToday ----
+			labelSetDateToToday.setText("Today: Feb 12, 2016");
+			labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
+			labelSetDateToToday.setOpaque(true);
+			footerPanel.add(labelSetDateToToday, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0));
 
-            //---- buttonNextYear ----
-            buttonNextYear.setText(">>");
-            buttonNextYear.setFocusable(false);
-            buttonNextYear.setFocusPainted(false);
-            buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
-            buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
-            buttonNextYear.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonNextYearActionPerformed(e);
-                }
-            });
-            headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
-        }
-        add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+			//---- labelClearDate ----
+			labelClearDate.setText("Clear");
+			labelClearDate.setOpaque(true);
+			footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0));
+		}
+		add(footerPanel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+			new Insets(0, 0, 0, 0), 0, 0));
 
-        //======== centerPanel ========
-        {
-            centerPanel.setBackground(new Color(210, 210, 210));
-            centerPanel.setLayout(new FormLayout(
-                    "3*(min), 7*(default:grow), min",
-                    "fill:min, fill:2px, fill:default:grow, fill:1px, fill:min, 6*(fill:default:grow), fill:min"));
-            ((FormLayout) centerPanel.getLayout()).setColumnGroups(new int[][]{{4, 5, 6, 7, 8, 9, 10}});
-            ((FormLayout) centerPanel.getLayout()).setRowGroups(new int[][]{{3, 6, 7, 8, 9, 10, 11}});
-        }
-        add(centerPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+		//======== yearEditorPanel ========
+		{
+			yearEditorPanel.setLayout(new GridBagLayout());
+			((GridBagLayout)yearEditorPanel.getLayout()).columnWidths = new int[] {40, 1, 26, 0};
+			((GridBagLayout)yearEditorPanel.getLayout()).rowHeights = new int[] {0, 0};
+			((GridBagLayout)yearEditorPanel.getLayout()).columnWeights = new double[] {1.0, 0.0, 0.0, 1.0E-4};
+			((GridBagLayout)yearEditorPanel.getLayout()).rowWeights = new double[] {1.0, 1.0E-4};
 
-        //======== footerPanel ========
-        {
-            footerPanel.setLayout(new GridBagLayout());
-            ((GridBagLayout) footerPanel.getLayout()).columnWidths = new int[]{6, 0, 0, 0, 6, 0};
-            ((GridBagLayout) footerPanel.getLayout()).rowHeights = new int[]{0, 0};
-            ((GridBagLayout) footerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
-            ((GridBagLayout) footerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
-
-            //---- labelSetDateToToday ----
-            labelSetDateToToday.setText("Today: Feb 12, 2016");
-            labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
-            labelSetDateToToday.setOpaque(true);
-            footerPanel.add(labelSetDateToToday, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
-
-            //---- labelClearDate ----
-            labelClearDate.setText("Clear");
-            labelClearDate.setOpaque(true);
-            footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
-        }
-        add(footerPanel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
-
-        //======== yearEditorPanel ========
-        {
-            yearEditorPanel.setLayout(new GridBagLayout());
-            ((GridBagLayout) yearEditorPanel.getLayout()).columnWidths = new int[]{40, 1, 26, 0};
-            ((GridBagLayout) yearEditorPanel.getLayout()).rowHeights = new int[]{0, 0};
-            ((GridBagLayout) yearEditorPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 0.0, 1.0E-4};
-            ((GridBagLayout) yearEditorPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
-
-            //---- doneEditingYearButton ----
-            doneEditingYearButton.setFocusPainted(false);
-            doneEditingYearButton.setFocusable(false);
-            doneEditingYearButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    doneEditingYearButtonActionPerformed(e);
-                }
-            });
-            yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
-        }
+			//---- doneEditingYearButton ----
+			doneEditingYearButton.setFocusPainted(false);
+			doneEditingYearButton.setFocusable(false);
+			doneEditingYearButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					doneEditingYearButtonActionPerformed(e);
+				}
+			});
+			yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+				new Insets(0, 0, 0, 0), 0, 0));
+		}
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 

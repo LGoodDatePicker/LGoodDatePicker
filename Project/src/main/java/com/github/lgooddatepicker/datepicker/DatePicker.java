@@ -382,7 +382,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return settings.getAllowEmptyDates();
         }
         // Try to get a parsed date.
-        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(text, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(), settings.getFormatsForParsing(), settings.getLocale());
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(
+                text, settings.getFormatForDatesCommonEra(), 
+                settings.getFormatForDatesBeforeCommonEra(), 
+                settings.getFormatsForParsing(), settings.getLocale());
 
         // If the date could not be parsed, return false.
         if (parsedDate == null) {
@@ -732,7 +735,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // If the text is not empty, then try to parse the date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
-            parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(), settings.getFormatsForParsing(), settings.getLocale());
+            parsedDate = InternalUtilities.getParsedDateOrNull(dateText, 
+                    settings.getFormatForDatesCommonEra(), 
+                    settings.getFormatForDatesBeforeCommonEra(), 
+                    settings.getFormatsForParsing(), settings.getLocale());
         }
         // If the date was parsed successfully, then check it against the veto policy.
         boolean dateIsVetoed = false;
@@ -839,7 +845,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return;
         }
         // The text is not empty.
-        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(), settings.getFormatsForParsing(), settings.getLocale());
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText, 
+                settings.getFormatForDatesCommonEra(), 
+                settings.getFormatForDatesBeforeCommonEra(), 
+                settings.getFormatsForParsing(), settings.getLocale());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
             dateTextField.setForeground(settings.getColor(Area.DatePickerTextInvalidDate));
