@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
+import java.util.HashMap;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized in a date picker.
@@ -49,6 +50,33 @@ import java.time.temporal.WeekFields;
  * wish to customize.
  */
 public class DatePickerSettings {
+
+    /**
+     * Area, These enumerations represent areas of the components whose color can be changed. These
+     * values are used with the setColor() function, to set the color of various areas of the
+     * DatePicker or the CalendarPanel. The default color for each area is also defined here.
+     *
+     * Note: A default color of "null" means that the default color for that element will be
+     * supplied by the swing component. The color for the "BackgroundMonthAndYearSmallButtons" is
+     * null, so those buttons will use the default background color supplied by the JButton class.
+     */
+    public enum Area {
+        BackgroundMonthAndYearLabelButtons(new Color(240, 240, 240)),
+        BackgroundMonthAndYearSmallButtons(null),
+        BackgroundOverallCalendarPanel(new Color(240, 240, 240)),
+        BackgroundTodayAndClearButtons(new Color(240, 240, 240)),
+        BackgroundTopLeftLabelAboveWeekNumbers(new Color(184, 207, 229)),
+        CalendarBackgroundHighlightedDates(Color.green),
+        CalendarBackgroundVetoedDates(Color.lightGray),
+        DatePickerTextInvalidDate(Color.red),
+        DatePickerTextValidDate(Color.black),
+        DatePickerTextVetoedDate(Color.black);
+
+        Area(Color defaultColor) {
+            this.defaultColor = defaultColor;
+        }
+        public Color defaultColor;
+    }
 
     /**
      * allowEmptyDates, This indicates whether or not empty dates are allowed in the date picker.
@@ -112,43 +140,6 @@ public class DatePickerSettings {
     private ArrayList<CalendarBorderProperties> borderPropertiesList;
 
     /**
-     * colorBackgroundCalendarPanel, This is the background color for the entire calendar panel. The
-     * default color is a very light gray.
-     */
-    private Color colorBackgroundCalendarPanel = new Color(240, 240, 240);
-
-    /**
-     * colorBackgroundHighlightedDates, This is the calendar background color for dates which are
-     * highlighted by a highlight policy. The default color is green.
-     */
-    private Color colorBackgroundHighlightedDates = Color.green;
-
-    /**
-     * colorBackgroundMonthAndYear, This is the background color used by the month and year buttons.
-     * The default color is a very light gray.
-     */
-    private Color colorBackgroundMonthAndYear = new Color(240, 240, 240);
-
-    /**
-     * colorBackgroundNavigateYearMonthButtons, This is the background color used by the buttons for
-     * navigating "previous year", "previous month", "next year", "next month". The default value is
-     * the default java button background.
-     */
-    private Color colorBackgroundNavigateYearMonthButtons = null;
-
-    /**
-     * colorBackgroundTodayAndClear, This is the background color used by the "Today" and "Clear"
-     * buttons. The default color is a very light gray.
-     */
-    private Color colorBackgroundTodayAndClear = new Color(240, 240, 240);
-
-    /**
-     * colorBackgroundVetoedDates, This is the calendar background color for dates which are vetoed
-     * by a veto policy. The default color is light gray.
-     */
-    private Color colorBackgroundVetoedDates = Color.lightGray;
-
-    /**
      * colorBackgroundWeekdayLabels, This is the calendar background color for the weekday labels.
      * The default color is a medium sky blue.
      */
@@ -161,30 +152,12 @@ public class DatePickerSettings {
     private Color colorBackgroundWeekNumberLabels = new Color(184, 207, 229);
 
     /**
-     * colorBackgroundTopLeftLabel, This is the calendar background color for the label that is used
-     * to fill the top left corner of the calendar whenever the week numbers are displayed. The
-     * default color is a medium sky blue.
+     * colors, This hash map holds the current color settings for different areas of the DatePicker
+     * or CalendarPanel. These colors can be set with the setColor() function, or retrieved with the
+     * getColor() function. By default, this map is populated with a set of default colors. The
+     * default colors for each area are defined the "AreaToColor" enum definition.
      */
-    private Color colorBackgroundTopLeftLabel = new Color(184, 207, 229);
-
-    /**
-     * colorTextInvalidDate, This is the text field text color for invalid dates. The default color
-     * is red.
-     */
-    private Color colorTextInvalidDate = Color.red;
-
-    /**
-     * colorTextValidDate, This is the text field text color for valid dates. The default color is
-     * black.
-     */
-    private Color colorTextValidDate = Color.black;
-
-    /**
-     * colorTextVetoedDate, This is the text field text color for vetoed dates. The default color is
-     * black. Note: The default fontVetoedDate setting will draw a line (strikethrough) vetoed
-     * dates.
-     */
-    private Color colorTextVetoedDate = Color.black;
+    private HashMap<Area, Color> colors;
 
     /**
      * firstDayOfWeek, This holds the day of the week that will be displayed in the far left column
@@ -558,6 +531,12 @@ public class DatePickerSettings {
                 = ExtraDateStrings.getExtraParsingFormatsForLocale(pickerLocale);
         formatsForParsing.addAll(extraFormatters);
 
+        // Add all the default colors to the colors map.
+        colors = new HashMap< Area, Color>();
+        for (Area area : Area.values()) {
+            colors.put(area, area.defaultColor);
+        }
+
         // Set the minimum height, minimum width, for the date panel.
         sizeDatePanelMinimumWidth = (7 * 31);
         sizeDatePanelMinimumHeight = (7 * 19);
@@ -613,59 +592,10 @@ public class DatePickerSettings {
     }
 
     /**
-     * getColorBackgroundCalendarPanel, Returns the value of this setting. See the "set" function
-     * for setting information.
+     * getColor, This returns the currently set color for the specified area.
      */
-    public Color getColorBackgroundCalendarPanel() {
-        return colorBackgroundCalendarPanel;
-    }
-
-    /**
-     * getColorBackgroundHighlightedDates, Returns the value of this setting. See the "set" function
-     * for setting information.
-     */
-    public Color getColorBackgroundHighlightedDates() {
-        return colorBackgroundHighlightedDates;
-    }
-
-    /**
-     * getColorBackgroundMonthAndYear, Returns the value of this setting. See the "set" function for
-     * setting information.
-     */
-    public Color getColorBackgroundMonthAndYear() {
-        return colorBackgroundMonthAndYear;
-    }
-
-    /**
-     * getColorBackgroundNavigateYearMonthButtons, Returns the value of this setting. See the "set"
-     * function for setting information.
-     */
-    public Color getColorBackgroundNavigateYearMonthButtons() {
-        return colorBackgroundNavigateYearMonthButtons;
-    }
-
-    /**
-     * getColorBackgroundTodayAndClear, Returns the value of this setting. See the "set" function
-     * for setting information.
-     */
-    public Color getColorBackgroundTodayAndClear() {
-        return colorBackgroundTodayAndClear;
-    }
-
-    /**
-     * getColorBackgroundTopLeftLabel, Returns the value of this setting. See the "set" function for
-     * setting information.
-     */
-    public Color getColorBackgroundTopLeftLabel() {
-        return colorBackgroundTopLeftLabel;
-    }
-
-    /**
-     * getColorBackgroundVetoedDates, Returns the value of this setting. See the "set" function for
-     * setting information.
-     */
-    public Color getColorBackgroundVetoedDates() {
-        return colorBackgroundVetoedDates;
+    public Color getColor(Area area) {
+        return colors.get(area);
     }
 
     /**
@@ -682,30 +612,6 @@ public class DatePickerSettings {
      */
     public Color getColorBackgroundWeekdayLabels() {
         return colorBackgroundWeekdayLabels;
-    }
-
-    /**
-     * getColorTextInvalidDate, Returns the value of this setting. See the "set" function for
-     * setting information.
-     */
-    public Color getColorTextInvalidDate() {
-        return colorTextInvalidDate;
-    }
-
-    /**
-     * getColorTextValidDate, Returns the value of this setting. See the "set" function for setting
-     * information.
-     */
-    public Color getColorTextValidDate() {
-        return colorTextValidDate;
-    }
-
-    /**
-     * getColorTextVetoedDate, Returns the value of this setting. See the "set" function for setting
-     * information.
-     */
-    public Color getColorTextVetoedDate() {
-        return colorTextVetoedDate;
     }
 
     /**
@@ -1045,72 +951,49 @@ public class DatePickerSettings {
             borderPropertiesList = zGetDefaultBorderPropertiesList();
         }
         this.borderPropertiesList = borderPropertiesList;
-        zApplyBorderPropertiesList();
-    }
-
-    /**
-     * setColorBackgroundCalendarPanel, This sets the background color for the entire calendar
-     * panel. The default color is a very light gray.
-     */
-    public void setColorBackgroundCalendarPanel(Color colorBackgroundCalendarPanel) {
-        this.colorBackgroundCalendarPanel = colorBackgroundCalendarPanel;
-        zDrawIndependentCalendarPanelIfNeeded();
-    }
-
-    /**
-     * setColorBackgroundHighlightedDates, This sets the calendar background color for dates which
-     * are highlighted by a highlight policy. The default color is green.
-     */
-    public void setColorBackgroundHighlightedDates(Color colorBackgroundHighlightedDates) {
-        this.colorBackgroundHighlightedDates = colorBackgroundHighlightedDates;
-        zDrawIndependentCalendarPanelIfNeeded();
-    }
-
-    /**
-     * setColorBackgroundMonthAndYear, This sets the background color used by the month and year
-     * buttons. The default color is a very light gray.
-     */
-    public void setColorBackgroundMonthAndYear(Color colorBackgroundMonthAndYear) {
-        this.colorBackgroundMonthAndYear = colorBackgroundMonthAndYear;
+        // This only needs to be applied to independent calendar panels. 
+        // For the date picker, the setting is automatically applied from the calendar panel 
+        // constructor each time the calendar panel is opened.
         if (parentCalendarPanel != null) {
-            parentCalendarPanel.zLabelIndicatorsAllSetColorsToDefaultState();
+            parentCalendarPanel.zApplyBorderPropertiesList();
         }
     }
 
     /**
-     * setColorBackgroundNavigateYearMonthButtons, This sets the background color used by the
-     * buttons for navigating "previous year", "previous month", "next year", "next month". The
-     * default value is the default java button background.
+     * setColor, This sets a color for the specified area. Setting an area to null will restore the
+     * default color for that area.
      */
-    public void setColorBackgroundNavigateYearMonthButtons(Color colorBackgroundNavigateYearMonthButtons) {
-        this.colorBackgroundNavigateYearMonthButtons = colorBackgroundNavigateYearMonthButtons;
-        zDrawIndependentCalendarPanelIfNeeded();
-    }
-
-    /**
-     * setColorBackgroundTodayAndClear, This sets the background color used by the "Today" and
-     * "Clear" buttons. The default color is a very light gray.
-     */
-    public void setColorBackgroundTodayAndClear(Color colorBackgroundTodayAndClear) {
-        this.colorBackgroundTodayAndClear = colorBackgroundTodayAndClear;
-        if (parentCalendarPanel != null) {
-            parentCalendarPanel.zLabelIndicatorsAllSetColorsToDefaultState();
+    public void setColor(Area area, Color color) {
+        // If null was supplied, then use the default color.
+        if (color == null) {
+            color = area.defaultColor;
         }
-    }
-
-    /**
-     * setColorBackgroundTopLeftLabel, This sets the calendar background color for the label that is
-     * used to fill the top left corner of the calendar whenever the week numbers are displayed. The
-     * default color is a medium sky blue.
-     */
-    public void setColorBackgroundTopLeftLabel(Color colorBackgroundTopLeftLabel) {
-        this.colorBackgroundTopLeftLabel = colorBackgroundTopLeftLabel;
-        zDrawIndependentCalendarPanelIfNeeded();
+        // Save the color to the color map.
+        colors.put(area, color);
+        // Call any "updating functions" that are appropriate for the specified area.
+        switch (area) {
+            case BackgroundMonthAndYearLabelButtons:
+            case BackgroundTodayAndClearButtons:
+                if (parentCalendarPanel != null) {
+                    parentCalendarPanel.zSetAllLabelIndicatorColorsToDefaultState();
+                }
+                break;
+            default:
+                zDrawIndependentCalendarPanelIfNeeded();
+        }
     }
 
     /**
      * setColorBackgroundWeekNumberLabels, This sets the calendar background color for the week
      * number labels. The default color is a medium sky blue.
+     *
+     * @param applyMatchingDefaultBorders, This determines if this function will update the border
+     * label properties to show the appropriate default borders. The default border label settings
+     * are different, depending on the "colorBackgroundWeekNumberLabels". If you have not customized
+     * the border label properties, then it is recommended that you always set the
+     * "applyMatchingDefaultBorders" parameter to true. This will ensure that the calendar borders
+     * will always use the correct default settings. If you set this parameter to false, than the
+     * current border settings will not be changed by this function.
      */
     public void setColorBackgroundWeekNumberLabels(Color colorBackgroundWeekNumberLabels,
             boolean applyMatchingDefaultBorders) {
@@ -1121,15 +1004,6 @@ public class DatePickerSettings {
         if (parentCalendarPanel != null) {
             parentCalendarPanel.zRedrawWeekNumberLabelColors();
         }
-    }
-
-    /**
-     * setColorBackgroundVetoedDates, This sets the calendar background color for dates which are
-     * vetoed by a veto policy. The default color is light gray.
-     */
-    public void setColorBackgroundVetoedDates(Color colorBackgroundVetoedDates) {
-        this.colorBackgroundVetoedDates = colorBackgroundVetoedDates;
-        zDrawIndependentCalendarPanelIfNeeded();
     }
 
     /**
@@ -1153,31 +1027,6 @@ public class DatePickerSettings {
         if (parentCalendarPanel != null) {
             parentCalendarPanel.zRedrawWeekdayLabelColors();
         }
-    }
-
-    /**
-     * setColorTextInvalidDate, This sets the text field text color for invalid dates. The default
-     * color is red.
-     */
-    public void setColorTextInvalidDate(Color colorTextInvalidDate) {
-        this.colorTextInvalidDate = colorTextInvalidDate;
-    }
-
-    /**
-     * setColorTextValidDate, This sets the text field text color for valid dates. The default color
-     * is black.
-     */
-    public void setColorTextValidDate(Color colorTextValidDate) {
-        this.colorTextValidDate = colorTextValidDate;
-    }
-
-    /**
-     * setColorTextVetoedDate, This sets the text field text color for vetoed dates. The default
-     * color is black. Note: The default fontVetoedDate setting will draw a line (strikethrough)
-     * vetoed dates.
-     */
-    public void setColorTextVetoedDate(Color colorTextVetoedDate) {
-        this.colorTextVetoedDate = colorTextVetoedDate;
     }
 
     /**
@@ -1671,8 +1520,8 @@ public class DatePickerSettings {
      */
     void yApplyNeededSettingsAtDatePickerConstruction() {
         // Run the needed "apply" functions.
-        // Note: The border properties list does not need to be applied here, because it is 
-        // applied whenever the date picker calendar panel is opened.
+        // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel 
+        // constructor so it will be run both for independent and date picker calendar panels.
         zApplyGapBeforeButtonPixels();
         zApplyAllowKeyboardEditing();
         zApplyInitialDate();
@@ -1690,9 +1539,10 @@ public class DatePickerSettings {
      */
     public void yApplyNeededSettingsAtIndependentCalendarPanelConstruction() {
         // Run the needed "apply" functions.
+        // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel 
+        // constructor so it will be run both for independent and date picker calendar panels.
         zApplyInitialDate();
         zApplyAllowEmptyDates();
-        zApplyBorderPropertiesList();
     }
 
     /**
@@ -1741,18 +1591,6 @@ public class DatePickerSettings {
                 : InternalConstants.colorNotEditableTextFieldBorder;
         parentDatePicker.getComponentDateTextField().setBorder(new CompoundBorder(
                 new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
-    }
-
-    /**
-     * zApplyBorderPropertiesList, This applies the named setting to the parent component.
-     */
-    private void zApplyBorderPropertiesList() {
-        // This only needs to be applied to independent calendar panels. 
-        // For the date picker, the setting is automatically applied each time the calendar panel 
-        // is opened.
-        if (parentCalendarPanel != null) {
-            parentCalendarPanel.zApplyBorderPropertiesList();
-        }
     }
 
     /**

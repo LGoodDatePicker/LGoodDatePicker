@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
+import com.github.lgooddatepicker.datepicker.DatePickerSettings.Area;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
@@ -166,11 +167,11 @@ public class FullDemo {
 
         // Create a date picker: Custom color.
         dateSettings = new DatePickerSettings();
-        dateSettings.setColorBackgroundCalendarPanel(Color.green);
+        dateSettings.setColor(Area.BackgroundOverallCalendarPanel, Color.green);
         dateSettings.setColorBackgroundWeekdayLabels(Color.orange, true);
-        dateSettings.setColorBackgroundMonthAndYear(Color.yellow);
-        dateSettings.setColorBackgroundTodayAndClear(Color.yellow);
-        dateSettings.setColorBackgroundNavigateYearMonthButtons(Color.cyan);
+        dateSettings.setColor(Area.BackgroundMonthAndYearLabelButtons, Color.yellow);
+        dateSettings.setColor(Area.BackgroundTodayAndClearButtons, Color.yellow);
+        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons,Color.cyan);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Colors:");
@@ -195,7 +196,7 @@ public class FullDemo {
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
         dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
-        dateSettings.setColorTextValidDate(new Color(0, 100, 0));
+        dateSettings.setColor(Area.DatePickerTextValidDate,new Color(0, 100, 0));
         dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
