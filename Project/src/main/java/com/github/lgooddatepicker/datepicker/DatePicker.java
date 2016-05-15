@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.border.*;
 import com.github.lgooddatepicker.zinternaltools.*;
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
+import com.github.lgooddatepicker.datepicker.DatePickerSettings.Area;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import javax.swing.event.DocumentEvent;
@@ -822,7 +823,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Reset all atributes to normal before going further.
         // (Possibility: ValidFullOrEmptyValue)
         dateTextField.setBackground(Color.white);
-        dateTextField.setForeground(settings.getColorTextValidDate());
+        dateTextField.setForeground(settings.getColor(Area.DatePickerTextValidDate));
         dateTextField.setFont(settings.getFontValidDate());
         // Get the text, and check to see if it is empty.
         String dateText = dateTextField.getText();
@@ -841,7 +842,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText, settings.getFormatForDatesCommonEra(), settings.getFormatForDatesBeforeCommonEra(), settings.getFormatsForParsing(), settings.getLocale());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
-            dateTextField.setForeground(settings.getColorTextInvalidDate());
+            dateTextField.setForeground(settings.getColor(Area.DatePickerTextInvalidDate));
             dateTextField.setFont(settings.getFontInvalidDate());
             return;
         }
@@ -850,7 +851,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         boolean isDateVetoed = InternalUtilities.isDateVetoed(vetoPolicy, parsedDate);
         if (isDateVetoed) {
             // (Possibility: VetoedValue)
-            dateTextField.setForeground(settings.getColorTextVetoedDate());
+            dateTextField.setForeground(settings.getColor(Area.DatePickerTextVetoedDate));
             dateTextField.setFont(settings.getFontVetoedDate());
         }
     }

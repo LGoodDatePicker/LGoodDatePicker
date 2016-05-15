@@ -5,6 +5,7 @@ import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.datepicker.DatePicker;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
+import com.github.lgooddatepicker.datepicker.DatePickerSettings.Area;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import java.awt.*;
 import java.awt.event.*;
@@ -275,6 +276,9 @@ public class CalendarPanel
         addWeekNumberLabels();
         addTopLeftLabel();
         addBorderLabels();
+        
+        // Apply the border properties settings any time a CalendarPanel is constructed.
+        zApplyBorderPropertiesList();
 
         // Shrink the buttons for previous and next year and month.
         buttonPreviousYear.setMargin(new java.awt.Insets(1, 2, 1, 2));
@@ -283,7 +287,7 @@ public class CalendarPanel
         buttonNextMonth.setMargin(new java.awt.Insets(1, 2, 1, 2));
 
         // Set the label indicators to their default states.
-        zLabelIndicatorsAllSetColorsToDefaultState();
+        zSetAllLabelIndicatorColorsToDefaultState();
 
         // If this is an an independent calendar panel, apply the needed settings at 
         // independent CalendarPanel construction.
@@ -446,7 +450,7 @@ public class CalendarPanel
      */
     private void addTopLeftLabel() {
         topLeftLabel = new JLabel();
-        topLeftLabel.setBackground(settings.getColorBackgroundTopLeftLabel());
+        topLeftLabel.setBackground(settings.getColor(Area.BackgroundTopLeftLabelAboveWeekNumbers));
         topLeftLabel.setOpaque(true);
         topLeftLabel.setVisible(false);
         centerPanel.add(topLeftLabel, CC.xywh(2, 2, 1, 3));
@@ -558,12 +562,12 @@ public class CalendarPanel
                 && (displayedSelectedDate.getYear() == displayedYear)
                 && (displayedSelectedDate.getMonth() == displayedMonth);
         // Set the component colors
-        Color calendarPanelBackgroundColor = settings.getColorBackgroundCalendarPanel();
+        Color calendarPanelBackgroundColor = settings.getColor(Area.BackgroundOverallCalendarPanel);
         setBackground(calendarPanelBackgroundColor);
         headerControlsPanel.setBackground(calendarPanelBackgroundColor);
         monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
         footerPanel.setBackground(calendarPanelBackgroundColor);
-        Color navigationButtonsColor = settings.getColorBackgroundNavigateYearMonthButtons();
+        Color navigationButtonsColor = settings.getColor(Area.BackgroundMonthAndYearSmallButtons);
         if (navigationButtonsColor != null) {
             buttonPreviousYear.setBackground(navigationButtonsColor);
             buttonNextYear.setBackground(navigationButtonsColor);
@@ -653,11 +657,11 @@ public class CalendarPanel
                 }
                 if (dateIsVetoed) {
                     dateLabel.setEnabled(false);
-                    dateLabel.setBackground(settings.getColorBackgroundVetoedDates());
+                    dateLabel.setBackground(settings.getColor(Area.CalendarBackgroundVetoedDates));
                 }
                 if ((!dateIsVetoed) && (highlightInfo != null)) {
                     // Set the highlight background color (always).
-                    Color colorBackground = settings.getColorBackgroundHighlightedDates();
+                    Color colorBackground = settings.getColor(Area.CalendarBackgroundHighlightedDates);
                     if (highlightInfo.colorBackground != null) {
                         colorBackground = highlightInfo.colorBackground;
                     }
@@ -712,7 +716,7 @@ public class CalendarPanel
         }
 
         // Set the background color for the topLeftLabel.
-        topLeftLabel.setBackground(settings.getColorBackgroundTopLeftLabel());
+        topLeftLabel.setBackground(settings.getColor(Area.BackgroundTopLeftLabelAboveWeekNumbers));
 
         // Set the label for the today button.
         String todayDateString = settings.getFormatForTodayButton().format(LocalDate.now());
@@ -834,10 +838,10 @@ public class CalendarPanel
             return;
         }
         if (label == labelMonth || label == labelYear) {
-            label.setBackground(settings.getColorBackgroundMonthAndYear());
-            monthAndYearInnerPanel.setBackground(settings.getColorBackgroundMonthAndYear());
+            label.setBackground(settings.getColor(Area.BackgroundMonthAndYearLabelButtons));
+            monthAndYearInnerPanel.setBackground(settings.getColor(Area.BackgroundMonthAndYearLabelButtons));
         } else {
-            label.setBackground(settings.getColorBackgroundTodayAndClear());
+            label.setBackground(settings.getColor(Area.BackgroundTodayAndClearButtons));
         }
         label.setBorder(new CompoundBorder(
                 new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));
@@ -1119,7 +1123,7 @@ public class CalendarPanel
      * zLabelIndicatorsAllSetColorsToDefaultState, This is called to set all label indicators to the
      * state they should have when there is no mouse hovering over them.
      */
-    public void zLabelIndicatorsAllSetColorsToDefaultState() {
+    public void zSetAllLabelIndicatorColorsToDefaultState() {
         labelIndicatorSetColorsToDefaultState(labelMonth);
         labelIndicatorSetColorsToDefaultState(labelYear);
         labelIndicatorSetColorsToDefaultState(labelSetDateToToday);

@@ -2,6 +2,7 @@ package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.datepicker.DatePickerSettings;
+import com.github.lgooddatepicker.datepicker.DatePickerSettings.Area;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
@@ -82,13 +83,13 @@ public class CalendarPanelAssortmentTest {
 
         // Create a CalendarPanel: Custom color.
         dateSettings = new DatePickerSettings();
-        dateSettings.setColorBackgroundCalendarPanel(Color.BLUE);
+        dateSettings.setColor(Area.BackgroundOverallCalendarPanel, Color.BLUE);
         dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
-        dateSettings.setColorBackgroundTopLeftLabel(Color.PINK);
-        dateSettings.setColorBackgroundMonthAndYear(Color.ORANGE);
-        dateSettings.setColorBackgroundTodayAndClear(Color.ORANGE);
-        dateSettings.setColorBackgroundNavigateYearMonthButtons(Color.MAGENTA);
+        dateSettings.setColor(Area.BackgroundTopLeftLabelAboveWeekNumbers, Color.PINK);
+        dateSettings.setColor(Area.BackgroundMonthAndYearLabelButtons, Color.ORANGE);
+        dateSettings.setColor(Area.BackgroundTodayAndClearButtons, Color.ORANGE);
+        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons, Color.MAGENTA);
         dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
@@ -210,13 +211,13 @@ public class CalendarPanelAssortmentTest {
         dateSettings = new DatePickerSettings();
         dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
-        dateSettings.setColorBackgroundCalendarPanel(Color.BLUE);
+        dateSettings.setColor(Area.BackgroundOverallCalendarPanel, Color.BLUE);
         dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
-        dateSettings.setColorBackgroundTopLeftLabel(Color.PINK);
-        dateSettings.setColorBackgroundMonthAndYear(Color.ORANGE);
-        dateSettings.setColorBackgroundTodayAndClear(Color.ORANGE);
-        dateSettings.setColorBackgroundNavigateYearMonthButtons(Color.MAGENTA);
+        dateSettings.setColor(Area.BackgroundTopLeftLabelAboveWeekNumbers, Color.PINK);
+        dateSettings.setColor(Area.BackgroundMonthAndYearLabelButtons, Color.ORANGE);
+        dateSettings.setColor(Area.BackgroundTodayAndClearButtons, Color.ORANGE);
+        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons, Color.MAGENTA);
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: Change first weekday.
@@ -287,7 +288,7 @@ public class CalendarPanelAssortmentTest {
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setWeekNumbersDisplayed(true, true);
         // dateSettings.setWeekNumbersForceFirstDayOfWeekToMatch(false);
-        // dateSettings.setWeekNumberRules(WeekFields.ISO);
+        // dateSettings.setWeekNumberRules(WeekFields.SUNDAY_START);
         panel.add(calendarPanel);
 
         // Display the frame.
