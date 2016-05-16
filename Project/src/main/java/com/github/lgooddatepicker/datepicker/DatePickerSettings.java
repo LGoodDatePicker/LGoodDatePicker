@@ -445,31 +445,37 @@ public class DatePickerSettings {
     private boolean weekNumbersDisplayed = false;
 
     /**
-     * weekNumbersForceFirstDayOfWeekToMatch, This setting determines if the first day of the week
-     * should be forced to match the weekNumberRules for the first day of the week, whenever
-     * weekNumbersDisplayed is true.
+     * weekNumbersWillOverrideFirstDayOfWeek, This setting determines how to resolve any conflict
+     * between the "weekNumberRules" setting and the "firstDayOfWeek" setting. Note: This setting
+     * only has an effect when "weekNumbersDisplayed" is true.
      *
-     * If weekNumbersDisplayed is false, then the week numbers will not be displayed, and the
-     * setting will not have any effect.
+     * 1) If this setting is true (Default): Whenever the week numbers are displayed, then the first
+     * day of the week that is displayed on the calendar will always match the currently set
+     * "weekNumberRules". This enforces a strict and consistent definition for the week numbers.
+     * Specifically, this guarantees that all seven dates in each calendar row will belong to a
+     * single week number. Note: The WeekNumberRules are an instance of the java.time.temporal
+     * "WeekFields" class. For more information about how week numbers are defined, see the
+     * WeekFields javadocs.
      *
-     * If this setting is true and weekNumbersDisplayed is true, then the first day of the week that
-     * is shown on the calendar will always match the weekNumberRules definition for "first day of
-     * the week". (And all the dates in each row will always belong to the displayed week number.)
+     * 2) If this setting is false: The first day of the week that is displayed on the calendar will
+     * always match the "firstDayOfWeek" setting, and a more "flexible" definition of week numbers
+     * will be applied. Using a firstDayOfWeek that does not match the week number rules will cause
+     * each calendar row to contain dates that fall inside two different week numbers. (As defined
+     * by the weekNumberRules.) In this circumstance, the displayed week numbers will be determined
+     * by a "majority rules" system, which is defined below.
      *
-     * If this setting is false and weekNumbersDisplayed is true, then the week numbers will be
-     * determined by a "majority rules" system, which is described below. (In this system, up to 3
-     * dates in each row may not belong to the displayed week number.)
+     * The "majority rules" system: Under the majority rule system, the calendar will count the
+     * number of days in each row that belong to each week number. In a single row, four (or more)
+     * days will match one week number, and three (or less) days will match a different week number.
+     * The most commonly occurring week number will be displayed next to each row.
      *
-     * Description of the "majority rules" system: If this setting is false, and if the first day of
-     * the week is set to be different than the first day of the week defined by the
-     * weekNumberRules, then the dates in a single row of the calendar may not all belong to the
-     * same week number. In this circumstance, the displayed week number for each row will be
-     * determined by a "majority rules" system. More specifically, the calendar will count the
-     * number of days in each row that belong to each week number. Four or more days in a particular
-     * row will always match a particular week number, and that is the week number that will be
-     * displayed next to the row.
+     * To summarize: If your program needs to implement a strict week number definition, then it is
+     * recommended to leave this setting at its default value (of true). If it is more important to
+     * have a flexible first day of the week, then you could set this value to false. When this
+     * setting is false, the displayed week numbers will follow a "majority rules" system, and will
+     * not exactly match the week number rules.
      */
-    private boolean weekNumbersForceFirstDayOfWeekToMatch = true;
+    private boolean weekNumbersWillOverrideFirstDayOfWeek = true;
 
     /**
      * Constructor with Default Locale, This constructs a date picker settings instance using the
@@ -620,7 +626,7 @@ public class DatePickerSettings {
      * week setting. See also: "weekNumbersDisplayed", and "weekNumbersForceFirstDayOfWeekToMatch".
      */
     public DayOfWeek getFirstDayOfWeekDisplayedOnCalendar() {
-        if (weekNumbersDisplayed && weekNumbersForceFirstDayOfWeekToMatch
+        if (weekNumbersDisplayed && weekNumbersWillOverrideFirstDayOfWeek
                 && (weekNumberRules != null)) {
             return weekNumberRules.getFirstDayOfWeek();
         }
@@ -831,7 +837,7 @@ public class DatePickerSettings {
      * function for setting information.
      */
     public boolean getWeekNumbersForceFirstDayOfWeekToMatch() {
-        return weekNumbersForceFirstDayOfWeekToMatch;
+        return weekNumbersWillOverrideFirstDayOfWeek;
     }
 
     /**
@@ -1484,32 +1490,39 @@ public class DatePickerSettings {
     }
 
     /**
-     * setWeekNumbersForceFirstDayOfWeekToMatch, This setting determines if the first day of the
-     * week should be forced to match the weekNumberRules for the first day of the week, whenever
-     * weekNumbersDisplayed is true.
+     * setWeekNumbersWillOverrideFirstDayOfWeek, This setting determines how to resolve any conflict
+     * between the "weekNumberRules" setting and the "firstDayOfWeek" setting. Note: This setting
+     * only has an effect when "weekNumbersDisplayed" is true.
      *
-     * If weekNumbersDisplayed is false, then the week numbers will not be displayed, and the
-     * setting will not have any effect.
+     * 1) If this setting is true (Default): Whenever the week numbers are displayed, then the first
+     * day of the week that is displayed on the calendar will always match the currently set
+     * "weekNumberRules". This enforces a strict and consistent definition for the week numbers.
+     * Specifically, this guarantees that all seven dates in each calendar row will belong to a
+     * single week number. Note: The WeekNumberRules are an instance of the java.time.temporal
+     * "WeekFields" class. For more information about how week numbers are defined, see the
+     * WeekFields javadocs.
      *
-     * If this setting is true and weekNumbersDisplayed is true, then the first day of the week that
-     * is shown on the calendar will always match the weekNumberRules definition for "first day of
-     * the week". (And all the dates in each row will always belong to the displayed week number.)
+     * 2) If this setting is false: The first day of the week that is displayed on the calendar will
+     * always match the "firstDayOfWeek" setting, and a more "flexible" definition of week numbers
+     * will be applied. Using a firstDayOfWeek that does not match the week number rules will cause
+     * each calendar row to contain dates that fall inside two different week numbers. (As defined
+     * by the weekNumberRules.) In this circumstance, the displayed week numbers will be determined
+     * by a "majority rules" system, which is defined below.
      *
-     * If this setting is false and weekNumbersDisplayed is true, then the week numbers will be
-     * determined by a "majority rules" system, which is described below. (In this system, up to 3
-     * dates in each row may not belong to the displayed week number.)
+     * The "majority rules" system: Under the majority rule system, the calendar will count the
+     * number of days in each row that belong to each week number. In a single row, four (or more)
+     * days will match one week number, and three (or less) days will match a different week number.
+     * The most commonly occurring week number will be displayed next to each row.
      *
-     * Description of the "majority rules" system: If this setting is false, and if the first day of
-     * the week is set to be different than the first day of the week defined by the
-     * weekNumberRules, then the dates in a single row of the calendar may not all belong to the
-     * same week number. In this circumstance, the displayed week number for each row will be
-     * determined by a "majority rules" system. More specifically, the calendar will count the
-     * number of days in each row that belong to each week number. Four or more days in a particular
-     * row will always match a particular week number, and that is the week number that will be
-     * displayed next to the row.
+     * To summarize: If your program needs to implement a strict week number definition, then it is
+     * recommended to leave this setting at its default value (of true). If it is more important to
+     * have a flexible first day of the week, then you could set this value to false. When this
+     * setting is false, the displayed week numbers will follow a "majority rules" system, and will
+     * not exactly match the week number rules.
      */
-    public void setWeekNumbersForceFirstDayOfWeekToMatch(boolean forceFirstDayOfWeekToMatch) {
-        this.weekNumbersForceFirstDayOfWeekToMatch = forceFirstDayOfWeekToMatch;
+    public void setWeekNumbersWillOverrideFirstDayOfWeek(
+            boolean weekNumbersWillOverrideFirstDayOfWeek) {
+        this.weekNumbersWillOverrideFirstDayOfWeek = weekNumbersWillOverrideFirstDayOfWeek;
         zDrawIndependentCalendarPanelIfNeeded();
     }
 
