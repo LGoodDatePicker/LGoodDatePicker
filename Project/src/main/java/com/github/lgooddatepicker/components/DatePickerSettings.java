@@ -1,6 +1,5 @@
-package com.github.lgooddatepicker.datepicker;
+package com.github.lgooddatepicker.components;
 
-import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.ConstantSize;
@@ -245,25 +244,6 @@ public class DatePickerSettings {
     private DateHighlightPolicy highlightPolicy = null;
 
     /**
-     * initialDate, This is the date that the parent DatePicker or parent independent CalendarPanel
-     * will have when it is created. This can be set to any date, or it can be set to null. The
-     * default value for initialDate is null, which represents an empty date. This setting will only
-     * have an effect if it is set before the parent component is constructed.
-     *
-     * For an independent CalendarPanel, this setting will also set the displayed YearMonth of the
-     * CalendarPanel to match the initial date. (See also: CalendarPanel.setSelectedDate() and
-     * CalendarPanel.setDisplayedYearMonth().)
-     *
-     * If allowEmptyDates is false, then a null initialDate will be ignored. More specifically: When
-     * the parent component is constructed, if allowEmptyDates is false and initialDate is null,
-     * then the initialDate will be set to a default value. (The default value is today's date.)
-     *
-     * Note: This date can not be vetoed, because a veto policy can not be set until after the
-     * parent component is constructed.
-     */
-    private LocalDate initialDate = null;
-
-    /**
      * locale, This holds the picker locale instance that indicates the user's language and culture.
      * The locale is used in translating text and determining default behaviors, for the date picker
      * and the calendar panel. The default values for many of the other settings depend on the
@@ -478,6 +458,12 @@ public class DatePickerSettings {
     private boolean weekNumbersWillOverrideFirstDayOfWeek = true;
 
     /**
+     * zSkipDrawIndependentCalendarPanelIfNeeded, This is used to temporarily skip the named
+     * function, until the setLocale() function is complete.
+     */
+    private boolean zSkipDrawIndependentCalendarPanelIfNeeded = false;
+
+    /**
      * Constructor with Default Locale, This constructs a date picker settings instance using the
      * system default locale and language. The constructor populates all the settings with default
      * values.
@@ -491,52 +477,6 @@ public class DatePickerSettings {
      * supplied locale and language. The constructor populates all the settings with default values.
      */
     public DatePickerSettings(Locale pickerLocale) {
-        // Fix a problem where the Hindi locale is not recognized by language alone.
-        if ("hi".equals(pickerLocale.getLanguage()) && (pickerLocale.getCountry().isEmpty())) {
-            pickerLocale = new Locale("hi", "IN");
-        }
-
-        // Save the date picker locale.
-        this.locale = pickerLocale;
-
-        // Set the default week number rules.
-        weekNumberRules = WeekFields.of(locale);
-
-        // Set the default translations for the locale.
-        translationToday = TranslationSource.getTranslation(pickerLocale, "today", "Today");
-        translationClear = TranslationSource.getTranslation(pickerLocale, "clear", "Clear");
-
-        // Set the default standalone month names for the current locale.
-        translationArrayStandaloneLongMonthNames
-                = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(pickerLocale);
-        translationArrayStandaloneShortMonthNames
-                = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(pickerLocale);
-
-        // Create default formatters for displaying the today button, and AD and BC dates, in
-        // the specified locale.
-        formatForTodayButton = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(pickerLocale);
-        formatForDatesCommonEra = InternalUtilities.generateDefaultFormatterCE(pickerLocale);
-        formatForDatesBeforeCommonEra = InternalUtilities.generateDefaultFormatterBCE(pickerLocale);
-
-        // Create an array of all the FormatStyle enum values, from short to long.
-        FormatStyle[] allFormatStyles = new FormatStyle[]{
-            FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
-
-        // Create a set of default parsing formatters for the specified locale.
-        formatsForParsing = new ArrayList<DateTimeFormatter>();
-        DateTimeFormatter parseFormat;
-        for (int i = 0; i < allFormatStyles.length; ++i) {
-            parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                    appendLocalized(allFormatStyles[i], null).toFormatter(pickerLocale);
-            formatsForParsing.add(parseFormat);
-        }
-
-        // Get any common extra parsing formats for the specified locale, and append them to
-        // the list of parsingFormatters.
-        ArrayList<DateTimeFormatter> extraFormatters
-                = ExtraDateStrings.getExtraParsingFormatsForLocale(pickerLocale);
-        formatsForParsing.addAll(extraFormatters);
-
         // Add all the default colors to the colors map.
         colors = new HashMap< Area, Color>();
         for (Area area : Area.values()) {
@@ -547,13 +487,12 @@ public class DatePickerSettings {
         sizeDatePanelMinimumWidth = (7 * 31);
         sizeDatePanelMinimumHeight = (7 * 19);
 
-        // Initialize the first day of the week.
-        firstDayOfWeek = WeekFields.of(Locale.getDefault()).getFirstDayOfWeek();
-
         // Generate the default fonts and text colors.
-        fontValidDate = new JTextField().getFont();
-        fontInvalidDate = new JTextField().getFont();
-        fontVetoedDate = new JTextField().getFont();
+        // The font object is immutable, so it's okay to sign the same font to multiple settings.
+        Font defaultTextFieldFont = new JTextField().getFont();
+        fontValidDate = defaultTextFieldFont;
+        fontInvalidDate = defaultTextFieldFont;
+        fontVetoedDate = defaultTextFieldFont;
         Map attributes = fontVetoedDate.getAttributes();
         attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
         fontVetoedDate = new Font(attributes);
@@ -563,6 +502,10 @@ public class DatePickerSettings {
         // border properties. I don't think there would be any parent to apply them to when called 
         // from the DatePickerSettings constructor though.)
         setBorderPropertiesList(null);
+
+        // Save the date picker locale.
+        // This will also change all settings that most directly depend on the locale.
+        setLocale(pickerLocale);
     }
 
     /**
@@ -714,14 +657,6 @@ public class DatePickerSettings {
     }
 
     /**
-     * getInitialDate, Returns the value of this setting. See the "set" function for setting
-     * information.
-     */
-    public LocalDate getInitialDate() {
-        return initialDate;
-    }
-
-    /**
      * getLocale, This returns locale setting of the date picker. The locale can only be set in the
      * DatePickerSettings constructor.
      */
@@ -833,10 +768,10 @@ public class DatePickerSettings {
     }
 
     /**
-     * getWeekNumbersForceFirstDayOfWeekToMatch, Returns the value of this setting. See the "set"
+     * getWeekNumbersWillOverrideFirstDayOfWeek, Returns the value of this setting. See the "set"
      * function for setting information.
      */
-    public boolean getWeekNumbersForceFirstDayOfWeekToMatch() {
+    public boolean getWeekNumbersWillOverrideFirstDayOfWeek() {
         return weekNumbersWillOverrideFirstDayOfWeek;
     }
 
@@ -907,9 +842,7 @@ public class DatePickerSettings {
      */
     public void setAllowKeyboardEditing(boolean allowKeyboardEditing) {
         this.allowKeyboardEditing = allowKeyboardEditing;
-        if (parentDatePicker != null) {
-            zApplyAllowKeyboardEditing();
-        }
+        zApplyAllowKeyboardEditing();
     }
 
     /**
@@ -1007,9 +940,7 @@ public class DatePickerSettings {
         if (applyMatchingDefaultBorders) {
             setBorderPropertiesList(null);
         }
-        if (parentCalendarPanel != null) {
-            parentCalendarPanel.zRedrawWeekNumberLabelColors();
-        }
+        zDrawIndependentCalendarPanelIfNeeded();
     }
 
     /**
@@ -1030,9 +961,7 @@ public class DatePickerSettings {
         if (applyMatchingDefaultBorders) {
             setBorderPropertiesList(null);
         }
-        if (parentCalendarPanel != null) {
-            parentCalendarPanel.zRedrawWeekdayLabelColors();
-        }
+        zDrawIndependentCalendarPanelIfNeeded();
     }
 
     /**
@@ -1236,32 +1165,94 @@ public class DatePickerSettings {
     }
 
     /**
-     * setInitialDate, This sets the date that the parent DatePicker or parent independent
-     * CalendarPanel will have when it is created. This can be set to any date, or it can be set to
-     * null. The default value for initialDate is null, which represents an empty date. This setting
-     * will only have an effect if it is set before the parent component is constructed.
+     * setLocale, This will set the locale for this DatePickerSettings instance, and will set all
+     * other settings that depend on the locale to their default values.
      *
-     * For an independent CalendarPanel, this setting will also set the displayed YearMonth of the
-     * CalendarPanel to match the initial date. (See also: CalendarPanel.setSelectedDate() and
-     * CalendarPanel.setDisplayedYearMonth().)
+     * Warning: Every setting whose default value depends on the locale, will be overwritten
+     * whenever this function is called.
      *
-     * If allowEmptyDates is false, then a null initialDate will be ignored. More specifically: When
-     * the parent component is constructed, if allowEmptyDates is false and initialDate is null,
-     * then the initialDate will be set to a default value. (The default value is today's date.)
+     * This is a list of all the settings which are overwritten by this function: locale,
+     * translationArrayStandaloneLongMonthNames, translationArrayStandaloneShortMonthNames,
+     * translationToday, translationClear, formatForTodayButton, formatForDatesCommonEra,
+     * formatForDatesBeforeCommonEra, formatsForParsing, firstDayOfWeek, weekNumberRules.
      *
-     * Note: This date can not be vetoed, because a veto policy can not be set until after the
-     * parent component is constructed.
+     * For most applications, it is generally recommended to only set the locale from the
+     * DatePickerSettings constructor. If you use setLocale() to change the locale after
+     * construction, then you will overwrite any previously customized locale-specific settings.
+     *
+     * Passing in "null" will apply the default locale for the current Java Virtual Machine.
      */
-    public void setInitialDate(LocalDate initialDate) {
-        this.initialDate = initialDate;
-    }
+    public void setLocale(Locale locale) {
+        // Check for null, which indicates that we should use the default locale.
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+        // Fix a problem where the Hindi locale is not recognized by language alone.
+        if ("hi".equals(locale.getLanguage()) && (locale.getCountry().isEmpty())) {
+            locale = new Locale("hi", "IN");
+        }
+        this.locale = locale;
 
-    /**
-     * setInitialDateToToday, This is a convenience function to set the initial date of a DatePicker
-     * or independent CalendarPanel to today's date.
-     */
-    public void setInitialDateToToday() {
-        initialDate = LocalDate.now();
+        // Do not redraw the calendar until this function is complete.
+        zSkipDrawIndependentCalendarPanelIfNeeded = true;
+
+        // Set the default week number rules.
+        WeekFields localeWeekFields = WeekFields.of(locale);
+        setWeekNumberRules(localeWeekFields);
+
+        // Set the default "today" and "clear" translations for the locale.
+        String todayTranslation = TranslationSource.getTranslation(locale, "today", "Today");
+        setTranslationToday(todayTranslation);
+        String clearTranslation = TranslationSource.getTranslation(locale, "clear", "Clear");
+        setTranslationClear(clearTranslation);
+
+        // Set the default standalone month names for the locale.
+        String[] standaloneLongMonthNames
+                = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
+        setTranslationArrayStandaloneLongMonthNames(standaloneLongMonthNames);
+        String[] standaloneShortMonthNames
+                = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
+        setTranslationArrayStandaloneShortMonthNames(standaloneShortMonthNames);
+
+        // Create default formatters for displaying the today button, and AD and BC dates, in
+        // the specified locale.
+        DateTimeFormatter formatForToday
+                = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
+        setFormatForTodayButton(formatForToday);
+        DateTimeFormatter formatForDatesCE = InternalUtilities.generateDefaultFormatterCE(locale);
+        setFormatForDatesCommonEra(formatForDatesCE);
+        DateTimeFormatter formatForDatesBCE = InternalUtilities.generateDefaultFormatterBCE(locale);
+        setFormatForDatesBeforeCommonEra(formatForDatesBCE);
+
+        // Create an array of all the FormatStyle enum values, from short to long.
+        FormatStyle[] allFormatStyles = new FormatStyle[]{
+            FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
+
+        // Create a set of default parsing formatters for the specified locale.
+        ArrayList<DateTimeFormatter> parsingFormats = new ArrayList<DateTimeFormatter>();
+        DateTimeFormatter parseFormat;
+        for (int i = 0; i < allFormatStyles.length; ++i) {
+            parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
+                    appendLocalized(allFormatStyles[i], null).toFormatter(locale);
+            parsingFormats.add(parseFormat);
+        }
+
+        // Get any common extra parsing formats for the specified locale, and append them to
+        // the list of parsingFormatters.
+        ArrayList<DateTimeFormatter> extraFormatters
+                = ExtraDateStrings.getExtraParsingFormatsForLocale(locale);
+        parsingFormats.addAll(extraFormatters);
+
+        // Save the parsing formats.
+        setFormatsForParsing(parsingFormats);
+
+        // Initialize the first day of the week.
+        DayOfWeek firstDayOfWeekDefault = WeekFields.of(locale).getFirstDayOfWeek();
+        setFirstDayOfWeek(firstDayOfWeekDefault);
+
+        // Draw the calendar.
+        zSkipDrawIndependentCalendarPanelIfNeeded = false;
+        zDrawIndependentCalendarPanelIfNeeded();
     }
 
     /**
@@ -1527,51 +1518,15 @@ public class DatePickerSettings {
     }
 
     /**
-     * yApplyNeededSettingsAtDatePickerConstruction, This is called from the date picker constructor
-     * to apply various settings in this settings instance to the date picker. Only the settings
-     * that are needed at the time of date picker construction, are applied in this function.
-     */
-    void yApplyNeededSettingsAtDatePickerConstruction() {
-        // Run the needed "apply" functions.
-        // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel 
-        // constructor so it will be run both for independent and date picker calendar panels.
-        zApplyGapBeforeButtonPixels();
-        zApplyAllowKeyboardEditing();
-        zApplyInitialDate();
-        zApplyAllowEmptyDates();
-    }
-
-    /**
-     * yApplyNeededSettingsAtIndependentCalendarPanelConstruction, This is called from the calendar
-     * panel constructor to apply various settings in this settings instance to the calendar panel.
-     * Only the settings that are needed at the time of calendar panel construction, are applied in
-     * this function.
-     *
-     * This should only be called from the CalendarPanel constructor. (Even though it is public,
-     * this should not be called by the programmer.)
-     */
-    public void yApplyNeededSettingsAtIndependentCalendarPanelConstruction() {
-        // Run the needed "apply" functions.
-        // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel 
-        // constructor so it will be run both for independent and date picker calendar panels.
-        zApplyInitialDate();
-        zApplyAllowEmptyDates();
-    }
-
-    /**
      * zApplyAllowEmptyDates, This applies the named setting to the parent component.
      *
      * Implementation Notes:
-     *
-     * The zApplyInitialDate() and zApplyAllowEmptyDates() functions may theoretically be called in
-     * any order. However, the order is currently zApplyInitialDate() and zApplyAllowEmptyDates()
-     * because that is more intuitive.
      *
      * This cannot throw an exception while the parent DatePicker or parent CalendarPanel is being
      * constructed, because a veto policy cannot be set until after the parent component is
      * constructed.
      */
-    private void zApplyAllowEmptyDates() {
+    void zApplyAllowEmptyDates() {
         // If we don't have a parent, then there is nothing to do here. (So, we return.)
         if (!hasParent()) {
             return;
@@ -1595,7 +1550,10 @@ public class DatePickerSettings {
     /**
      * zApplyAllowKeyboardEditing, This applies the named setting to the parent component.
      */
-    private void zApplyAllowKeyboardEditing() {
+    void zApplyAllowKeyboardEditing() {
+        if (parentDatePicker == null) {
+            return;
+        }
         // Set the editability of the date picker text field.
         parentDatePicker.getComponentDateTextField().setEditable(allowKeyboardEditing);
         // Set the text field border color based on whether the text field is editable.
@@ -1609,7 +1567,7 @@ public class DatePickerSettings {
     /**
      * zApplyGapBeforeButtonPixels, This applies the named setting to the parent component.
      */
-    private void zApplyGapBeforeButtonPixels() {
+    void zApplyGapBeforeButtonPixels() {
         int gapPixels = (gapBeforeButtonPixels == null) ? 3 : gapBeforeButtonPixels;
         ConstantSize gapSizeObject = new ConstantSize(gapPixels, ConstantSize.PIXEL);
         ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
@@ -1618,38 +1576,14 @@ public class DatePickerSettings {
     }
 
     /**
-     * zApplyInitialDate, This applies the named setting to the parent component.
-     *
-     * Notes:
-     *
-     * This does not need to check the parent for null, because this is always and only called while
-     * the parent component is being constructed.
-     *
-     * This does not need to handle (allowEmptyDates == false && initialDate == null). That
-     * situation is handled by the zApplyAllowEmptyDates() function.
-     *
-     * There is no possibility that this can conflict with a veto policy at the time that it is set,
-     * because a veto policy cannot be set until after the construction of a date picker.
-     *
-     * The zApplyInitialDate() and zApplyAllowEmptyDates() functions may theoretically be called in
-     * any order. However, the order is currently zApplyInitialDate() and zApplyAllowEmptyDates()
-     * because that is more intuitive.
-     */
-    private void zApplyInitialDate() {
-        if (allowEmptyDates == true && initialDate == null) {
-            zSetParentSelectedDate(null);
-        }
-        if (initialDate != null) {
-            zSetParentSelectedDate(initialDate);
-        }
-    }
-
-    /**
      * zDrawIndependentCalendarPanelIfNeeded, If needed, this will redraw the independent
      * CalendarPanel. This function only has an effect if the parent of this settings instance is an
      * independent CalendarPanel (and not a DatePicker).
      */
     private void zDrawIndependentCalendarPanelIfNeeded() {
+        if (zSkipDrawIndependentCalendarPanelIfNeeded) {
+            return;
+        }
         if (parentCalendarPanel != null) {
             parentCalendarPanel.drawCalendar();
         }
@@ -1671,11 +1605,13 @@ public class DatePickerSettings {
     }
 
     /**
-     * zSetParentCalendarPanel, This sets the parent calendar panel for these settings. This is only
-     * intended to be called from the constructor of the CalendarPanel class. (Even though this is
-     * public, this should not be called by the programmer.)
+     * zSetParentCalendarPanel, This sets the parent calendar panel for these settings. A settings
+     * instance may only be used for one picker component. If the setting instance already has a
+     * parent component, then an exception will be thrown.
+     *
+     * This is package private, and is only intended to be called from the CalendarPanel class.
      */
-    public void zSetParentCalendarPanel(CalendarPanel parentCalendarPanel) {
+    void zSetParentCalendarPanel(CalendarPanel parentCalendarPanel) {
         if (hasParent()) {
             throw new RuntimeException("DatePickerSettings.setParentCalendarPanel(), "
                     + "A DatePickerSettings instance can only be used as the settings for "

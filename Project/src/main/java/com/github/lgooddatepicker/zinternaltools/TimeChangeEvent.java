@@ -1,6 +1,6 @@
 package com.github.lgooddatepicker.zinternaltools;
 
-import com.github.lgooddatepicker.timepicker.TimePicker;
+import com.github.lgooddatepicker.components.TimePicker;
 import java.time.LocalTime;
 
 /**

@@ -1,12 +1,11 @@
-package com.github.lgooddatepicker.datepicker;
+package com.github.lgooddatepicker.components;
 
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import java.awt.event.*;
 import javax.swing.border.*;
 import com.github.lgooddatepicker.zinternaltools.*;
-import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
-import com.github.lgooddatepicker.datepicker.DatePickerSettings.Area;
+import com.github.lgooddatepicker.components.DatePickerSettings.Area;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import javax.swing.event.DocumentEvent;
@@ -20,7 +19,6 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.chrono.IsoEra;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -105,7 +103,11 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     /**
      * settings, This holds the settings instance for this date picker. Default settings are
      * generated automatically. Custom settings may optionally be supplied in the DatePicker
-     * constructor. This will never return null.
+     * constructor.
+     *
+     * This will never be null after it is initialized, but it could be null before setSettings() is
+     * called for the first time. Any functions that rely on the settings should check for null and
+     * return if null, before continuing the function.
      */
     private DatePickerSettings settings;
 
@@ -139,24 +141,43 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * picker settings.
      */
     public DatePicker(DatePickerSettings settings) {
-        settings = (settings == null) ? new DatePickerSettings() : settings;
-        settings.zSetParentDatePicker(this);
-        this.settings = settings;
-        this.convert = new Convert(this);
         initComponents();
+        this.convert = new Convert(this);
         // Shrink the toggle calendar button to a reasonable size.
         toggleCalendarButton.setMargin(new java.awt.Insets(1, 2, 1, 2));
         // Add a change listener to the text field.
         zAddTextChangeListener();
-        // Apply the settings instance to this date picker.
-        settings.yApplyNeededSettingsAtDatePickerConstruction();
-        // Draw the text field attributes, because they may not have been drawn if the initialDate
+        // Save and apply the supplied settings.
+        setSettings(settings);
+    }
+
+    /**
+     * setSettings, This will set the settings instance for this date picker. The previous settings
+     * will be deleted. Note that calling this function effectively re-initializes the picker
+     * component. All aspects of the component will be changed to match the provided settings. Any
+     * currently selected date will not be changed by this function.
+     *
+     * If the popup calendar panel is open up the time that this function is called, the open
+     * calendar will not be changed by this function. Calendar panels showing the new settings will
+     * be displayed only after a new popup calendar panel is opened.
+     */
+    public void setSettings(DatePickerSettings settings) {
+        settings = (settings == null) ? new DatePickerSettings() : settings;
+        settings.zSetParentDatePicker(this);
+        this.settings = settings;
+        // Apply needed settings from the settings instance to this date picker.
+        // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel 
+        // constructor so it will be run both for independent and date picker calendar panels.
+        settings.zApplyGapBeforeButtonPixels();
+        settings.zApplyAllowKeyboardEditing();
+        settings.zApplyAllowEmptyDates();
+        // Draw the text field indicators, because they may not have been drawn if the initialDate
         // was null. (This is because the text would not have changed in that case.)
-        // This should be called after the DatePickerSettings have been applied.
+        // This should be called after the DatePickerSettings have been saved.
         zDrawTextFieldIndicators();
         // Set an appropriate minimum width for the date picker text field.
-        // This may use a default calculated minimum width, or a programmer supplied minimum width,
-        // as specified in the date picker settings.
+        // This may use a calculated minimum width (default), or a programmer supplied minimum
+        // width, as specified in the date picker settings.
         zSetAppropriateTextFieldMinimumWidth();
     }
 
@@ -330,6 +351,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * returns true.
      */
     public boolean isDateAllowed(LocalDate date) {
+        if (settings == null) {
+            return true;
+        }
         return settings.isDateAllowed(date);
     }
 
@@ -372,8 +396,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * text.trim() contains an empty string. Otherwise returns false.
      */
     public boolean isTextValid(String text) {
-        // If the text is null, return false.
-        if (text == null) {
+        // If the text is null or the settings are null, return false.
+        if (text == null || settings == null) {
             return false;
         }
         // If the text is empty, return the value of allowEmptyDates.
@@ -383,8 +407,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Try to get a parsed date.
         LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(
-                text, settings.getFormatForDatesCommonEra(), 
-                settings.getFormatForDatesBeforeCommonEra(), 
+                text, settings.getFormatForDatesCommonEra(),
+                settings.getFormatForDatesBeforeCommonEra(),
                 settings.getFormatsForParsing(), settings.getLocale());
 
         // If the date could not be parsed, return false.
@@ -414,6 +438,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * popup is closed.
      */
     public void openPopup() {
+        if (settings == null) {
+            return;
+        }
         // If the component is disabled, do nothing.
         if (!isEnabled()) {
             return;
@@ -432,7 +459,6 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // If needed, apply the selected date to the calendar.
         if (selectedDateForCalendar != null) {
             calendarPanel.setSelectedDate(selectedDateForCalendar);
-            calendarPanel.setDisplayedYearMonth(YearMonth.from(selectedDateForCalendar));
         }
         // Create a new custom popup.
         popup = new CustomPopup(calendarPanel, SwingUtilities.getWindowAncestor(this),
@@ -601,7 +627,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * For additional details, see the javadoc for this function:
      * DatePickerSettings.setSizeTextFieldMinimumWidthDefaultOverride().
      */
-    public void zSetAppropriateTextFieldMinimumWidth() {
+    void zSetAppropriateTextFieldMinimumWidth() {
+        if (settings == null) {
+            return;
+        }
         Integer programmerSuppliedWidth = settings.getSizeTextFieldMinimumWidth();
         // Determine the appropriate minimum width for the text field.
         int minimumWidthPixels = CalculateMinimumDateFieldSize.getFormattedDateWidthInPixels(
@@ -668,6 +697,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * the standard format which could be used for displaying that date in the text field.
      */
     private String zGetStandardTextFieldDateString(LocalDate date) {
+        if (settings == null) {
+            return "";
+        }
         String standardDateString = "";
         if (date == null) {
             return standardDateString;
@@ -723,6 +755,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * background changes of the text field.
      */
     private void zEventTextFieldChanged() {
+        if (settings == null) {
+            return;
+        }
         // Skip this function if it should not be run.
         if (skipTextFieldChangedFunctionWhileTrue) {
             return;
@@ -735,9 +770,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // If the text is not empty, then try to parse the date.
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
-            parsedDate = InternalUtilities.getParsedDateOrNull(dateText, 
-                    settings.getFormatForDatesCommonEra(), 
-                    settings.getFormatForDatesBeforeCommonEra(), 
+            parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
+                    settings.getFormatForDatesCommonEra(),
+                    settings.getFormatForDatesBeforeCommonEra(),
                     settings.getFormatsForParsing(), settings.getLocale());
         }
         // If the date was parsed successfully, then check it against the veto policy.
@@ -817,6 +852,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * DisallowedEmptyValue.
      */
     private void zDrawTextFieldIndicators() {
+        if (settings == null) {
+            return;
+        }
         if (!isEnabled()) {
             // (Possibility: DisabledComponent)
             // Note: The date should always be validated (as if the component lost focus), before
@@ -845,9 +883,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             return;
         }
         // The text is not empty.
-        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText, 
-                settings.getFormatForDatesCommonEra(), 
-                settings.getFormatForDatesBeforeCommonEra(), 
+        LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
+                settings.getFormatForDatesCommonEra(),
+                settings.getFormatForDatesBeforeCommonEra(),
                 settings.getFormatsForParsing(), settings.getLocale());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)

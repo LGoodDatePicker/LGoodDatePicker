@@ -1,6 +1,6 @@
 package com.github.lgooddatepicker.zinternaltools;
 
-import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
+import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import java.time.LocalDate;
 

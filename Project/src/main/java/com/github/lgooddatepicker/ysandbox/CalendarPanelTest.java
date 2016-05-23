@@ -1,7 +1,7 @@
 package com.github.lgooddatepicker.ysandbox;
 
-import com.github.lgooddatepicker.datepicker.DatePickerSettings;
-import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
