@@ -20,6 +20,7 @@ import java.awt.Insets;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
+import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -179,6 +180,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // This may use a calculated minimum width (default), or a programmer supplied minimum
         // width, as specified in the date picker settings.
         zSetAppropriateTextFieldMinimumWidth();
+        // Redraw the date picker text field.
+        settings.zDrawDatePickerTextFieldIfNeeded();
     }
 
     /**
@@ -546,6 +549,22 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         toggleCalendarButton.setEnabled(enabled);
         dateTextField.setEnabled(enabled);
         zDrawTextFieldIndicators();
+    }
+
+    /**
+     * setLocale, The locale for a DatePicker should generally be set in the DatePickerSettings.
+     * This function only exists to avoid confusion with the swing function Component.setLocale().
+     *
+     * This forwards any function calls to: DatePicker.getSettings().setLocale(). For the complete
+     * Javadocs, see DatePickerSettings.setLocale().
+     */
+    @Override
+    public void setLocale(Locale locale) {
+        DatePickerSettings currentSettings = getSettings();
+        if (currentSettings != null) {
+            currentSettings.setLocale(locale);
+        }
+        super.setLocale(locale);
     }
 
     /**

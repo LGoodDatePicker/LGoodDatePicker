@@ -1,6 +1,7 @@
 package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
+import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
@@ -11,6 +12,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Locale;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,36 +33,34 @@ public class TestStart {
         JPanel panel = new JPanel();
         frame.getContentPane().add(panel);
 
-        JLabel labelSingleClick = new JLabel("Single click me.");
-        JLabel labelDoubleClick = new JLabel("Double click me.");
-        labelSingleClick.addMouseListener(new MouseLiberalAdapter() {
-            @Override
-            public void mouseLiberalClick(MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "Single click detected.");
-            }
-        });
-        labelDoubleClick.addMouseListener(new MouseLiberalAdapter() {
-            @Override
-            public void mouseLiberalDoubleClick(MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "Double click detected.");
-            }
-        });
-        panel.add(labelSingleClick);
-        panel.add(labelDoubleClick);
-
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        // This section creates CalendarPanels, with various features. (presetting preferred.)
-        //
-        int rowMultiplier = 4;
-        CalendarPanel calendarPanel;
+        DatePicker datePicker;
         DatePickerSettings dateSettings;
-        int row = rowMultiplier;
 
         // Create a CalendarPanel: With highlight policy.
         dateSettings = new DatePickerSettings();
         dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
+
+        /*
+        datePicker = new DatePicker(dateSettings);
+        panel.add(datePicker);
+        
+        datePicker.setDateToToday();
+        datePicker.setLocale(Locale.CANADA_FRENCH);
+        
+        
+        DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
+        datePicker.setSettings(dateSettings2);
+        
+         */
+        CalendarPanel calendarPanel;
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
+
+        calendarPanel.setSelectedDate(LocalDate.now());
+        dateSettings.setLocale(Locale.CANADA_FRENCH);
+
+        DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
+        calendarPanel.setSettings(dateSettings2);
 
         // Display the frame.
         frame.pack();
