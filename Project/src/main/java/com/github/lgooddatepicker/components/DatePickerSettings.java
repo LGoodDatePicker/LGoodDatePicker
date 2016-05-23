@@ -1253,6 +1253,9 @@ public class DatePickerSettings {
         // Draw the calendar.
         zSkipDrawIndependentCalendarPanelIfNeeded = false;
         zDrawIndependentCalendarPanelIfNeeded();
+        
+        // Update the parent date picker text field if needed. 
+        zDrawDatePickerTextFieldIfNeeded();
     }
 
     /**
@@ -1573,6 +1576,16 @@ public class DatePickerSettings {
         ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
         FormLayout layout = ((FormLayout) parentDatePicker.getLayout());
         layout.setColumnSpec(2, columnSpec);
+    }
+
+    /**
+     * zDrawDatePickerTextFieldIfNeeded, If needed, this will redraw the parent date picker text
+     * field. This function only has an effect if the parent of this settings instance is a DatePicker.
+     */
+    void zDrawDatePickerTextFieldIfNeeded() {
+        if (parentDatePicker != null) {
+            parentDatePicker.setTextFieldToValidStateIfNeeded();
+        }
     }
 
     /**

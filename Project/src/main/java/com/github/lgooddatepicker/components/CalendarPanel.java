@@ -796,6 +796,13 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
+     * getSettings, This returns the calendar panel settings instance.
+     */
+    public DatePickerSettings getSettings() {
+        return settings;
+    }
+
+    /**
      * getLastDayOfMonth, This returns the last day of the month for the specified year and month.
      *
      * Implementation notes: As of this writing, the below implementation is verified to work
@@ -1021,6 +1028,22 @@ public class CalendarPanel extends JPanel {
                     + "The displayed year and month cannot be set to null.");
         }
         drawCalendar(yearMonth);
+    }
+
+    /**
+     * setLocale, The locale for a CalendarPanel should generally be set in the DatePickerSettings.
+     * This function only exists to avoid confusion with the swing function Component.setLocale().
+     *
+     * This forwards any function calls to: CalendarPanel.getSettings().setLocale(). For the complete
+     * Javadocs, see DatePickerSettings.setLocale().
+     */
+    @Override
+    public void setLocale(Locale locale) {
+        DatePickerSettings currentSettings = getSettings();
+        if (currentSettings != null) {
+            currentSettings.setLocale(locale);
+        }
+        super.setLocale(locale);
     }
 
     /**
