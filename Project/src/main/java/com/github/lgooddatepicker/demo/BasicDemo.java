@@ -1,10 +1,10 @@
 package com.github.lgooddatepicker.demo;
 
-import com.github.lgooddatepicker.datepicker.DatePicker;
-import com.github.lgooddatepicker.datepicker.DatePickerSettings;
-import com.github.lgooddatepicker.datetimepicker.DateTimePicker;
-import com.github.lgooddatepicker.timepicker.TimePicker;
-import com.github.lgooddatepicker.timepicker.TimePickerSettings;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DateTimePicker;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.awt.Color;
 import java.awt.Dimension;

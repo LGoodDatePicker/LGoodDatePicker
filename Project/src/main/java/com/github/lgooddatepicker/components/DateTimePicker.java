@@ -1,16 +1,12 @@
-package com.github.lgooddatepicker.datetimepicker;
+package com.github.lgooddatepicker.components;
 
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.factories.CC;
-import com.github.lgooddatepicker.datepicker.DatePicker;
-import com.github.lgooddatepicker.datepicker.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
-import com.github.lgooddatepicker.timepicker.TimePicker;
-import com.github.lgooddatepicker.timepicker.TimePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;

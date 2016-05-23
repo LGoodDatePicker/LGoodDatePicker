@@ -1,8 +1,8 @@
 package com.github.lgooddatepicker.ysandbox;
 
-import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
-import com.github.lgooddatepicker.datepicker.DatePickerSettings;
-import com.github.lgooddatepicker.datepicker.DatePickerSettings.Area;
+import com.github.lgooddatepicker.components.CalendarPanel;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DatePickerSettings.Area;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
@@ -97,7 +97,6 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: Change first weekday.
         dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.THURSDAY);
-        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
 
@@ -111,9 +110,9 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: Localized (Greek)
         Locale datePickerLocale = new Locale("el");
         dateSettings = new DatePickerSettings(datePickerLocale);
-        dateSettings.setInitialDate(LocalDate.of(2016, Month.APRIL, 15));
         dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
+        calendarPanel.setSelectedDate(LocalDate.of(2016, Month.APRIL, 15));
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: With crazy border properties.
@@ -222,7 +221,6 @@ public class CalendarPanelAssortmentTest {
 
         // Create a CalendarPanel: Change first weekday.
         dateSettings = new DatePickerSettings();
-        dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         dateSettings.setFirstDayOfWeek(DayOfWeek.THURSDAY);
         panel.add(calendarPanel);
@@ -237,9 +235,9 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: Localized (Greek)
         Locale datePickerLocale2 = new Locale("el");
         dateSettings = new DatePickerSettings(datePickerLocale2);
-        dateSettings.setInitialDate(LocalDate.of(2016, Month.APRIL, 15));
         dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
+        calendarPanel.setSelectedDate(LocalDate.of(2016, Month.APRIL, 15));
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: With crazy border properties.

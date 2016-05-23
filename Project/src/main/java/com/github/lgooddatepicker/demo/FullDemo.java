@@ -1,8 +1,8 @@
 package com.github.lgooddatepicker.demo;
 
-import com.github.lgooddatepicker.calendarpanel.CalendarPanel;
+import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.zinternaltools.DemoPanel;
-import com.github.lgooddatepicker.datepicker.DatePicker;
+import com.github.lgooddatepicker.components.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
@@ -14,8 +14,8 @@ import java.awt.GridBagConstraints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
-import com.github.lgooddatepicker.datepicker.DatePickerSettings;
-import com.github.lgooddatepicker.datepicker.DatePickerSettings.Area;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DatePickerSettings.Area;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
@@ -28,12 +28,12 @@ import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
-import com.github.lgooddatepicker.datetimepicker.DateTimePicker;
+import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
-import com.github.lgooddatepicker.timepicker.TimePicker;
-import com.github.lgooddatepicker.timepicker.TimePickerSettings;
-import com.github.lgooddatepicker.timepicker.TimePickerSettings.TimeIncrement;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.LineBorder;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
@@ -187,8 +187,8 @@ public class FullDemo {
         ImageIcon dateExampleIcon = new ImageIcon(dateExampleImage);
         // Create the date picker, and apply the image icon.
         dateSettings = new DatePickerSettings();
-        dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
         JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
         datePickerButton.setText("");
         datePickerButton.setIcon(dateExampleIcon);
@@ -199,8 +199,8 @@ public class FullDemo {
         dateSettings = new DatePickerSettings();
         dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
         dateSettings.setColor(Area.DatePickerTextValidDate, new Color(0, 100, 0));
-        dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Font:");
 
@@ -212,8 +212,8 @@ public class FullDemo {
         dateSettings = new DatePickerSettings();
         dateSettings.setFormatForDatesCommonEra("yyyy/MM/dd");
         dateSettings.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
-        dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Date Format:");
 
@@ -225,8 +225,8 @@ public class FullDemo {
         dateSettings = new DatePickerSettings();
         dateSettings.setFormatForDatesCommonEra("d MMM yyyy");
         dateSettings.setFormatForDatesBeforeCommonEra("d MMM uuuu");
-        dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Another Custom Date Format:");
 
@@ -265,8 +265,8 @@ public class FullDemo {
         // Create a date picker: Disallow keyboard editing.
         dateSettings = new DatePickerSettings();
         dateSettings.setAllowKeyboardEditing(false);
-        dateSettings.setInitialDateToToday();
         datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Disallow Keyboard Editing:");
 
@@ -310,7 +310,7 @@ public class FullDemo {
         dateSettings.setBorderPropertiesList(borderProperties);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), 
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
                 "Date 16, Custom Borders with Week Numbers:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -572,8 +572,8 @@ public class FullDemo {
         // Set a minimum size for the localized date pickers, to improve the look of the demo.
         settings.setSizeTextFieldMinimumWidth(125);
         settings.setSizeTextFieldMinimumWidthDefaultOverride(true);
-        settings.setInitialDateToToday();
         DatePicker localizedDatePicker = new DatePicker(settings);
+        localizedDatePicker.setDateToToday();
         panel.panel4.add(localizedDatePicker, getConstraints(1, (rowMarker * rowMultiplier), 1));
         panel.addLabel(panel.panel4, 1, (rowMarker * rowMultiplier), labelText);
     }

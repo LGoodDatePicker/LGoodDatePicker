@@ -1,4 +1,4 @@
-package com.github.lgooddatepicker.timepicker;
+package com.github.lgooddatepicker.components;
 
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
