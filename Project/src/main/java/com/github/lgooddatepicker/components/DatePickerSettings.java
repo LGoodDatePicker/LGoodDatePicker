@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -135,6 +136,8 @@ public class DatePickerSettings {
      *
      * Note: If weekNumbersDisplayed is set to false, then the borders located in the week number
      * columns (Columns 1 and 2) will always be hidden.
+     *
+     * This variable will never be null.
      */
     private ArrayList<CalendarBorderProperties> borderPropertiesList;
 
@@ -338,9 +341,8 @@ public class DatePickerSettings {
      * class called java.text.DateFormatSymbols. This array is indexed with January = 0. The
      * Calendar class month name constants can also be used for indexing. (Calendar.JANUARY, etc).
      *
-     * Expected array contents: This array should never be set to null, and the array should always
-     * have a length of 12. Each element should always contain a string that is not null and not
-     * empty.
+     * Expected array contents: This array will never contain null, and the array should always have
+     * a length of 12. Each element should always contain a string that is not null and not empty.
      */
     private String[] translationArrayStandaloneLongMonthNames;
 
@@ -353,9 +355,8 @@ public class DatePickerSettings {
      * January = 0. The Calendar class month name constants can also be used for indexing.
      * (Calendar.JANUARY, etc).
      *
-     * Expected array contents: This array should never be set to null, and the array should always
-     * have a length of 12. Each element should always contain a string that is not null and not
-     * empty.
+     * Expected array contents: This array will never contain null, and the array should always have
+     * a length of 12. Each element should always contain a string that is not null and not empty.
      */
     private String[] translationArrayStandaloneShortMonthNames;
 
@@ -506,6 +507,84 @@ public class DatePickerSettings {
         // Save the date picker locale.
         // This will also change all settings that most directly depend on the locale.
         setLocale(pickerLocale);
+    }
+
+    /**
+     * copySettings, This function creates and returns a new DatePickerSettings instance, that is a
+     * deep copy of this DatePickerSettings instance. The new settings instance can be used with new
+     * DatePicker or CalendarPanel instances. The returned settings will have certain differences
+     * from the original settings, as detailed below. (These differences are why this function does
+     * not override clone().)
+     *
+     * Differences between the original and the result settings instance:
+     *
+     * 1) The result will not have a parentDatePicker or parentCalendarPanel, regardless of whether
+     * the original has a parent. The parent variables will always contain null.
+     *
+     * 2) The veto policy and the highlight policy cannot be cloned, because these are interfaces.
+     * So, result.vetoPolicy and result.highlightPolicy will always contain null.
+     *
+     * 3) borderCalendarPopup is not cloned. result.borderCalendarPopup always contains a default
+     * border.
+     *
+     * 4) result.zSkipDrawIndependentCalendarPanelIfNeeded is always false.
+     */
+    public DatePickerSettings copySettings() {
+        DatePickerSettings result = new DatePickerSettings();
+        result.allowEmptyDates = this.allowEmptyDates;
+        result.allowKeyboardEditing = this.allowKeyboardEditing;
+        // "result.borderCalendarPopup" is always left at its default value.
+        if (this.borderPropertiesList == null) {
+            result.borderPropertiesList = null;
+        } else {
+            result.borderPropertiesList
+                    = new ArrayList<CalendarBorderProperties>(this.borderPropertiesList.size());
+            for (CalendarBorderProperties borderProperty : this.borderPropertiesList) {
+                result.borderPropertiesList.add(borderProperty.clone());
+            }
+        }
+        result.colorBackgroundWeekNumberLabels = this.colorBackgroundWeekNumberLabels;
+        result.colorBackgroundWeekdayLabels = this.colorBackgroundWeekdayLabels;
+        if (this.colors == null) {
+            result.colors = null;
+        } else {
+            // A shallow copy is okay here, because the map key and value are immutable types.
+            result.colors = new HashMap<Area, Color>(this.colors);
+        }
+        result.firstDayOfWeek = this.firstDayOfWeek;
+        // The Font class is immutable.
+        result.fontInvalidDate = this.fontInvalidDate;
+        result.fontValidDate = this.fontValidDate;
+        result.fontVetoedDate = this.fontVetoedDate;
+        // The DateTimeFormatter class is immutable.
+        result.formatForDatesBeforeCommonEra = this.formatForDatesBeforeCommonEra;
+        result.formatForDatesCommonEra = this.formatForDatesCommonEra;
+        result.formatForTodayButton = this.formatForTodayButton;
+        result.formatsForParsing = (this.formatsForParsing == null)
+                ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsing.clone();
+        result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
+        result.highlightPolicy = null;
+        result.locale = (Locale) this.locale.clone();
+        result.parentCalendarPanel = null;
+        result.parentDatePicker = null;
+        result.sizeDatePanelMinimumHeight = this.sizeDatePanelMinimumHeight;
+        result.sizeDatePanelMinimumWidth = this.sizeDatePanelMinimumWidth;
+        result.sizeTextFieldMinimumWidth = this.sizeTextFieldMinimumWidth;
+        result.sizeTextFieldMinimumWidthDefaultOverride = this.sizeTextFieldMinimumWidthDefaultOverride;
+        // The translation arrays will never be null, and the String class is an immutable type.
+        result.translationArrayStandaloneLongMonthNames
+                = this.translationArrayStandaloneLongMonthNames.clone();
+        result.translationArrayStandaloneShortMonthNames
+                = this.translationArrayStandaloneShortMonthNames.clone();
+        result.translationClear = this.translationClear;
+        result.translationToday = this.translationToday;
+        result.vetoPolicy = null;
+        // The WeekFields class is immutable.
+        result.weekNumberRules = this.weekNumberRules;
+        result.weekNumbersDisplayed = this.weekNumbersDisplayed;
+        result.weekNumbersWillOverrideFirstDayOfWeek = this.weekNumbersWillOverrideFirstDayOfWeek;
+        result.zSkipDrawIndependentCalendarPanelIfNeeded = false;
+        return result;
     }
 
     /**
@@ -1253,7 +1332,7 @@ public class DatePickerSettings {
         // Draw the calendar.
         zSkipDrawIndependentCalendarPanelIfNeeded = false;
         zDrawIndependentCalendarPanelIfNeeded();
-        
+
         // Update the parent date picker text field if needed. 
         zDrawDatePickerTextFieldIfNeeded();
     }
@@ -1330,15 +1409,19 @@ public class DatePickerSettings {
      * the locale of the settings instance, by retrieving the translated text for the current
      * language from the class called java.text.DateFormatSymbols. This array is indexed with
      * January = 0. The Calendar class month name constants can also be used for indexing.
-     * (Calendar.JANUARY, etc).
+     * (Calendar.JANUARY, etc). Setting this to null will restore the default values.
      *
-     * Expected array contents: This array should never be set to null, and the array should always
-     * have a length of 12. Each element should always contain a string that is not null and not
-     * empty.
+     * Expected array contents: The array should always have a length of 12. Each element should
+     * always contain a string that is not null and not empty.
      */
-    public void setTranslationArrayStandaloneLongMonthNames(
-            String[] translationArrayStandaloneLongMonthNames) {
-        this.translationArrayStandaloneLongMonthNames = translationArrayStandaloneLongMonthNames;
+    public void setTranslationArrayStandaloneLongMonthNames(String[] newTranslationArray) {
+        if (newTranslationArray == null) {
+            String[] defaultLongMonthNames
+                    = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
+            this.translationArrayStandaloneLongMonthNames = defaultLongMonthNames;
+        } else {
+            this.translationArrayStandaloneLongMonthNames = newTranslationArray;
+        }
         zDrawIndependentCalendarPanelIfNeeded();
     }
 
@@ -1349,15 +1432,19 @@ public class DatePickerSettings {
      * using the locale of the settings instance, by retrieving the translated text for the current
      * language from the class called java.text.DateFormatSymbols. This array is indexed with
      * January = 0. The Calendar class month name constants can also be used for indexing.
-     * (Calendar.JANUARY, etc).
+     * (Calendar.JANUARY, etc). Setting this to null will restore the default values.
      *
-     * Expected array contents: This array should never be set to null, and the array should always
-     * have a length of 12. Each element should always contain a string that is not null and not
-     * empty.
+     * Expected array contents: The array should always have a length of 12. Each element should
+     * always contain a string that is not null and not empty.
      */
-    public void setTranslationArrayStandaloneShortMonthNames(
-            String[] translationArrayStandaloneShortMonthNames) {
-        this.translationArrayStandaloneShortMonthNames = translationArrayStandaloneShortMonthNames;
+    public void setTranslationArrayStandaloneShortMonthNames(String[] newTranslationArray) {
+        if (newTranslationArray == null) {
+            String[] defaultShortMonthNames
+                    = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
+            this.translationArrayStandaloneShortMonthNames = defaultShortMonthNames;
+        } else {
+            this.translationArrayStandaloneShortMonthNames = newTranslationArray;
+        }
         zDrawIndependentCalendarPanelIfNeeded();
     }
 
@@ -1580,7 +1667,8 @@ public class DatePickerSettings {
 
     /**
      * zDrawDatePickerTextFieldIfNeeded, If needed, this will redraw the parent date picker text
-     * field. This function only has an effect if the parent of this settings instance is a DatePicker.
+     * field. This function only has an effect if the parent of this settings instance is a
+     * DatePicker.
      */
     void zDrawDatePickerTextFieldIfNeeded() {
         if (parentDatePicker != null) {
@@ -1618,24 +1706,6 @@ public class DatePickerSettings {
     }
 
     /**
-     * zSetParentCalendarPanel, This sets the parent calendar panel for these settings. A settings
-     * instance may only be used for one picker component. If the setting instance already has a
-     * parent component, then an exception will be thrown.
-     *
-     * This is package private, and is only intended to be called from the CalendarPanel class.
-     */
-    void zSetParentCalendarPanel(CalendarPanel parentCalendarPanel) {
-        if (hasParent()) {
-            throw new RuntimeException("DatePickerSettings.setParentCalendarPanel(), "
-                    + "A DatePickerSettings instance can only be used as the settings for "
-                    + "one parent object. (Settings instances cannot be reused for multiple "
-                    + "DatePickers, multiple independent CalendarPanels, or for combinations "
-                    + "of both. )");
-        }
-        this.parentCalendarPanel = parentCalendarPanel;
-    }
-
-    /**
      * zGetDefaultBorderPropertiesList, This creates and returns a list of default border properties
      * for the calendar. The default border properties will be slightly different depending on
      * whether or not the week numbers are currently displayed in the calendar.
@@ -1666,6 +1736,24 @@ public class DatePickerSettings {
         results.add(weekNumberBorderProperties);
         // Return the results.
         return results;
+    }
+
+    /**
+     * zSetParentCalendarPanel, This sets the parent calendar panel for these settings. A settings
+     * instance may only be used for one picker component. If the setting instance already has a
+     * parent component, then an exception will be thrown.
+     *
+     * This is package private, and is only intended to be called from the CalendarPanel class.
+     */
+    void zSetParentCalendarPanel(CalendarPanel parentCalendarPanel) {
+        if (hasParent()) {
+            throw new RuntimeException("DatePickerSettings.setParentCalendarPanel(), "
+                    + "A DatePickerSettings instance can only be used as the settings for "
+                    + "one parent object. (Settings instances cannot be reused for multiple "
+                    + "DatePickers, multiple independent CalendarPanels, or for combinations "
+                    + "of both. )");
+        }
+        this.parentCalendarPanel = parentCalendarPanel;
     }
 
     /**
