@@ -91,4 +91,19 @@ public class CalendarBorderProperties {
      * invisible, and setting a thickness of 1 or higher will make the border visible.
      */
     public Integer thicknessInPixels;
+    
+    
+    /**
+     * clone, This function creates and returns a deep copy of this CalendarBorderProperties
+     * instance.
+     */
+    @Override
+    public CalendarBorderProperties clone() {
+        CalendarBorderProperties result = new CalendarBorderProperties();
+        result.backgroundColor = this.backgroundColor;
+        result.lowerRight = (this.lowerRight == null) ? null : new Point(this.lowerRight);
+        result.thicknessInPixels = this.thicknessInPixels;
+        result.upperLeft = (this.upperLeft == null) ? null : new Point(this.upperLeft);
+        return result;
+    }
 }

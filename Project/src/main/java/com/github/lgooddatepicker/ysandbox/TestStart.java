@@ -39,6 +39,7 @@ public class TestStart {
         // Create a CalendarPanel: With highlight policy.
         dateSettings = new DatePickerSettings();
         dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
+        dateSettings = dateSettings.copySettings();
 
         /*
         datePicker = new DatePicker(dateSettings);
