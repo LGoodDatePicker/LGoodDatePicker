@@ -29,7 +29,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -500,7 +499,7 @@ public class DatePickerSettings {
 
         // Set the default border properties.
         // (Setting this to null will create and save, (and apply when needed) a default set of
-        // border properties. I don't think there would be any parent to apply them to when called 
+        // border properties. I don't think there would be any parent to apply them to when called
         // from the DatePickerSettings constructor though.)
         setBorderPropertiesList(null);
 
@@ -510,30 +509,22 @@ public class DatePickerSettings {
     }
 
     /**
-     * copySettings, This function creates and returns a new DatePickerSettings instance, that is a
-     * deep copy of this DatePickerSettings instance. The new settings instance can be used with new
-     * DatePicker or CalendarPanel instances. The returned settings will have certain differences
-     * from the original settings, as detailed below. (These differences are why this function does
-     * not override clone().)
+     * copySettings, This function creates and returns a deep copy of this DatePickerSettings
+     * instance. The new settings instance can be used with new DatePicker or CalendarPanel
+     * instances. Certain fields are not copied, which are listed below.
      *
-     * Differences between the original and the result settings instance:
+     * These fields are not copied: parentDatePicker, parentCalendarPanel, borderCalendarPopup,
+     * vetoPolicy, and highlightPolicy. These fields are always set to their default value in the
+     * returned settings instance. (The default value for all of these fields is null.)
      *
-     * 1) The result will not have a parentDatePicker or parentCalendarPanel, regardless of whether
-     * the original has a parent. The parent variables will always contain null.
-     *
-     * 2) The veto policy and the highlight policy cannot be cloned, because these are interfaces.
-     * So, result.vetoPolicy and result.highlightPolicy will always contain null.
-     *
-     * 3) borderCalendarPopup is not cloned. result.borderCalendarPopup always contains a default
-     * border.
-     *
-     * 4) result.zSkipDrawIndependentCalendarPanelIfNeeded is always false.
+     * If you would like to set any of the fields that are not copied, then you should set the
+     * desired fields after calling copySettings().
      */
     public DatePickerSettings copySettings() {
         DatePickerSettings result = new DatePickerSettings();
         result.allowEmptyDates = this.allowEmptyDates;
         result.allowKeyboardEditing = this.allowKeyboardEditing;
-        // "result.borderCalendarPopup" is always left at its default value.
+        // "result.borderCalendarPopup" is left at its default value.
         if (this.borderPropertiesList == null) {
             result.borderPropertiesList = null;
         } else {
@@ -563,10 +554,10 @@ public class DatePickerSettings {
         result.formatsForParsing = (this.formatsForParsing == null)
                 ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsing.clone();
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
-        result.highlightPolicy = null;
+        // "result.highlightPolicy" is left at its default value.
         result.locale = (Locale) this.locale.clone();
-        result.parentCalendarPanel = null;
-        result.parentDatePicker = null;
+        // "result.parentCalendarPanel" is left at its default value.
+        // "result.parentDatePicker" is left at its default value.
         result.sizeDatePanelMinimumHeight = this.sizeDatePanelMinimumHeight;
         result.sizeDatePanelMinimumWidth = this.sizeDatePanelMinimumWidth;
         result.sizeTextFieldMinimumWidth = this.sizeTextFieldMinimumWidth;
@@ -578,7 +569,7 @@ public class DatePickerSettings {
                 = this.translationArrayStandaloneShortMonthNames.clone();
         result.translationClear = this.translationClear;
         result.translationToday = this.translationToday;
-        result.vetoPolicy = null;
+        // "result.vetoPolicy" is left at its default value.
         // The WeekFields class is immutable.
         result.weekNumberRules = this.weekNumberRules;
         result.weekNumbersDisplayed = this.weekNumbersDisplayed;
@@ -969,8 +960,8 @@ public class DatePickerSettings {
             borderPropertiesList = zGetDefaultBorderPropertiesList();
         }
         this.borderPropertiesList = borderPropertiesList;
-        // This only needs to be applied to independent calendar panels. 
-        // For the date picker, the setting is automatically applied from the calendar panel 
+        // This only needs to be applied to independent calendar panels.
+        // For the date picker, the setting is automatically applied from the calendar panel
         // constructor each time the calendar panel is opened.
         if (parentCalendarPanel != null) {
             parentCalendarPanel.zApplyBorderPropertiesList();
@@ -1333,7 +1324,7 @@ public class DatePickerSettings {
         zSkipDrawIndependentCalendarPanelIfNeeded = false;
         zDrawIndependentCalendarPanelIfNeeded();
 
-        // Update the parent date picker text field if needed. 
+        // Update the parent date picker text field if needed.
         zDrawDatePickerTextFieldIfNeeded();
     }
 
