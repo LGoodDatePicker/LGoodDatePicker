@@ -30,6 +30,25 @@ import java.util.Map.Entry;
 public class InternalUtilities {
 
     /**
+     * areObjectsEqual, This function exists as a workaround for the fact that Objects.equals() did
+     * not exist in Java 1.6.
+     *
+     * Returns {@code true} if the arguments are equal to each other and {@code false} otherwise.
+     * Consequently, if both arguments are {@code null}, {@code true} is returned and if exactly one
+     * argument is {@code null}, {@code
+     * false} is returned. Otherwise, equality is determined by using the
+     * {@link Object#equals equals} method of the first argument.
+     *
+     * @param a an object
+     * @param b an object to be compared with {@code a} for equality
+     * @return {@code true} if the arguments are equal to each other and {@code false} otherwise
+     * @see Object#equals(Object)
+     */
+    public static boolean areObjectsEqual(Object a, Object b) {
+        return (a == b) || (a != null && a.equals(b));
+    }
+
+    /**
      * doesParsedDateMatchText, This compares the numbers in a parsed date, to the original text
      * from which the date was parsed. Specifically this compares the day of the month and the year
      * of the parsed date to the text. On a technical note, this function is not aware of which
@@ -123,7 +142,7 @@ public class InternalUtilities {
         if (sourceList == null || sourceList.isEmpty()) {
             return null;
         }
-        Map<T, Integer> hashMap = new HashMap<>();
+        Map<T, Integer> hashMap = new HashMap<T, Integer>();
         for (T element : sourceList) {
             Integer countOrNull = hashMap.get(element);
             int newCount = (countOrNull == null) ? 1 : (countOrNull + 1);
