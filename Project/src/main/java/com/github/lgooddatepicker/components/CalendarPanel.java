@@ -589,7 +589,7 @@ public class CalendarPanel extends JPanel {
         } else {
             labelMonth.setText(localizedFullMonth);
         }
-        String displayedYearString = "" + displayedYear;
+        final String displayedYearString = "" + displayedYear;
         labelYear.setText(displayedYearString);
         if (!displayedYearString.equals(yearTextField.getText())) {
             // This invokeLater call fixes a bug where an exception was being thrown if you typed
@@ -1599,7 +1599,8 @@ public class CalendarPanel extends JPanel {
         }
         // Find out if all the week numbers are the same. 
         // We can check for a unanimous sequence by looking at the first and last number. 
-        boolean isUnanimous = (Objects.equals(weekNumbersList.get(0), weekNumbersList.get(6)));
+        boolean isUnanimous = (InternalUtilities.areObjectsEqual(
+                weekNumbersList.get(0), weekNumbersList.get(6)));
         // If the week numbers are unanimous, then return the unanimous week number. 
         if (isUnanimous) {
             return weekNumbersList.get(0);
