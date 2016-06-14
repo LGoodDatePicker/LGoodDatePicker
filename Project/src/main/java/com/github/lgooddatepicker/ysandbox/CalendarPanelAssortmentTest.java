@@ -87,9 +87,10 @@ public class CalendarPanelAssortmentTest {
         dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
         dateSettings.setColor(Area.BackgroundTopLeftLabelAboveWeekNumbers, Color.PINK);
-        dateSettings.setColor(Area.BackgroundMonthAndYearLabelButtons, Color.ORANGE);
-        dateSettings.setColor(Area.BackgroundTodayAndClearButtons, Color.ORANGE);
-        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons, Color.MAGENTA);
+        dateSettings.setColor(Area.BackgroundMonthAndYearMenuButtons, Color.ORANGE);
+        dateSettings.setColor(Area.BackgroundTodayButton, Color.CYAN);
+        dateSettings.setColor(Area.BackgroundClearButton, Color.GREEN);
+        dateSettings.setColor(Area.BackgroundMonthAndYearNavigationButtons, Color.MAGENTA);
         dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
@@ -214,9 +215,10 @@ public class CalendarPanelAssortmentTest {
         dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
         dateSettings.setColor(Area.BackgroundTopLeftLabelAboveWeekNumbers, Color.PINK);
-        dateSettings.setColor(Area.BackgroundMonthAndYearLabelButtons, Color.ORANGE);
-        dateSettings.setColor(Area.BackgroundTodayAndClearButtons, Color.ORANGE);
-        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons, Color.MAGENTA);
+        dateSettings.setColor(Area.BackgroundMonthAndYearMenuButtons, Color.ORANGE);
+        dateSettings.setColor(Area.BackgroundTodayButton, Color.CYAN);
+        dateSettings.setColor(Area.BackgroundClearButton, Color.GREEN);
+        dateSettings.setColor(Area.BackgroundMonthAndYearNavigationButtons, Color.MAGENTA);
         panel.add(calendarPanel);
 
         // Create a CalendarPanel: Change first weekday.
