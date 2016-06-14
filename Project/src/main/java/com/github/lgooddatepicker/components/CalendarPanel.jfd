@@ -23,6 +23,7 @@ new FormModel {
 					"focusPainted": false
 					"horizontalTextPosition": 0
 					"margin": new java.awt.Insets( 5, 6, 5, 6 )
+					"font": &Font0 new java.awt.Font( "Monospaced", 1, 12 )
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonPreviousYearActionPerformed", true ) )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridX": 1
@@ -30,28 +31,25 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonPreviousMonth"
-					"text": "<"
+					"text": " < "
 					"focusable": false
 					"focusPainted": false
 					"horizontalTextPosition": 0
 					"margin": new java.awt.Insets( 5, 6, 5, 6 )
+					"font": #Font0
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonPreviousMonthActionPerformed", true ) )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridX": 2
 					"gridY": 1
 				} )
-				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-					"$columnSpecs": "0:1.0, 0, 0:1.0"
-					"$rowSpecs": "0:1.0"
-					"$alignTop": true
-					"$alignLeft": true
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+					"$columnSpecs": "pref:grow, pref, pref:grow"
+					"$rowSpecs": "fill:pref:grow"
 				} ) {
 					name: "monthAndYearOuterPanel"
-					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class java.awt.GridBagLayout ) {
-						"$columnSpecs": "0, 1, 0"
-						"$rowSpecs": "0:1.0"
-						"$alignLeft": true
-						"$alignTop": true
+					add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
+						"$columnSpecs": "pref, max(pref;1px), pref"
+						"$rowSpecs": "fill:pref:grow"
 					} ) {
 						name: "monthAndYearInnerPanel"
 						add( new FormComponent( "javax.swing.JLabel" ) {
@@ -62,7 +60,10 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelMonthIndicatorMousePressed", true ) )
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) )
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 1
+							"gridY": 1
+						} )
 						add( new FormComponent( "javax.swing.JLabel" ) {
 							name: "labelYear"
 							"text": "2100"
@@ -70,11 +71,13 @@ new FormModel {
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mousePressed", "labelYearIndicatorMousePressed", true ) )
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseEntered", "labelIndicatorMouseEntered", true ) )
 							addEvent( new FormEvent( "java.awt.event.MouseListener", "mouseExited", "labelIndicatorMouseExited", true ) )
-						}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-							"gridx": 2
+						}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+							"gridX": 3
+							"gridY": 1
 						} )
-					}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
-						"gridx": 1
+					}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+						"gridX": 2
+						"gridY": 1
 					} )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridX": 4
@@ -82,11 +85,12 @@ new FormModel {
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "buttonNextMonth"
-					"text": ">"
+					"text": " > "
 					"focusable": false
 					"focusPainted": false
 					"horizontalTextPosition": 0
 					"margin": new java.awt.Insets( 5, 6, 5, 6 )
+					"font": #Font0
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonNextMonthActionPerformed", true ) )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridX": 6
@@ -99,6 +103,7 @@ new FormModel {
 					"focusPainted": false
 					"horizontalTextPosition": 0
 					"margin": new java.awt.Insets( 5, 6, 5, 6 )
+					"font": #Font0
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "buttonNextYearActionPerformed", true ) )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridX": 7

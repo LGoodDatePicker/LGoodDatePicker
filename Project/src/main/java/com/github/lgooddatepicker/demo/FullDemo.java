@@ -167,13 +167,14 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 5, Change Calendar Size:");
 
-        // Create a date picker: Custom color.
+        // Create a date picker: Change Colors.
         dateSettings = new DatePickerSettings();
         dateSettings.setColor(Area.BackgroundOverallCalendarPanel, Color.green);
         dateSettings.setColorBackgroundWeekdayLabels(Color.orange, true);
-        dateSettings.setColor(Area.BackgroundMonthAndYearLabelButtons, Color.yellow);
-        dateSettings.setColor(Area.BackgroundTodayAndClearButtons, Color.yellow);
-        dateSettings.setColor(Area.BackgroundMonthAndYearSmallButtons, Color.cyan);
+        dateSettings.setColor(Area.BackgroundMonthAndYearMenuButtons, Color.yellow);
+        dateSettings.setColor(Area.BackgroundTodayButton, Color.yellow);
+        dateSettings.setColor(Area.BackgroundClearButton, Color.yellow);
+        dateSettings.setColor(Area.BackgroundMonthAndYearNavigationButtons, Color.cyan);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Colors:");

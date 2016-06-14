@@ -32,11 +32,8 @@ import java.time.temporal.WeekFields;
 import java.util.HashMap;
 
 /**
- * DatePickerSettings, This holds all the settings that can be customized in a date picker.
- *
- * Some of the fields of this class are public, so that the settings are easier to customize as
- * needed. If a particular field is private, then that setting can be controlled with the matching
- * accessor functions.
+ * DatePickerSettings, This holds all the settings that can be customized for a DatePicker (or an
+ * independent CalendarPanel).
  *
  * A DatePickerSettings instance may be (optionally) created, customized, and passed to the date
  * picker constructor. If no settings instance is supplied when a date picker is constructed, then a
@@ -55,18 +52,23 @@ public class DatePickerSettings {
      * values are used with the setColor() function, to set the color of various areas of the
      * DatePicker or the CalendarPanel. The default color for each area is also defined here.
      *
-     * Note: A default color of "null" means that the default color for that element will be
-     * supplied by the swing component. The color for the "BackgroundMonthAndYearSmallButtons" is
-     * null, so those buttons will use the default background color supplied by the JButton class.
+     * Note: A default color of "null" means that the default color for that element is supplied by
+     * the swing component. The default color for "BackgroundMonthAndYearNavigationButtons" is null,
+     * so those buttons will use the default background color supplied by the JButton class.
      */
     public enum Area {
-        BackgroundMonthAndYearLabelButtons(new Color(240, 240, 240)),
-        BackgroundMonthAndYearSmallButtons(null),
+        BackgroundClearButton(new Color(240, 240, 240)),
+        BackgroundMonthAndYearMenuButtons(new Color(240, 240, 240)),
+        BackgroundMonthAndYearNavigationButtons(null),
         BackgroundOverallCalendarPanel(new Color(240, 240, 240)),
-        BackgroundTodayAndClearButtons(new Color(240, 240, 240)),
+        BackgroundTodayButton(new Color(240, 240, 240)),
         BackgroundTopLeftLabelAboveWeekNumbers(new Color(184, 207, 229)),
-        CalendarBackgroundHighlightedDates(Color.green),
+        CalendarDefaultBackgroundHighlightedDates(Color.green),
         CalendarBackgroundVetoedDates(Color.lightGray),
+        DatePickerTextFieldBackgroundDisallowedEmptyDate(Color.pink),
+        DatePickerTextFieldBackgroundInvalidDate(Color.white),
+        DatePickerTextFieldBackgroundValidDate(Color.white),
+        DatePickerTextBackgroundVetoedDate(Color.white),
         DatePickerTextInvalidDate(Color.red),
         DatePickerTextValidDate(Color.black),
         DatePickerTextVetoedDate(Color.black);
@@ -244,6 +246,48 @@ public class DatePickerSettings {
      * policy. By default, there is no highlight policy. (The default value is null.)
      */
     private DateHighlightPolicy highlightPolicy = null;
+
+    /**
+     * isVisibleClearButton, This specifies if the named component should be displayed. Note that
+     * this setting will have no effect if empty dates are not allowed. If empty dates are not
+     * allowed, then the clear button will always be hidden.
+     */
+    private boolean isVisibleClearButton = true;
+
+    /**
+     * isVisibleMonthMenuButton, This specifies if the named component should be displayed.
+     */
+    private boolean isVisibleMonthMenuButton = true;
+
+    /**
+     * isVisibleNextMonthButton, This specifies if the named component should be displayed.
+     */
+    private boolean isVisibleNextMonthButton = true;
+
+    /**
+     * isVisibleNextYearButton, This specifies if the named component should be displayed.
+     */
+    private boolean isVisibleNextYearButton = true;
+
+    /**
+     * isVisiblePreviousMonthButton, This specifies if the named component should be displayed.
+     */
+    private boolean isVisiblePreviousMonthButton = true;
+
+    /**
+     * isVisiblePreviousYearButton, This specifies if the named component should be displayed.
+     */
+    private boolean isVisiblePreviousYearButton = true;
+
+    /**
+     * isVisibleTodayButton, This specifies if the named component should be displayed.
+     */
+    private boolean isVisibleTodayButton = true;
+
+    /**
+     * isVisibleYearMenuButton, This specifies if the named component should be displayed.
+     */
+    private boolean isVisibleYearMenuButton = true;
 
     /**
      * locale, This holds the picker locale instance that indicates the user's language and culture.
@@ -555,6 +599,14 @@ public class DatePickerSettings {
                 ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsing.clone();
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
         // "result.highlightPolicy" is left at its default value.
+        result.isVisibleClearButton = this.isVisibleClearButton;
+        result.isVisibleMonthMenuButton = this.isVisibleMonthMenuButton;
+        result.isVisibleNextMonthButton = this.isVisibleNextMonthButton;
+        result.isVisibleNextYearButton = this.isVisibleNextYearButton;
+        result.isVisiblePreviousMonthButton = this.isVisiblePreviousMonthButton;
+        result.isVisiblePreviousYearButton = this.isVisiblePreviousYearButton;
+        result.isVisibleTodayButton = this.isVisibleTodayButton;
+        result.isVisibleYearMenuButton = this.isVisibleYearMenuButton;
         result.locale = (Locale) this.locale.clone();
         // "result.parentCalendarPanel" is left at its default value.
         // "result.parentDatePicker" is left at its default value.
@@ -822,6 +874,62 @@ public class DatePickerSettings {
     }
 
     /**
+     * getVisibleClearButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisibleClearButton() {
+        return isVisibleClearButton;
+    }
+
+    /**
+     * getVisibleMonthMenuButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisibleMonthMenuButton() {
+        return isVisibleMonthMenuButton;
+    }
+
+    /**
+     * getVisibleNextMonthButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisibleNextMonthButton() {
+        return isVisibleNextMonthButton;
+    }
+
+    /**
+     * getVisibleNextYearButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisibleNextYearButton() {
+        return isVisibleNextYearButton;
+    }
+
+    /**
+     * getVisiblePreviousMonthButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisiblePreviousMonthButton() {
+        return isVisiblePreviousMonthButton;
+    }
+
+    /**
+     * getVisiblePreviousYearButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisiblePreviousYearButton() {
+        return isVisiblePreviousYearButton;
+    }
+
+    /**
+     * getVisibleTodayButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisibleTodayButton() {
+        return isVisibleTodayButton;
+    }
+
+    /**
+     * getVisibleYearMenuButton, This returns the visibility state of the named component.
+     */
+    public boolean getVisibleYearMenuButton() {
+        return isVisibleYearMenuButton;
+    }
+
+    /**
      * getWeekNumberRules, Returns the value of this setting. See the "set" function for setting
      * information.
      */
@@ -981,13 +1089,17 @@ public class DatePickerSettings {
         colors.put(area, color);
         // Call any "updating functions" that are appropriate for the specified area.
         switch (area) {
-            case BackgroundMonthAndYearLabelButtons:
-            case BackgroundTodayAndClearButtons:
+            case BackgroundMonthAndYearMenuButtons:
+            case BackgroundTodayButton:
+            case BackgroundClearButton:
                 if (parentCalendarPanel != null) {
                     parentCalendarPanel.zSetAllLabelIndicatorColorsToDefaultState();
                 }
                 break;
             default:
+                if (parentDatePicker != null) {
+                    parentDatePicker.zDrawTextFieldIndicators();
+                }
                 zDrawIndependentCalendarPanelIfNeeded();
         }
     }
@@ -1505,6 +1617,70 @@ public class DatePickerSettings {
     }
 
     /**
+     * setVisibleClearButton, This sets the visibility of the named component.
+     */
+    public void setVisibleClearButton(boolean isVisible) {
+        isVisibleClearButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
+     * setVisibleMonthMenuButton, This sets the visibility of the named component.
+     */
+    public void setVisibleMonthMenuButton(boolean isVisible) {
+        isVisibleMonthMenuButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
+     * setVisibleNextMonthButton, This sets the visibility of the named component.
+     */
+    public void setVisibleNextMonthButton(boolean isVisible) {
+        isVisibleNextMonthButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
+     * setVisibleNextYearButton, This sets the visibility of the named component.
+     */
+    public void setVisibleNextYearButton(boolean isVisible) {
+        isVisibleNextYearButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
+     * setVisiblePreviousMonthButton, This sets the visibility of the named component.
+     */
+    public void setVisiblePreviousMonthButton(boolean isVisible) {
+        isVisiblePreviousMonthButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
+     * setVisiblePreviousYearButton, This sets the visibility of the named component.
+     */
+    public void setVisiblePreviousYearButton(boolean isVisible) {
+        isVisiblePreviousYearButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
+     * setVisibleTodayButton, This sets the visibility of the named component.
+     */
+    public void setVisibleTodayButton(boolean isVisible) {
+        isVisibleTodayButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
+     * setVisibleYearMenuButton, This sets the visibility of the named component.
+     */
+    public void setVisibleYearMenuButton(boolean isVisible) {
+        isVisibleYearMenuButton = isVisible;
+        zApplyIndependentCalendarPanelButtonVisibilityIfNeeded();
+    }
+
+    /**
      * setWeekNumberRules, This sets the week number rules that will be used to show the week
      * numbers (the weeks of the year), whenever the week numbers are displayed on this calendar.
      *
@@ -1654,6 +1830,18 @@ public class DatePickerSettings {
         ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
         FormLayout layout = ((FormLayout) parentDatePicker.getLayout());
         layout.setColumnSpec(2, columnSpec);
+    }
+
+    /**
+     * zApplyIndependentCalendarPanelButtonVisibilityIfNeeded, If needed, this will apply the
+     * visibility settings for buttons to the independent CalendarPanel. This function only has an
+     * effect if the parent of this settings instance is an independent CalendarPanel (and not a
+     * DatePicker).
+     */
+    private void zApplyIndependentCalendarPanelButtonVisibilityIfNeeded() {
+        if (parentCalendarPanel != null) {
+            parentCalendarPanel.zApplyVisibilityOfButtons();
+        }
     }
 
     /**

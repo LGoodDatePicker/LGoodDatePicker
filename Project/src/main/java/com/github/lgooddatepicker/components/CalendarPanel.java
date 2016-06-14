@@ -278,6 +278,7 @@ public class CalendarPanel extends JPanel {
         buttonNextYear.setMargin(new java.awt.Insets(1, 2, 1, 2));
         buttonPreviousMonth.setMargin(new java.awt.Insets(1, 2, 1, 2));
         buttonNextMonth.setMargin(new java.awt.Insets(1, 2, 1, 2));
+        
         // Generate and add the various calendar panel labels.
         // These are only generated once. 
         addDateLabels();
@@ -575,7 +576,7 @@ public class CalendarPanel extends JPanel {
         headerControlsPanel.setBackground(calendarPanelBackgroundColor);
         monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
         footerPanel.setBackground(calendarPanelBackgroundColor);
-        Color navigationButtonsColor = settings.getColor(Area.BackgroundMonthAndYearSmallButtons);
+        Color navigationButtonsColor = settings.getColor(Area.BackgroundMonthAndYearNavigationButtons);
         if (navigationButtonsColor != null) {
             buttonPreviousYear.setBackground(navigationButtonsColor);
             buttonNextYear.setBackground(navigationButtonsColor);
@@ -680,10 +681,12 @@ public class CalendarPanel extends JPanel {
                 if (dateIsVetoed) {
                     dateLabel.setEnabled(false);
                     dateLabel.setBackground(settings.getColor(Area.CalendarBackgroundVetoedDates));
+                    // Note, the foreground color of a disabled date label will always be grey.
+                    // So it is not easily possible let the programmer customize that color. 
                 }
                 if ((!dateIsVetoed) && (highlightInfo != null)) {
                     // Set the highlight background color (always).
-                    Color colorBackground = settings.getColor(Area.CalendarBackgroundHighlightedDates);
+                    Color colorBackground = settings.getColor(Area.CalendarDefaultBackgroundHighlightedDates);
                     if (highlightInfo.colorBackground != null) {
                         colorBackground = highlightInfo.colorBackground;
                     }
@@ -758,12 +761,8 @@ public class CalendarPanel extends JPanel {
                 vetoPolicy, LocalDate.now());
         labelSetDateToToday.setEnabled(!todayIsVetoed);
 
-        // If null is not allowed, then disable and hide the Clear label. 
-        // Note: I had considered centering the today label in the CalendarPanel whenever the 
-        // clear label was hidden. However, it still looks better when it is aligned to the left.
-        boolean shouldEnableClearButton = settings.getAllowEmptyDates();
-        labelClearDate.setEnabled(shouldEnableClearButton);
-        labelClearDate.setVisible(shouldEnableClearButton);
+        // Set the visibility of all the calendar control buttons (and button labels).
+        zApplyVisibilityOfButtons();
 
         // Set the label for the clear button.
         labelClearDate.setText(settings.getTranslationClear());
@@ -879,10 +878,14 @@ public class CalendarPanel extends JPanel {
             return;
         }
         if (label == labelMonth || label == labelYear) {
-            label.setBackground(settings.getColor(Area.BackgroundMonthAndYearLabelButtons));
-            monthAndYearInnerPanel.setBackground(settings.getColor(Area.BackgroundMonthAndYearLabelButtons));
-        } else {
-            label.setBackground(settings.getColor(Area.BackgroundTodayAndClearButtons));
+            label.setBackground(settings.getColor(Area.BackgroundMonthAndYearMenuButtons));
+            monthAndYearInnerPanel.setBackground(settings.getColor(Area.BackgroundMonthAndYearMenuButtons));
+        }
+        if (label == labelSetDateToToday) {
+            label.setBackground(settings.getColor(Area.BackgroundTodayButton));
+        }
+        if (label == labelClearDate) {
+            label.setBackground(settings.getColor(Area.BackgroundClearButton));
         }
         label.setBorder(new CompoundBorder(
                 new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));
@@ -968,17 +971,13 @@ public class CalendarPanel extends JPanel {
 
     private void doneEditingYearButtonActionPerformed(ActionEvent e) {
         monthAndYearInnerPanel.remove(yearEditorPanel);
-        labelYear.setEnabled(true);
-        labelYear.setVisible(true);
+        // This will also set the visibility of the year menu label.
         drawCalendar(displayedYearMonth);
     }
 
     private void otherYearMenuItemClicked() {
-        labelYear.setEnabled(false);
-        labelYear.setVisible(false);
-        monthAndYearInnerPanel.add(yearEditorPanel, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+        monthAndYearInnerPanel.add(yearEditorPanel, CC.xy(3, 1));
+        // This will also set the visibility of the year menu label.
         drawCalendar(displayedYearMonth);
         yearTextField.requestFocusInWindow();
     }
@@ -1034,8 +1033,8 @@ public class CalendarPanel extends JPanel {
      * setLocale, The locale for a CalendarPanel should generally be set in the DatePickerSettings.
      * This function only exists to avoid confusion with the swing function Component.setLocale().
      *
-     * This forwards any function calls to: CalendarPanel.getSettings().setLocale(). For the complete
-     * Javadocs, see DatePickerSettings.setLocale().
+     * This forwards any function calls to: CalendarPanel.getSettings().setLocale(). For the
+     * complete Javadocs, see DatePickerSettings.setLocale().
      */
     @Override
     public void setLocale(Locale locale) {
@@ -1110,8 +1109,11 @@ public class CalendarPanel extends JPanel {
         Font font = labelMonth.getFont();
         Canvas canvas = new Canvas();
         FontMetrics metrics = canvas.getFontMetrics(font);
-        // Get the height of a line of text in this font.
-        int height = metrics.getHeight();
+        // Calculate the preferred height for the month and year panel.
+        int heightNavigationButtons = buttonPreviousYear.getPreferredSize().height;
+        int monthFontHeight = metrics.getHeight();
+        int monthFontHeightWithPadding = monthFontHeight + 2;
+        int panelHeight = Math.max(monthFontHeightWithPadding, heightNavigationButtons);
         // Get the length of the longest translated month string (in pixels).
         DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         String[] allLocalMonths = symbols.getMonths();
@@ -1122,11 +1124,11 @@ public class CalendarPanel extends JPanel {
         }
         int yearPixels = metrics.stringWidth("_2000");
         // Calculate the size of a box to hold the text with some padding.
-        Dimension size = new Dimension(longestMonthPixels + yearPixels + 12, height + 2);
+        Dimension size = new Dimension(longestMonthPixels + yearPixels + 12, panelHeight);
         // Set the monthAndYearPanel to the appropriate constant size.
         monthAndYearOuterPanel.setMinimumSize(size);
-        monthAndYearOuterPanel.setMaximumSize(size);
         monthAndYearOuterPanel.setPreferredSize(size);
+        // monthAndYearOuterPanel.setMaximumSize(size);
         // Redraw the panel.
         this.doLayout();
         this.validate();
@@ -1288,6 +1290,7 @@ public class CalendarPanel extends JPanel {
             buttonPreviousYear.setFocusPainted(false);
             buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
+            buttonPreviousYear.setFont(new Font("Monospaced", Font.BOLD, 12));
             buttonPreviousYear.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -1297,11 +1300,12 @@ public class CalendarPanel extends JPanel {
             headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
             //---- buttonPreviousMonth ----
-            buttonPreviousMonth.setText("<");
+            buttonPreviousMonth.setText(" < ");
             buttonPreviousMonth.setFocusable(false);
             buttonPreviousMonth.setFocusPainted(false);
             buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
+            buttonPreviousMonth.setFont(new Font("Monospaced", Font.BOLD, 12));
             buttonPreviousMonth.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -1312,19 +1316,15 @@ public class CalendarPanel extends JPanel {
 
             //======== monthAndYearOuterPanel ========
             {
-                monthAndYearOuterPanel.setLayout(new GridBagLayout());
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWidths = new int[]{0, 0, 0, 0};
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowHeights = new int[]{0, 0};
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 1.0, 1.0E-4};
-                ((GridBagLayout) monthAndYearOuterPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+                monthAndYearOuterPanel.setLayout(new FormLayout(
+                        "pref:grow, pref, pref:grow",
+                        "fill:pref:grow"));
 
                 //======== monthAndYearInnerPanel ========
                 {
-                    monthAndYearInnerPanel.setLayout(new GridBagLayout());
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWidths = new int[]{0, 1, 0, 0};
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowHeights = new int[]{0, 0};
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
-                    ((GridBagLayout) monthAndYearInnerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+                    monthAndYearInnerPanel.setLayout(new FormLayout(
+                            "pref, [1px,pref], pref",
+                            "fill:pref:grow"));
 
                     //---- labelMonth ----
                     labelMonth.setText("September");
@@ -1346,9 +1346,7 @@ public class CalendarPanel extends JPanel {
                             labelMonthIndicatorMousePressed(e);
                         }
                     });
-                    monthAndYearInnerPanel.add(labelMonth, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 0, 0), 0, 0));
+                    monthAndYearInnerPanel.add(labelMonth, CC.xy(1, 1));
 
                     //---- labelYear ----
                     labelYear.setText("2100");
@@ -1369,22 +1367,19 @@ public class CalendarPanel extends JPanel {
                             labelYearIndicatorMousePressed(e);
                         }
                     });
-                    monthAndYearInnerPanel.add(labelYear, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                            new Insets(0, 0, 0, 0), 0, 0));
+                    monthAndYearInnerPanel.add(labelYear, CC.xy(3, 1));
                 }
-                monthAndYearOuterPanel.add(monthAndYearInnerPanel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(0, 0, 0, 0), 0, 0));
+                monthAndYearOuterPanel.add(monthAndYearInnerPanel, CC.xy(2, 1));
             }
             headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
 
             //---- buttonNextMonth ----
-            buttonNextMonth.setText(">");
+            buttonNextMonth.setText(" > ");
             buttonNextMonth.setFocusable(false);
             buttonNextMonth.setFocusPainted(false);
             buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
+            buttonNextMonth.setFont(new Font("Monospaced", Font.BOLD, 12));
             buttonNextMonth.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -1399,6 +1394,7 @@ public class CalendarPanel extends JPanel {
             buttonNextYear.setFocusPainted(false);
             buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
+            buttonNextYear.setFont(new Font("Monospaced", Font.BOLD, 12));
             buttonNextYear.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -1551,6 +1547,50 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
+     * zApplyVisibilityOfButtons, This sets visibility of button controls for this calendar,
+     * according to the current settings.
+     */
+    void zApplyVisibilityOfButtons() {
+        boolean showNextMonth = settings.getVisibleNextMonthButton();
+        boolean showNextYear = settings.getVisibleNextYearButton();
+        boolean showPreviousMonth = settings.getVisiblePreviousMonthButton();
+        boolean showPreviousYear = settings.getVisiblePreviousYearButton();
+        boolean showMonthMenu = settings.getVisibleMonthMenuButton();
+        boolean showTodayButton = settings.getVisibleTodayButton();
+
+        boolean yearMenuSetting = settings.getVisibleYearMenuButton();
+        boolean yearEditorPanelIsDisplayed = (yearEditorPanel.getParent() != null);
+
+        boolean clearButtonSetting = settings.getVisibleClearButton();
+        boolean emptyDatesAllowed = settings.getAllowEmptyDates();
+
+        buttonNextMonth.setVisible(showNextMonth);
+        buttonNextYear.setVisible(showNextYear);
+        buttonPreviousMonth.setVisible(showPreviousMonth);
+        buttonPreviousYear.setVisible(showPreviousYear);
+        labelMonth.setVisible(showMonthMenu);
+        labelSetDateToToday.setVisible(showTodayButton);
+
+        boolean showYearMenu = ((yearMenuSetting) && (!yearEditorPanelIsDisplayed));
+        labelYear.setVisible(showYearMenu);
+
+        // Note: I had considered centering the today label in the CalendarPanel whenever the 
+        // clear label was hidden. However, it still looks better when it is aligned to the left.
+        boolean showClearButton = (clearButtonSetting && emptyDatesAllowed);
+        labelClearDate.setVisible(showClearButton);
+
+        boolean showMonthAndYearInnerPanel = (showMonthMenu || showYearMenu || 
+                yearEditorPanelIsDisplayed);
+        boolean showHeaderControlsPanel = (showMonthAndYearInnerPanel
+                || showNextMonth || showNextYear || showPreviousMonth || showPreviousYear);
+        monthAndYearInnerPanel.setVisible(showMonthAndYearInnerPanel);
+        headerControlsPanel.setVisible(showHeaderControlsPanel);
+        
+        boolean showFooterPanel = (showTodayButton || showClearButton);
+        footerPanel.setVisible(showFooterPanel);
+    }
+
+    /**
      * zGetWeekNumberForASevenDayRange, This returns a week number for the specified seven day
      * range, according to the supplied weekFieldRules.
      *
@@ -1647,6 +1687,8 @@ public class CalendarPanel extends JPanel {
             // constructor so it will be run both for independent and date picker calendar panels.
             settings.zApplyAllowEmptyDates();
         }
+        // Apply the button visibility settings to the buttons.
+        zApplyVisibilityOfButtons();
         // Redraw the calendar.
         drawCalendar();
     }
