@@ -68,7 +68,7 @@ public class DatePickerSettings {
         DatePickerTextFieldBackgroundDisallowedEmptyDate(Color.pink),
         DatePickerTextFieldBackgroundInvalidDate(Color.white),
         DatePickerTextFieldBackgroundValidDate(Color.white),
-        DatePickerTextBackgroundVetoedDate(Color.white),
+        DatePickerTextFieldBackgroundVetoedDate(Color.white),
         DatePickerTextInvalidDate(Color.red),
         DatePickerTextValidDate(Color.black),
         DatePickerTextVetoedDate(Color.black);
@@ -177,7 +177,7 @@ public class DatePickerSettings {
     /**
      * fontInvalidDate, This is the text field text font for invalid dates. The default font is a
      * normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See also:
-     * "colorTextInvalidDate".)
+     * setColor() and "Area.DatePickerTextInvalidDate".)
      */
     private Font fontInvalidDate;
 

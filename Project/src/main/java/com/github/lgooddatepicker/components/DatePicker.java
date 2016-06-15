@@ -917,7 +917,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         boolean isDateVetoed = InternalUtilities.isDateVetoed(vetoPolicy, parsedDate);
         if (isDateVetoed) {
             // (Possibility: VetoedValue)
-            dateTextField.setBackground(settings.getColor(Area.DatePickerTextBackgroundVetoedDate));
+            dateTextField.setBackground(settings.getColor(Area.DatePickerTextFieldBackgroundVetoedDate));
             dateTextField.setForeground(settings.getColor(Area.DatePickerTextVetoedDate));
             dateTextField.setFont(settings.getFontVetoedDate());
         }
