@@ -1,21 +1,17 @@
 package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
+import java.util.Locale;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
-import com.github.lgooddatepicker.zinternaltools.MouseLiberalAdapter;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
-import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Locale;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -38,9 +34,15 @@ public class TestStart {
 
         // Create a CalendarPanel: With highlight policy.
         dateSettings = new DatePickerSettings();
-        dateSettings.setHighlightPolicy(new SampleHighlightPolicy());
-        dateSettings = dateSettings.copySettings();
-
+        dateSettings.setAllowEmptyDates(false);
+        dateSettings.setAllowKeyboardEditing(false);
+        datePicker = new DatePicker(dateSettings);
+        panel.add(datePicker);
+        dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
+        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundValidDate, Color.green);
+        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundInvalidDate, Color.blue);
+        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundVetoedDate, Color.orange);
+        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundDisallowedEmptyDate, Color.pink);
         /*
         datePicker = new DatePicker(dateSettings);
         panel.add(datePicker);
@@ -52,7 +54,6 @@ public class TestStart {
         DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
         datePicker.setSettings(dateSettings2);
         
-         */
         CalendarPanel calendarPanel;
         calendarPanel = new CalendarPanel(dateSettings);
         panel.add(calendarPanel);
@@ -62,6 +63,7 @@ public class TestStart {
 
         DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
         calendarPanel.setSettings(dateSettings2);
+         */
 
         // Display the frame.
         frame.pack();
