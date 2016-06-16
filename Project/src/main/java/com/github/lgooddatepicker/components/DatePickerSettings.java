@@ -163,6 +163,35 @@ public class DatePickerSettings {
     private HashMap<Area, Color> colors;
 
     /**
+     * enableMonthMenu, This determines whether the month popup menu is enabled or disabled. (Note:
+     * The month label is located in the header area of the calendar panel.) If this is true, then
+     * the month label will give a visual indication of any "mouse over" events, and the month menu
+     * will open when the month label is clicked. If this is false, then the month label will not
+     * indicate mouse over events, and the month menu can not be opened. The default value for this
+     * setting is true.
+     *
+     * Note: It is generally recommended to leave the month menu enabled. Disabling this menu can
+     * negatively impact calendar usability. When the month menu is disabled, the user may have to
+     * press the month navigation button many times to reach a desired month.
+     */
+    private boolean enableMonthMenu = true;
+
+    /**
+     * enableYearMenu, This determines whether the year popup menu is enabled or disabled. (Note:
+     * The year label is located in the header area of the calendar panel.) If this is true, then
+     * the year label will give a visual indication of any "mouse over" events, and the year menu
+     * will open when the year label is clicked. If this is false, then the year label will not
+     * indicate mouse over events, and the year menu can not be opened. The default value for this
+     * setting is true.
+     *
+     * Note: It is generally recommended to leave the year menu enabled. Disabling this menu can
+     * negatively impact calendar usability. When the year menu is disabled, it may become difficult
+     * or effectively impossible for the user to navigate to years that are far into the past or the
+     * future.
+     */
+    private boolean enableYearMenu = true;
+
+    /**
      * firstDayOfWeek, This holds the day of the week that will be displayed in the far left column
      * of the CalendarPanel, as the "first day of the week". The default value is generated using
      * the locale of the settings instance.
@@ -686,6 +715,22 @@ public class DatePickerSettings {
     }
 
     /**
+     * getEnableMonthMenu, Returns the value of this setting. See the "set" function for setting
+     * information.
+     */
+    public boolean getEnableMonthMenu() {
+        return enableMonthMenu;
+    }
+
+    /**
+     * getEnableYearMenu, Returns the value of this setting. See the "set" function for setting
+     * information.
+     */
+    public boolean getEnableYearMenu() {
+        return enableYearMenu;
+    }
+
+    /**
      * getFirstDayOfWeekDisplayedOnCalendar, Returns the first day of the week as it will be
      * displayed on the calendar. Note that this setting may or may not match the first day of the
      * week setting. See also: "weekNumbersDisplayed", and "weekNumbersForceFirstDayOfWeekToMatch".
@@ -1144,6 +1189,38 @@ public class DatePickerSettings {
             setBorderPropertiesList(null);
         }
         zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setEnableMonthMenu, This sets the month popup menu to be enabled or disabled. (Note: The
+     * month label is located in the header area of the calendar panel.) If this is true, then the
+     * month label will give a visual indication of any "mouse over" events, and the month menu will
+     * open when the month label is clicked. If this is false, then the month label will not
+     * indicate mouse over events, and the month menu can not be opened. The default value for this
+     * setting is true.
+     *
+     * Note: It is generally recommended to leave the month menu enabled. Disabling this menu can
+     * negatively impact calendar usability. When the month menu is disabled, the user may have to
+     * press the month navigation button many times to reach a desired month.
+     */
+    public void setEnableMonthMenu(boolean enableMonthMenu) {
+        this.enableMonthMenu = enableMonthMenu;
+    }
+
+    /**
+     * setEnableYearMenu, This sets the year popup menu to be enabled or disabled. (Note: The year
+     * label is located in the header area of the calendar panel.) If this is true, then the year
+     * label will give a visual indication of any "mouse over" events, and the year menu will open
+     * when the year label is clicked. If this is false, then the year label will not indicate mouse
+     * over events, and the year menu can not be opened. The default value for this setting is true.
+     *
+     * Note: It is generally recommended to leave the year menu enabled. Disabling this menu can
+     * negatively impact calendar usability. When the year menu is disabled, it may become difficult
+     * or effectively impossible for the user to navigate to years that are far into the past or the
+     * future.
+     */
+    public void setEnableYearMenu(boolean enableYearMenu) {
+        this.enableYearMenu = enableYearMenu;
     }
 
     /**
