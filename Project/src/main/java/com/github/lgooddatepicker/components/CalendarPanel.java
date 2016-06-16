@@ -278,7 +278,7 @@ public class CalendarPanel extends JPanel {
         buttonNextYear.setMargin(new java.awt.Insets(1, 2, 1, 2));
         buttonPreviousMonth.setMargin(new java.awt.Insets(1, 2, 1, 2));
         buttonNextMonth.setMargin(new java.awt.Insets(1, 2, 1, 2));
-        
+
         // Generate and add the various calendar panel labels.
         // These are only generated once. 
         addDateLabels();
@@ -848,6 +848,7 @@ public class CalendarPanel extends JPanel {
             return;
         }
         JLabel label = ((JLabel) e.getSource());
+        // Do not highlight the today label if today is vetoed.
         if (label == labelSetDateToToday) {
             DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
             boolean todayIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, LocalDate.now());
@@ -855,6 +856,15 @@ public class CalendarPanel extends JPanel {
                 return;
             }
         }
+        // Do not highlight the month label if the month menu is disabled.
+        if ((label == labelMonth) && (settings.getEnableMonthMenu() == false)) {
+            return;
+        }
+        // Do not highlight the year label if the year menu is disabled.
+        if ((label == labelYear) && (settings.getEnableYearMenu() == false)) {
+            return;
+        }
+        // Highlight the label.
         label.setBackground(new Color(184, 207, 229));
         label.setBorder(new CompoundBorder(
                 new LineBorder(Color.GRAY), labelIndicatorEmptyBorder));
@@ -901,6 +911,11 @@ public class CalendarPanel extends JPanel {
         if (settings == null) {
             return;
         }
+        // If the month menu is disabled, then return.
+        if (settings.getEnableMonthMenu() == false) {
+            return;
+        }
+        // Create and show the month popup menu.
         JPopupMenu monthPopupMenu = new JPopupMenu();
         String[] allLocalMonths = settings.getTranslationArrayStandaloneLongMonthNames();
         for (int i = 0; i < allLocalMonths.length; ++i) {
@@ -936,6 +951,11 @@ public class CalendarPanel extends JPanel {
      * year within a chosen range of the previously displayed year.
      */
     private void labelYearIndicatorMousePressed(MouseEvent e) {
+        // If the year menu is disabled, then return.
+        if (settings.getEnableYearMenu() == false) {
+            return;
+        }
+        // Create and show the year menu.
         int firstYearDifference = -11;
         int lastYearDifference = +11;
         JPopupMenu yearPopupMenu = new JPopupMenu();
@@ -1579,13 +1599,13 @@ public class CalendarPanel extends JPanel {
         boolean showClearButton = (clearButtonSetting && emptyDatesAllowed);
         labelClearDate.setVisible(showClearButton);
 
-        boolean showMonthAndYearInnerPanel = (showMonthMenu || showYearMenu || 
-                yearEditorPanelIsDisplayed);
+        boolean showMonthAndYearInnerPanel = (showMonthMenu || showYearMenu
+                || yearEditorPanelIsDisplayed);
         boolean showHeaderControlsPanel = (showMonthAndYearInnerPanel
                 || showNextMonth || showNextYear || showPreviousMonth || showPreviousYear);
         monthAndYearInnerPanel.setVisible(showMonthAndYearInnerPanel);
         headerControlsPanel.setVisible(showHeaderControlsPanel);
-        
+
         boolean showFooterPanel = (showTodayButton || showClearButton);
         footerPanel.setVisible(showFooterPanel);
     }
