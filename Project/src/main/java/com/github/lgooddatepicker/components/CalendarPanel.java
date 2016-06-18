@@ -1244,16 +1244,21 @@ public class CalendarPanel extends JPanel {
      * By intention, this will fire an event even if the user selects the same value twice. This is
      * so that programmers can catch all user interactions of interest to them. Duplicate events can
      * be detected by using the function CalendarSelectionEvent.isDuplicate().
+     *
+     * Note: Any calendar selection listeners will be notified before the calendar is redrawn, so
+     * that the programmer may optionally update any tightly linked code that may affect this
+     * particular redrawing of the calendar. (For example, a programmer might be change a highlight
+     * policy based on the currently selected date.)
      */
     private void zInternalChangeSelectedDateProcedure(LocalDate newDate) {
         LocalDate oldDate = displayedSelectedDate;
         displayedSelectedDate = newDate;
-        drawCalendar(displayedYearMonth);
         for (CalendarSelectionListener calendarSelectionListener : calendarSelectionListeners) {
             CalendarSelectionEvent dateSelectionEvent = new CalendarSelectionEvent(
                     this, newDate, oldDate);
             calendarSelectionListener.selectionChanged(dateSelectionEvent);
         }
+        drawCalendar(displayedYearMonth);
     }
 
     /**
