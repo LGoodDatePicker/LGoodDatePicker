@@ -298,6 +298,11 @@ public class TimePickerSettings {
      * supplied locale and language. The constructor populates all the settings with default values.
      */
     public TimePickerSettings(Locale timeLocale) {
+        // Add all the default colors to the colors map.
+        colors = new HashMap< Area, Color>();
+        for (Area area : Area.values()) {
+            colors.put(area, area.defaultColor);
+        }
         // Save the locale.
         this.locale = timeLocale;
 
