@@ -39,10 +39,10 @@ public class TestStart {
         datePicker = new DatePicker(dateSettings);
         panel.add(datePicker);
         dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
-        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundValidDate, Color.green);
-        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundInvalidDate, Color.blue);
-        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundVetoedDate, Color.orange);
-        dateSettings.setColor(DatePickerSettings.Area.DatePickerTextFieldBackgroundDisallowedEmptyDate, Color.pink);
+        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundValidDate, Color.green);
+        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundInvalidDate, Color.blue);
+        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundVetoedDate, Color.orange);
+        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundDisallowedEmptyDate, Color.pink);
         /*
         datePicker = new DatePicker(dateSettings);
         panel.add(datePicker);

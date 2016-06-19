@@ -3,6 +3,7 @@ package com.github.lgooddatepicker.components;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import java.awt.*;
 import javax.swing.border.*;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
@@ -810,8 +811,8 @@ public class TimePicker
         }
         // Reset all atributes to normal before going further.
         // (Possibility: ValidFullOrEmptyValue)
-        timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundValidTime));
-        timeTextField.setForeground(settings.getColor(TimePickerSettings.Area.TimePickerTextValidTime));
+        timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundValidTime));
+        timeTextField.setForeground(settings.getColor(TimeArea.TimePickerTextValidTime));
         timeTextField.setFont(settings.fontValidTime);
         // Get the text, and check to see if it is empty.
         String timeText = timeTextField.getText();
@@ -822,7 +823,7 @@ public class TimePicker
                 // (Possibility: ValidFullOrEmptyValue)
             } else {
                 // (Possibility: DisallowedEmptyValue)
-                timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundDisallowedEmptyTime));
+                timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundDisallowedEmptyTime));
             }
             return;
         }
@@ -831,8 +832,8 @@ public class TimePicker
                 settings.formatsForParsing, settings.getLocale());
         if (parsedTime == null) {
             // (Possibility: UnparsableValue)
-            timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundInvalidTime));
-            timeTextField.setForeground(settings.getColor(TimePickerSettings.Area.TimePickerTextInvalidTime));
+            timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundInvalidTime));
+            timeTextField.setForeground(settings.getColor(TimeArea.TimePickerTextInvalidTime));
             timeTextField.setFont(settings.fontInvalidTime);
             return;
         }
@@ -841,8 +842,8 @@ public class TimePicker
         boolean isTimeVetoed = InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime);
         if (isTimeVetoed) {
             // (Possibility: VetoedValue)
-            timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundVetoedTime));
-            timeTextField.setForeground(settings.getColor(TimePickerSettings.Area.TimePickerTextVetoedTime));
+            timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundVetoedTime));
+            timeTextField.setForeground(settings.getColor(TimeArea.TimePickerTextVetoedTime));
             timeTextField.setFont(settings.fontVetoedTime);
         }
     }

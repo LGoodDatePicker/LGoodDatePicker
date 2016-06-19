@@ -15,7 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.components.DatePickerSettings.Area;
+import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
@@ -169,12 +169,12 @@ public class FullDemo {
 
         // Create a date picker: Change Colors.
         dateSettings = new DatePickerSettings();
-        dateSettings.setColor(Area.BackgroundOverallCalendarPanel, Color.green);
+        dateSettings.setColor(DateArea.BackgroundOverallCalendarPanel, Color.green);
         dateSettings.setColorBackgroundWeekdayLabels(Color.orange, true);
-        dateSettings.setColor(Area.BackgroundMonthAndYearMenuButtons, Color.yellow);
-        dateSettings.setColor(Area.BackgroundTodayButton, Color.yellow);
-        dateSettings.setColor(Area.BackgroundClearButton, Color.yellow);
-        dateSettings.setColor(Area.BackgroundMonthAndYearNavigationButtons, Color.cyan);
+        dateSettings.setColor(DateArea.BackgroundMonthAndYearMenuButtons, Color.yellow);
+        dateSettings.setColor(DateArea.BackgroundTodayButton, Color.yellow);
+        dateSettings.setColor(DateArea.BackgroundClearButton, Color.yellow);
+        dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.cyan);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Colors:");
@@ -199,7 +199,7 @@ public class FullDemo {
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
         dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
-        dateSettings.setColor(Area.DatePickerTextValidDate, new Color(0, 100, 0));
+        dateSettings.setColor(DateArea.DatePickerTextValidDate, new Color(0, 100, 0));
         datePicker = new DatePicker(dateSettings);
         datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));

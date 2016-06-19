@@ -5,6 +5,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -86,7 +87,7 @@ public class BasicDemo extends JFrame {
 
         // Create a time picker with some custom settings.
         TimePickerSettings timeSettings = new TimePickerSettings();
-        timeSettings.setColor(TimePickerSettings.Area.TimePickerTextValidTime, Color.blue);
+        timeSettings.setColor(TimeArea.TimePickerTextValidTime, Color.blue);
         timeSettings.initialTime = LocalTime.now();
         TimePicker timePicker2 = new TimePicker(timeSettings);
         // To display this picker, uncomment this line.

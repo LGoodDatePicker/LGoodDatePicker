@@ -5,7 +5,7 @@ import com.privatejgoodies.forms.factories.CC;
 import java.awt.event.*;
 import javax.swing.border.*;
 import com.github.lgooddatepicker.zinternaltools.*;
-import com.github.lgooddatepicker.components.DatePickerSettings.Area;
+import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import javax.swing.event.DocumentEvent;
@@ -885,8 +885,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Reset all atributes to normal before going further.
         // (Possibility: ValidFullOrEmptyValue)
-        dateTextField.setBackground(settings.getColor(Area.DatePickerTextFieldBackgroundValidDate));
-        dateTextField.setForeground(settings.getColor(Area.DatePickerTextValidDate));
+        dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundValidDate));
+        dateTextField.setForeground(settings.getColor(DateArea.DatePickerTextValidDate));
         dateTextField.setFont(settings.getFontValidDate());
         // Get the text, and check to see if it is empty.
         String dateText = dateTextField.getText();
@@ -896,7 +896,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             if (!settings.getAllowEmptyDates()) {
                 // (Possibility: DisallowedEmptyValue)
                 // Note, there is no text to reflect a foreground or font. 
-                dateTextField.setBackground(settings.getColor(Area.DatePickerTextFieldBackgroundDisallowedEmptyDate));
+                dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundDisallowedEmptyDate));
             }
             return;
         }
@@ -907,8 +907,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 settings.getFormatsForParsing(), settings.getLocale());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
-            dateTextField.setBackground(settings.getColor(Area.DatePickerTextFieldBackgroundInvalidDate));
-            dateTextField.setForeground(settings.getColor(Area.DatePickerTextInvalidDate));
+            dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundInvalidDate));
+            dateTextField.setForeground(settings.getColor(DateArea.DatePickerTextInvalidDate));
             dateTextField.setFont(settings.getFontInvalidDate());
             return;
         }
@@ -917,8 +917,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         boolean isDateVetoed = InternalUtilities.isDateVetoed(vetoPolicy, parsedDate);
         if (isDateVetoed) {
             // (Possibility: VetoedValue)
-            dateTextField.setBackground(settings.getColor(Area.DatePickerTextFieldBackgroundVetoedDate));
-            dateTextField.setForeground(settings.getColor(Area.DatePickerTextVetoedDate));
+            dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundVetoedDate));
+            dateTextField.setForeground(settings.getColor(DateArea.DatePickerTextVetoedDate));
             dateTextField.setFont(settings.getFontVetoedDate());
         }
     }
