@@ -3,7 +3,7 @@ package com.github.lgooddatepicker.components;
 import java.time.*;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
-import com.github.lgooddatepicker.components.DatePickerSettings.Area;
+import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import java.awt.*;
 import java.awt.event.*;
@@ -571,12 +571,12 @@ public class CalendarPanel extends JPanel {
                 && (displayedSelectedDate.getYear() == displayedYear)
                 && (displayedSelectedDate.getMonth() == displayedMonth);
         // Set the component colors
-        Color calendarPanelBackgroundColor = settings.getColor(Area.BackgroundOverallCalendarPanel);
+        Color calendarPanelBackgroundColor = settings.getColor(DateArea.BackgroundOverallCalendarPanel);
         setBackground(calendarPanelBackgroundColor);
         headerControlsPanel.setBackground(calendarPanelBackgroundColor);
         monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
         footerPanel.setBackground(calendarPanelBackgroundColor);
-        Color navigationButtonsColor = settings.getColor(Area.BackgroundMonthAndYearNavigationButtons);
+        Color navigationButtonsColor = settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
         if (navigationButtonsColor != null) {
             buttonPreviousYear.setBackground(navigationButtonsColor);
             buttonNextYear.setBackground(navigationButtonsColor);
@@ -680,13 +680,13 @@ public class CalendarPanel extends JPanel {
                 }
                 if (dateIsVetoed) {
                     dateLabel.setEnabled(false);
-                    dateLabel.setBackground(settings.getColor(Area.CalendarBackgroundVetoedDates));
+                    dateLabel.setBackground(settings.getColor(DateArea.CalendarBackgroundVetoedDates));
                     // Note, the foreground color of a disabled date label will always be grey.
                     // So it is not easily possible let the programmer customize that color. 
                 }
                 if ((!dateIsVetoed) && (highlightInfo != null)) {
                     // Set the highlight background color (always).
-                    Color colorBackground = settings.getColor(Area.CalendarDefaultBackgroundHighlightedDates);
+                    Color colorBackground = settings.getColor(DateArea.CalendarDefaultBackgroundHighlightedDates);
                     if (highlightInfo.colorBackground != null) {
                         colorBackground = highlightInfo.colorBackground;
                     }
@@ -741,7 +741,7 @@ public class CalendarPanel extends JPanel {
         }
 
         // Set the background color for the topLeftLabel.
-        topLeftLabel.setBackground(settings.getColor(Area.BackgroundTopLeftLabelAboveWeekNumbers));
+        topLeftLabel.setBackground(settings.getColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers));
         // Set the background color for the weekday labels.
         for (JLabel weekdayLabel : weekdayLabels) {
             weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
@@ -888,14 +888,14 @@ public class CalendarPanel extends JPanel {
             return;
         }
         if (label == labelMonth || label == labelYear) {
-            label.setBackground(settings.getColor(Area.BackgroundMonthAndYearMenuButtons));
-            monthAndYearInnerPanel.setBackground(settings.getColor(Area.BackgroundMonthAndYearMenuButtons));
+            label.setBackground(settings.getColor(DateArea.BackgroundMonthAndYearMenuButtons));
+            monthAndYearInnerPanel.setBackground(settings.getColor(DateArea.BackgroundMonthAndYearMenuButtons));
         }
         if (label == labelSetDateToToday) {
-            label.setBackground(settings.getColor(Area.BackgroundTodayButton));
+            label.setBackground(settings.getColor(DateArea.BackgroundTodayButton));
         }
         if (label == labelClearDate) {
-            label.setBackground(settings.getColor(Area.BackgroundClearButton));
+            label.setBackground(settings.getColor(DateArea.BackgroundClearButton));
         }
         label.setBorder(new CompoundBorder(
                 new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));

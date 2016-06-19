@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
@@ -46,7 +47,28 @@ import javax.swing.border.MatteBorder;
  * the prefix "zDateTimePicker_".
  */
 public class TimePickerSettings {
-
+    /**
+     * TimeArea, These enumerations represent areas of the components whose color can be changed. These
+     * values are used with the setColor() function, to set the color of various areas of the
+     * TimePicker. The default color for each area is also defined here.
+     *
+     * Note: A default color of "null" means that the default color for that element is supplied by
+     * the swing component. 
+     */
+    public enum TimeArea {
+        TimePickerTextValidTime(Color.black),
+        TimePickerTextInvalidTime(Color.red),
+        TimePickerTextVetoedTime(Color.black),
+        TextFieldBackgroundValidTime(Color.white),
+        TextFieldBackgroundInvalidTime(Color.white),
+        TextFieldBackgroundVetoedTime(Color.white),
+        TextFieldBackgroundDisallowedEmptyTime(Color.pink);
+        
+        TimeArea(Color defaultColor) {
+            this.defaultColor = defaultColor;
+        }
+        public Color defaultColor;
+    }
     /**
      * allowEmptyTimes, This indicates whether or not empty times are allowed in the time picker.
      * Empty times are also called "null times". The default value is true, which allows empty
@@ -76,25 +98,14 @@ public class TimePickerSettings {
      * default, a simple border is drawn.
      */
     public Border borderTimePopup;
-
+    
     /**
-     * colorTextInvalidTime, This is the text field text color for invalid times. The default color
-     * is red.
+     * colors, This hash map holds the current color settings for different areas of the TimePicker.
+     * These colors can be set with the setColor() function, or retrieved with the
+     * getColor() function. By default, this map is populated with a set of default colors. The
+     * default colors for each area are defined the "AreaToColor" enum definition.
      */
-    public Color colorTextInvalidTime = Color.red;
-
-    /**
-     * colorTextValidTime, This is the text field text color for valid times. The default color is
-     * black.
-     */
-    public Color colorTextValidTime = Color.black;
-
-    /**
-     * colorTextVetoedTime, This is the text field text color for vetoed times. The default color is
-     * black. Note: The default fontVetoedTime setting will draw a line (strikethrough) vetoed
-     * times.
-     */
-    public Color colorTextVetoedTime = Color.black;
+    private HashMap<TimePickerSettings.TimeArea, Color> colors;
 
     /**
      * displayToggleTimeMenuButton, This controls whether or not the toggle menu button is displayed
@@ -295,6 +306,11 @@ public class TimePickerSettings {
      * supplied locale and language. The constructor populates all the settings with default values.
      */
     public TimePickerSettings(Locale timeLocale) {
+        // Add all the default colors to the colors map.
+        colors = new HashMap< TimeArea, Color>();
+        for (TimeArea area : TimeArea.values()) {
+            colors.put(area, area.defaultColor);
+        }
         // Save the locale.
         this.locale = timeLocale;
 
@@ -414,6 +430,13 @@ public class TimePickerSettings {
      */
     public boolean getAllowKeyboardEditing() {
         return allowKeyboardEditing;
+    }
+
+    /**
+     * getColor, This returns the currently set color for the specified area.
+     */
+    public Color getColor(TimeArea area) {
+        return colors.get(area);
     }
 
     /**
@@ -567,6 +590,18 @@ public class TimePickerSettings {
         this.allowKeyboardEditing = allowKeyboardEditing;
         if (parent != null) {
             zApplyAllowKeyboardEditing();
+        }
+    }
+    public void setColor(TimeArea area, Color color) {
+        // If null was supplied, then use the default color.
+        if (color == null) {
+            color = area.defaultColor;
+        }
+        // Save the color to the color map.
+        colors.put(area, color);
+        // Call any "updating functions" that are appropriate for the specified area.
+        if (parent != null) {
+            parent.zDrawTextFieldIndicators();
         }
     }
 
