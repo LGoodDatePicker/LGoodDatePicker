@@ -48,7 +48,7 @@ import java.util.HashMap;
 public class DatePickerSettings {
 
     /**
-     * Area, These enumerations represent areas of the components whose color can be changed. These
+     * DateArea, These enumerations represent areas of the components whose color can be changed. These
      * values are used with the setColor() function, to set the color of various areas of the
      * DatePicker or the CalendarPanel. The default color for each area is also defined here.
      *
@@ -56,7 +56,7 @@ public class DatePickerSettings {
      * the swing component. The default color for "BackgroundMonthAndYearNavigationButtons" is null,
      * so those buttons will use the default background color supplied by the JButton class.
      */
-    public enum Area {
+    public enum DateArea {
         BackgroundClearButton(new Color(240, 240, 240)),
         BackgroundMonthAndYearMenuButtons(new Color(240, 240, 240)),
         BackgroundMonthAndYearNavigationButtons(null),
@@ -65,15 +65,15 @@ public class DatePickerSettings {
         BackgroundTopLeftLabelAboveWeekNumbers(new Color(184, 207, 229)),
         CalendarDefaultBackgroundHighlightedDates(Color.green),
         CalendarBackgroundVetoedDates(Color.lightGray),
-        DatePickerTextFieldBackgroundDisallowedEmptyDate(Color.pink),
-        DatePickerTextFieldBackgroundInvalidDate(Color.white),
-        DatePickerTextFieldBackgroundValidDate(Color.white),
-        DatePickerTextFieldBackgroundVetoedDate(Color.white),
+        TextFieldBackgroundDisallowedEmptyDate(Color.pink),
+        TextFieldBackgroundInvalidDate(Color.white),
+        TextFieldBackgroundValidDate(Color.white),
+        TextFieldBackgroundVetoedDate(Color.white),
         DatePickerTextInvalidDate(Color.red),
         DatePickerTextValidDate(Color.black),
         DatePickerTextVetoedDate(Color.black);
 
-        Area(Color defaultColor) {
+        DateArea(Color defaultColor) {
             this.defaultColor = defaultColor;
         }
         public Color defaultColor;
@@ -160,7 +160,7 @@ public class DatePickerSettings {
      * getColor() function. By default, this map is populated with a set of default colors. The
      * default colors for each area are defined the "AreaToColor" enum definition.
      */
-    private HashMap<Area, Color> colors;
+    private HashMap<DateArea, Color> colors;
 
     /**
      * enableMonthMenu, This determines whether the month popup menu is enabled or disabled. (Note:
@@ -205,8 +205,8 @@ public class DatePickerSettings {
 
     /**
      * fontInvalidDate, This is the text field text font for invalid dates. The default font is a
-     * normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See also:
-     * setColor() and "Area.DatePickerTextInvalidDate".)
+ normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See also:
+ setColor() and "DateArea.DatePickerTextInvalidDate".)
      */
     private Font fontInvalidDate;
 
@@ -551,8 +551,8 @@ public class DatePickerSettings {
      */
     public DatePickerSettings(Locale pickerLocale) {
         // Add all the default colors to the colors map.
-        colors = new HashMap< Area, Color>();
-        for (Area area : Area.values()) {
+        colors = new HashMap< DateArea, Color>();
+        for (DateArea area : DateArea.values()) {
             colors.put(area, area.defaultColor);
         }
 
@@ -613,7 +613,7 @@ public class DatePickerSettings {
             result.colors = null;
         } else {
             // A shallow copy is okay here, because the map key and value are immutable types.
-            result.colors = new HashMap<Area, Color>(this.colors);
+            result.colors = new HashMap<DateArea, Color>(this.colors);
         }
         result.firstDayOfWeek = this.firstDayOfWeek;
         // The Font class is immutable.
@@ -694,7 +694,7 @@ public class DatePickerSettings {
     /**
      * getColor, This returns the currently set color for the specified area.
      */
-    public Color getColor(Area area) {
+    public Color getColor(DateArea area) {
         return colors.get(area);
     }
 
@@ -1125,7 +1125,7 @@ public class DatePickerSettings {
      * setColor, This sets a color for the specified area. Setting an area to null will restore the
      * default color for that area.
      */
-    public void setColor(Area area, Color color) {
+    public void setColor(DateArea area, Color color) {
         // If null was supplied, then use the default color.
         if (color == null) {
             color = area.defaultColor;

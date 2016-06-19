@@ -47,16 +47,24 @@ import javax.swing.border.MatteBorder;
  * the prefix "zDateTimePicker_".
  */
 public class TimePickerSettings {
- public enum Area {
+    /**
+     * TimeArea, These enumerations represent areas of the components whose color can be changed. These
+     * values are used with the setColor() function, to set the color of various areas of the
+     * TimePicker. The default color for each area is also defined here.
+     *
+     * Note: A default color of "null" means that the default color for that element is supplied by
+     * the swing component. 
+     */
+    public enum TimeArea {
         TimePickerTextValidTime(Color.black),
-        TimePickerTextInvalidTime(Color.black),
+        TimePickerTextInvalidTime(Color.red),
         TimePickerTextVetoedTime(Color.black),
-        TimePickerTextFieldBackgroundValidTime(Color.white),
-        TimePickerTextFieldBackgroundInvalidTime(Color.white),
-        TimePickerTextFieldBackgroundVetoedTime(Color.white),
-        TimePickerTextFieldBackgroundDisallowedEmptyTime(Color.pink);
+        TextFieldBackgroundValidTime(Color.white),
+        TextFieldBackgroundInvalidTime(Color.white),
+        TextFieldBackgroundVetoedTime(Color.white),
+        TextFieldBackgroundDisallowedEmptyTime(Color.pink);
         
-        Area(Color defaultColor) {
+        TimeArea(Color defaultColor) {
             this.defaultColor = defaultColor;
         }
         public Color defaultColor;
@@ -97,7 +105,7 @@ public class TimePickerSettings {
      * getColor() function. By default, this map is populated with a set of default colors. The
      * default colors for each area are defined the "AreaToColor" enum definition.
      */
-    private HashMap<TimePickerSettings.Area, Color> colors;
+    private HashMap<TimePickerSettings.TimeArea, Color> colors;
 
     /**
      * displayToggleTimeMenuButton, This controls whether or not the toggle menu button is displayed
@@ -299,8 +307,8 @@ public class TimePickerSettings {
      */
     public TimePickerSettings(Locale timeLocale) {
         // Add all the default colors to the colors map.
-        colors = new HashMap< Area, Color>();
-        for (Area area : Area.values()) {
+        colors = new HashMap< TimeArea, Color>();
+        for (TimeArea area : TimeArea.values()) {
             colors.put(area, area.defaultColor);
         }
         // Save the locale.
@@ -427,7 +435,7 @@ public class TimePickerSettings {
     /**
      * getColor, This returns the currently set color for the specified area.
      */
-    public Color getColor(Area area) {
+    public Color getColor(TimeArea area) {
         return colors.get(area);
     }
 
@@ -584,7 +592,7 @@ public class TimePickerSettings {
             zApplyAllowKeyboardEditing();
         }
     }
-    public void setColor(Area area, Color color) {
+    public void setColor(TimeArea area, Color color) {
         // If null was supplied, then use the default color.
         if (color == null) {
             color = area.defaultColor;
