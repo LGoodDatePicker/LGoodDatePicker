@@ -158,7 +158,7 @@ public class DatePickerSettings {
      * colors, This hash map holds the current color settings for different areas of the DatePicker
      * or CalendarPanel. These colors can be set with the setColor() function, or retrieved with the
      * getColor() function. By default, this map is populated with a set of default colors. The
-     * default colors for each area are defined the "AreaToColor" enum definition.
+     * default colors for each area are defined the "Area" enums.
      */
     private HashMap<DateArea, Color> colors;
 
