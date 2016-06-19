@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
@@ -46,7 +47,20 @@ import javax.swing.border.MatteBorder;
  * the prefix "zDateTimePicker_".
  */
 public class TimePickerSettings {
-
+ public enum Area {
+        TimePickerTextValidTime(Color.black),
+        TimePickerTextInvalidTime(Color.black),
+        TimePickerTextVetoedTime(Color.black),
+        TimePickerTextFieldBackgroundValidTime(Color.white),
+        TimePickerTextFieldBackgroundInvalidTime(Color.white),
+        TimePickerTextFieldBackgroundVetoedTime(Color.white),
+        TimePickerTextFieldBackgroundDisallowedEmptyTime(Color.pink);
+        
+        Area(Color defaultColor) {
+            this.defaultColor = defaultColor;
+        }
+        public Color defaultColor;
+    }
     /**
      * allowEmptyTimes, This indicates whether or not empty times are allowed in the time picker.
      * Empty times are also called "null times". The default value is true, which allows empty
@@ -76,25 +90,14 @@ public class TimePickerSettings {
      * default, a simple border is drawn.
      */
     public Border borderTimePopup;
-
+    
     /**
-     * colorTextInvalidTime, This is the text field text color for invalid times. The default color
-     * is red.
+     * colors, This hash map holds the current color settings for different areas of the TimePicker.
+     * These colors can be set with the setColor() function, or retrieved with the
+     * getColor() function. By default, this map is populated with a set of default colors. The
+     * default colors for each area are defined the "AreaToColor" enum definition.
      */
-    public Color colorTextInvalidTime = Color.red;
-
-    /**
-     * colorTextValidTime, This is the text field text color for valid times. The default color is
-     * black.
-     */
-    public Color colorTextValidTime = Color.black;
-
-    /**
-     * colorTextVetoedTime, This is the text field text color for vetoed times. The default color is
-     * black. Note: The default fontVetoedTime setting will draw a line (strikethrough) vetoed
-     * times.
-     */
-    public Color colorTextVetoedTime = Color.black;
+    private HashMap<TimePickerSettings.Area, Color> colors;
 
     /**
      * displayToggleTimeMenuButton, This controls whether or not the toggle menu button is displayed
@@ -417,6 +420,13 @@ public class TimePickerSettings {
     }
 
     /**
+     * getColor, This returns the currently set color for the specified area.
+     */
+    public Color getColor(Area area) {
+        return colors.get(area);
+    }
+
+    /**
      * getDisplaySpinnerButtons, Returns the value of this setting. See the "set" function for
      * setting information.
      */
@@ -567,6 +577,18 @@ public class TimePickerSettings {
         this.allowKeyboardEditing = allowKeyboardEditing;
         if (parent != null) {
             zApplyAllowKeyboardEditing();
+        }
+    }
+    public void setColor(Area area, Color color) {
+        // If null was supplied, then use the default color.
+        if (color == null) {
+            color = area.defaultColor;
+        }
+        // Save the color to the color map.
+        colors.put(area, color);
+        // Call any "updating functions" that are appropriate for the specified area.
+        if (parent != null) {
+            parent.zDrawTextFieldIndicators();
         }
     }
 

@@ -798,7 +798,7 @@ public class TimePicker
      * Possibilities list: DisabledComponent, ValidFullOrEmptyValue, UnparsableValue, VetoedValue,
      * DisallowedEmptyValue.
      */
-    private void zDrawTextFieldIndicators() {
+    void zDrawTextFieldIndicators() {
         if (!isEnabled()) {
             // (Possibility: DisabledComponent)
             // Note: The time should always be validated (as if the component lost focus), before
@@ -810,8 +810,8 @@ public class TimePicker
         }
         // Reset all atributes to normal before going further.
         // (Possibility: ValidFullOrEmptyValue)
-        timeTextField.setBackground(Color.white);
-        timeTextField.setForeground(settings.colorTextValidTime);
+        timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundValidTime));
+        timeTextField.setForeground(settings.getColor(TimePickerSettings.Area.TimePickerTextValidTime));
         timeTextField.setFont(settings.fontValidTime);
         // Get the text, and check to see if it is empty.
         String timeText = timeTextField.getText();
@@ -822,7 +822,7 @@ public class TimePicker
                 // (Possibility: ValidFullOrEmptyValue)
             } else {
                 // (Possibility: DisallowedEmptyValue)
-                timeTextField.setBackground(Color.pink);
+                timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundDisallowedEmptyTime));
             }
             return;
         }
@@ -831,7 +831,8 @@ public class TimePicker
                 settings.formatsForParsing, settings.getLocale());
         if (parsedTime == null) {
             // (Possibility: UnparsableValue)
-            timeTextField.setForeground(settings.colorTextInvalidTime);
+            timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundInvalidTime));
+            timeTextField.setForeground(settings.getColor(TimePickerSettings.Area.TimePickerTextInvalidTime));
             timeTextField.setFont(settings.fontInvalidTime);
             return;
         }
@@ -840,7 +841,8 @@ public class TimePicker
         boolean isTimeVetoed = InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime);
         if (isTimeVetoed) {
             // (Possibility: VetoedValue)
-            timeTextField.setForeground(settings.colorTextVetoedTime);
+            timeTextField.setBackground(settings.getColor(TimePickerSettings.Area.TimePickerTextFieldBackgroundVetoedTime));
+            timeTextField.setForeground(settings.getColor(TimePickerSettings.Area.TimePickerTextVetoedTime));
             timeTextField.setFont(settings.fontVetoedTime);
         }
     }
