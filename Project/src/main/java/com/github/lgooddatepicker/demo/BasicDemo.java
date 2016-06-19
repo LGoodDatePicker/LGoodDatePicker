@@ -86,7 +86,7 @@ public class BasicDemo extends JFrame {
 
         // Create a time picker with some custom settings.
         TimePickerSettings timeSettings = new TimePickerSettings();
-        timeSettings.colorTextValidTime = Color.blue;
+        timeSettings.setColor(TimePickerSettings.Area.TimePickerTextValidTime, Color.blue);
         timeSettings.initialTime = LocalTime.now();
         TimePicker timePicker2 = new TimePicker(timeSettings);
         // To display this picker, uncomment this line.
