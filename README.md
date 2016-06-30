@@ -30,6 +30,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * Supports other legacy and common data types, such as "java.util.Date".
 * Customizable visual elements.  
 (Including button icons, calendar size, fonts, colors, and the popup border.)
+* The pickers can optionally be added to the cells or columns of a JTable, using the supplied TableEditor classes.
 * The TimePicker GUI provides the time selection list, up/down arrow key usage, and optional spinner buttons. 
 * Automatic date and time validation on all components.
 * Optional highlight policies and veto policies.
