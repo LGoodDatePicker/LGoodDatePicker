@@ -66,6 +66,14 @@ public class TimePicker
         extends JPanel implements CustomPopup.CustomPopupCloseListener {
 
     /**
+     * enableArrowKeys, This determines if the arrow keys will be handled by this time picker. If
+     * this is true, then the up and down arrow keys can be used as spinner controls, and the right
+     * arrow will open the time picker menu. If this is false, then the arrow keys will not be
+     * handled. This is set to true by default.
+     */
+    private boolean enableArrowKeys = true;
+
+    /**
      * lastPopupCloseTime, This holds a timestamp that indicates when the popup menu was last
      * closed. This is used to implement a workaround for event behavior that was causing the time
      * picker class to erroneously re-open the menu when the user was clicking on the show menu
@@ -203,7 +211,7 @@ public class TimePicker
         // Draw the text field attributes, because they may not have been drawn if the initialTime
         // was null. (This is because the text would not have changed in that case.)
         zDrawTextFieldIndicators();
-        
+
         // Set an appropriate minimum width for the time picker text field.
         // This may use a default calculated minimum width, or a programmer supplied minimum width,
         // as specified in the time picker settings.
@@ -219,10 +227,13 @@ public class TimePicker
     }
 
     /**
-     * clear, This will clear the time picker text. This will also clear the last valid time.
+     * clear, This will clear the time picker text. If the time picker is set to allow empty times,
+     * then the last valid time will also be cleared. If the time picker is set to disallow empty
+     * times, then the last valid time will not be changed by this function.
      */
     public void clear() {
-        // Calling this function with null clears the time picker text and the last valid time.
+        // Calling this function with null clears the time picker text. 
+        // If empty times are allowed, this will also clear the last valid time.
         setTime(null);
     }
 
@@ -324,6 +335,14 @@ public class TimePicker
      */
     public JButton getComponentToggleTimeMenuButton() {
         return toggleTimeMenuButton;
+    }
+
+    /**
+     * getEnableArrowKeys, Returns the value of this setting. See the set function for additional
+     * information.
+     */
+    public boolean getEnableArrowKeys() {
+        return enableArrowKeys;
     }
 
     /**
@@ -539,6 +558,16 @@ public class TimePicker
     }
 
     /**
+     * setEnableArrowKeys, This sets the variable that determines if the arrow keys will be handled
+     * by this time picker. If this is set to true, then the up and down arrow keys can be used as
+     * spinner controls, and the right arrow will open the time picker menu. If this is set to
+     * false, then the arrow keys will not be handled. This is set to true by default.
+     */
+    public void setEnableArrowKeys(boolean enableArrowKeys) {
+        this.enableArrowKeys = enableArrowKeys;
+    }
+
+    /**
      * setEnabled, This enables or disables the time picker. When the time picker is enabled, times
      * can be selected by the user using any methods that are allowed by the current settings. When
      * the time picker is disabled, there is no way for the user to interact with the component.
@@ -705,7 +734,7 @@ public class TimePicker
             @Override
             public void keyPressed(KeyEvent e) {
                 // Handled the right arrow key, which opens the pop-up menu.
-                if (e.isActionKey() && e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                if (enableArrowKeys && e.isActionKey() && e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     e.consume();
                     openPopup();
                     if (popup != null) {
@@ -714,7 +743,7 @@ public class TimePicker
                 }
                 // Handled the up arrow key, which activates the spinner function to increase 
                 // the time value.
-                if (e.isActionKey() && e.getKeyCode() == KeyEvent.VK_UP) {
+                if (enableArrowKeys && e.isActionKey() && e.getKeyCode() == KeyEvent.VK_UP) {
                     e.consume();
                     if (upPressed || !isEnabled()) {
                         return;
@@ -728,7 +757,7 @@ public class TimePicker
                 }
                 // Handled the down arrow key, which activates the spinner function to decrease 
                 // the time value.
-                if (e.isActionKey() && e.getKeyCode() == KeyEvent.VK_DOWN) {
+                if (enableArrowKeys && e.isActionKey() && e.getKeyCode() == KeyEvent.VK_DOWN) {
                     e.consume();
                     if (downPressed || !isEnabled()) {
                         return;
@@ -794,12 +823,17 @@ public class TimePicker
 
     /**
      * zDrawTextFieldIndicators, This will draw the text field indicators, to indicate to the user
-     * the state of the text in the text field.
+     * the state of any text in the text field, including the validity of any time that has been
+     * typed. The text field indicators include the text field background color, foreground color,
+     * font color, and font.
      *
-     * Possibilities list: DisabledComponent, ValidFullOrEmptyValue, UnparsableValue, VetoedValue,
-     * DisallowedEmptyValue.
+     * Note: This function is called automatically by the time picker. Under most circumstances, the
+     * programmer will not need to call this function.
+     *
+     * List of possible text field states: DisabledComponent, ValidFullOrEmptyValue,
+     * UnparsableValue, VetoedValue, DisallowedEmptyValue.
      */
-    void zDrawTextFieldIndicators() {
+    public void zDrawTextFieldIndicators() {
         if (!isEnabled()) {
             // (Possibility: DisabledComponent)
             // Note: The time should always be validated (as if the component lost focus), before
@@ -938,6 +972,7 @@ public class TimePicker
                 TimeChangeEvent timeChangeEvent = new TimeChangeEvent(this, oldTime, newTime);
                 timeChangeListener.timeChanged(timeChangeEvent);
             }
+            firePropertyChange("time", oldTime, newTime);
         }
     }
 

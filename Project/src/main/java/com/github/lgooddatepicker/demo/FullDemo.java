@@ -687,7 +687,6 @@ public class FullDemo {
                 showIntroductionClicked(e);
             }
         });
-        // showIntro.addActionListener(e -> showIntroductionClicked(e));
         buttonPanel.add(showIntro);
         JButton setTwoWithY2K = new JButton("Set DatePicker Two with New Years Day 2000");
         setTwoWithY2K.addActionListener(new ActionListener() {
@@ -696,7 +695,6 @@ public class FullDemo {
                 setTwoWithY2KButtonClicked(e);
             }
         });
-        // setTwoWithY2K.addActionListener(e -> setTwoWithY2KButtonClicked(e));
         buttonPanel.add(setTwoWithY2K);
         JButton setDateOneWithTwo = new JButton("Set DatePicker One with the date in Two");
         setDateOneWithTwo.addActionListener(new ActionListener() {
@@ -705,7 +703,6 @@ public class FullDemo {
                 setOneWithTwoButtonClicked(e);
             }
         });
-        // setDateOneWithTwo.addActionListener(e -> setOneWithTwoButtonClicked(e));
         buttonPanel.add(setDateOneWithTwo);
         JButton setOneWithFeb31 = new JButton("Set Text in DatePicker One to Feb 31, 1950");
         setOneWithFeb31.addActionListener(new ActionListener() {
@@ -714,7 +711,6 @@ public class FullDemo {
                 setOneWithFeb31ButtonClicked(e);
             }
         });
-        // setOneWithFeb31.addActionListener(e -> setOneWithFeb31ButtonClicked(e));
         buttonPanel.add(setOneWithFeb31);
         JButton getOneAndShow = new JButton("Get and show the date in DatePicker One");
         getOneAndShow.addActionListener(new ActionListener() {
@@ -723,7 +719,6 @@ public class FullDemo {
                 getOneAndShowButtonClicked(e);
             }
         });
-        // getOneAndShow.addActionListener(e -> getOneAndShowButtonClicked(e));
         buttonPanel.add(getOneAndShow);
         JButton clearOneAndTwo = new JButton("Clear DatePickers One and Two");
         clearOneAndTwo.addActionListener(new ActionListener() {
@@ -732,7 +727,6 @@ public class FullDemo {
                 clearOneAndTwoButtonClicked(e);
             }
         });
-        // clearOneAndTwo.addActionListener(e -> clearOneAndTwoButtonClicked(e));
         buttonPanel.add(clearOneAndTwo);
         JButton toggleButton = new JButton("Toggle DatePicker One");
         toggleButton.addMouseListener(new MouseAdapter() {
@@ -749,7 +743,6 @@ public class FullDemo {
                 setTimeOneWithTimeTwoButtonClicked(e);
             }
         });
-        // setTimeOneWithTwo.addActionListener(e -> setTimeOneWithTimeTwoButtonClicked(e));
         buttonPanel.add(setTimeOneWithTwo);
         JButton timeToggleButton = new JButton("Toggle TimePicker One");
         timeToggleButton.addMouseListener(new MouseAdapter() {
@@ -759,6 +752,16 @@ public class FullDemo {
             }
         });
         buttonPanel.add(timeToggleButton);
+
+        // Add a button for showing the table editors demo.
+        JButton tableEditorsDemoButton = new JButton("Show Table Editors Demo");
+        tableEditorsDemoButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                showTableEditorsDemoButtonClicked();
+            }
+        });
+        buttonPanel.add(tableEditorsDemoButton);
 
         // Add a button for showing system information.
         JButton showSystemInformationButton = new JButton("JDK Versions");
@@ -848,6 +851,13 @@ public class FullDemo {
     }
 
     /**
+     * showTableEditorsDemoButtonClicked, This shows the table editors demo.
+     */
+    private static void showTableEditorsDemoButtonClicked() {
+        TableEditorsDemo.createAndShowTableDemoFrame();
+    }
+
+    /**
      * SampleDateChangeListener, A date change listener provides a way for a class to receive
      * notifications whenever the date has changed in a DatePicker.
      */
@@ -914,7 +924,7 @@ public class FullDemo {
         public void dateOrTimeChanged(DateTimeChangeEvent event) {
             // Report on the overall DateTimeChangeEvent.
             String messageStart = "\n\nThe LocalDateTime in " + dateTimePickerName + " has changed from: (";
-            String fullMessage = messageStart + event.getOldDateTime() + ") to (" + event.getNewDateTime() + ").";
+            String fullMessage = messageStart + event.getOldDateTimeStrict() + ") to (" + event.getNewDateTimeStrict() + ").";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {
                 panel.messageTextArea.setText("");
             }

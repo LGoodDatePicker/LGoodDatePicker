@@ -361,6 +361,36 @@ public class InternalUtilities {
     }
 
     /**
+     * safeSubstring, This is a version of the substring function which is guaranteed to never throw
+     * an exception. If the supplied string is null then this will return null. If the beginIndex or
+     * endIndexExclusive are out of range for the string, then the indexes will be compressed to fit
+     * within the bounds of the supplied string. If the beginIndex is greater than or equal to
+     * endIndexExclusive, then this will return an empty string.
+     */
+    static public String safeSubstring(String text, int beginIndex, int endIndexExclusive) {
+        if (text == null) {
+            return null;
+        }
+        int textLength = text.length();
+        if (beginIndex < 0) {
+            beginIndex = 0;
+        }
+        if (endIndexExclusive < 0) {
+            endIndexExclusive = 0;
+        }
+        if (endIndexExclusive > textLength) {
+            endIndexExclusive = textLength;
+        }
+        if (beginIndex > endIndexExclusive) {
+            beginIndex = endIndexExclusive;
+        }
+        if (beginIndex == endIndexExclusive) {
+            return "";
+        }
+        return text.substring(beginIndex, endIndexExclusive);
+    }
+
+    /**
      * getCompiledJavaVersionFromJavaClassFile, Given an input stream to a Java class file, this
      * will return the major or minor version of Java that was used to compile the file. In a Maven
      * POM file, this is known as the "target" version of Java that was used to compile the file.

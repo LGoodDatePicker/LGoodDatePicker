@@ -93,32 +93,33 @@ public class DateTimeChangeEvent {
     }
 
     /**
-     * getNewDateTime, This returns the new LocalDateTime value from the DateTimePicker, as it would
-     * be reported by getSource().getDateTime().
+     * getNewDateTimeStrict, This returns the new LocalDateTime value from the DateTimePicker, as it
+     * would be reported by getSource().getDateTimeStrict().
      *
-     * For additional details, see DateTimePicker.getDateTime().
+     * For additional details, see DateTimePicker.getDateTimeStrict().
      */
-    public LocalDateTime getNewDateTime() {
-        return getSource().getDateTime();
+    public LocalDateTime getNewDateTimeStrict() {
+        return getSource().getDateTimeStrict();
     }
 
     /**
-     * getNewDateTimeAndAllowEmptyTimes, This returns the new LocalDateTime value from the
-     * DateTimePicker, as it would be reported by getSource().getDateTimeAndAllowEmptyTimes().
+     * getNewDateTimePermissive, This returns the new LocalDateTime value from the DateTimePicker,
+     * as it would be reported by getSource().getDateTimePermissive().
      *
-     * For additional details, see DateTimePicker.getDateTimeAndAllowEmptyTimes().
+     * For additional details, see DateTimePicker.getDateTimePermissive().
      */
-    public LocalDateTime getNewDateTimeAndAllowEmptyTimes() {
-        return getSource().getDateTimeAndAllowEmptyTimes();
+    public LocalDateTime getNewDateTimePermissive() {
+        return getSource().getDateTimePermissive();
     }
 
     /**
-     * getOldDateTime, This returns the old LocalDateTime value from the DateTimePicker, as it would
-     * have been reported by getSource().getDateTime(), before this change event occurred.
+     * getOldDateTimeStrict, This returns the old LocalDateTime value from the DateTimePicker, as it
+     * would have been reported by getSource().getDateTimeStrict(), before this change event
+     * occurred.
      *
-     * For additional details, see DateTimePicker.getDateTime().
+     * For additional details, see DateTimePicker.getDateTimeStrict().
      */
-    public LocalDateTime getOldDateTime() {
+    public LocalDateTime getOldDateTimeStrict() {
         // If there is no change event, then the old value is the same as the current value.
         LocalDate oldDateValue = datePicker.getDate();
         LocalTime oldTimeValue = timePicker.getTime();
@@ -134,13 +135,13 @@ public class DateTimeChangeEvent {
     }
 
     /**
-     * getOldDateTimeAndAllowEmptyTimes, This returns the old LocalDateTime value from the
-     * DateTimePicker, as it would have been reported by
-     * getSource().getDateTimeAndAllowEmptyTimes(), before this change event occurred.
+     * getOldDateTimePermissive, This returns the old LocalDateTime value from the DateTimePicker,
+     * as it would have been reported by getSource().getDateTimePermissive(), before this change
+     * event occurred.
      *
-     * For additional details, see DateTimePicker.getDateTimeAndAllowEmptyTimes().
+     * For additional details, see DateTimePicker.getDateTimePermissive().
      */
-    public LocalDateTime getOldDateTimeAndAllowEmptyTimes() {
+    public LocalDateTime getOldDateTimePermissive() {
         // If there is no change event, then the old value is the same as the current value.
         LocalDate oldDateValue = datePicker.getDate();
         LocalTime oldTimeValue = timePicker.getTime();
