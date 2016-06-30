@@ -9,6 +9,7 @@
     <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
         <word>artifactId</word>
         <word>backport</word>
+        <word>datepicker</word>
         <word>dd</word>
         <word>deregistering</word>
         <word>enum</word>
@@ -22,9 +23,11 @@
         <word>picker's</word>
         <word>pm</word>
         <word>popup</word>
+        <word>renderers</word>
         <word>ru</word>
         <word>ss</word>
         <word>strikethrough</word>
+        <word>timepicker</word>
         <word>tooltip</word>
         <word>tooltips</word>
         <word>util</word>

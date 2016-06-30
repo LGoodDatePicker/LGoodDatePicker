@@ -49,8 +49,8 @@ public class DateTimePicker extends JPanel {
      * dateTimeChangeListeners, This holds a list of dateTimeChangeListeners that wish to be
      * notified whenever the last valid date or the last valid time has changed.
      */
-    private ArrayList<DateTimeChangeListener> dateTimeChangeListeners = 
-            new ArrayList<DateTimeChangeListener>();
+    private ArrayList<DateTimeChangeListener> dateTimeChangeListeners
+            = new ArrayList<DateTimeChangeListener>();
 
     /**
      * timePicker, This holds the time picker component of this DateTimePicker.
@@ -108,8 +108,10 @@ public class DateTimePicker extends JPanel {
     }
 
     /**
-     * clear, This will clear the date picker and the time picker. This will clear both the text and
-     * the last valid value of each component.
+     * clear, This will clear the date picker text and the time picker text. If the date picker and
+     * time picker are set to allow empty values, then the last valid date and last valid time will
+     * also be cleared. If the date picker, the time picker, or both are set to disallow empty
+     * values, then the last valid value for those components will not be changed by this function.
      */
     public void clear() {
         datePicker.clear();
@@ -132,37 +134,20 @@ public class DateTimePicker extends JPanel {
     }
 
     /**
-     * getDateTime, This attempts to retrieve the date from the date picker, and the time from the
-     * time picker, as a single LocalDateTime value.
-     *
-     * This will return null if the date picker or the time picker contains null (an empty value) as
-     * its last valid value.
-     *
-     * This can return null if "allowEmptyDates" is true for either the date or time picker. If
-     * allowEmptyDates is false for both components, then this can never return null.
-     *
-     * Note: If the automatic validation of the date picker text or the time picker text has not yet
-     * occurred, then the value returned from this function may not always match the current text.
-     *
-     * See the DatePicker.getDate() and TimePicker.getTime() functions for additional details.
+     * getDateTimeChangeListeners, This returns a new ArrayList, that contains any change listeners
+     * that are registered with this DateTimePicker.
      */
-    public LocalDateTime getDateTime() {
-        LocalDate dateValue = datePicker.getDate();
-        LocalTime timeValue = timePicker.getTime();
-        if (dateValue == null || timeValue == null) {
-            return null;
-        }
-        return LocalDateTime.of(dateValue, timeValue);
+    public ArrayList<DateTimeChangeListener> getDateTimeChangeListeners() {
+        return new ArrayList<DateTimeChangeListener>(dateTimeChangeListeners);
     }
 
     /**
-     * getDateTimeAndAllowEmptyTimes, This attempts to retrieve the date from the date picker, and
-     * the time from the time picker, as a single LocalDateTime value. If the time picker is empty,
-     * the time portion of the returned value will be set to LocalTime.MIDNIGHT.
+     * getDateTimePermissive, This attempts to retrieve the date from the date picker, and the time
+     * from the time picker, and return a single LocalDateTime value. If a date is present but the
+     * time picker contains null, then the time portion of the returned value will be set to
+     * LocalTime.MIDNIGHT.
      *
-     * If the date picker contains a valid date but the time picker contains null (is empty), then a
-     * LocalDateTime will be returned with its time components set to LocalTime.MIDNIGHT. If the
-     * date picker contains null, then this function will return null.
+     * This will return null if the date picker contains null (an empty value).
      *
      * This can return null if "allowEmptyDates" is true for the date picker. If allowEmptyDates is
      * false for the date picker, then this can never return null.
@@ -172,7 +157,7 @@ public class DateTimePicker extends JPanel {
      *
      * See the DatePicker.getDate() and TimePicker.getTime() functions for additional details.
      */
-    public LocalDateTime getDateTimeAndAllowEmptyTimes() {
+    public LocalDateTime getDateTimePermissive() {
         LocalDate dateValue = datePicker.getDate();
         LocalTime timeValue = timePicker.getTime();
         timeValue = (timeValue == null) ? LocalTime.MIDNIGHT : timeValue;
@@ -183,11 +168,27 @@ public class DateTimePicker extends JPanel {
     }
 
     /**
-     * getDateTimeChangeListeners, This returns a new ArrayList, that contains any change listeners
-     * that are registered with this DateTimePicker.
+     * getDateTimeStrict, This attempts to retrieve the date from the date picker, and the time from
+     * the time picker, and return a single LocalDateTime value. If a date is present but the time
+     * picker contains null, then this will return null.
+     *
+     * This will return null if the date picker contains null (an empty value).
+     *
+     * This can return null if "allowEmptyDates" is true for the date picker. If allowEmptyDates is
+     * false for the date picker, then this can never return null.
+     *
+     * Note: If the automatic validation of the date picker text or the time picker text has not yet
+     * occurred, then the value returned from this function may not always match the current text.
+     *
+     * See the DatePicker.getDate() and TimePicker.getTime() functions for additional details.
      */
-    public ArrayList<DateTimeChangeListener> getDateTimeChangeListeners() {
-        return new ArrayList<DateTimeChangeListener>(dateTimeChangeListeners);
+    public LocalDateTime getDateTimeStrict() {
+        LocalDate dateValue = datePicker.getDate();
+        LocalTime timeValue = timePicker.getTime();
+        if (dateValue == null || timeValue == null) {
+            return null;
+        }
+        return LocalDateTime.of(dateValue, timeValue);
     }
 
     /**
@@ -224,9 +225,14 @@ public class DateTimePicker extends JPanel {
     }
 
     /**
-     * setDateTime, This uses the supplied LocalDateTime to set the value of the DatePicker and the
-     * TimePicker. Values that are set from this function are processed through the same validation
-     * procedures as values that are typed by the user.
+     * setDateTimePermissive, This uses the supplied LocalDateTime to set the value of the
+     * DatePicker and the TimePicker. Values that are set from this function are processed through
+     * the same validation procedures as values that are typed by the user.
+     *
+     * Note: The functions setDateTimePermissive(LocalDateTime value) and
+     * setDateTimeStrict(LocalDateTime value) are identical (Only the "get" version of these
+     * functions is different), but both of these function names are included for API consistency
+     * and for compatibility with JavaBeans data binding functionality.
      *
      * More specifically:
      *
@@ -254,7 +260,7 @@ public class DateTimePicker extends JPanel {
      * For additional details about the automatic date and time validation, see:
      * DatePicker.setDate() and TimePicker.setTime().
      */
-    public void setDateTime(LocalDateTime optionalDateTime) {
+    public void setDateTimePermissive(LocalDateTime optionalDateTime) {
         if (optionalDateTime == null) {
             datePicker.setDate(null);
             timePicker.setTime(null);
@@ -262,6 +268,21 @@ public class DateTimePicker extends JPanel {
         }
         datePicker.setDate(optionalDateTime.toLocalDate());
         timePicker.setTime(optionalDateTime.toLocalTime());
+    }
+
+    /**
+     * setDateTimeStrict, This uses the supplied LocalDateTime to set the value of the DatePicker
+     * and the TimePicker.
+     *
+     * Note: The functions setDateTimePermissive(LocalDateTime value) and
+     * setDateTimeStrict(LocalDateTime value) are identical (Only the "get" version of these
+     * functions is different), but both of these function names are included for API consistency
+     * and for compatibility with JavaBeans data binding functionality.
+     *
+     * See setDateTimePermissive() for the full Javadocs for this function.
+     */
+    public void setDateTimeStrict(LocalDateTime optionalDateTime) {
+        setDateTimePermissive(optionalDateTime);
     }
 
     /**
@@ -291,10 +312,13 @@ public class DateTimePicker extends JPanel {
     }
 
     /**
-     * toString, This returns a string representation of the values which are currently stored in
-     * the date and time picker. If the last valid value of the date picker it is null, or the last
-     * valid value of the time picker is null, then this will return an empty string ("").
-     *
+     * toString, This method is identical to the function toStringPermissive().
+     * 
+     * This returns a string representation of the values which are currently
+     * stored in the date and time picker. If the last valid value of the date picker is null, then
+     * this will return an empty string (""). If the last valid value of the time picker is null,
+     * then that portion of the time will be replaced with LocalTime.MIDNIGHT.
+     * 
      * Javadocs from LocalDateTime.toString():
      *
      * Outputs this date-time as a {@code String}, such as {@code 2007-12-03T10:15:30}.
@@ -312,16 +336,14 @@ public class DateTimePicker extends JPanel {
      */
     @Override
     public String toString() {
-        LocalDateTime dateTime = getDateTime();
-        String text = (dateTime == null) ? "" : dateTime.toString();
-        return text;
+        return toStringPermissive();
     }
 
     /**
-     * toStringAndAllowEmptyTimes, This returns a string representation of the values which are
-     * currently stored in the date and time picker. If the last valid value of the date picker is
-     * null, then this will return an empty string (""). If the last valid value of the time picker
-     * is null, then that portion of the time will be replaced with LocalTime.MIDNIGHT.
+     * toStringPermissive, This returns a string representation of the values which are currently
+     * stored in the date and time picker. If the last valid value of the date picker is null, then
+     * this will return an empty string (""). If the last valid value of the time picker is null,
+     * then that portion of the time will be replaced with LocalTime.MIDNIGHT.
      *
      * Javadocs from LocalDateTime.toString():
      *
@@ -338,8 +360,34 @@ public class DateTimePicker extends JPanel {
      * The format used will be the shortest that outputs the full value of the time where the
      * omitted parts are implied to be zero.
      */
-    public String toStringAndAllowEmptyTimes() {
-        LocalDateTime dateTime = getDateTimeAndAllowEmptyTimes();
+    public String toStringPermissive() {
+        LocalDateTime dateTime = getDateTimePermissive();
+        String text = (dateTime == null) ? "" : dateTime.toString();
+        return text;
+    }
+
+    /**
+     * toStringStrict, This returns a string representation of the values which are currently stored
+     * in the date and time picker. If the last valid value of the date picker or the time picker is
+     * null, then this will return an empty string ("").
+     *
+     * Javadocs from LocalDateTime.toString():
+     *
+     * Outputs this date-time as a {@code String}, such as {@code 2007-12-03T10:15:30}.
+     * <p>
+     * The output will be one of the following ISO-8601 formats:
+     * <ul>
+     * <li>{@code uuuu-MM-dd'T'HH:mm}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSS}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSSSSS}</li>
+     * <li>{@code uuuu-MM-dd'T'HH:mm:ss.SSSSSSSSS}</li>
+     * </ul>
+     * The format used will be the shortest that outputs the full value of the time where the
+     * omitted parts are implied to be zero.
+     */
+    public String toStringStrict() {
+        LocalDateTime dateTime = getDateTimeStrict();
         String text = (dateTime == null) ? "" : dateTime.toString();
         return text;
     }
@@ -350,12 +398,12 @@ public class DateTimePicker extends JPanel {
      * initializes the components of the panel.
      */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
 
-		//======== this ========
-		setLayout(new FormLayout(
-			"pref:grow, 5px, pref:grow(0.6)",
-			"fill:pref:grow"));
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+        //======== this ========
+        setLayout(new FormLayout(
+                "pref:grow, 5px, pref:grow(0.6)",
+                "fill:pref:grow"));
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
@@ -413,6 +461,10 @@ public class DateTimePicker extends JPanel {
             for (DateTimeChangeListener listener : dateTimeChangeListeners) {
                 listener.dateOrTimeChanged(summaryEvent);
             }
+            firePropertyChange("dateTimePermissive", summaryEvent.getOldDateTimePermissive(),
+                    summaryEvent.getNewDateTimePermissive());
+            firePropertyChange("dateTimeStrict", summaryEvent.getOldDateTimeStrict(),
+                    summaryEvent.getNewDateTimeStrict());
         }
 
     }

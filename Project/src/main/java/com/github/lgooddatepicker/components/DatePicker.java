@@ -193,10 +193,13 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
-     * clear, This will clear the date picker text. This will also clear the last valid date.
+     * clear, This will clear the date picker text. If the date picker is set to allow empty dates,
+     * then the last valid date will also be cleared. If the date picker is set to disallow empty
+     * dates, then the last valid date will not be changed by this function.
      */
     public void clear() {
-        // Calling this function with null clears the date picker text and the last valid date.
+        // Calling this function with null clears the date picker text. 
+        // If empty dates are allowed, this will also clear the last valid date.
         setDate(null);
     }
 
@@ -759,6 +762,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 DateChangeEvent dateChangeEvent = new DateChangeEvent(this, oldDate, newDate);
                 dateChangeListener.dateChanged(dateChangeEvent);
             }
+            firePropertyChange("date", oldDate, newDate);
         }
     }
 
@@ -865,12 +869,17 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
 
     /**
      * zDrawTextFieldIndicators, This will draw the text field indicators, to indicate to the user
-     * the state of the text in the text field.
+     * the state of any text in the text field, including the validity of any date that has been
+     * typed. The text field indicators include the text field background color, foreground color,
+     * font color, and font.
      *
-     * Possibilities list: DisabledComponent, ValidFullOrEmptyValue, UnparsableValue, VetoedValue,
-     * DisallowedEmptyValue.
+     * Note: This function is called automatically by the date picker. Under most circumstances, the
+     * programmer will not need to call this function.
+     *
+     * List of possible text field states: DisabledComponent, ValidFullOrEmptyValue,
+     * UnparsableValue, VetoedValue, DisallowedEmptyValue.
      */
-    void zDrawTextFieldIndicators() {
+    public void zDrawTextFieldIndicators() {
         if (settings == null) {
             return;
         }

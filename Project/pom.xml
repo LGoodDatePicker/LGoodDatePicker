@@ -11,7 +11,7 @@ plugins in this file operate inside the "package" and "install" phases.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>7.4.4</version>
+    <version>7.5.1</version>
     <packaging>jar</packaging>
     <name>LGoodDatePicker</name>
     <description>Java Swing Date Picker. Easy to use, good looking, nice features, and 
@@ -64,11 +64,11 @@ plugins in this file operate inside the "package" and "install" phases.
         <!-- JSRThreeTen Backport. Uncomment this section when building for target Java 1.6. -->
         
         <!-- 
-   <dependency>
-       <groupId>org.threeten</groupId>
-       <artifactId>threetenbp</artifactId>
-       <version>1.3.1</version>
-   </dependency>
+       <dependency>
+           <groupId>org.threeten</groupId>
+           <artifactId>threetenbp</artifactId>
+           <version>1.3.1</version>
+       </dependency>
         -->
             
     </dependencies>
