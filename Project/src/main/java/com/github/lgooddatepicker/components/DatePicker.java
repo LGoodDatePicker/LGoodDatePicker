@@ -17,13 +17,17 @@ import com.github.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseLis
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.Window;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
 import java.util.Locale;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 /**
@@ -469,11 +473,13 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Create a new custom popup.
         popup = new CustomPopup(calendarPanel, SwingUtilities.getWindowAncestor(this),
                 this, settings.getBorderCalendarPopup());
-        int popupX = toggleCalendarButton.getLocationOnScreen().x
+        // Calculate the default origin for the popup.
+        int defaultX = toggleCalendarButton.getLocationOnScreen().x
                 + toggleCalendarButton.getBounds().width - popup.getBounds().width - 2;
-        int popupY = toggleCalendarButton.getLocationOnScreen().y
+        int defaultY = toggleCalendarButton.getLocationOnScreen().y
                 + toggleCalendarButton.getBounds().height + 2;
-        popup.setLocation(popupX, popupY);
+        // Set the popup location.
+        zSetPopupLocation(popup, defaultX, defaultY, this, dateTextField, 2, 6);
         // Show the popup and focus the calendar.
         popup.show();
         calendarPanel.requestFocus();
@@ -582,6 +588,33 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * setTextFieldToValidStateIfNeeded,
+     *
+     * This function will check the contents of the text field, and when needed, will set the text
+     * to match the "last valid date" in a standardized valid format. This function is automatically
+     * called whenever the date picker text field loses focus, or at other times when the text must
+     * be set to a valid state. It is not expected that the programmer will normally need to call
+     * this function directly.
+     *
+     * This function has two possible effects: 1) If the current text is already valid and is in the
+     * standard format, then this will do nothing. If the text is not valid, or if the text is not
+     * in the standard format, then: 2) This will replace the invalid text in the text field with a
+     * standard date field text string that matches the last valid date.
+     */
+    public void setTextFieldToValidStateIfNeeded() {
+        // Find out if the text field needs to be set to the last valid date or not.
+        // The text field needs to be set whenever its text does not match the standard format
+        // for the last valid date.
+        String standardDateString = zGetStandardTextFieldDateString(lastValidDate);
+        String textFieldString = dateTextField.getText();
+        if (!standardDateString.equals(textFieldString)) {
+            // Overwrite the text field with the last valid date.
+            // This will clear the text field if the last valid date is null.
+            setDate(lastValidDate);
+        }
+    }
+
+    /**
      * toString, This returns the last valid date in an ISO-8601 formatted string "uuuu-MM-dd". For
      * any CE years that are between 0 and 9999 inclusive, the output will have a fixed length of 10
      * characters. Years before or after that range will output longer strings. If the last valid
@@ -677,30 +710,39 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
-     * setTextFieldToValidStateIfNeeded,
-     *
-     * This function will check the contents of the text field, and when needed, will set the text
-     * to match the "last valid date" in a standardized valid format. This function is automatically
-     * called whenever the date picker text field loses focus, or at other times when the text must
-     * be set to a valid state. It is not expected that the programmer will normally need to call
-     * this function directly.
-     *
-     * This function has two possible effects: 1) If the current text is already valid and is in the
-     * standard format, then this will do nothing. If the text is not valid, or if the text is not
-     * in the standard format, then: 2) This will replace the invalid text in the text field with a
-     * standard date field text string that matches the last valid date.
+     * zSetPopupLocation, This calculates and sets the appropriate location for the popup windows,
+     * for both the DatePicker and the TimePicker.
      */
-    public void setTextFieldToValidStateIfNeeded() {
-        // Find out if the text field needs to be set to the last valid date or not.
-        // The text field needs to be set whenever its text does not match the standard format
-        // for the last valid date.
-        String standardDateString = zGetStandardTextFieldDateString(lastValidDate);
-        String textFieldString = dateTextField.getText();
-        if (!standardDateString.equals(textFieldString)) {
-            // Overwrite the text field with the last valid date.
-            // This will clear the text field if the last valid date is null.
-            setDate(lastValidDate);
+    static void zSetPopupLocation(CustomPopup popup, int defaultX, int defaultY, JComponent picker,
+            JComponent verticalFlipReference, int verticalFlipDistance, int bottomOverlapAllowed) {
+        // Gather some variables that we will need.
+        Window topWindowOrNull = SwingUtilities.getWindowAncestor(picker);
+        Rectangle workingArea = InternalUtilities.getScreenWorkingArea(topWindowOrNull);
+        int popupWidth = popup.getBounds().width;
+        int popupHeight = popup.getBounds().height;
+        // Calculate the default rectangle for the popup.
+        Rectangle popupRectangle = new Rectangle(defaultX, defaultY, popupWidth, popupHeight);
+        // If the popup rectangle is below the bottom of the working area, then move it upwards by 
+        // the minimum amount which will ensure that it will never cover the picker component.
+        if (popupRectangle.getMaxY() > (workingArea.getMaxY() + bottomOverlapAllowed)) {
+            popupRectangle.y = verticalFlipReference.getLocationOnScreen().y - popupHeight
+                    - verticalFlipDistance;
         }
+        // Confine the popup to be within the working area.
+        if (popupRectangle.getMaxX() > (workingArea.getMaxX())) {
+            popupRectangle.x -= (popupRectangle.getMaxX() - workingArea.getMaxX());
+        }
+        if (popupRectangle.getMaxY() > (workingArea.getMaxY() + bottomOverlapAllowed)) {
+            popupRectangle.y -= (popupRectangle.getMaxY() - workingArea.getMaxY());
+        }
+        if (popupRectangle.x < workingArea.x) {
+            popupRectangle.x += (workingArea.x - popupRectangle.x);
+        }
+        if (popupRectangle.y < workingArea.y) {
+            popupRectangle.y += (workingArea.y - popupRectangle.y);
+        }
+        // Set the location of the popup.
+        popup.setLocation(popupRectangle.x, popupRectangle.y);
     }
 
     /**
