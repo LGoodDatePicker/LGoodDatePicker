@@ -536,14 +536,11 @@ public class TimePicker
                 this, settings.borderTimePopup);
         popup.setMinimumSize(new Dimension(
                 this.getSize().width + 1, timeMenuPanel.getSize().height));
-        //   int popupX = toggleTimeMenuButton.getLocationOnScreen().x
-        //          + toggleTimeMenuButton.getBounds().width - popup.getBounds().width;
-        int popupX = timeTextField.getLocationOnScreen().x;
-        //     int popupY = toggleTimeMenuButton.getLocationOnScreen().y
-        //              + toggleTimeMenuButton.getBounds().height - 1;
-        int popupY = timeTextField.getLocationOnScreen().y
-                + timeTextField.getSize().height - 1;
-        popup.setLocation(popupX, popupY);
+        // Calculate the default origin for the popup.
+        int defaultX = timeTextField.getLocationOnScreen().x;
+        int defaultY = timeTextField.getLocationOnScreen().y + timeTextField.getSize().height - 1;
+        // Set the popup location. (Shared function.)
+        DatePicker.zSetPopupLocation(popup, defaultX, defaultY, this, timeTextField, -1, 1);
         // Show the popup and request focus.
         popup.show();
         timeMenuPanel.requestListFocus();
