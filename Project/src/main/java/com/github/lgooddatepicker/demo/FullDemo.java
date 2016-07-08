@@ -754,7 +754,7 @@ public class FullDemo {
         buttonPanel.add(timeToggleButton);
 
         // Add a button for showing the table editors demo.
-        JButton tableEditorsDemoButton = new JButton("Show Table Editors Demo");
+        JButton tableEditorsDemoButton = new JButton("Show TableEditorsDemo");
         tableEditorsDemoButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -762,6 +762,16 @@ public class FullDemo {
             }
         });
         buttonPanel.add(tableEditorsDemoButton);
+
+        // Add a button for showing the data binding demo.
+        JButton dataBindingDemoButton = new JButton("Show DataBindingDemo");
+        dataBindingDemoButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                new zExtra_DataBindingDemo().setVisible(true);
+            }
+        });
+        buttonPanel.add(dataBindingDemoButton);
 
         // Add a button for showing system information.
         JButton showSystemInformationButton = new JButton("JDK Versions");

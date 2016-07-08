@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Archiver-Version: Plexus Archiver
+Built-By: LGoodDatePicker
+Created-By: Apache Maven
+Main-Class: com.github.lgooddatepicker.demo.FullDemo
+
+Name: com.github.lgooddatepicker.components.DatePicker.class
+Java-Bean: True
+
+Name: com.github.lgooddatepicker.components.TimePicker.class
+Java-Bean: True
+
+Name: com.github.lgooddatepicker.components.DateTimePicker.class
+Java-Bean: True
+
+Name: com.github.lgooddatepicker.components.CalendarPanel.class
+Java-Bean: True
+
+

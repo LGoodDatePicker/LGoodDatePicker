@@ -1259,6 +1259,8 @@ public class CalendarPanel extends JPanel {
             calendarSelectionListener.selectionChanged(dateSelectionEvent);
         }
         drawCalendar(displayedYearMonth);
+        // Fire a change event for beans binding.
+        firePropertyChange("selectedDate", oldDate, newDate);
     }
 
     /**

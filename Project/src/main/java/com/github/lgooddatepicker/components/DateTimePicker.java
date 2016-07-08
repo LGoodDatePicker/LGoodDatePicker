@@ -313,12 +313,12 @@ public class DateTimePicker extends JPanel {
 
     /**
      * toString, This method is identical to the function toStringPermissive().
-     * 
-     * This returns a string representation of the values which are currently
-     * stored in the date and time picker. If the last valid value of the date picker is null, then
-     * this will return an empty string (""). If the last valid value of the time picker is null,
-     * then that portion of the time will be replaced with LocalTime.MIDNIGHT.
-     * 
+     *
+     * This returns a string representation of the values which are currently stored in the date and
+     * time picker. If the last valid value of the date picker is null, then this will return an
+     * empty string (""). If the last valid value of the time picker is null, then that portion of
+     * the time will be replaced with LocalTime.MIDNIGHT.
+     *
      * Javadocs from LocalDateTime.toString():
      *
      * Outputs this date-time as a {@code String}, such as {@code 2007-12-03T10:15:30}.
@@ -461,6 +461,7 @@ public class DateTimePicker extends JPanel {
             for (DateTimeChangeListener listener : dateTimeChangeListeners) {
                 listener.dateOrTimeChanged(summaryEvent);
             }
+            // Fire change events for beans binding.
             firePropertyChange("dateTimePermissive", summaryEvent.getOldDateTimePermissive(),
                     summaryEvent.getNewDateTimePermissive());
             firePropertyChange("dateTimeStrict", summaryEvent.getOldDateTimeStrict(),

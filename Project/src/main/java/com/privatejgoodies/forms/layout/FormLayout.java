@@ -937,7 +937,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * {@code false} (in other words to ignore the visibility) if you switch the component
      * visibility dynamically and want the container to retain the size and component positions.<p>
      *
-     * This container-wide default setting can be overridden per component using {@link #setHonorsVisibility(Component, Boolean)}
+     * This container-wide default setting can be overridden per component using
+     * {@link #setHonorsVisibility(Component, Boolean)}
      * .<p>
      *
      * Components are taken into account, if<ol>

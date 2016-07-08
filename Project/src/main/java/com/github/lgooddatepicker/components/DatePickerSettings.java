@@ -48,8 +48,8 @@ import java.util.HashMap;
 public class DatePickerSettings {
 
     /**
-     * DateArea, These enumerations represent areas of the components whose color can be changed. These
-     * values are used with the setColor() function, to set the color of various areas of the
+     * DateArea, These enumerations represent areas of the components whose color can be changed.
+     * These values are used with the setColor() function, to set the color of various areas of the
      * DatePicker or the CalendarPanel. The default color for each area is also defined here.
      *
      * Note: A default color of "null" means that the default color for that element is supplied by
@@ -205,8 +205,8 @@ public class DatePickerSettings {
 
     /**
      * fontInvalidDate, This is the text field text font for invalid dates. The default font is a
- normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See also:
- setColor() and "DateArea.DatePickerTextInvalidDate".)
+     * normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See also:
+     * setColor() and "DateArea.DatePickerTextInvalidDate".)
      */
     private Font fontInvalidDate;
 
@@ -1153,7 +1153,7 @@ public class DatePickerSettings {
      * setColorBackgroundWeekNumberLabels, This sets the calendar background color for the week
      * number labels. The default color is a medium sky blue.
      *
-     * @param applyMatchingDefaultBorders, This determines if this function will update the border
+     * @param applyMatchingDefaultBorders This determines if this function will update the border
      * label properties to show the appropriate default borders. The default border label settings
      * are different, depending on the "colorBackgroundWeekNumberLabels". If you have not customized
      * the border label properties, then it is recommended that you always set the
@@ -1174,7 +1174,7 @@ public class DatePickerSettings {
      * setColorBackgroundWeekdayLabels, This sets the calendar background color for the weekday
      * labels. The default color is a medium sky blue.
      *
-     * @param applyMatchingDefaultBorders, This determines if this function will update the border
+     * @param applyMatchingDefaultBorders This determines if this function will update the border
      * label properties to show the appropriate default borders. The default border label settings
      * are different, depending on the "colorBackgroundWeekdayLabels". If you have not customized
      * the border label properties, then it is recommended that you always set the
@@ -1794,10 +1794,10 @@ public class DatePickerSettings {
      * calendar will always match the weekNumberRules definition for first day of the week. This
      * behavior can be changed by modifying the setting "weekNumbersForceFirstDayOfWeekToMatch".
      *
-     * @param weekNumbersDisplayed, This determines whether the week numbers should be displayed on
+     * @param weekNumbersDisplayed This determines whether the week numbers should be displayed on
      * the calendar. They will be shown if this is true, or not shown that this is false
      *
-     * @param applyMatchingDefaultBorders, This determines if this function will update the border
+     * @param applyMatchingDefaultBorders This determines if this function will update the border
      * label properties to show the appropriate default borders. The default border label settings
      * are different, depending on "showWeekNumbers". If you have not customized the border label
      * properties, then it is recommended that you always set the "applyMatchingDefaultBorders"
