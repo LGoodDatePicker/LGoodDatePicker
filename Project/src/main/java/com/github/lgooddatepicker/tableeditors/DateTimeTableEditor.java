@@ -7,7 +7,9 @@ import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
+import java.util.EventObject;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -18,9 +20,9 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * DateTimeTableEditor, This class is used to add a DateTimePicker to cells (or entire columns)
- * of a Swing JTable or a SwingX JXTable component. This class can be used as a table cell "Editor",
- * or as a "Renderer", or as both editor and renderer.
+ * DateTimeTableEditor, This class is used to add a DateTimePicker to cells (or entire columns) of a
+ * Swing JTable or a SwingX JXTable component. This class can be used as a table cell "Editor", or
+ * as a "Renderer", or as both editor and renderer.
  *
  * <code>
  * // Usage example:
@@ -33,9 +35,9 @@ import javax.swing.table.TableCellRenderer;
  *
  * The DateTimePicker and Settings: The DateTimePicker and picker settings can be accessed with the
  * supplied getter functions. Note that most of the settings for the DateTimePicker are left at
- * their default values, but a few (mostly cosmetic) settings are changed in the
- * DateTimeTableEditor constructor. See the DateTimeTableEditor constructor implementation to
- * learn which default settings were changed.
+ * their default values, but a few (mostly cosmetic) settings are changed in the DateTimeTableEditor
+ * constructor. See the DateTimeTableEditor constructor implementation to learn which default
+ * settings were changed.
  *
  * Auto adjust row height: By default, this class will automatically adjust the minimum height of
  * all table rows. This occurs during the first time that any cell with an editor or render is
@@ -53,6 +55,26 @@ public class DateTimeTableEditor extends AbstractCellEditor
      * adjusted if it is below the minimum value needed to display the DateTimePicker component.
      */
     private boolean autoAdjustMinimumTableRowHeight = true;
+
+    /**
+     * clickCountToEdit, An integer specifying the number of clicks needed to start editing. Even if
+     * clickCountToEdit is defined as zero, it will not initiate until a click occurs.
+     */
+    public int clickCountToEdit = 1;
+
+    /**
+     * matchTableBackgroundColor, This indicates whether this table editor should set the picker
+     * text area background color to match the background color of the table. The default value is
+     * true.
+     */
+    private boolean matchTableBackgroundColor = true;
+
+    /**
+     * matchTableSelectionBackgroundColor, This indicates whether this table editor should set the
+     * picker text area background color to match the background color of the table selection (when
+     * selected). The default value is true.
+     */
+    private boolean matchTableSelectionBackgroundColor = true;
 
     /**
      * borderFocusedCell, This holds the border that is used when a cell has focus.
@@ -78,20 +100,23 @@ public class DateTimeTableEditor extends AbstractCellEditor
      * Constructor, default.
      */
     public DateTimeTableEditor() {
-        this(true);
+        this(true, true, true);
     }
 
     /**
      * Constructor, with options.
      *
-     * @param autoAdjustMinimumTableRowHeight, Set this to true to have this class automatically
+     * @param autoAdjustMinimumTableRowHeight Set this to true to have this class automatically
      * adjust the the minimum row height of all rows in the table, the first time that a
-     * DateTimeTableEditor is displayed. Set this to false to turn off any row height
-     * adjustments. The default value is true.
+     * DateTimeTableEditor is displayed. Set this to false to turn off any row height adjustments.
+     * The default value is true.
      */
-    public DateTimeTableEditor(boolean autoAdjustMinimumTableRowHeight) {
+    public DateTimeTableEditor(boolean autoAdjustMinimumTableRowHeight,
+            boolean matchTableBackgroundColor, boolean matchTableSelectionBackgroundColor) {
         // Save the constructor parameters.
         this.autoAdjustMinimumTableRowHeight = autoAdjustMinimumTableRowHeight;
+        this.matchTableBackgroundColor = matchTableBackgroundColor;
+        this.matchTableSelectionBackgroundColor = matchTableSelectionBackgroundColor;
         // Create the borders that should be used for focused and unfocused cells.
         JLabel exampleDefaultRenderer = (JLabel) new DefaultTableCellRenderer().
                 getTableCellRendererComponent(new JTable(), "", true, true, 0, 0);
@@ -187,18 +212,30 @@ public class DateTimeTableEditor extends AbstractCellEditor
         setCellEditorValue(value);
         // Draw the appropriate background colors to indicate a selected or unselected state.
         if (isSelected) {
-            Color selectionBackground = table.getSelectionBackground();
-            dateTimePicker.setBackground(selectionBackground);
-            dateTimePicker.datePicker.setBackground(selectionBackground);
-            dateTimePicker.timePicker.setBackground(selectionBackground);
-            dateTimePicker.datePicker.getComponentDateTextField().setBackground(selectionBackground);
-            dateTimePicker.timePicker.getComponentTimeTextField().setBackground(selectionBackground);
-        } else {
-            dateTimePicker.setBackground(Color.white);
-            dateTimePicker.datePicker.setBackground(Color.white);
-            dateTimePicker.timePicker.setBackground(Color.white);
-            dateTimePicker.datePicker.zDrawTextFieldIndicators();
-            dateTimePicker.timePicker.zDrawTextFieldIndicators();
+            if (matchTableSelectionBackgroundColor) {
+                Color selectionBackground = table.getSelectionBackground();
+                dateTimePicker.setBackground(selectionBackground);
+                dateTimePicker.datePicker.setBackground(selectionBackground);
+                dateTimePicker.timePicker.setBackground(selectionBackground);
+                dateTimePicker.datePicker.getComponentDateTextField().setBackground(selectionBackground);
+                dateTimePicker.timePicker.getComponentTimeTextField().setBackground(selectionBackground);
+            } else {
+                dateTimePicker.datePicker.zDrawTextFieldIndicators();
+                dateTimePicker.timePicker.zDrawTextFieldIndicators();
+            }
+        }
+        if (!isSelected) {
+            if (matchTableBackgroundColor) {
+                Color tableBackground = table.getBackground();
+                dateTimePicker.setBackground(tableBackground);
+                dateTimePicker.datePicker.setBackground(tableBackground);
+                dateTimePicker.timePicker.setBackground(tableBackground);
+                dateTimePicker.datePicker.getComponentDateTextField().setBackground(tableBackground);
+                dateTimePicker.timePicker.getComponentTimeTextField().setBackground(tableBackground);
+            } else {
+                dateTimePicker.datePicker.zDrawTextFieldIndicators();
+                dateTimePicker.timePicker.zDrawTextFieldIndicators();
+            }
         }
         // Draw the appropriate borders to indicate a focused or unfocused state.
         if (hasFocus) {
@@ -213,6 +250,18 @@ public class DateTimeTableEditor extends AbstractCellEditor
         dateTimePicker.timePicker.getComponentTimeTextField().setScrollOffset(0);
         // Return the DateTimePicker component.
         return dateTimePicker;
+    }
+
+    /**
+     * isCellEditable, Returns true if anEvent is not a MouseEvent. Otherwise, it returns true if
+     * the necessary number of clicks have occurred, and returns false otherwise.
+     */
+    @Override
+    public boolean isCellEditable(EventObject anEvent) {
+        if (anEvent instanceof MouseEvent) {
+            return ((MouseEvent) anEvent).getClickCount() >= clickCountToEdit;
+        }
+        return true;
     }
 
     /**

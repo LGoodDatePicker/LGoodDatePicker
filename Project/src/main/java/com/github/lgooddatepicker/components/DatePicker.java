@@ -27,7 +27,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
 
 /**
@@ -804,6 +803,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 DateChangeEvent dateChangeEvent = new DateChangeEvent(this, oldDate, newDate);
                 dateChangeListener.dateChanged(dateChangeEvent);
             }
+            // Fire a change event for beans binding.
             firePropertyChange("date", oldDate, newDate);
         }
     }
@@ -855,6 +855,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Draw the date status indications for the user.
         zDrawTextFieldIndicators();
+        // Fire a change event for beans binding.
+        firePropertyChange("text", null, dateTextField.getText());
     }
 
     /**

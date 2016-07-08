@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.tableeditors.DateTableEditor;
 import com.github.lgooddatepicker.tableeditors.DateTimeTableEditor;
 import com.github.lgooddatepicker.tableeditors.TimeTableEditor;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.time.LocalDate;
@@ -51,21 +52,46 @@ public class TableEditorsDemo extends JPanel {
         // Use a grid layout for the panel.
         super(new GridLayout(1, 0));
 
+        // This decides how many clicks are required to edit a cell in the table editors demo.
+        // (Set this to 1 or 2 clicks, as desired.)
+        int clickCountToEdit = 1;
+
         // Create the table and the scroll pane.
         JTable table = new JTable(new DemoTableModel());
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane);
 
-        // Add table editors and renderers for the LocalDate, LocalTime, and LocalDateTime types.
-        table.setDefaultEditor(LocalDate.class, new DateTableEditor());
-        table.setDefaultRenderer(LocalDate.class, new DateTableEditor());
-        table.setDefaultEditor(LocalTime.class, new TimeTableEditor());
-        table.setDefaultRenderer(LocalTime.class, new TimeTableEditor());
-        table.setDefaultEditor(LocalDateTime.class, new DateTimeTableEditor());
-        table.setDefaultRenderer(LocalDateTime.class, new DateTimeTableEditor());
+        // Set a background color for the table. Note that by default, the picker table editors 
+        // will match the table background color. This is expected behavior for table editors.
+        // Color matching can be turned off if desired, from the table editor class constructors.
+        table.setBackground(new Color(190, 240, 255));
 
-        // Set the default editors for each column, by looking at the most common data types 
-        // found in the columns.
+        // Set all the default table editors to start with the desired number of clicks.
+        // The default table editors are the ones supplied by the JTable class.
+        InternalUtilities.setDefaultTableEditorsClicks(table, clickCountToEdit);
+
+        // Add table renderers and editors for the LocalDate, LocalTime, and LocalDateTime types.
+        //
+        // Note: The editors and renders for each type should be separate instances of the 
+        // matching table editor class. Don't use the same instance as both a renderer and editor.
+        // If you did, it would be immediately obvious because the cells would not render properly.
+        table.setDefaultRenderer(LocalDate.class, new DateTableEditor());
+        DateTableEditor dateEdit = new DateTableEditor();
+        dateEdit.clickCountToEdit = clickCountToEdit;
+        table.setDefaultEditor(LocalDate.class, dateEdit);
+
+        table.setDefaultRenderer(LocalTime.class, new TimeTableEditor());
+        TimeTableEditor timeEdit = new TimeTableEditor();
+        timeEdit.clickCountToEdit = clickCountToEdit;
+        table.setDefaultEditor(LocalTime.class, timeEdit);
+
+        table.setDefaultRenderer(LocalDateTime.class, new DateTimeTableEditor());
+        DateTimeTableEditor dateTimeEdit = new DateTimeTableEditor();
+        dateTimeEdit.clickCountToEdit = clickCountToEdit;
+        table.setDefaultEditor(LocalDateTime.class, dateTimeEdit);
+
+        // Explicitly set the default editor instance (data type) for each column, by looking at 
+        // the most common data type found in each column.
         zSetAllColumnEditorsAndRenderers(table);
 
         // Set the width of the DateTime column to be a bit bigger than the rest.
@@ -81,8 +107,8 @@ public class TableEditorsDemo extends JPanel {
                 + InternalUtilities.getProjectVersionString());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TableEditorsDemo tableDemoPanel = new TableEditorsDemo();
-        tableDemoPanel.setOpaque(true);
         frame.setContentPane(tableDemoPanel);
+        tableDemoPanel.setOpaque(true);
 
         //Display the frame.
         frame.pack();
@@ -276,4 +302,5 @@ public class TableEditorsDemo extends JPanel {
             fireTableCellUpdated(rowIndex, columnIndex);
         }
     }
+
 }

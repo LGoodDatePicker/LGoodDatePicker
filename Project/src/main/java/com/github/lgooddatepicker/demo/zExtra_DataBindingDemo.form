@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.6" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabelRow2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="timePicker_r2_1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="timePicker_r2_2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jTextField_r2_1" min="-2" pref="100" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabelRow3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="dateTimePicker_r3_1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="dateTimePicker_r3_2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jTextField_r3_1" min="-2" pref="100" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jTextField_r3_2" min="-2" pref="100" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabelRow4" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="calendarPanel_r4_1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="calendarPanel_r4_2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="datePicker_r4_1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabelRow1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="datePicker_r1_1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="datePicker_r1_2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jTextField_r1_1" min="-2" pref="100" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabelRow1" min="-2" max="-2" attributes="0"/>
+                  <Component id="datePicker_r1_1" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextField_r1_1" min="-2" max="-2" attributes="0"/>
+                  <Component id="datePicker_r1_2" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabelRow2" min="-2" max="-2" attributes="0"/>
+                  <Component id="timePicker_r2_1" min="-2" max="-2" attributes="0"/>
+                  <Component id="timePicker_r2_2" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextField_r2_1" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabelRow3" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateTimePicker_r3_1" min="-2" max="-2" attributes="0"/>
+                  <Component id="dateTimePicker_r3_2" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="jTextField_r3_1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jTextField_r3_2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jLabelRow4" min="-2" max="-2" attributes="0"/>
+                  <Component id="datePicker_r4_1" min="-2" max="-2" attributes="0"/>
+                  <Component id="calendarPanel_r4_1" min="-2" max="-2" attributes="0"/>
+                  <Component id="calendarPanel_r4_2" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="76" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="com.github.lgooddatepicker.components.CalendarPanel" name="calendarPanel_r4_1">
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker_r2_1">
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker_r3_1">
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker_r1_1">
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField_r1_1">
+      <BindingProperties>
+        <BindingProperty name="text" source="datePicker_r1_1" sourcePath="${text}" target="jTextField_r1_1" targetPath="text" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField_r1_1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker_r1_2">
+      <BindingProperties>
+        <BindingProperty name="date" source="datePicker_r1_1" sourcePath="${date}" target="datePicker_r1_2" targetPath="date" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker_r2_2">
+      <BindingProperties>
+        <BindingProperty name="time" source="timePicker_r2_1" sourcePath="${time}" target="timePicker_r2_2" targetPath="time" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField_r2_1">
+      <BindingProperties>
+        <BindingProperty name="text" source="timePicker_r2_1" sourcePath="${text}" target="jTextField_r2_1" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+      </BindingProperties>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DateTimePicker" name="dateTimePicker_r3_2">
+      <BindingProperties>
+        <BindingProperty name="dateTimeStrict" source="dateTimePicker_r3_1" sourcePath="${dateTimePermissive}" target="dateTimePicker_r3_2" targetPath="dateTimeStrict" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.CalendarPanel" name="calendarPanel_r4_2">
+      <BindingProperties>
+        <BindingProperty name="selectedDate" source="calendarPanel_r4_1" sourcePath="${selectedDate}" target="calendarPanel_r4_2" targetPath="selectedDate" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="com.github.lgooddatepicker.components.DatePicker" name="datePicker_r4_1">
+      <BindingProperties>
+        <BindingProperty name="date" source="calendarPanel_r4_1" sourcePath="${selectedDate}" target="datePicker_r4_1" targetPath="date" updateStrategy="0" immediately="false"/>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField_r3_1">
+      <BindingProperties>
+        <BindingProperty name="text" source="dateTimePicker_r3_1" sourcePath="${datePicker.text}" target="jTextField_r3_1" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField_r3_2">
+      <BindingProperties>
+        <BindingProperty name="text" source="dateTimePicker_r3_1" sourcePath="${timePicker.text}" target="jTextField_r3_2" targetPath="text" updateStrategy="0" immediately="false">
+          <BindingParameter name="javax.swing.binding.ParameterKeys.TEXT_CHANGE_STRATEGY" value="javax.swing.binding.TextChangeStrategy.ON_TYPE"/>
+        </BindingProperty>
+      </BindingProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRow2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="TimePicker, bound row 2:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRow1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="DatePicker, bound row 1:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRow3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;DateTimePicker, bound row 3:&lt;br/&gt;(Fill both the Date and Time)&lt;/html&gt;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRow4">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CalendarPanel, bound row 4:"/>
+        <Property name="toolTipText" type="java.lang.String" value=""/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="14" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;The date and time pickers (and text fields) in each row are bound together with JavaBeans data binding.&lt;br/&gt;If you change the value of any one component, you will change the value for all the components in the row.&lt;/b&gt;&lt;/html&gt;"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
+            <CompoundBorder>
+              <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+                <LineBorder>
+                  <Color PropertyName="color" blue="cc" green="0" red="0" type="rgb"/>
+                </LineBorder>
+              </Border>
+              <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                <EmptyBorder bottom="3" left="5" right="5" top="3"/>
+              </Border>
+            </CompoundBorder>
+          </Border>
+        </Property>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

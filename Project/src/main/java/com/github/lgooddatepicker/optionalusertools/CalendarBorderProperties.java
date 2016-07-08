@@ -91,8 +91,7 @@ public class CalendarBorderProperties {
      * invisible, and setting a thickness of 1 or higher will make the border visible.
      */
     public Integer thicknessInPixels;
-    
-    
+
     /**
      * clone, This function creates and returns a deep copy of this CalendarBorderProperties
      * instance.

@@ -606,7 +606,7 @@ public class TimePickerSettings {
         }
         // Save the color to the color map.
         colors.put(area, color);
-        
+
         // Call any "updating functions" that are appropriate for the specified area.
         if (parent != null) {
             parent.zDrawTextFieldIndicators();

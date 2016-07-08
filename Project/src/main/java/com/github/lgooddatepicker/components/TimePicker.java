@@ -969,6 +969,7 @@ public class TimePicker
                 TimeChangeEvent timeChangeEvent = new TimeChangeEvent(this, oldTime, newTime);
                 timeChangeListener.timeChanged(timeChangeEvent);
             }
+            // Fire a change event for beans binding.
             firePropertyChange("time", oldTime, newTime);
         }
     }
@@ -1079,6 +1080,8 @@ public class TimePicker
         }
         // Draw the time status indications for the user.
         zDrawTextFieldIndicators();
+        // Fire the text change event for beans binding.
+        firePropertyChange("text", null, timeTextField.getText());
     }
 
     /**

@@ -41,7 +41,8 @@ import java.util.regex.Pattern;
 
 /**
  * An abstract class that specifies columns and rows in FormLayout by their default alignment, start
- * size and resizing behavior. API users will use the subclasses {@link ColumnSpec} and {@link RowSpec}
+ * size and resizing behavior. API users will use the subclasses {@link ColumnSpec} and
+ * {@link RowSpec}
  * .<p>
  *
  * Also implements the parser for encoded column and row specifications and provides parser

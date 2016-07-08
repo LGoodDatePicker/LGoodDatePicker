@@ -15,7 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  * TestUpdateHighlightPolicy, This class tests the library to see if a highlight policy can be
@@ -32,8 +31,7 @@ public class TestUpdateHighlightPolicy {
             public void run() {
                 try {
                     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                } catch (ClassNotFoundException | InstantiationException |
-                        IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                } catch (Exception e) {
                 }
                 createUI();
             }

@@ -56,8 +56,8 @@ public class TranslationSource {
         }
         if (translationResources == null) {
             throw new RuntimeException("TranslationSource.initializePropertiesIfNeeded()"
-                    + "Could not load TranslationResources.properties file.\n" +
-                    "The exception follows:\n"+ lastException);
+                    + "Could not load TranslationResources.properties file.\n"
+                    + "The exception follows:\n" + lastException);
         }
     }
 

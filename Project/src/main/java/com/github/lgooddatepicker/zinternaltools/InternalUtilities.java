@@ -27,6 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JTable;
+import javax.swing.UIDefaults;
+import javax.swing.table.TableCellEditor;
 
 /**
  * InternalUtilities, This class contains static functions that are used by the date picker or the
@@ -501,6 +505,31 @@ public class InternalUtilities {
                 return "Java 8";
             default:
                 return "Could not find version string for major version: " + majorVersion;
+        }
+    }
+
+    /**
+     * setDefaultTableEditorsClicks, This sets the number of clicks required to start the default
+     * table editors in the supplied table. Typically you would set the table editors to start after
+     * 1 click or 2 clicks, as desired.
+     *
+     * The default table editors of the table editors that are supplied by the JTable class, for
+     * Objects, Numbers, and Booleans. Note, the editor which is used to edit Objects, is the same
+     * editor used for editing Strings.
+     */
+    public static void setDefaultTableEditorsClicks(JTable table, int clickCountToStart) {
+        TableCellEditor editor;
+        editor = table.getDefaultEditor(Object.class);
+        if (editor instanceof DefaultCellEditor) {
+            ((DefaultCellEditor) editor).setClickCountToStart(clickCountToStart);
+        }
+        editor = table.getDefaultEditor(Number.class);
+        if (editor instanceof DefaultCellEditor) {
+            ((DefaultCellEditor) editor).setClickCountToStart(clickCountToStart);
+        }
+        editor = table.getDefaultEditor(Boolean.class);
+        if (editor instanceof DefaultCellEditor) {
+            ((DefaultCellEditor) editor).setClickCountToStart(clickCountToStart);
         }
     }
 
