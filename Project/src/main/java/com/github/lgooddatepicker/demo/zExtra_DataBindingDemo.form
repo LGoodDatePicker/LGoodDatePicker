@@ -197,9 +197,6 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial" size="14" style="1"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;b&gt;The date and time pickers (and text fields) in each row are bound together with JavaBeans data binding.&lt;br/&gt;If you change the value of any one component, you will change the value for all the components in the row.&lt;/b&gt;&lt;/html&gt;"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
@@ -214,6 +211,9 @@
               </Border>
             </CompoundBorder>
           </Border>
+        </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="14" style="1"/>
         </Property>
       </Properties>
     </Component>
