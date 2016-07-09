@@ -180,12 +180,4 @@ public class DatePickerBeanInfo extends SimpleBeanInfo {
         return zDefaultEventIndex;
     }
 
-    /**
-     * main, This can be used to test or debug the initialization of this class.
-     */
-    public static void main(String args[]) {
-        CalendarPanelBeanInfo calendarPanelBeanInfo = new CalendarPanelBeanInfo();
-        System.out.println(calendarPanelBeanInfo.getClass().getName() + " was initialized.");
-    }
-
 }
