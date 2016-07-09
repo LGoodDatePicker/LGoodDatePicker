@@ -1,212 +1,191 @@
 package com.github.lgooddatepicker.components;
 
-import java.beans.*;
+import java.beans.BeanDescriptor;
+import java.beans.BeanInfo;
+import java.beans.EventSetDescriptor;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.MethodDescriptor;
+import java.beans.PropertyDescriptor;
+import java.beans.SimpleBeanInfo;
+import java.awt.Image;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import static java.beans.BeanInfo.ICON_COLOR_16x16;
+import static java.beans.BeanInfo.ICON_COLOR_32x32;
+import static java.beans.BeanInfo.ICON_MONO_16x16;
+import static java.beans.BeanInfo.ICON_MONO_32x32;
+import com.github.lgooddatepicker.zinternaltools.Pair;
 
+/**
+ * TimePickerBeanInfo, This class returns JavaBean information for the matching bean class.
+ *
+ * The class methods will return default BeanInfo Introspector information for properties, methods,
+ * and events, plus any customizations that are applied on top of the default Introspector data set.
+ */
 public class TimePickerBeanInfo extends SimpleBeanInfo {
 
-    // Bean descriptor//GEN-FIRST:BeanDescriptor
-    /*lazy BeanDescriptor*/
-    private static BeanDescriptor getBdescriptor(){
-        BeanDescriptor beanDescriptor = new BeanDescriptor  ( com.github.lgooddatepicker.components.TimePicker.class , null ); // NOI18N//GEN-HEADEREND:BeanDescriptor
-        // Here you can add code for customizing the BeanDescriptor.
-
-        return beanDescriptor;     }//GEN-LAST:BeanDescriptor
-
-
-    // Property identifiers//GEN-FIRST:Properties
-    private static final int PROPERTY_text = 0;
-    private static final int PROPERTY_time = 1;
-
-    // Property array 
-    /*lazy PropertyDescriptor*/
-    private static PropertyDescriptor[] getPdescriptor(){
-        PropertyDescriptor[] properties = new PropertyDescriptor[2];
-    
-        try {
-            properties[PROPERTY_text] = new PropertyDescriptor ( "text", com.github.lgooddatepicker.components.TimePicker.class, "getText", "setText" ); // NOI18N
-            properties[PROPERTY_text].setPreferred ( true );
-            properties[PROPERTY_time] = new PropertyDescriptor ( "time", com.github.lgooddatepicker.components.TimePicker.class, "getTime", "setTime" ); // NOI18N
-            properties[PROPERTY_time].setPreferred ( true );
-        }
-        catch(IntrospectionException e) {
-            e.printStackTrace();
-        }//GEN-HEADEREND:Properties
-        // Here you can add code for customizing the properties array.
-
-        return properties;     }//GEN-LAST:Properties
-
-    // EventSet identifiers//GEN-FIRST:Events
-
-    // EventSet array
-    /*lazy EventSetDescriptor*/
-    private static EventSetDescriptor[] getEdescriptor(){
-        EventSetDescriptor[] eventSets = new EventSetDescriptor[0];//GEN-HEADEREND:Events
-        // Here you can add code for customizing the event sets array.
-
-        return eventSets;     }//GEN-LAST:Events
-
-    // Method identifiers//GEN-FIRST:Methods
-
-    // Method array 
-    /*lazy MethodDescriptor*/
-    private static MethodDescriptor[] getMdescriptor(){
-        MethodDescriptor[] methods = new MethodDescriptor[0];//GEN-HEADEREND:Methods
-        // Here you can add code for customizing the methods array.
-
-        return methods;     }//GEN-LAST:Methods
-
-    private static java.awt.Image iconColor16 = null;//GEN-BEGIN:IconsDef
-    private static java.awt.Image iconColor32 = null;
-    private static java.awt.Image iconMono16 = null;
-    private static java.awt.Image iconMono32 = null;//GEN-END:IconsDef
-    private static String iconNameC16 = "/images/TimePickerIcon 16x16.png";//GEN-BEGIN:Icons
-    private static String iconNameC32 = "/images/TimePickerIcon 32x32.png";
-    private static String iconNameM16 = "/images/TimePickerIcon 16x16.png";
-    private static String iconNameM32 = "/images/TimePickerIcon 32x32.png";//GEN-END:Icons
-
-    private static final int defaultPropertyIndex = -1;//GEN-BEGIN:Idx
-    private static final int defaultEventIndex = -1;//GEN-END:Idx
-
-
-//GEN-FIRST:Superclass
-    // Here you can add code for customizing the Superclass BeanInfo.
-
-//GEN-LAST:Superclass
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // Start: Custom settings.
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * Gets the bean's <code>BeanDescriptor</code>s.
-     *
-     * @return BeanDescriptor describing the editable properties of this bean. May return null if
-     * the information should be obtained by automatic analysis.
+     * iconInformation, This holds all the information for the image icons. The map key is the
+     * BeanInfo icon type. The pair string is the path to the matching icon resource. The pair image
+     * will hold the matching icon image, if it has been loaded. (The image will be null until the
+     * first time it is loaded.)
+     */
+    private static HashMap<Integer, Pair<String, Image>> iconInformation
+            = new HashMap<Integer, Pair<String, Image>>() {
+        {
+            put(ICON_MONO_16x16, new Pair("/images/TimePickerIcon 16x16.png", null));
+            put(ICON_COLOR_16x16, new Pair("/images/TimePickerIcon 16x16.png", null));
+            put(ICON_MONO_32x32, new Pair("/images/TimePickerIcon 32x32.png", null));
+            put(ICON_COLOR_32x32, new Pair("/images/TimePickerIcon 32x32.png", null));
+        }
+    };
+
+    /**
+     * preferredProperties, This lists all the properties that should be marked as preferred, as
+     * lowercase strings. Any properties that are not in this list, will be marked as "not
+     * preferred". (All of the defaults for preferred properties are overwritten.)
+     */
+    private static HashSet<String> preferredProperties = new HashSet<String>(Arrays.asList(
+            "time", "text"));
+
+    /**
+     * propertyDescriptions, These are the descriptions to add to the properties. The key is the
+     * property name in all lowercase. The value is the property description.
+     */
+    private static HashMap<String, String> propertyDescriptions = new HashMap<String, String>() {
+        {
+            put("time", "The last valid time.");
+            put("text", "The time picker text.");
+        }
+    };
+
+    /**
+     * targetClass, This is the class for which we are providing the BeanInfo.
+     */
+    private static Class targetClass = TimePicker.class;
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    // End: Custom settings.
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * zDefaultEventIndex, This holds the BeanInfo defaultEventIndex. This is initialized when the
+     * class is first loaded, and not changed afterwards.
+     */
+    private static int zDefaultEventIndex = -1;
+
+    /**
+     * zDefaultPropertyIndex, This holds the BeanInfo defaultPropertyIndex. This is initialized when
+     * the class is first loaded, and not changed afterwards.
+     */
+    private static int zDefaultPropertyIndex = -1;
+
+    /**
+     * zPropertyDescriptorArray, This holds the array of BeanInfo property descriptors. This is
+     * initialized when the class is first loaded, and not changed afterwards.
+     */
+    static private PropertyDescriptor[] zPropertyDescriptorArray;
+
+    /**
+     * Static Initializer, This code is run when the class is first accessed or instantiated. This
+     * initializes all the needed BeanInfo arrays.
+     */
+    static {
+        try {
+            BeanInfo info = Introspector.getBeanInfo(targetClass);
+            zPropertyDescriptorArray = info.getPropertyDescriptors();
+        } catch (IntrospectionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
+        for (PropertyDescriptor propertyDescriptor : zPropertyDescriptorArray) {
+            String propertyName = propertyDescriptor.getName().toLowerCase();
+            propertyDescriptor.setPreferred(preferredProperties.contains(propertyName));
+            if (propertyDescriptions.containsKey(propertyName)) {
+                propertyDescriptor.setShortDescription(propertyDescriptions.get(propertyName));
+            }
+        }
+    }
+
+    /**
+     * getIcon, Returns the requested BeanInfo icon type, or null if an icon does not exist or
+     * cannot be retrieved.
+     */
+    @Override
+    public Image getIcon(int iconType) {
+        Pair<String, Image> pair = iconInformation.get(iconType);
+        String imagePath = pair.first;
+        Image imageOrNull = pair.second;
+        if (imageOrNull == null) {
+            imageOrNull = loadImage(imagePath);
+        }
+        return imageOrNull;
+    }
+
+    /**
+     * getBeanDescriptor, Returns the BeanInfo BeanDescriptor, or null to use automatic
+     * introspection.
      */
     @Override
     public BeanDescriptor getBeanDescriptor() {
-        return getBdescriptor();
+        return null;
     }
 
     /**
-     * Gets the bean's <code>PropertyDescriptor</code>s.
-     *
-     * @return An array of PropertyDescriptors describing the editable properties supported by this
-     * bean. May return null if the information should be obtained by automatic analysis.
-     * <p>
-     * If a property is indexed, then its entry in the result array will belong to the
-     * IndexedPropertyDescriptor subclass of PropertyDescriptor. A client of getPropertyDescriptors
-     * can use "instanceof" to check if a given PropertyDescriptor is an IndexedPropertyDescriptor.
+     * getPropertyDescriptors, Returns the BeanInfo PropertyDescriptor array, or null to use
+     * automatic introspection. Each array element may be a PropertyDescriptor, or the
+     * IndexedPropertyDescriptor subclass of PropertyDescriptor.
      */
     @Override
     public PropertyDescriptor[] getPropertyDescriptors() {
-        return getPdescriptor();
+        return zPropertyDescriptorArray;
     }
 
     /**
-     * Gets the bean's <code>EventSetDescriptor</code>s.
-     *
-     * @return An array of EventSetDescriptors describing the kinds of events fired by this bean.
-     * May return null if the information should be obtained by automatic analysis.
+     * getEventSetDescriptors, Returns the BeanInfo EventSetDescriptor array, or null to use
+     * automatic introspection.
      */
     @Override
     public EventSetDescriptor[] getEventSetDescriptors() {
-        return getEdescriptor();
+        return null;
     }
 
     /**
-     * Gets the bean's <code>MethodDescriptor</code>s.
-     *
-     * @return An array of MethodDescriptors describing the methods implemented by this bean. May
-     * return null if the information should be obtained by automatic analysis.
+     * getMethodDescriptors, Returns the BeanInfo MethodDescriptor array, or null to use automatic
+     * introspection.
      */
     @Override
     public MethodDescriptor[] getMethodDescriptors() {
-        return getMdescriptor();
+        return null;
     }
 
     /**
-     * A bean may have a "default" property that is the property that will mostly commonly be
-     * initially chosen for update by human's who are customizing the bean.
-     *
-     * @return Index of default property in the PropertyDescriptor array returned by
-     * getPropertyDescriptors.
-     * <P>
-     * Returns -1 if there is no default property.
+     * getDefaultPropertyIndex, Returns the BeanInfo defaultPropertyIndex, or -1 if there is no
+     * default property.
      */
     @Override
     public int getDefaultPropertyIndex() {
-        return defaultPropertyIndex;
+        return zDefaultPropertyIndex;
     }
 
     /**
-     * A bean may have a "default" event that is the event that will mostly commonly be used by
-     * human's when using the bean.
-     *
-     * @return Index of default event in the EventSetDescriptor array returned by
-     * getEventSetDescriptors.
-     * <P>
-     * Returns -1 if there is no default event.
+     * getDefaultEventIndex, Returns the BeanInfo defaultEventIndex, or -1 if there is no default
+     * property.
      */
     @Override
     public int getDefaultEventIndex() {
-        return defaultEventIndex;
+        return zDefaultEventIndex;
     }
 
     /**
-     * This method returns an image object that can be used to represent the bean in toolboxes,
-     * toolbars, etc. Icon images will typically be GIFs, but may in future include other formats.
-     * <p>
-     * Beans aren't required to provide icons and may return null from this method.
-     * <p>
-     * There are four possible flavors of icons (16x16 color, 32x32 color, 16x16 mono, 32x32 mono).
-     * If a bean choses to only support a single icon we recommend supporting 16x16 color.
-     * <p>
-     * We recommend that icons have a "transparent" background so they can be rendered onto an
-     * existing background.
-     *
-     * @param iconKind The kind of icon requested. This should be one of the constant values
-     * ICON_COLOR_16x16, ICON_COLOR_32x32, ICON_MONO_16x16, or ICON_MONO_32x32.
-     * @return An image object representing the requested icon. May return null if no suitable icon
-     * is available.
+     * main, This can be used to test or debug the initialization of this class.
      */
-    @Override
-    public java.awt.Image getIcon(int iconKind) {
-        switch (iconKind) {
-            case ICON_COLOR_16x16:
-                if (iconNameC16 == null) {
-                    return null;
-                } else {
-                    if (iconColor16 == null) {
-                        iconColor16 = loadImage(iconNameC16);
-                    }
-                    return iconColor16;
-                }
-            case ICON_COLOR_32x32:
-                if (iconNameC32 == null) {
-                    return null;
-                } else {
-                    if (iconColor32 == null) {
-                        iconColor32 = loadImage(iconNameC32);
-                    }
-                    return iconColor32;
-                }
-            case ICON_MONO_16x16:
-                if (iconNameM16 == null) {
-                    return null;
-                } else {
-                    if (iconMono16 == null) {
-                        iconMono16 = loadImage(iconNameM16);
-                    }
-                    return iconMono16;
-                }
-            case ICON_MONO_32x32:
-                if (iconNameM32 == null) {
-                    return null;
-                } else {
-                    if (iconMono32 == null) {
-                        iconMono32 = loadImage(iconNameM32);
-                    }
-                    return iconMono32;
-                }
-            default:
-                return null;
-        }
+    public static void main(String args[]) {
+        CalendarPanelBeanInfo calendarPanelBeanInfo = new CalendarPanelBeanInfo();
+        System.out.println(calendarPanelBeanInfo.getClass().getName() + " was initialized.");
     }
-    
+
 }
