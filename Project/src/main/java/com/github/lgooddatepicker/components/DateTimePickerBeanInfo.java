@@ -119,7 +119,7 @@ public class DateTimePickerBeanInfo extends SimpleBeanInfo {
         Pair<String, Image> pair = iconInformation.get(iconType);
         String imagePath = pair.first;
         Image imageOrNull = pair.second;
-        if (imageOrNull == null) {
+        if ((imageOrNull == null) && (imagePath != null)) {
             imageOrNull = loadImage(imagePath);
         }
         return imageOrNull;

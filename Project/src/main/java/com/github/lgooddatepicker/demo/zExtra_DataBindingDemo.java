@@ -95,9 +95,9 @@ public class zExtra_DataBindingDemo extends javax.swing.JFrame {
         jLabelRow4.setText("CalendarPanel, bound row 4:");
         jLabelRow4.setToolTipText("");
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel1.setText("<html><b>The date and time pickers (and text fields) in each row are bound together with JavaBeans data binding.<br/>If you change the value of any one component, you will change the value for all the components in the row.</b></html>");
         jLabel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 204)), javax.swing.BorderFactory.createEmptyBorder(3, 5, 3, 5)));
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
