@@ -51,6 +51,7 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
@@ -762,17 +763,7 @@ public class FullDemo {
             }
         });
         buttonPanel.add(tableEditorsDemoButton);
-
-        // Add a button for showing the data binding demo.
-        JButton dataBindingDemoButton = new JButton("Show DataBindingDemo");
-        dataBindingDemoButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                new zExtra_DataBindingDemo().setVisible(true);
-            }
-        });
-        buttonPanel.add(dataBindingDemoButton);
-
+        
         // Add a button for showing system information.
         JButton showSystemInformationButton = new JButton("JDK Versions");
         showSystemInformationButton.addMouseListener(new MouseAdapter() {

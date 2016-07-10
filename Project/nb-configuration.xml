@@ -9,6 +9,8 @@
     <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
         <word>artifactId</word>
         <word>backport</word>
+        <word>beansbinding</word>
+        <word>classpath</word>
         <word>datepicker</word>
         <word>dd</word>
         <word>deregistering</word>
@@ -20,8 +22,10 @@
         <word>Introspector</word>
         <word>javadoc</word>
         <word>javadocs</word>
+        <word>jdesktop</word>
         <word>Maven</word>
         <word>nullable</word>
+        <word>org</word>
         <word>parsable</word>
         <word>picker's</word>
         <word>pm</word>

@@ -11,7 +11,7 @@ plugins in this file operate inside the "package" and "install" phases.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>7.6.2</version>
+    <version>7.6.3</version>
     <packaging>jar</packaging>
     <name>LGoodDatePicker</name>
     <description>Java Swing Date Picker. Easy to use, good looking, nice features, and 
@@ -61,8 +61,8 @@ plugins in this file operate inside the "package" and "install" phases.
     </properties>
     
     <dependencies>
-        <!-- JSRThreeTen Backport. Uncomment this section when building for target Java 1.6. -->
         
+        <!-- JSRThreeTen Backport. Uncomment this section when building for target Java 1.6. -->
         <!-- 
         <dependency>
             <groupId>org.threeten</groupId>
@@ -71,13 +71,13 @@ plugins in this file operate inside the "package" and "install" phases.
         </dependency>
         -->
        
-        <!-- beansbinding, This is required by the NetBeans visual designer beans binding
-        functionality. This is used by the data binding demo. -->
+        <!-- BeansBinding, Uncomment this section to run the data binding demo.
         <dependency>
             <groupId>org.jdesktop</groupId>
             <artifactId>beansbinding</artifactId>
             <version>1.2.1</version>
         </dependency>
+         -->
         
     </dependencies>
     
