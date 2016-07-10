@@ -31,9 +31,9 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 (Can also run in Java 6 or 7, using the [Parallel Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).) 
 * Supports other legacy and common data types, such as "java.util.Date".
 * Compatible with Java IDE visual form designers, including NetBeans, Eclipse, IntelliJ, and the JFormDesigner program.
-* Customizable visual component elements.  
-(Including button icons, calendar size, fonts, colors, and the popup border.)
 * The pickers can optionally be added to the cells or columns of a JTable, using the supplied TableEditor classes.
+* Customizable visual elements.  
+(Including button icons, calendar size, fonts, colors, and the popup border.)
 * The TimePicker GUI provides the time selection list, up/down arrow key usage, and optional spinner buttons. 
 * Automatic date and time validation on all components.
 * Optional highlight policies and veto policies.
