@@ -11,9 +11,9 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
-* [LGoodDatePicker 7.5.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on June 30, 2016. This release adds support to the library for JTable editors, and JavaBeans data binding.
+* [LGoodDatePicker 7.6.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22).
 
-* [LGoodDatePicker 7.3.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22).
+* [LGoodDatePicker 7.5.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on June 30, 2016. This release adds support to the library for JTable editors, and JavaBeans data binding.
 
 * The [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports) were released on May 4, 2016. With these backports, the library can now be used in projects which are built for older Java versions, Java 6 or 7. 
 
@@ -27,6 +27,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 (Month names, weekday names, the default first day of the week, default date and time formats, and button text.)
 * Translations include 22 languages.  
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
+* Compatible with the visual form designers of various Java IDE's, including NetBeans, Eclipse, IntelliJ, and the JFormDesigner program.
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".<br/>
 (Can also run in Java 6 or 7, using the [Parallel Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).) 
 * Supports other legacy and common data types, such as "java.util.Date".
