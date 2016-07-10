@@ -27,11 +27,11 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 (Month names, weekday names, the default first day of the week, default date and time formats, and button text.)
 * Translations include 22 languages.  
 (Arabic, Chinese, Czech, Danish, Dutch, English, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
-* Compatible with the visual form designers of various Java IDE's, including NetBeans, Eclipse, IntelliJ, and the JFormDesigner program.
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".<br/>
 (Can also run in Java 6 or 7, using the [Parallel Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).) 
 * Supports other legacy and common data types, such as "java.util.Date".
-* Customizable visual elements.  
+* Compatible with Java IDE visual form designers, including NetBeans, Eclipse, IntelliJ, and the JFormDesigner program.
+* Customizable visual component elements.  
 (Including button icons, calendar size, fonts, colors, and the popup border.)
 * The pickers can optionally be added to the cells or columns of a JTable, using the supplied TableEditor classes.
 * The TimePicker GUI provides the time selection list, up/down arrow key usage, and optional spinner buttons. 
