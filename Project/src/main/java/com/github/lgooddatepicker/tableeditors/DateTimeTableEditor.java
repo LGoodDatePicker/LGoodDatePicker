@@ -22,7 +22,8 @@ import javax.swing.table.TableCellRenderer;
 /**
  * DateTimeTableEditor, This class is used to add a DateTimePicker to cells (or entire columns) of a
  * Swing JTable or a SwingX JXTable component. This class can be used as a table cell "Editor", or
- * as a "Renderer", or as both editor and renderer.
+ * as a "Renderer", or as both editor and renderer. Separate class instances should be used for the
+ * editor and the renderer.
  *
  * <code>
  * // Usage example:
