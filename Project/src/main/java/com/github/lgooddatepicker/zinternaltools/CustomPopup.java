@@ -168,7 +168,7 @@ public class CustomPopup extends Popup
      */
     @Override
     public void componentShown(ComponentEvent e) {
-		System.out.println("com.github.lgooddatepicker.zinternaltools.CustomPopup.componentShown()");
+		// Do nothing here.
     }
 
     /**
