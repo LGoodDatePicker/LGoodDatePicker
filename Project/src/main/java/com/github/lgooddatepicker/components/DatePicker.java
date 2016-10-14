@@ -59,7 +59,6 @@ import javax.swing.SwingUtilities;
  * </code>
  */
 public class DatePicker extends JPanel implements CustomPopupCloseListener {
-
     /**
      * calendarPanel, This holds the calendar panel GUI component of this date picker. This should
      * be null when the date picker calendar is closed, and hold a calendar panel instance when the
@@ -219,7 +218,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             // The popup.hide() function handles the de-registration of the various listeners
             // associated with the popup window. This also initiates a callback to the
             // DatePicker.zEventcustomPopupWasClosed() function.
-            popup.hide();
+			popup.hide();
         }
     }
 
@@ -447,12 +446,17 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * popup is closed.
      */
     public void openPopup() {
+		if(isPopupOpen()) {
+			closePopup();
+			return;
+		}
+		
         if (settings == null) {
             return;
         }
         // If the component is disabled, do nothing.
         if (!isEnabled()) {
-            return;
+			return;
         }
         // If this function was called programmatically, we may need to change the focus to this
         // popup.
@@ -987,7 +991,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     @Override
     public void zEventCustomPopupWasClosed(CustomPopup popup) {
-        popup = null;
+		this.popup = null;
         calendarPanel = null;
         lastPopupCloseTime = Instant.now();
     }
