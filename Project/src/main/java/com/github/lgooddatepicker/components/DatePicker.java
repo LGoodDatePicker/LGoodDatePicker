@@ -22,6 +22,7 @@ import java.awt.Window;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
+import java.util.List;
 import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -59,14 +60,8 @@ import javax.swing.SwingUtilities;
  * </code>
  */
 public class DatePicker extends JPanel implements CustomPopupCloseListener {	
-	public interface ComponentListener {
-		public void componentCreated(JComponent component);
-	}
-	
-	private ComponentListener previousYearButtonListener;
-	private ComponentListener previousMonthButtonListener;
-	private ComponentListener nextMonthButtonListener;
-	private ComponentListener nextYearButtonListener;
+
+	private List<ComponentListener> listeners;
 	
     /**
      * calendarPanel, This holds the calendar panel GUI component of this date picker. This should
@@ -479,10 +474,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         DatePicker thisDatePicker = this;
         calendarPanel = new CalendarPanel(thisDatePicker);
 		
-		firePreviousYearButtonEvent(calendarPanel.getPreviousYearButton());
-		firePreviousMonthButtonEvent(calendarPanel.getPreviousMonthButton());
-		fireNextMonthButtonEvent(calendarPanel.getNextMonthButton());
-		fireNextYearButtonEvent(calendarPanel.getNextYearButton());
+		fireComponentEvent(new ComponentEvent(ComponentEvent.PREVIOUS_YEAR, calendarPanel.getPreviousYearButton()));
+		fireComponentEvent(new ComponentEvent(ComponentEvent.PREVIOUS_MONTH, calendarPanel.getPreviousMonthButton()));
+		fireComponentEvent(new ComponentEvent(ComponentEvent.NEXT_MONTH, calendarPanel.getNextMonthButton()));
+		fireComponentEvent(new ComponentEvent(ComponentEvent.NEXT_YEAR, calendarPanel.getNextYearButton()));
 		
         // If needed, apply the selected date to the calendar.
         if (selectedDateForCalendar != null) {
@@ -1011,75 +1006,29 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         lastPopupCloseTime = Instant.now();
     }
 
-	public void addPreviousYearButtonListener(ComponentListener l) {
-		this.previousYearButtonListener = l;
+	public void addComponentListener(ComponentListener l) {
+		if(listeners == null) {
+			listeners = new ArrayList<>();
+		}
+		
+		listeners.add(l);
 	}
 	
 	public void removePreviousYearButtonListener(ComponentListener l) {
-		if(this.previousYearButtonListener == l) {
-			this.previousYearButtonListener = null;
-		}
-	}
-	
-	protected void firePreviousYearButtonEvent(JComponent component) {
-		if(this.previousYearButtonListener == null) {
+		if(listeners == null) {
 			return;
 		}
 		
-		this.previousYearButtonListener.componentCreated(component);
-	}
-
-	public void addPreviousMonthButtonListener(ComponentListener l) {
-		this.previousMonthButtonListener = l;
+		listeners.remove(l);
 	}
 	
-	public void removePreviousMonthButtonListener(ComponentListener l) {
-		if(this.previousMonthButtonListener == l) {
-			this.previousMonthButtonListener = null;
-		}
-	}
-	
-	protected void firePreviousMonthButtonEvent(JComponent component) {
-		if(this.previousMonthButtonListener == null) {
+	protected void fireComponentEvent(ComponentEvent e) {
+		if(listeners == null || e == null) {
 			return;
 		}
 		
-		this.previousMonthButtonListener.componentCreated(component);
-	}
-
-	public void addNextMonthButtonListener(ComponentListener l) {
-		this.nextMonthButtonListener = l;
-	}
-	
-	public void removeNextMonthButtonListener(ComponentListener l) {
-		if(this.nextMonthButtonListener == l) {
-			this.nextMonthButtonListener = null;
+		for(ComponentListener l: listeners) {
+			l.componentCreated(e);
 		}
-	}
-	
-	protected void fireNextMonthButtonEvent(JComponent component) {
-		if(this.nextMonthButtonListener == null) {
-			return;
-		}
-		
-		this.nextMonthButtonListener.componentCreated(component);
-	}
-
-	public void addNextYearButtonListener(ComponentListener l) {
-		this.nextYearButtonListener = l;
-	}
-	
-	public void removeNextYearButtonListener(ComponentListener l) {
-		if(this.nextYearButtonListener == l) {
-			this.nextYearButtonListener = l;
-		}
-	}
-	
-	protected void fireNextYearButtonEvent(JComponent component) {
-		if(this.nextYearButtonListener == null) {
-			return;
-		}
-		
-		this.nextYearButtonListener.componentCreated(component);
 	}
 }
