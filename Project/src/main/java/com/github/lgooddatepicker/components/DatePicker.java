@@ -1014,7 +1014,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
 		listeners.add(l);
 	}
 	
-	public void removePreviousYearButtonListener(ComponentListener l) {
+	public void removeComponentListener(ComponentListener l) {
 		if(listeners == null) {
 			return;
 		}
