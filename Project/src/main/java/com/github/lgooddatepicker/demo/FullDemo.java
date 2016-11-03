@@ -1,6 +1,8 @@
 package com.github.lgooddatepicker.demo;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
+import com.github.lgooddatepicker.components.ComponentEvent;
+import com.github.lgooddatepicker.components.ComponentListener;
 import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import javax.swing.JButton;
@@ -52,6 +54,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
@@ -97,7 +100,7 @@ public class FullDemo {
         try {
             /*
             // Set a specific look and feel.
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     UIManager.setLookAndFeel(info.getClassName());
                     break;
@@ -105,7 +108,7 @@ public class FullDemo {
             }
             
             // Set a random look and feel. 
-            LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
+            UIManager.LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
             int lookIndex = (int) (Math.random() * installedLooks.length);
             UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
             System.out.println(installedLooks[lookIndex].getClassName().toString());
@@ -186,7 +189,7 @@ public class FullDemo {
         // Get the example image icon.
         URL dateImageURL = FullDemo.class.getResource("/images/datepickerbutton1.png");
         Image dateExampleImage = Toolkit.getDefaultToolkit().getImage(dateImageURL);
-        ImageIcon dateExampleIcon = new ImageIcon(dateExampleImage);
+        ImageIcon dateExampleIcon = new ImageIcon(dateExampleImage.getScaledInstance(16, 16, Image.SCALE_DEFAULT));
         // Create the date picker, and apply the image icon.
         dateSettings = new DatePickerSettings();
         datePicker = new DatePicker(dateSettings);
@@ -314,6 +317,60 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
                 "Date 16, Custom Borders with Week Numbers:");
+        
+        dateSettings = new DatePickerSettings();
+        datePicker = new DatePicker(dateSettings);
+        datePicker.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentCreated(ComponentEvent e) {
+                ImageIcon imageIcon = null;
+                switch(e.getWhat()) {
+                    case ComponentEvent.PREVIOUS_YEAR:
+                        imageIcon = new ImageIcon(getClass().getResource("/images/double-left-arrow.png"));
+                        break;
+                        
+                    case ComponentEvent.PREVIOUS_MONTH:
+                        imageIcon = new ImageIcon(getClass().getResource("/images/left-arrow.png"));
+                        break;
+                        
+                    case ComponentEvent.NEXT_MONTH:
+                        imageIcon = new ImageIcon(getClass().getResource("/images/right-arrow.png"));
+                        break;
+                        
+                    case ComponentEvent.NEXT_YEAR:
+                        imageIcon = new ImageIcon(getClass().getResource("/images/double-right-arrow.png"));
+                        break;
+                }
+                
+                if(imageIcon != null) {
+                    ((JButton)e.getComponent()).setText("");
+                    ((JButton)e.getComponent()).setIcon(imageIcon);
+                }
+            }
+        });
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
+                "Date 17, Custom Calendar Navigation Buttons");
+        
+        dateSettings = new DatePickerSettings();
+        dateSettings.setAllowKeyboardEditing(true);
+        dateSettings.setMarginComponentDateTextField(null);
+        dateSettings.setEditableDateTextFieldBorder(null);
+        dateSettings.setNotEditableTextFieldBorder(null);
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
+                "<html>Date 18, Allow Keyboard Editing<br/>with default L&F borders and margins</html>");
+        
+        dateSettings = new DatePickerSettings();
+        dateSettings.setAllowKeyboardEditing(false);
+        dateSettings.setMarginComponentDateTextField(null);
+        dateSettings.setEditableDateTextFieldBorder(null);
+        dateSettings.setNotEditableTextFieldBorder(null);
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
+                "<html>Date 19, Disallow Keyboard Editing<br/>with default L&F borders and margins</html>");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
@@ -375,7 +432,7 @@ public class FullDemo {
         // Get the example image icon.
         URL timeIconURL = FullDemo.class.getResource("/images/timepickerbutton1.png");
         Image timeExampleImage = Toolkit.getDefaultToolkit().getImage(timeIconURL);
-        ImageIcon timeExampleIcon = new ImageIcon(timeExampleImage);
+        ImageIcon timeExampleIcon = new ImageIcon(timeExampleImage.getScaledInstance(16, 16, Image.SCALE_DEFAULT));
         // Create the time picker, and apply the image icon.
         timeSettings = new TimePickerSettings();
         timeSettings.initialTime = LocalTime.of(15, 00);
@@ -498,6 +555,56 @@ public class FullDemo {
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 16, Disallow Keyboard Editing:");
+        
+        timeSettings = new TimePickerSettings();
+        timeSettings.setAllowKeyboardEditing(true);
+        timeSettings.setMarginComponentTimeTextField(null);
+        timeSettings.setEditableTextFieldBorder(null);
+        timeSettings.setNotEditableTextFieldBorder(null);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+                "<html>Time 17, Allow Keyboard Editing<br/>with default L&F borders and margins</html>");
+        
+        timeSettings = new TimePickerSettings();
+        timeSettings.setAllowKeyboardEditing(false);
+        timeSettings.setMarginComponentTimeTextField(null);
+        timeSettings.setEditableTextFieldBorder(null);
+        timeSettings.setNotEditableTextFieldBorder(null);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), 
+                "<html>Time 18, Disallow Keyboard Editing<br/>with default L&F borders and margins</html>");
+        
+        dateSettings = new DatePickerSettings();
+        dateSettings.setAllowKeyboardEditing(true);
+        dateSettings.setMarginComponentDateTextField(null);
+        dateSettings.setEditableDateTextFieldBorder(null);
+        dateSettings.setNotEditableTextFieldBorder(null);
+        timeSettings = new TimePickerSettings();
+        timeSettings.setAllowKeyboardEditing(true);
+        timeSettings.setMarginComponentTimeTextField(null);
+        timeSettings.setEditableTextFieldBorder(null);
+        timeSettings.setNotEditableTextFieldBorder(null);
+        dateTimePicker2 = new DateTimePicker(dateSettings, timeSettings);
+        panel.panel2.add(dateTimePicker2, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
+                "<html>DateTimePicker 4, Allow Keyboard Editing<br/>with default L&F borders and margins</html>");
+        
+        dateSettings = new DatePickerSettings();
+        dateSettings.setAllowKeyboardEditing(false);
+        dateSettings.setMarginComponentDateTextField(null);
+        dateSettings.setEditableDateTextFieldBorder(null);
+        dateSettings.setNotEditableTextFieldBorder(null);
+        timeSettings = new TimePickerSettings();
+        timeSettings.setAllowKeyboardEditing(false);
+        timeSettings.setMarginComponentTimeTextField(null);
+        timeSettings.setEditableTextFieldBorder(null);
+        timeSettings.setNotEditableTextFieldBorder(null);
+        dateTimePicker2 = new DateTimePicker(dateSettings, timeSettings);
+        panel.panel2.add(dateTimePicker2, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
+                "<html>DateTimePicker 5, Disallow Keyboard Editing<br/>with default L&F borders and margins</html>");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining DateTimePickers.
@@ -506,6 +613,7 @@ public class FullDemo {
         // This section creates date pickers and labels for demonstrating the language translations.
         int rowMarker = 0;
         addLocalizedPickerAndLabel(++rowMarker, "Arabic:", "ar");
+        addLocalizedPickerAndLabel(++rowMarker, "Bulgarian:", "bg");
         addLocalizedPickerAndLabel(++rowMarker, "Chinese:", "zh");
         addLocalizedPickerAndLabel(++rowMarker, "Czech:", "cs");
         addLocalizedPickerAndLabel(++rowMarker, "Danish:", "da");
