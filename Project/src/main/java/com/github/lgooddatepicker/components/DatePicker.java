@@ -899,6 +899,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         setLayout(new GridBagLayout());
         
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL; // fix for TableCellEditor/TableCellRenderer
+        gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.CENTER;
         
         //---- dateTextField ----
@@ -909,6 +911,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             }
         });
         add(dateTextField, gbc);
+        
+        gbc.fill = GridBagConstraints.NONE; // fix for TableCellEditor/TableCellRenderer
+        gbc.weightx = 0.0;
         add(separator, gbc);
         
         //---- toggleCalendarButton ----
