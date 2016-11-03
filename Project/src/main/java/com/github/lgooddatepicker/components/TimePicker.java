@@ -1135,6 +1135,8 @@ public class TimePicker
         spinnerPanel.setLayout(new GridLayout(2, 1, 0, 0));
         
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL; // fix for TableCellEditor/TableCellRenderer
+        gbc.weightx = 1.0;
         gbc.anchor = GridBagConstraints.CENTER;
 
         //---- timeTextField ----
@@ -1148,6 +1150,9 @@ public class TimePicker
             }
         });
         add(timeTextField, gbc);
+        
+        gbc.fill = GridBagConstraints.NONE; // fix for TableCellEditor/TableCellRenderer
+        gbc.weightx = 0.0;
         add(separator, gbc);
 
         //---- toggleTimeMenuButton ----
