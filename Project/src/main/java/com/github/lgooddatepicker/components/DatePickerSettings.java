@@ -1,9 +1,6 @@
 package com.github.lgooddatepicker.components;
 
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
-import com.privatejgoodies.forms.layout.ColumnSpec;
-import com.privatejgoodies.forms.layout.ConstantSize;
-import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
@@ -19,6 +16,7 @@ import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.InternalConstants;
+import java.awt.Insets;
 import java.awt.Point;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +28,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
 import java.util.HashMap;
+import javax.swing.UIManager;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized for a DatePicker (or an
@@ -70,8 +69,8 @@ public class DatePickerSettings {
         TextFieldBackgroundValidDate(Color.white),
         TextFieldBackgroundVetoedDate(Color.white),
         DatePickerTextInvalidDate(Color.red),
-        DatePickerTextValidDate(Color.black),
-        DatePickerTextVetoedDate(Color.black);
+        DatePickerTextValidDate(UIManager.getColor("TextField.foreground")),
+        DatePickerTextVetoedDate(UIManager.getColor("TextField.foreground"));
 
         DateArea(Color defaultColor) {
             this.defaultColor = defaultColor;
@@ -107,6 +106,18 @@ public class DatePickerSettings {
      * null, a default border will be provided by the CustomPopup class. The default value is null.
      */
     private Border borderCalendarPopup = null;
+	
+    private Border editableDateTextFieldBorder = new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, InternalConstants.colorEditableTextFieldBorder),
+                new EmptyBorder(1, 3, 2, 2)
+    );
+    
+    private Border notEditableTextFieldBorder = new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, InternalConstants.colorNotEditableTextFieldBorder),
+                new EmptyBorder(1, 3, 2, 2)
+    );
+    
+    private Insets marginComponentDateTextField = new Insets(1, 3, 2, 2);
 
     /**
      * borderPropertiesList, This contains the list of border properties objects that specifies the
@@ -683,6 +694,18 @@ public class DatePickerSettings {
         return borderCalendarPopup;
     }
 
+    public Border getEditableDateTextFieldBorder() {
+        return editableDateTextFieldBorder;
+    }
+
+    public Border getNotEditableTextFieldBorder() {
+        return notEditableTextFieldBorder;
+    }
+
+    public Insets getMarginComponentDateTextField() {
+        return marginComponentDateTextField;
+    }
+
     /**
      * getBorderPropertiesList, Returns the value of this setting. See the "set" function for
      * setting information.
@@ -1076,6 +1099,18 @@ public class DatePickerSettings {
      */
     public void setBorderCalendarPopup(Border borderCalendarPopup) {
         this.borderCalendarPopup = borderCalendarPopup;
+    }
+
+    public void setEditableDateTextFieldBorder(Border border) {
+        this.editableDateTextFieldBorder = border;
+    }
+
+    public void setNotEditableTextFieldBorder(Border border) {
+        this.notEditableTextFieldBorder = border;
+    }
+
+    public void setMarginComponentDateTextField(Insets insets) {
+        this.marginComponentDateTextField = insets;
     }
 
     /**
@@ -1891,11 +1926,10 @@ public class DatePickerSettings {
         // Set the editability of the date picker text field.
         parentDatePicker.getComponentDateTextField().setEditable(allowKeyboardEditing);
         // Set the text field border color based on whether the text field is editable.
-        Color textFieldBorderColor = (allowKeyboardEditing)
-                ? InternalConstants.colorEditableTextFieldBorder
-                : InternalConstants.colorNotEditableTextFieldBorder;
-        parentDatePicker.getComponentDateTextField().setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
+        Border border = allowKeyboardEditing ? editableDateTextFieldBorder : notEditableTextFieldBorder;
+        if(border != null) {
+            parentDatePicker.getComponentDateTextField().setBorder(border);
+        }
     }
 
     /**
@@ -1903,10 +1937,7 @@ public class DatePickerSettings {
      */
     void zApplyGapBeforeButtonPixels() {
         int gapPixels = (gapBeforeButtonPixels == null) ? 3 : gapBeforeButtonPixels;
-        ConstantSize gapSizeObject = new ConstantSize(gapPixels, ConstantSize.PIXEL);
-        ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
-        FormLayout layout = ((FormLayout) parentDatePicker.getLayout());
-        layout.setColumnSpec(2, columnSpec);
+        parentDatePicker.applyGapBeforeButtonPixels(gapPixels);
     }
 
     /**

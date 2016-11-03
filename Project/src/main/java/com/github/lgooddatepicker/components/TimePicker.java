@@ -1,11 +1,8 @@
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import java.awt.*;
-import javax.swing.border.*;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
@@ -139,6 +136,8 @@ public class TimePicker
     private JButton increaseButton;
     private JButton decreaseButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
+    
+     private Component separator = Box.createHorizontalStrut(0);
 
     /**
      * Constructor with Default Values, Create a time picker instance using the default operating
@@ -156,17 +155,11 @@ public class TimePicker
         settings = (settings == null) ? new TimePickerSettings() : settings;
         settings.setParentTimePicker(this);
         this.settings = settings;
-        initComponents();
-        // Set the down arrow on the toggle menu button.
-        toggleTimeMenuButton.setText("\u25BC");
-        // Shrink the toggle menu button to a reasonable size.
-        toggleTimeMenuButton.setMargin(new java.awt.Insets(4, 4, 4, 4));
+        initComponentsEx();
 
         // Set up the spinner buttons.
-        decreaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
-        increaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
-        decreaseButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        increaseButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+//        decreaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
+//        increaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
         zInstallSpinnerButtonListener(decreaseButton);
         zInstallSpinnerButtonListener(increaseButton);
 
@@ -817,6 +810,28 @@ public class TimePicker
     private TimeSpinnerTimer zCreateTimeSpinnerTimer(int changeAmountMinutes) {
         return new TimeSpinnerTimer(this, changeAmountMinutes);
     }
+    
+    private void resizeComponents() {
+        int height = Math.max(
+                timeTextField.getPreferredSize().height,
+                settings.getDisplayToggleTimeMenuButton() ? toggleTimeMenuButton.getPreferredSize().height : 0
+        );
+        
+        timeTextField.setPreferredSize(new Dimension(timeTextField.getPreferredSize().width, height));
+        
+        toggleTimeMenuButton.setPreferredSize(new Dimension(
+                Math.max(height, toggleTimeMenuButton.getPreferredSize().width), 
+                height)
+        );       
+        
+        spinnerPanel.setPreferredSize(new Dimension(
+                Math.max(height, spinnerPanel.getPreferredSize().width), 
+                height)
+        );
+        
+        toggleTimeMenuButton.setVisible(settings.getDisplayToggleTimeMenuButton());
+        spinnerPanel.setVisible(settings.getDisplaySpinnerButtons());
+    }
 
     /**
      * zDrawTextFieldIndicators, This will draw the text field indicators, to indicate to the user
@@ -838,6 +853,8 @@ public class TimePicker
             timeTextField.setBackground(new Color(240, 240, 240));
             timeTextField.setForeground(new Color(109, 109, 109));
             timeTextField.setFont(settings.fontValidTime);
+            
+            resizeComponents();
             return;
         }
         // Reset all atributes to normal before going further.
@@ -856,6 +873,8 @@ public class TimePicker
                 // (Possibility: DisallowedEmptyValue)
                 timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundDisallowedEmptyTime));
             }
+            
+            resizeComponents();
             return;
         }
         // The text is not empty.
@@ -866,8 +885,11 @@ public class TimePicker
             timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundInvalidTime));
             timeTextField.setForeground(settings.getColor(TimeArea.TimePickerTextInvalidTime));
             timeTextField.setFont(settings.fontInvalidTime);
+            
+            resizeComponents();
             return;
         }
+        
         // The text was parsed to a value.
         TimeVetoPolicy vetoPolicy = settings.getVetoPolicy();
         boolean isTimeVetoed = InternalUtilities.isTimeVetoed(vetoPolicy, parsedTime);
@@ -877,6 +899,8 @@ public class TimePicker
             timeTextField.setForeground(settings.getColor(TimeArea.TimePickerTextVetoedTime));
             timeTextField.setFont(settings.fontVetoedTime);
         }
+        
+        resizeComponents();
     }
 
     /**
@@ -1100,68 +1124,73 @@ public class TimePicker
      * automatically generated by JFormDesigner from the JFD form design file, and should not be
      * modified by hand. This function can be modified, if needed, by using JFormDesigner.
      */
-    private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+    private void initComponentsEx() {
         timeTextField = new JTextField();
         toggleTimeMenuButton = new JButton();
         spinnerPanel = new JPanel();
         increaseButton = new JButton();
         decreaseButton = new JButton();
 
-        //======== this ========
-        setLayout(new FormLayout(
-                "pref:grow, 3*(pref)",
-                "fill:pref:grow"));
+        setLayout(new GridBagLayout());
+        spinnerPanel.setLayout(new GridLayout(2, 1, 0, 0));
+        
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.CENTER;
 
         //---- timeTextField ----
-        timeTextField.setMargin(new Insets(1, 3, 2, 2));
-        timeTextField.setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-                new EmptyBorder(1, 3, 2, 2)));
+        if(settings.getMarginComponentTimeTextField() != null) {
+            timeTextField.setMargin(settings.getMarginComponentTimeTextField());
+        }
         timeTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
                 setTextFieldToValidStateIfNeeded();
             }
         });
-        add(timeTextField, CC.xy(1, 1));
+        add(timeTextField, gbc);
+        add(separator, gbc);
 
         //---- toggleTimeMenuButton ----
-        toggleTimeMenuButton.setText("v");
+        toggleTimeMenuButton.setText("\u25BC");
+        toggleTimeMenuButton.setDefaultCapable(false); // remove border for CDE/Motif L&F
         toggleTimeMenuButton.setFocusPainted(false);
         toggleTimeMenuButton.setFocusable(false);
         toggleTimeMenuButton.setFont(new Font("Segoe UI", Font.PLAIN, 8));
+        toggleTimeMenuButton.setMargin(new Insets(0, 0, 0, 0));
         toggleTimeMenuButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 zEventToggleTimeMenuButtonMousePressed(e);
             }
         });
-        add(toggleTimeMenuButton, CC.xy(3, 1));
+        add(toggleTimeMenuButton, gbc);
 
-        //======== spinnerPanel ========
-        {
-            spinnerPanel.setLayout(new FormLayout(
-                    "default",
-                    "fill:pref:grow, fill:default:grow"));
-            ((FormLayout) spinnerPanel.getLayout()).setRowGroups(new int[][]{{1, 2}});
+        //---- increaseButton ----
+        increaseButton.setDefaultCapable(false); // remove border for CDE/Motif L&F
+        increaseButton.setFocusPainted(false);
+        increaseButton.setFocusable(false);
+        increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
+        increaseButton.setText("+");
+        increaseButton.setMargin(new Insets(0, 0, 0, 0));
+        spinnerPanel.add(increaseButton);
 
-            //---- increaseButton ----
-            increaseButton.setFocusPainted(false);
-            increaseButton.setFocusable(false);
-            increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
-            increaseButton.setText("+");
-            spinnerPanel.add(increaseButton, CC.xy(1, 1));
-
-            //---- decreaseButton ----
-            decreaseButton.setFocusPainted(false);
-            decreaseButton.setFocusable(false);
-            decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
-            decreaseButton.setText("-");
-            spinnerPanel.add(decreaseButton, CC.xy(1, 2));
-        }
-        add(spinnerPanel, CC.xy(4, 1));
+        //---- decreaseButton ----
+        decreaseButton.setDefaultCapable(false); // remove border for CDE/Motif L&F
+        decreaseButton.setFocusPainted(false);
+        decreaseButton.setFocusable(false);
+        decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
+        decreaseButton.setText("-");
+        decreaseButton.setMargin(new Insets(0, 0, 0, 0));
+        spinnerPanel.add(decreaseButton);
+        
+        add(spinnerPanel, gbc);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
+    public void applyGapBeforeButtonPixels(int width) {
+        Dimension dimension = separator.getPreferredSize();
+        dimension.width = width;
+        
+        separator.setPreferredSize(dimension);
+    }
 }

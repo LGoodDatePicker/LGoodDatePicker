@@ -1,8 +1,5 @@
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.ColumnSpec;
-import com.privatejgoodies.forms.layout.ConstantSize;
-import com.privatejgoodies.forms.layout.FormLayout;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.ExtraTimeStrings;
@@ -11,6 +8,7 @@ import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.font.TextAttribute;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeSet;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
@@ -57,9 +56,9 @@ public class TimePickerSettings {
      * the swing component.
      */
     public enum TimeArea {
-        TimePickerTextValidTime(Color.black),
+        TimePickerTextValidTime(UIManager.getColor("TextField.foreground")),
         TimePickerTextInvalidTime(Color.red),
-        TimePickerTextVetoedTime(Color.black),
+        TimePickerTextVetoedTime(UIManager.getColor("TextField.foreground")),
         TextFieldBackgroundValidTime(Color.white),
         TextFieldBackgroundInvalidTime(Color.white),
         TextFieldBackgroundVetoedTime(Color.white),
@@ -94,6 +93,18 @@ public class TimePickerSettings {
      * javadocs for the TimePicker class.
      */
     private boolean allowKeyboardEditing = true;
+    
+    private Border editableTextFieldBorder = new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, InternalConstants.colorEditableTextFieldBorder),
+                new EmptyBorder(1, 3, 2, 2)
+    );
+    
+    private Border notEditableTextFieldBorder = new CompoundBorder(
+                new MatteBorder(1, 1, 1, 1, InternalConstants.colorNotEditableTextFieldBorder),
+                new EmptyBorder(1, 3, 2, 2)
+    );
+    
+    private Insets marginComponentTimeTextField = new Insets(1, 3, 2, 2);
 
     /**
      * borderTimePopup, This allows you to set a custom border for the time picker popup menu. By
@@ -535,6 +546,18 @@ public class TimePickerSettings {
         return vetoPolicy;
     }
 
+    public Border getEditableTextFieldBorder() {
+        return editableTextFieldBorder;
+    }
+
+    public Border getNotEditableTextFieldBorder() {
+        return notEditableTextFieldBorder;
+    }
+
+    public Insets getMarginComponentTimeTextField() {
+        return marginComponentTimeTextField;
+    }
+
     /**
      * isTimeAllowed, This checks to see if the specified time is allowed by any currently set veto
      * policy, and allowed by the current setting of allowEmptyTimes.
@@ -817,6 +840,18 @@ public class TimePickerSettings {
         return isTimeAllowed(parent.getTime());
     }
 
+    public void setEditableTextFieldBorder(Border border) {
+        this.editableTextFieldBorder = border;
+    }
+
+    public void setNotEditableTextFieldBorder(Border border) {
+        this.notEditableTextFieldBorder = border;
+    }
+
+    public void setMarginComponentTimeTextField(Insets margin) {
+        this.marginComponentTimeTextField = margin;
+    }
+
     /**
      * use24HourClockFormat, This can be called to set the TimePicker to use a 24-hour clock format.
      * This will replace the settings called formatForDisplayTime, and formatForMenuTimes, with the
@@ -844,8 +879,8 @@ public class TimePickerSettings {
         zApplyAllowKeyboardEditing();
         zApplyInitialTime();
         zApplyAllowEmptyTimes();
-        zApplyMinimumToggleTimeMenuButtonWidthInPixels();
-        zApplyMinimumSpinnerButtonWidthInPixels();
+//        zApplyMinimumToggleTimeMenuButtonWidthInPixels();
+//        zApplyMinimumSpinnerButtonWidthInPixels();
         zApplyDisplayToggleTimeMenuButton();
         zApplyDisplaySpinnerButtons();
     }
@@ -885,11 +920,10 @@ public class TimePickerSettings {
         // Set the editability of the time picker text field.
         parent.getComponentTimeTextField().setEditable(allowKeyboardEditing);
         // Set the text field border color based on whether the text field is editable.
-        Color textFieldBorderColor = (allowKeyboardEditing)
-                ? InternalConstants.colorEditableTextFieldBorder
-                : InternalConstants.colorNotEditableTextFieldBorder;
-        parent.getComponentTimeTextField().setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
+        Border border = allowKeyboardEditing ? editableTextFieldBorder : notEditableTextFieldBorder;
+        if(border != null) {
+            parent.getComponentTimeTextField().setBorder(border);
+        }
     }
 
     /**
@@ -921,10 +955,7 @@ public class TimePickerSettings {
      */
     private void zApplyGapBeforeButtonPixels() {
         int gapPixels = (gapBeforeButtonPixels == null) ? 0 : gapBeforeButtonPixels;
-        ConstantSize gapSizeObject = new ConstantSize(gapPixels, ConstantSize.PIXEL);
-        ColumnSpec columnSpec = ColumnSpec.createGap(gapSizeObject);
-        FormLayout layout = ((FormLayout) parent.getLayout());
-        layout.setColumnSpec(2, columnSpec);
+        parent.applyGapBeforeButtonPixels(gapPixels);
     }
 
     /**
