@@ -51,7 +51,6 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
