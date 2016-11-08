@@ -921,7 +921,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         toggleCalendarButton.setText("...");
         toggleCalendarButton.setFocusPainted(false);
         toggleCalendarButton.setFocusable(false);
-        toggleCalendarButton.setFont(new Font("Segoe UI", Font.PLAIN, 8));
+        toggleCalendarButton.setFont(new Font("Segoe UI", Font.PLAIN, 11));
         toggleCalendarButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
