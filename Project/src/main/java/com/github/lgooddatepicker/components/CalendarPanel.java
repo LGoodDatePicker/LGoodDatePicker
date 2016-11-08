@@ -1720,4 +1720,19 @@ public class CalendarPanel extends JPanel {
         drawCalendar();
     }
 
+	public JButton getPreviousYearButton() {
+		return buttonPreviousYear;
+	}
+
+	public JButton getPreviousMonthButton() {
+		return buttonPreviousMonth;
+	}
+
+	public JButton getNextMonthButton() {
+		return buttonNextMonth;
+	}
+
+	public JButton getNextYearButton() {
+		return buttonNextYear;
+	}
 }
