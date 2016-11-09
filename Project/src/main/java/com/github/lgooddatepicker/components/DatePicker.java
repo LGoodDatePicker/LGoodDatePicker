@@ -899,9 +899,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         setLayout(new GridBagLayout());
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL; // fix for TableCellEditor/TableCellRenderer
+        gbc.fill = GridBagConstraints.BOTH; // fix for TableCellEditor/TableCellRenderer
         gbc.weightx = 1.0;
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.anchor = GridBagConstraints.PAGE_START;
         
         //---- dateTextField ----
         dateTextField.addFocusListener(new FocusAdapter() {
@@ -912,7 +912,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         });
         add(dateTextField, gbc);
         
-        gbc.fill = GridBagConstraints.NONE; // fix for TableCellEditor/TableCellRenderer
+        gbc.fill = GridBagConstraints.VERTICAL; // fix for TableCellEditor/TableCellRenderer
         gbc.weightx = 0.0;
         add(separator, gbc);
         

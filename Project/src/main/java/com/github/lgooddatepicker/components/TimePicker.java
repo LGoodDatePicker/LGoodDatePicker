@@ -158,8 +158,10 @@ public class TimePicker
         initComponentsEx();
 
         // Set up the spinner buttons.
-//        decreaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
-//        increaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
+        if(settings.getSpinnerButtonBorder() != null) {
+            decreaseButton.setBorder(settings.getSpinnerButtonBorder());
+            increaseButton.setBorder(settings.getSpinnerButtonBorder());
+        }
         zInstallSpinnerButtonListener(decreaseButton);
         zInstallSpinnerButtonListener(increaseButton);
 
@@ -285,8 +287,9 @@ public class TimePicker
      * directly accessing the components should be used only as a last resort, to implement
      * functionality that is not available from other functions or settings.
      */
+	@Deprecated
     public JPanel getComponentSpinnerPanel() {
-        return spinnerPanel;
+        return new JPanel(); // prevent NullPointerException
     }
 
     /**
@@ -819,18 +822,24 @@ public class TimePicker
         
         timeTextField.setPreferredSize(new Dimension(timeTextField.getPreferredSize().width, height));
         
-        toggleTimeMenuButton.setPreferredSize(new Dimension(
-                Math.max(height, toggleTimeMenuButton.getPreferredSize().width), 
-                height)
-        );       
+		if(settings.getDisplayToggleTimeMenuButton()) {
+			toggleTimeMenuButton.setPreferredSize(new Dimension(
+					Math.max(height, toggleTimeMenuButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
+					0 // auto resize from layout
+			));
+		}
         
-        spinnerPanel.setPreferredSize(new Dimension(
-                Math.max(height, spinnerPanel.getPreferredSize().width), 
-                height)
-        );
-        
-        toggleTimeMenuButton.setVisible(settings.getDisplayToggleTimeMenuButton());
-        spinnerPanel.setVisible(settings.getDisplaySpinnerButtons());
+		if(settings.getDisplaySpinnerButtons()) {
+			increaseButton.setPreferredSize(new Dimension(
+					Math.max(height, increaseButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
+					0 // auto resize from layout
+			));
+			
+			decreaseButton.setPreferredSize(new Dimension(
+					Math.max(height, decreaseButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
+					0 // auto resize from layout
+			));
+		}
     }
 
     /**
@@ -1127,16 +1136,15 @@ public class TimePicker
     private void initComponentsEx() {
         timeTextField = new JTextField();
         toggleTimeMenuButton = new JButton();
-        spinnerPanel = new JPanel();
         increaseButton = new JButton();
         decreaseButton = new JButton();
 
         setLayout(new GridBagLayout());
-        spinnerPanel.setLayout(new GridLayout(2, 1, 0, 0));
         
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL; // fix for TableCellEditor/TableCellRenderer
+        gbc.fill = GridBagConstraints.BOTH; // fix for TableCellEditor/TableCellRenderer
         gbc.weightx = 1.0;
+		gbc.gridheight = 2;
         gbc.anchor = GridBagConstraints.CENTER;
 
         //---- timeTextField ----
@@ -1149,9 +1157,13 @@ public class TimePicker
                 setTextFieldToValidStateIfNeeded();
             }
         });
+		
+		gbc.gridx = 0;
+		gbc.gridy = 0;
         add(timeTextField, gbc);
         
-        gbc.fill = GridBagConstraints.NONE; // fix for TableCellEditor/TableCellRenderer
+        gbc.fill = GridBagConstraints.VERTICAL; // fix for TableCellEditor/TableCellRenderer
+		gbc.gridx++;
         gbc.weightx = 0.0;
         add(separator, gbc);
 
@@ -1168,6 +1180,8 @@ public class TimePicker
                 zEventToggleTimeMenuButtonMousePressed(e);
             }
         });
+		
+		gbc.gridx++;
         add(toggleTimeMenuButton, gbc);
 
         //---- increaseButton ----
@@ -1177,8 +1191,13 @@ public class TimePicker
         increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
         increaseButton.setText("+");
         increaseButton.setMargin(new Insets(0, 0, 0, 0));
-        spinnerPanel.add(increaseButton);
-
+		
+		gbc.gridx++;
+		gbc.gridheight = 1;
+		gbc.weighty = 1.0;
+		gbc.fill = GridBagConstraints.BOTH;
+		add(increaseButton, gbc);
+		
         //---- decreaseButton ----
         decreaseButton.setDefaultCapable(false); // remove border for CDE/Motif L&F
         decreaseButton.setFocusPainted(false);
@@ -1186,10 +1205,9 @@ public class TimePicker
         decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
         decreaseButton.setText("-");
         decreaseButton.setMargin(new Insets(0, 0, 0, 0));
-        spinnerPanel.add(decreaseButton);
-        
-        add(spinnerPanel, gbc);
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
+		
+		gbc.gridy++;
+		add(decreaseButton, gbc);
     }
 
     public void applyGapBeforeButtonPixels(int width) {

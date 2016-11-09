@@ -106,7 +106,7 @@ public class FullDemo {
                     break;
                 }
             }
-            
+			
             // Set a random look and feel. 
             UIManager.LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
             int lookIndex = (int) (Math.random() * installedLooks.length);
@@ -189,7 +189,7 @@ public class FullDemo {
         // Get the example image icon.
         URL dateImageURL = FullDemo.class.getResource("/images/datepickerbutton1.png");
         Image dateExampleImage = Toolkit.getDefaultToolkit().getImage(dateImageURL);
-        ImageIcon dateExampleIcon = new ImageIcon(dateExampleImage.getScaledInstance(16, 16, Image.SCALE_DEFAULT));
+        ImageIcon dateExampleIcon = new ImageIcon(dateExampleImage);
         // Create the date picker, and apply the image icon.
         dateSettings = new DatePickerSettings();
         datePicker = new DatePicker(dateSettings);
@@ -396,6 +396,7 @@ public class FullDemo {
         timeSettings = new TimePickerSettings();
         timeSettings.setDisplayToggleTimeMenuButton(false);
         timeSettings.setDisplaySpinnerButtons(true);
+//		timeSettings.setSpinnerButtonBorder(null); // remove border on spinner buttons
         timeSettings.setInitialTimeToNow();
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
@@ -404,6 +405,7 @@ public class FullDemo {
         // Create a time picker: With All Buttons.
         timeSettings = new TimePickerSettings();
         timeSettings.setDisplaySpinnerButtons(true);
+//		timeSettings.setSpinnerButtonBorder(null); // remove border on spinner buttons
         timeSettings.setInitialTimeToNow();
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
@@ -432,7 +434,7 @@ public class FullDemo {
         // Get the example image icon.
         URL timeIconURL = FullDemo.class.getResource("/images/timepickerbutton1.png");
         Image timeExampleImage = Toolkit.getDefaultToolkit().getImage(timeIconURL);
-        ImageIcon timeExampleIcon = new ImageIcon(timeExampleImage.getScaledInstance(16, 16, Image.SCALE_DEFAULT));
+        ImageIcon timeExampleIcon = new ImageIcon(timeExampleImage);
         // Create the time picker, and apply the image icon.
         timeSettings = new TimePickerSettings();
         timeSettings.initialTime = LocalTime.of(15, 00);
