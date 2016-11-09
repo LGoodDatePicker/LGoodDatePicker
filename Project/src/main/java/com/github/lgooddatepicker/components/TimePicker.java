@@ -819,27 +819,27 @@ public class TimePicker
                 timeTextField.getPreferredSize().height,
                 settings.getDisplayToggleTimeMenuButton() ? toggleTimeMenuButton.getPreferredSize().height : 0
         );
-        
+
         timeTextField.setPreferredSize(new Dimension(timeTextField.getPreferredSize().width, height));
-        
-		if(settings.getDisplayToggleTimeMenuButton()) {
-			toggleTimeMenuButton.setPreferredSize(new Dimension(
-					Math.max(height, toggleTimeMenuButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
-					0 // auto resize from layout
-			));
-		}
-        
-		if(settings.getDisplaySpinnerButtons()) {
-			increaseButton.setPreferredSize(new Dimension(
-					Math.max(height, increaseButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
-					0 // auto resize from layout
-			));
-			
-			decreaseButton.setPreferredSize(new Dimension(
-					Math.max(height, decreaseButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
-					0 // auto resize from layout
-			));
-		}
+
+        if(settings.getDisplayToggleTimeMenuButton()) {
+            toggleTimeMenuButton.setPreferredSize(new Dimension(
+                    Math.max(height, toggleTimeMenuButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
+                    0 // auto resize from layout
+            ));
+        }
+
+        if(settings.getDisplaySpinnerButtons()) {
+            increaseButton.setPreferredSize(new Dimension(
+                    Math.max(height, increaseButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
+                    0 // auto resize from layout
+            ));
+
+            decreaseButton.setPreferredSize(new Dimension(
+                    Math.max(height, decreaseButton.getPreferredSize().width), // fix width for Nimbus L&F with default border
+                    0 // auto resize from layout
+            ));
+        }
     }
 
     /**
@@ -1140,11 +1140,11 @@ public class TimePicker
         decreaseButton = new JButton();
 
         setLayout(new GridBagLayout());
-        
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH; // fix for TableCellEditor/TableCellRenderer
         gbc.weightx = 1.0;
-		gbc.gridheight = 2;
+        gbc.gridheight = 2;
         gbc.anchor = GridBagConstraints.CENTER;
 
         //---- timeTextField ----
@@ -1157,13 +1157,13 @@ public class TimePicker
                 setTextFieldToValidStateIfNeeded();
             }
         });
-		
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
         add(timeTextField, gbc);
-        
+
         gbc.fill = GridBagConstraints.VERTICAL; // fix for TableCellEditor/TableCellRenderer
-		gbc.gridx++;
+        gbc.gridx++;
         gbc.weightx = 0.0;
         add(separator, gbc);
 
@@ -1180,8 +1180,8 @@ public class TimePicker
                 zEventToggleTimeMenuButtonMousePressed(e);
             }
         });
-		
-		gbc.gridx++;
+
+        gbc.gridx++;
         add(toggleTimeMenuButton, gbc);
 
         //---- increaseButton ----
@@ -1191,13 +1191,13 @@ public class TimePicker
         increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
         increaseButton.setText("+");
         increaseButton.setMargin(new Insets(0, 0, 0, 0));
-		
-		gbc.gridx++;
-		gbc.gridheight = 1;
-		gbc.weighty = 1.0;
-		gbc.fill = GridBagConstraints.BOTH;
-		add(increaseButton, gbc);
-		
+
+        gbc.gridx++;
+        gbc.gridheight = 1;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        add(increaseButton, gbc);
+
         //---- decreaseButton ----
         decreaseButton.setDefaultCapable(false); // remove border for CDE/Motif L&F
         decreaseButton.setFocusPainted(false);
@@ -1205,9 +1205,9 @@ public class TimePicker
         decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
         decreaseButton.setText("-");
         decreaseButton.setMargin(new Insets(0, 0, 0, 0));
-		
-		gbc.gridy++;
-		add(decreaseButton, gbc);
+
+        gbc.gridy++;
+        add(decreaseButton, gbc);
     }
 
     public void applyGapBeforeButtonPixels(int width) {

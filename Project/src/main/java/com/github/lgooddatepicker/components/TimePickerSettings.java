@@ -47,7 +47,7 @@ import javax.swing.border.MatteBorder;
  * the prefix "zDateTimePicker_".
  */
 public class TimePickerSettings {
-	
+    
     /**
      * TimeArea, These enumerations represent areas of the components whose color can be changed.
      * These values are used with the setColor() function, to set the color of various areas of the
@@ -105,7 +105,7 @@ public class TimePickerSettings {
                 new EmptyBorder(1, 3, 2, 2)
     );
 	
-	private Border spinnerButtonBorder = new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153));
+    private Border spinnerButtonBorder = new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153));
     
     private Insets marginComponentTimeTextField = new Insets(1, 3, 2, 2);
 
@@ -557,9 +557,9 @@ public class TimePickerSettings {
         return notEditableTextFieldBorder;
     }
 
-	public Border getSpinnerButtonBorder() {
-		return spinnerButtonBorder;
-	}
+    public Border getSpinnerButtonBorder() {
+        return spinnerButtonBorder;
+    }
 
     public Insets getMarginComponentTimeTextField() {
         return marginComponentTimeTextField;
@@ -855,9 +855,9 @@ public class TimePickerSettings {
         this.notEditableTextFieldBorder = border;
     }
 
-	public void setSpinnerButtonBorder(Border border) {
-		this.spinnerButtonBorder = border;
-	}
+    public void setSpinnerButtonBorder(Border border) {
+        this.spinnerButtonBorder = border;
+    }
 
     public void setMarginComponentTimeTextField(Insets margin) {
         this.marginComponentTimeTextField = margin;

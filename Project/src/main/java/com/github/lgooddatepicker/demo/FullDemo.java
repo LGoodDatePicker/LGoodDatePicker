@@ -396,7 +396,7 @@ public class FullDemo {
         timeSettings = new TimePickerSettings();
         timeSettings.setDisplayToggleTimeMenuButton(false);
         timeSettings.setDisplaySpinnerButtons(true);
-//		timeSettings.setSpinnerButtonBorder(null); // remove border on spinner buttons
+//        timeSettings.setSpinnerButtonBorder(null); // remove border on spinner buttons
         timeSettings.setInitialTimeToNow();
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
@@ -405,7 +405,7 @@ public class FullDemo {
         // Create a time picker: With All Buttons.
         timeSettings = new TimePickerSettings();
         timeSettings.setDisplaySpinnerButtons(true);
-//		timeSettings.setSpinnerButtonBorder(null); // remove border on spinner buttons
+//        timeSettings.setSpinnerButtonBorder(null); // remove border on spinner buttons
         timeSettings.setInitialTimeToNow();
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
