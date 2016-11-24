@@ -263,7 +263,7 @@ plugins in this file operate inside the "package" and "install" phases.
                             <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <executable>${env.JAVA_HOME}/bin/jar.exe</executable>
+                            <executable>${env.JAVA_HOME}/bin/jar</executable>
                             <workingDirectory>${project.build.directory}</workingDirectory>
                             <arguments>
                                 <argument>-cvf</argument>
