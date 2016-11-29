@@ -22,7 +22,6 @@ import java.awt.Window;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
-import java.util.List;
 import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -59,16 +58,19 @@ import javax.swing.SwingUtilities;
  * panel.add(datePicker);
  * </code>
  */
-public class DatePicker extends JPanel implements CustomPopupCloseListener {	
+public class DatePicker extends JPanel implements CustomPopupCloseListener {
 
-	private List<ComponentListener> listeners;
-	
     /**
      * calendarPanel, This holds the calendar panel GUI component of this date picker. This should
      * be null when the date picker calendar is closed, and hold a calendar panel instance when the
      * date picker calendar is opened.
      */
     private CalendarPanel calendarPanel = null;
+
+    /**
+     * componentListeners, This holds any component listeners for the DatePicker.
+     */
+    private ArrayList<ComponentListener> componentListeners;
 
     /**
      * convert, This utility class instance is used to get or set the DatePicker java.time.LocalDate
@@ -222,7 +224,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             // The popup.hide() function handles the de-registration of the various listeners
             // associated with the popup window. This also initiates a callback to the
             // DatePicker.zEventcustomPopupWasClosed() function.
-			popup.hide();
+            popup.hide();
         }
     }
 
@@ -450,17 +452,17 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * popup is closed.
      */
     public void openPopup() {
-		if(isPopupOpen()) {
-			closePopup();
-			return;
-		}
-		
+        if (isPopupOpen()) {
+            closePopup();
+            return;
+        }
+
         if (settings == null) {
             return;
         }
         // If the component is disabled, do nothing.
         if (!isEnabled()) {
-			return;
+            return;
         }
         // If this function was called programmatically, we may need to change the focus to this
         // popup.
@@ -473,12 +475,12 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // Use the CalendarPanel constructor that is made for the DatePicker class.
         DatePicker thisDatePicker = this;
         calendarPanel = new CalendarPanel(thisDatePicker);
-		
-		fireComponentEvent(new ComponentEvent(ComponentEvent.PREVIOUS_YEAR, calendarPanel.getPreviousYearButton()));
-		fireComponentEvent(new ComponentEvent(ComponentEvent.PREVIOUS_MONTH, calendarPanel.getPreviousMonthButton()));
-		fireComponentEvent(new ComponentEvent(ComponentEvent.NEXT_MONTH, calendarPanel.getNextMonthButton()));
-		fireComponentEvent(new ComponentEvent(ComponentEvent.NEXT_YEAR, calendarPanel.getNextYearButton()));
-		
+
+        fireComponentEvent(new ComponentEvent(ComponentEvent.PREVIOUS_YEAR, calendarPanel.getPreviousYearButton()));
+        fireComponentEvent(new ComponentEvent(ComponentEvent.PREVIOUS_MONTH, calendarPanel.getPreviousMonthButton()));
+        fireComponentEvent(new ComponentEvent(ComponentEvent.NEXT_MONTH, calendarPanel.getNextMonthButton()));
+        fireComponentEvent(new ComponentEvent(ComponentEvent.NEXT_YEAR, calendarPanel.getNextYearButton()));
+
         // If needed, apply the selected date to the calendar.
         if (selectedDateForCalendar != null) {
             calendarPanel.setSelectedDate(selectedDateForCalendar);
@@ -1001,34 +1003,31 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     @Override
     public void zEventCustomPopupWasClosed(CustomPopup popup) {
-		this.popup = null;
+        this.popup = null;
         calendarPanel = null;
         lastPopupCloseTime = Instant.now();
     }
 
-	public void addComponentListener(ComponentListener l) {
-		if(listeners == null) {
-			listeners = new ArrayList<>();
-		}
-		
-		listeners.add(l);
-	}
-	
-	public void removeComponentListener(ComponentListener l) {
-		if(listeners == null) {
-			return;
-		}
-		
-		listeners.remove(l);
-	}
-	
-	protected void fireComponentEvent(ComponentEvent e) {
-		if(listeners == null || e == null) {
-			return;
-		}
-		
-		for(ComponentListener l: listeners) {
-			l.componentCreated(e);
-		}
-	}
+    public void addComponentListener(ComponentListener listener) {
+        if (componentListeners == null) {
+            componentListeners = new ArrayList<ComponentListener>();
+        }
+        componentListeners.add(listener);
+    }
+
+    public void removeComponentListener(ComponentListener listener) {
+        if (componentListeners == null) {
+            return;
+        }
+        componentListeners.remove(listener);
+    }
+
+    protected void fireComponentEvent(ComponentEvent e) {
+        if (componentListeners == null || e == null) {
+            return;
+        }
+        for (ComponentListener listener : componentListeners) {
+            listener.componentCreated(e);
+        }
+    }
 }
