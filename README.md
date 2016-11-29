@@ -3,7 +3,7 @@ Java Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## Project Links:
 Demo Application and Downloads in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
-Maven Central repository pages: <a href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22" target="_blank">Page 1</a>, <a href="http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker" target="_blank">Page 2</a>.
+Maven Central repository pages: <a target="_blank" href="http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22">Page 1</a>, <a target="_blank" href="http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker">Page 2</a>.<br>
 Get release updates: <a href="https://feedburner.google.com/fb/a/mailverify?uri=LGoodDatePickerUpdates&amp;loc=en_US">Subscribe for Updates</a>.<br>
 Contact the primary developer: [Email Form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
 Submit bugs or feature requests: [Issues Section](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).  
