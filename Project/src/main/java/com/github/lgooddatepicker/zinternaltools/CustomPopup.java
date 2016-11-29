@@ -63,7 +63,11 @@ public class CustomPopup extends Popup
      */
     private Window topWindow;
 
-	private boolean enableHideAction = false;
+    /**
+     * enableHideAction, This is part of the bug fix for blank popup windows in linux.
+     */
+    private boolean enableHideAction = false;
+
     /**
      * Constructor, This creates and initializes instances of this class.
      *
@@ -108,13 +112,14 @@ public class CustomPopup extends Popup
         }
         // Create the display window.
         displayWindow = new JWindow(topWindow);
-		displayWindow.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowOpened(WindowEvent e) {
-				setEnableHideAction(true);
-			}
-		});
-		
+        // This is part of the bug fix for blank popup windows in linux. 
+        displayWindow.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                setEnableHideAction(true);
+            }
+        });
+
         displayWindow.getContentPane().add(mainPanel);
         displayWindow.setFocusable(true);
         displayWindow.pack();
@@ -168,7 +173,7 @@ public class CustomPopup extends Popup
      */
     @Override
     public void componentShown(ComponentEvent e) {
-		// Do nothing here.
+        // Do nothing here.
     }
 
     /**
@@ -235,7 +240,7 @@ public class CustomPopup extends Popup
      */
     @Override
     public void windowGainedFocus(WindowEvent e) {
-		// Do nothing here.
+        // Do nothing here.
     }
 
     /**
@@ -244,21 +249,27 @@ public class CustomPopup extends Popup
      */
     @Override
     public void windowLostFocus(WindowEvent e) {
-		if(isEnableHideAction()) {
-			hide();
-		}
-		else {
-			e.getWindow().requestFocus();
-		}
+        // This section is part of the bug fix for blank popup windows in linux. 
+        if (isEnableHideAction()) {
+            hide();
+        } else {
+            e.getWindow().requestFocus();
+        }
     }
-	
-	public void setEnableHideAction(boolean enabled) {
-		enableHideAction = enabled;
-	}
 
-	public boolean isEnableHideAction() {
-		return enableHideAction;
-	}
+    /**
+     * setEnableHideAction, This is part of the bug fix for blank popup windows in linux.
+     */
+    public void setEnableHideAction(boolean isEnabled) {
+        enableHideAction = isEnabled;
+    }
+
+    /**
+     * isEnableHideAction, This is part of the bug fix for blank popup windows in linux.
+     */
+    public boolean isEnableHideAction() {
+        return enableHideAction;
+    }
 
     public void setMinimumSize(Dimension minimumSize) {
         displayWindow.setMinimumSize(minimumSize);

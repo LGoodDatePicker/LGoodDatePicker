@@ -71,13 +71,12 @@ plugins in this file operate inside the "package" and "install" phases.
         </dependency>
         -->
        
-        <!-- BeansBinding, Uncomment this section to run the data binding demo.
+        <!-- BeansBinding, This is only used in the data binding demo. -->
         <dependency>
             <groupId>org.jdesktop</groupId>
             <artifactId>beansbinding</artifactId>
             <version>1.2.1</version>
         </dependency>
-         -->
         
     </dependencies>
     

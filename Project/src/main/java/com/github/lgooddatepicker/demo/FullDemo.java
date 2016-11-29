@@ -505,6 +505,7 @@ public class FullDemo {
         // This section creates date pickers and labels for demonstrating the language translations.
         int rowMarker = 0;
         addLocalizedPickerAndLabel(++rowMarker, "Arabic:", "ar");
+        addLocalizedPickerAndLabel(++rowMarker, "Bulgarian:", "bg");
         addLocalizedPickerAndLabel(++rowMarker, "Chinese:", "zh");
         addLocalizedPickerAndLabel(++rowMarker, "Czech:", "cs");
         addLocalizedPickerAndLabel(++rowMarker, "Danish:", "da");
