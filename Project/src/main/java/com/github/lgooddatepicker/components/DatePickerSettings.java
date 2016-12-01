@@ -17,7 +17,9 @@ import com.github.lgooddatepicker.zinternaltools.TranslationSource;
 import javax.swing.border.Border;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.DateInterval;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
+import com.github.lgooddatepicker.zinternaltools.DateVetoPolicyMinimumMaximumDate;
 import com.github.lgooddatepicker.zinternaltools.InternalConstants;
 import java.awt.Point;
 import javax.swing.border.CompoundBorder;
@@ -715,6 +717,27 @@ public class DatePickerSettings {
     }
 
     /**
+     * getDateRangeLimits, This will return a DateInterval containing any current date range limits.
+     * If no date range limits have been set, then this will return an empty DateInterval. (Both
+     * dates in the DateInterval will be null). If only one side of the date range limits was set,
+     * then the other date in the DateInterval will be null.
+     *
+     * Technical Notes: This will return any date range limits that were specifically created by
+     * calling "setDateRangeLimits()". Date range limits are internally implemented using a
+     * DateVetoPolicy. (Specifically using the class "DateVetoPolicyMinimumMaximumDate".) If
+     * setDateRangeLimits was never called, or if (for any reason) the current veto policy is not an
+     * instance of "DateVetoPolicyMinimumMaximumDate", then this will return an empty DateInterval.
+     * For additional details, see setDateRangeLimits().
+     */
+    public DateInterval getDateRangeLimits() {
+        DateVetoPolicy policy = getVetoPolicy();
+        if (policy instanceof DateVetoPolicyMinimumMaximumDate) {
+            return ((DateVetoPolicyMinimumMaximumDate) policy).getDateRangeLimits();
+        }
+        return new DateInterval();
+    }
+
+    /**
      * getEnableMonthMenu, Returns the value of this setting. See the "set" function for setting
      * information.
      */
@@ -1192,6 +1215,43 @@ public class DatePickerSettings {
     }
 
     /**
+     * setDateRangeLimits, This is a convenience function, for setting a DateVetoPolicy that will
+     * limit the allowed dates in the parent object to a specified minimum and maximum date value.
+     * Calling this function will always replace any existing DateVetoPolicy.
+     *
+     * If you only want to limit one side of the date range, then you can pass in "null" for the
+     * other date variable. If you pass in null for both values, then the current veto policy will
+     * be cleared.
+     *
+     * Important Note: The DatePicker or independent CalendarPanel associated with this settings
+     * instance is known as the "parent component". This function can only be called after the
+     * parent component is constructed with this settings instance. If this is called before the
+     * parent is constructed, then an exception will be thrown. For more details, see:
+     * "DatePickerSettings.setVetoPolicy()".
+     *
+     * Return value: It's possible to set a veto policy that vetoes the currently selected date.
+     * This function returns true if the selected date is allowed by the new veto policy and the
+     * other current settings, or false if the selected date is vetoed or disallowed. Setting a new
+     * veto policy does not modify the selected date. Is up to the programmer to resolve any
+     * potential conflict between a new veto policy, and the currently selected date.
+     */
+    public boolean setDateRangeLimits(LocalDate firstAllowedDate, LocalDate lastAllowedDate) {
+        if (!hasParent()) {
+            throw new RuntimeException("DatePickerSettings.setDateRangeLimits(), "
+                    + "A date range limit can only be set after constructing the parent "
+                    + "DatePicker or the parent independent CalendarPanel. (The parent component "
+                    + "should be constructed using the DatePickerSettings instance where the "
+                    + "date range limits will be applied. The previous sentence is probably "
+                    + "simpler than it sounds.)");
+        }
+        if (firstAllowedDate == null && lastAllowedDate == null) {
+            return setVetoPolicy(null);
+        }
+        return setVetoPolicy(new DateVetoPolicyMinimumMaximumDate(
+                firstAllowedDate, lastAllowedDate));
+    }
+
+    /**
      * setEnableMonthMenu, This sets the month popup menu to be enabled or disabled. (Note: The
      * month label is located in the header area of the calendar panel.) If this is true, then the
      * month label will give a visual indication of any "mouse over" events, and the month menu will
@@ -1659,10 +1719,10 @@ public class DatePickerSettings {
      *
      * This sets a veto policy for the parent DatePicker or parent independent CalendarPanel.
      *
-     * The DatePicker or independent CalendarPanel associated with this settings instance is known
-     * as the "parent component". Important Note: This function can only be called after the parent
-     * component is constructed with this settings instance. If this is called before the parent is
-     * constructed, then an exception will be thrown.
+     * Important Note: The DatePicker or independent CalendarPanel associated with this settings
+     * instance is known as the "parent component". This function can only be called after the
+     * parent component is constructed with this settings instance. If this is called before the
+     * parent is constructed, then an exception will be thrown.
      *
      * When a veto policy is supplied, it will be used to determine which dates can or can not be
      * selected in the calendar panel. (Vetoed dates are also not accepted into the date picker text
@@ -1671,11 +1731,11 @@ public class DatePickerSettings {
      * By default, there is no veto policy. Setting this function to null will clear any veto policy
      * that has been set.
      *
-     * It's possible to set a veto policy that vetoes the currently selected date. This function
-     * returns true if the selected date is allowed by the new veto policy and the other current
-     * settings, or false if the selected date is vetoed or disallowed. Setting a new veto policy
-     * does not modify the selected date. Is up to the programmer to resolve any potential conflict
-     * between a new veto policy, and the selected date stored in the parent object.
+     * Return value: It's possible to set a veto policy that vetoes the currently selected date.
+     * This function returns true if the selected date is allowed by the new veto policy and the
+     * other current settings, or false if the selected date is vetoed or disallowed. Setting a new
+     * veto policy does not modify the selected date. Is up to the programmer to resolve any
+     * potential conflict between a new veto policy, and the currently selected date.
      */
     public boolean setVetoPolicy(DateVetoPolicy vetoPolicy) {
         if (!hasParent()) {

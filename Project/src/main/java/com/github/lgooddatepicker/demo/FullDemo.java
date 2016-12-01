@@ -37,6 +37,7 @@ import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.LineBorder;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
+import com.github.lgooddatepicker.optionalusertools.DateInterval;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -157,6 +158,20 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 4, Both Policies:");
 
+        // Create a date picker: With date range limits.
+        // Notes: 
+        // * If you only want to limit one side of the date range, you can optionally pass in null 
+        // for one of the date limits.
+        // * Date range limits (and other types of veto policies) can only be set after constructing 
+        // the date picker.
+        dateSettings = new DatePickerSettings();
+        datePicker = new DatePicker(dateSettings);
+        LocalDate today = LocalDate.now();
+        dateSettings.setDateRangeLimits(today.minusDays(20), today.plusDays(20));
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), 
+                "Date 5, Limit date range (+/- 20 days):");
+
         // Create a date picker: Change calendar size.
         dateSettings = new DatePickerSettings();
         int newHeight = (int) (dateSettings.getSizeDatePanelMinimumHeight() * 1.6);
@@ -165,7 +180,7 @@ public class FullDemo {
         dateSettings.setSizeDatePanelMinimumWidth(newWidth);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 5, Change Calendar Size:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Calendar Size:");
 
         // Create a date picker: Change Colors.
         dateSettings = new DatePickerSettings();
@@ -177,7 +192,7 @@ public class FullDemo {
         dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.cyan);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 6, Change Colors:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 7, Change Colors:");
 
         // Create a date picker: Custom button icon.
         // You can replace the example image with any image file that is desired.
@@ -194,7 +209,7 @@ public class FullDemo {
         datePickerButton.setText("");
         datePickerButton.setIcon(dateExampleIcon);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 7, Custom Icon:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Icon:");
 
         // Create a date picker: Custom font.
         dateSettings = new DatePickerSettings();
@@ -203,7 +218,7 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Custom Font:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Font:");
 
         // Create a date picker: Custom Date Format.
         // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
@@ -216,7 +231,7 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Custom Date Format:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Custom Date Format:");
 
         // Create a date picker: Another Custom Date Format.
         // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
@@ -229,14 +244,14 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Another Custom Date Format:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Another Custom Date Format:");
 
         // Create a date picker: Change first weekday.
         dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Set First Day Of Week (Mon):");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Set First Day Of Week (Mon):");
 
         // Create a date picker: Show Week Numbers.
         // This will display week numbers on the left side of the calendar.
@@ -252,7 +267,7 @@ public class FullDemo {
         // dateSettings.setWeekNumberRules(WeekFields.ISO);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Show Week Numbers:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Show Week Numbers:");
 
         // Create a date picker: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
@@ -261,7 +276,7 @@ public class FullDemo {
         datePicker.addDateChangeListener(
                 new SampleDateChangeListener("datePicker13 (Disallow Empty Dates or Null), "));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Disallow Empty Dates:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Disallow Empty Dates:");
 
         // Create a date picker: Disallow keyboard editing.
         dateSettings = new DatePickerSettings();
@@ -269,7 +284,7 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         datePicker.setDateToToday();
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Disallow Keyboard Editing:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 15, Disallow Keyboard Editing:");
 
         // Create a Custom Border Properties List.
         // These border properties will be used for the next two date picker examples.
@@ -301,7 +316,7 @@ public class FullDemo {
         dateSettings.setBorderPropertiesList(borderProperties);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 15, Custom Borders:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 16, Custom Borders:");
 
         // Create a date picker: Custom Borders with Week Numbers.
         // Note: Week number borders are always hidden (invisible) unless the the week numbers are 
@@ -312,7 +327,7 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
-                "Date 16, Custom Borders with Week Numbers:");
+                "Date 17, Custom Borders with Week Numbers:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
