@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 /**
  * DateVetoPolicyMinimumMaximumDate, This class implements a veto policy that can set a minimum and
- * a maximum value for the allowed dates.
+ * a maximum value for the dates allowed in a DatePicker or a CalendarPanel.
  *
- * Pass in the first and the last allowed date to the constructor. If either value is null, then
- * there will be no limiting date on the associated side of the date range. Only one of the two
+ * Pass in the first and the last allowed date to the constructor. If one of the values is null,
+ * then there will be no limiting date on the associated side of the date range. Only one of the two
  * limiting dates can be null. If both dates are supplied, then the lastAllowedDate must be greater
  * than or equal to the firstAllowedDate.
  */
