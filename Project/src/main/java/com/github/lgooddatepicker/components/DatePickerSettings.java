@@ -286,6 +286,11 @@ public class DatePickerSettings {
     private boolean isVisibleClearButton = true;
 
     /**
+     * isVisibleDateTextField, This specifies if the named component should be displayed.
+     */
+    private boolean isVisibleDateTextField = true;
+
+    /**
      * isVisibleMonthMenuButton, This specifies if the named component should be displayed.
      */
     private boolean isVisibleMonthMenuButton = true;
@@ -631,6 +636,7 @@ public class DatePickerSettings {
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
         // "result.highlightPolicy" is left at its default value.
         result.isVisibleClearButton = this.isVisibleClearButton;
+        result.isVisibleDateTextField = this.isVisibleDateTextField;
         result.isVisibleMonthMenuButton = this.isVisibleMonthMenuButton;
         result.isVisibleNextMonthButton = this.isVisibleNextMonthButton;
         result.isVisibleNextYearButton = this.isVisibleNextYearButton;
@@ -946,6 +952,13 @@ public class DatePickerSettings {
      */
     public boolean getVisibleClearButton() {
         return isVisibleClearButton;
+    }
+
+    /**
+     * getVisibleDateTextField, This returns the visibility state of the named component.
+     */
+    public boolean getVisibleDateTextField() {
+        return isVisibleDateTextField;
     }
 
     /**
@@ -1751,6 +1764,19 @@ public class DatePickerSettings {
         // Return true if the selected date is allowed by the new policy, otherwise return false.
         LocalDate parentDate = zGetParentSelectedDate();
         return isDateAllowed(parentDate);
+    }
+
+    /**
+     * setVisibleDateTextField, This sets the visibility of the DatePicker text field. This can be
+     * used in conjunction with "setGapBeforeButtonPixels(0)" to create an instance of the date
+     * picker that only displays the toggle calendar button. One reason a developer might want to do
+     * this, is if they wished to provide their own component to display any selected date.
+     */
+    public void setVisibleDateTextField(boolean isVisible) {
+        isVisibleDateTextField = isVisible;
+        if (parentDatePicker != null) {
+            parentDatePicker.zApplyVisibilityOfComponents();
+        }
     }
 
     /**

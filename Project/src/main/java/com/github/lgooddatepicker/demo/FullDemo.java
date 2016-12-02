@@ -37,7 +37,6 @@ import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.LineBorder;
 import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
-import com.github.lgooddatepicker.optionalusertools.DateInterval;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -309,6 +308,17 @@ public class FullDemo {
         borderProperties.add(new CalendarBorderProperties(
                 new Point(5, 3), new Point(5, 3), Color.BLUE, 1));
 
+        // Create a date picker: With Hidden text field (Showing button only).
+        // Note: A developer might want to do this if they were providing their own component 
+        // for displaying the date.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setVisibleDateTextField(false);
+        dateSettings.setGapBeforeButtonPixels(0);
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
+                "Date 16, Hidden text field (Showing button only):");
+
         // Create a date picker: Custom Borders.
         // Note: Week number borders are always hidden (invisible) unless the the week numbers are 
         // displayed. ("Week number borders" are all borders located in columns 1 and 2.)
@@ -316,7 +326,7 @@ public class FullDemo {
         dateSettings.setBorderPropertiesList(borderProperties);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 16, Custom Borders:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 17, Custom Borders:");
 
         // Create a date picker: Custom Borders with Week Numbers.
         // Note: Week number borders are always hidden (invisible) unless the the week numbers are 
@@ -327,7 +337,7 @@ public class FullDemo {
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
-                "Date 17, Custom Borders with Week Numbers:");
+                "Date 18, Custom Borders with Week Numbers:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
