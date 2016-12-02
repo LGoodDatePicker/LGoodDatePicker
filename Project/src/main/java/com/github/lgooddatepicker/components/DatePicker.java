@@ -174,6 +174,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         settings = (settings == null) ? new DatePickerSettings() : settings;
         settings.zSetParentDatePicker(this);
         this.settings = settings;
+
         // Apply needed settings from the settings instance to this date picker.
         // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel 
         // constructor so it will be run both for independent and date picker calendar panels.
@@ -190,6 +191,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         zSetAppropriateTextFieldMinimumWidth();
         // Redraw the date picker text field.
         settings.zDrawDatePickerTextFieldIfNeeded();
+        // Apply the visibility of date picker components.
+        zApplyVisibilityOfComponents();
     }
 
     /**
@@ -493,8 +496,11 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 + toggleCalendarButton.getBounds().width - popup.getBounds().width - 2;
         int defaultY = toggleCalendarButton.getLocationOnScreen().y
                 + toggleCalendarButton.getBounds().height + 2;
+        // Determine which component to use as the vertical flip reference component.
+        JComponent verticalFlipReference = (settings.getVisibleDateTextField())
+                ? dateTextField : toggleCalendarButton;
         // Set the popup location.
-        zSetPopupLocation(popup, defaultX, defaultY, this, dateTextField, 2, 6);
+        zSetPopupLocation(popup, defaultX, defaultY, this, verticalFlipReference, 2, 6);
         // Show the popup and focus the calendar.
         popup.show();
         calendarPanel.requestFocus();
@@ -679,6 +685,15 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
                 zEventTextFieldChanged();
             }
         });
+    }
+
+    /**
+     * zApplyVisibilityOfButtons, This applies any settings that control visibility of components on
+     * this date picker.
+     */
+    void zApplyVisibilityOfComponents() {
+        boolean showDateTextField = settings.getVisibleDateTextField();
+        dateTextField.setVisible(showDateTextField);
     }
 
     /**

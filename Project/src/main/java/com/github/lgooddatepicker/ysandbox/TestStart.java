@@ -13,6 +13,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 /**
  * testStart, This is a class used to test various functions while programming. This class is not
@@ -34,15 +35,11 @@ public class TestStart {
 
         // Create a CalendarPanel: With highlight policy.
         dateSettings = new DatePickerSettings();
-        dateSettings.setAllowEmptyDates(false);
-        dateSettings.setAllowKeyboardEditing(false);
         datePicker = new DatePicker(dateSettings);
+        dateSettings.setVisibleDateTextField(false);
+        dateSettings.setGapBeforeButtonPixels(0);
+        datePicker.setBorder(LineBorder.createBlackLineBorder());
         panel.add(datePicker);
-        dateSettings.setVetoPolicy(new SampleDateVetoPolicy());
-        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundValidDate, Color.green);
-        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundInvalidDate, Color.blue);
-        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundVetoedDate, Color.orange);
-        dateSettings.setColor(DatePickerSettings.DateArea.TextFieldBackgroundDisallowedEmptyDate, Color.pink);
         /*
         datePicker = new DatePicker(dateSettings);
         panel.add(datePicker);
