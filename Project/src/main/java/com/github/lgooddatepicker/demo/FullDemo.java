@@ -536,6 +536,7 @@ public class FullDemo {
         addLocalizedPickerAndLabel(++rowMarker, "Danish:", "da");
         addLocalizedPickerAndLabel(++rowMarker, "Dutch:", "nl");
         addLocalizedPickerAndLabel(++rowMarker, "English:", "en");
+        addLocalizedPickerAndLabel(++rowMarker, "Finnish:", "fi");
         addLocalizedPickerAndLabel(++rowMarker, "French:", "fr");
         addLocalizedPickerAndLabel(++rowMarker, "German:", "de");
         addLocalizedPickerAndLabel(++rowMarker, "Greek:", "el");
