@@ -9,9 +9,12 @@ import java.util.regex.Pattern;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
+import java.awt.Component;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -424,6 +427,17 @@ public class InternalUtilities {
             return false;
         }
         return (!policy.isDateAllowed(date));
+    }
+
+    /**
+     * isMouseWithinComponent, This returns true if the mouse is inside of the specified component,
+     * otherwise returns false.
+     */
+    static public boolean isMouseWithinComponent(Component component) {
+        Point mousePos = MouseInfo.getPointerInfo().getLocation();
+        Rectangle bounds = component.getBounds();
+        bounds.setLocation(component.getLocationOnScreen());
+        return bounds.contains(mousePos);
     }
 
     public static boolean isTimeVetoed(TimeVetoPolicy policy, LocalTime time) {

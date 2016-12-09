@@ -526,6 +526,7 @@ public class FullDemo {
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining DateTimePickers.
         // (None here at the moment.)
+        //
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates date pickers and labels for demonstrating the language translations.
         int rowMarker = 0;

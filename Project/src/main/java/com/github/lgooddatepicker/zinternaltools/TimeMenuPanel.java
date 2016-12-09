@@ -23,6 +23,14 @@ public class TimeMenuPanel extends JPanel {
     private TimePicker parentTimePicker;
     private TimePickerSettings settings;
 
+    /**
+     * enableMouseReleaseEventsFromToggleButton, This is used to prevent accidental premature list
+     * closing when pressing the toggle popup button and moving the mouse downwards. The mouse
+     * release event from the toggle button is only enabled after a certain minimum amount of time
+     * after the time picker list has been displayed (part of one second).
+     */
+    private boolean enableMouseReleaseEventsFromToggleButton = false;
+
     public TimeMenuPanel(TimePicker parentTimePicker, TimePickerSettings settings) {
         this.parentTimePicker = parentTimePicker;
         this.settings = settings;
@@ -63,6 +71,17 @@ public class TimeMenuPanel extends JPanel {
         // Set the maximum number of visible menu rows to the appropriate value.
         int maximumMenuRows = Math.min(settings.maximumVisibleMenuRows, timeListModel.getSize());
         timeList.setVisibleRowCount(maximumMenuRows);
+
+        // Make sure that the window has been open long enough for the user to read (or see) the
+        // time menu before allowing the popup to be closed from a mouse release event that 
+        // originates from the toggle button.
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+            @Override
+            public void run() {
+                enableMouseReleaseEventsFromToggleButton = true;
+            }
+        }, 500);
     }
 
     public void mouseDraggedFromToggleButton() {
@@ -80,6 +99,11 @@ public class TimeMenuPanel extends JPanel {
     }
 
     public void mouseReleasedFromToggleButtonOutsideButton() {
+        // Check to see if mouse release events from the toggle button are enabled.
+        if (!enableMouseReleaseEventsFromToggleButton) {
+            return;
+        }
+        // Call the mouse release event funtion. 
         mouseReleasedWhileTimeListIsOpen();
     }
 
@@ -117,7 +141,7 @@ public class TimeMenuPanel extends JPanel {
         settings = null;
     }
 
-    void generateTimeEntriesFromSettings() {
+    final void generateTimeEntriesFromSettings() {
         timeListModel.clear();
         DateTimeFormatter formatForMenuTimes = settings.getFormatForMenuTimes();
         ArrayList<LocalTime> menuTimes = settings.getPotentialMenuTimes();
@@ -134,7 +158,8 @@ public class TimeMenuPanel extends JPanel {
 
     private void userSelectedATime(String selectedTimeString) {
         // Try to parse the selected time string. 
-        LocalTime selectedTime = InternalUtilities.getParsedTimeOrNull(selectedTimeString, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
+        LocalTime selectedTime = InternalUtilities.getParsedTimeOrNull(selectedTimeString,
+                settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
                 settings.formatsForParsing, settings.getLocale());
         // Check to see if the time was parsed. The time should always parse successfully.
         if (selectedTime == null) {

@@ -253,11 +253,16 @@ public class CustomPopup extends Popup
     @Override
     public void windowLostFocus(WindowEvent e) {
         // This section is part of the bug fix for blank popup windows in linux.
-        if (enableHideWhenFocusIsLost) {
-            hide();
-        } else {
+        if (!enableHideWhenFocusIsLost) {
             e.getWindow().requestFocus();
+            return;
         }
+        // This fixes a linux-specific behavior where the focus can be "lost" by clicking a child
+        // component (inside the same panel!).
+        if (InternalUtilities.isMouseWithinComponent(displayWindow)) {
+            return;
+        }
+        hide();
     }
 
     public void setMinimumSize(Dimension minimumSize) {
