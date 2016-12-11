@@ -259,7 +259,10 @@ public class TimePicker
      */
     @Override
     public int getBaseline(int width, int height) {
-        return timeTextField.getBaseline(width, height);
+        if (timeTextField.isVisible()) {
+            return timeTextField.getBaseline(width, height);
+        }
+        return super.getBaseline(width, height);
     }
 
     /**

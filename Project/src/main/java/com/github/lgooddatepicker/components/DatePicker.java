@@ -260,7 +260,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     @Override
     public int getBaseline(int width, int height) {
-        return dateTextField.getBaseline(width, height);
+        if (dateTextField.isVisible()) {
+            return dateTextField.getBaseline(width, height);
+        }
+        return super.getBaseline(width, height);
     }
 
     /**
