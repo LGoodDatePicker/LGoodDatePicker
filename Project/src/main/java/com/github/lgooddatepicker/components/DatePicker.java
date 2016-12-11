@@ -256,6 +256,14 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     }
 
     /**
+     * getBaseline, This returns the baseline value of the dateTextField.
+     */
+    @Override
+    public int getBaseline(int width, int height) {
+        return dateTextField.getBaseline(width, height);
+    }
+
+    /**
      * getComponentDateTextField, Returns the date text field for this date picker. It is not
      * expected that most programmers will need or want to use this function.
      *

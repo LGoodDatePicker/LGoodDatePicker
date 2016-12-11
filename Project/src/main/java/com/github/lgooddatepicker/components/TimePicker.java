@@ -255,6 +255,14 @@ public class TimePicker
     }
 
     /**
+     * getBaseline, This returns the baseline value of the timeTextField.
+     */
+    @Override
+    public int getBaseline(int width, int height) {
+        return timeTextField.getBaseline(width, height);
+    }
+
+    /**
      * getComponentDecreaseSpinnerButton, Returns the decrease spinner button that is used by this
      * time picker. The spinner buttons are only visible if the programmer has enabled them in the
      * TimePickerSettings.

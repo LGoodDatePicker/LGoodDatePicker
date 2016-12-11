@@ -119,6 +119,14 @@ public class DateTimePicker extends JPanel {
     }
 
     /**
+     * getBaseline, This returns the baseline value of the dateTextField of the date picker.
+     */
+    @Override
+    public int getBaseline(int width, int height) {
+        return datePicker.getBaseline(width, height);
+    }
+
+    /**
      * getDatePicker, This returns the date picker component of this DateTimePicker.
      */
     public DatePicker getDatePicker() {
