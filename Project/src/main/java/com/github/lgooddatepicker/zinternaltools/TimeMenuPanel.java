@@ -19,17 +19,38 @@ import java.util.ArrayList;
 
 public class TimeMenuPanel extends JPanel {
 
-    private DefaultListModel timeListModel;
+    /**
+     * minimumMouseReleaseFromToggleButtonMilliseconds, This is how long we should wait, before
+     * allowing the time menu panel to be closed during a mouse release event that originates from
+     * the toggle button. This is used to prevent accidental premature list closing when pressing
+     * the toggle button and moving the mouse downwards. The mouse release event from the toggle
+     * button will only be enabled after this amount of time has passed since construction.
+     */
+    private int minimumMouseReleaseFromToggleButtonMilliseconds = 450;
+
+    /**
+     * minimumTimeToEnableMouseReleaseFromToggleButton, This is the "currentTimeMillis()" value that
+     * must be passed, to enable the mouse release event from the toggle button. This equals
+     * ((System.currentTimeMillis() at construction) + minimumMouseReleaseCloseMilliSeconds). This
+     * is calculated at the end of the constructor.
+     */
+    private long minimumTimeToEnableMouseReleaseFromToggleButton;
+
+    /**
+     * parentTimePicker, This holds our parent time picker instance. This is supplied at
+     * construction.
+     */
     private TimePicker parentTimePicker;
+
+    /**
+     * settings, This holds our time picker settings instance. This is supplied at construction.
+     */
     private TimePickerSettings settings;
 
     /**
-     * enableMouseReleaseEventsFromToggleButton, This is used to prevent accidental premature list
-     * closing when pressing the toggle popup button and moving the mouse downwards. The mouse
-     * release event from the toggle button is only enabled after a certain minimum amount of time
-     * after the time picker list has been displayed (part of one second).
+     * timeListModel, The holds the list model that is used for populating the time list.
      */
-    private boolean enableMouseReleaseEventsFromToggleButton = false;
+    private DefaultListModel timeListModel;
 
     public TimeMenuPanel(TimePicker parentTimePicker, TimePickerSettings settings) {
         this.parentTimePicker = parentTimePicker;
@@ -72,16 +93,10 @@ public class TimeMenuPanel extends JPanel {
         int maximumMenuRows = Math.min(settings.maximumVisibleMenuRows, timeListModel.getSize());
         timeList.setVisibleRowCount(maximumMenuRows);
 
-        // Make sure that the window has been open long enough for the user to read (or see) the
-        // time menu before allowing the popup to be closed from a mouse release event that 
-        // originates from the toggle button.
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-            @Override
-            public void run() {
-                enableMouseReleaseEventsFromToggleButton = true;
-            }
-        }, 500);
+        // Calculate and save the minimum system time, at which to enable the mouse release from
+        // toggle button event.
+        minimumTimeToEnableMouseReleaseFromToggleButton = System.currentTimeMillis()
+                + minimumMouseReleaseFromToggleButtonMilliseconds;
     }
 
     public void mouseDraggedFromToggleButton() {
@@ -99,6 +114,12 @@ public class TimeMenuPanel extends JPanel {
     }
 
     public void mouseReleasedFromToggleButtonOutsideButton() {
+        // Make sure that the window has been open long enough for the user to read (or see) the
+        // time menu, before allowing the popup to be closed from a mouse release event that 
+        // originates from the toggle button.
+        boolean enableMouseReleaseEventsFromToggleButton
+                = (System.currentTimeMillis() > minimumTimeToEnableMouseReleaseFromToggleButton);
+
         // Check to see if mouse release events from the toggle button are enabled.
         if (!enableMouseReleaseEventsFromToggleButton) {
             return;
