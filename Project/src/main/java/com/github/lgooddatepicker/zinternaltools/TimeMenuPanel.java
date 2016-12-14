@@ -26,7 +26,7 @@ public class TimeMenuPanel extends JPanel {
      * the toggle button and moving the mouse downwards. The mouse release event from the toggle
      * button will only be enabled after this amount of time has passed since construction.
      */
-    private int minimumMouseReleaseFromToggleButtonMilliseconds = 450;
+    private int minimumMouseReleaseFromToggleButtonMilliseconds = 400;
 
     /**
      * minimumTimeToEnableMouseReleaseFromToggleButton, This is the "currentTimeMillis()" value that
