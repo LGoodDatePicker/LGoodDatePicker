@@ -125,6 +125,11 @@ public class CustomPopup extends Popup
 
         displayWindow.getContentPane().add(mainPanel);
         displayWindow.setFocusable(true);
+        
+        // Bug Fix for Github Issue #49
+        // "Date selection and navigation not working on Mac OS X 10.12.4 under Java 8 update 121."
+        displayWindow.setAlwaysOnTop(true);
+        
         displayWindow.pack();
         displayWindow.validate();
         // Add the action that is needed to close the popup when the escape key is pressed.
