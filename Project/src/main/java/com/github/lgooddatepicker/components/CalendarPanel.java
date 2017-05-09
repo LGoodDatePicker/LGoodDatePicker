@@ -1166,10 +1166,11 @@ public class CalendarPanel extends JPanel {
         // Calculate the preferred height for the month and year panel.
         int heightNavigationButtons = buttonPreviousYear.getPreferredSize().height;
         int preferredHeightMonthLabel = labelMonth.getPreferredSize().height;
+        int preferredHeightYearLabel = labelYear.getPreferredSize().height;
         int monthFontHeight = metrics.getHeight();
         int monthFontHeightWithPadding = monthFontHeight + 2;
-        int panelHeight = Math.max(monthFontHeightWithPadding, 
-                Math.max(preferredHeightMonthLabel, heightNavigationButtons));
+        int panelHeight = Math.max(monthFontHeightWithPadding, Math.max(preferredHeightMonthLabel,
+                        Math.max(preferredHeightYearLabel, heightNavigationButtons)));
         // Get the length of the longest translated month string (in pixels).
         DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         String[] allLocalMonths = symbols.getMonths();
