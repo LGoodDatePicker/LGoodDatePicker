@@ -32,6 +32,8 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
 import java.util.HashMap;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized for a DatePicker (or an
@@ -54,19 +56,27 @@ public class DatePickerSettings {
      * These values are used with the setColor() function, to set the color of various areas of the
      * DatePicker or the CalendarPanel. The default color for each area is also defined here.
      *
-     * Note: A default color of "null" means that the default color for that element is supplied by
-     * the swing component. The default color for "BackgroundMonthAndYearNavigationButtons" is null,
-     * so those buttons will use the default background color supplied by the JButton class.
+     * Note: The text color of disabled (vetoed) dates in the calendar will always be grey (cannot
+     * be modified). This seems to be enforced by the swing setEnabled() function.
      */
     public enum DateArea {
-        BackgroundClearButton(new Color(240, 240, 240)),
-        BackgroundMonthAndYearMenuButtons(new Color(240, 240, 240)),
-        BackgroundMonthAndYearNavigationButtons(null),
+        BackgroundClearLabel(new Color(240, 240, 240)),
+        BackgroundMonthAndYearMenuLabels(new Color(240, 240, 240)),
+        BackgroundMonthAndYearNavigationButtons(new JButton().getBackground()),
         BackgroundOverallCalendarPanel(new Color(240, 240, 240)),
-        BackgroundTodayButton(new Color(240, 240, 240)),
+        BackgroundTodayLabel(new Color(240, 240, 240)),
         BackgroundTopLeftLabelAboveWeekNumbers(new Color(184, 207, 229)),
-        CalendarDefaultBackgroundHighlightedDates(Color.green),
+        CalendarBackgroundNormalDates(Color.white),
         CalendarBackgroundVetoedDates(Color.lightGray),
+        CalendarDefaultBackgroundHighlightedDates(Color.green),
+        CalendarDefaultTextHighlightedDates(Color.black),
+        CalendarTextNormalDates(Color.black),
+        CalendarTextWeekdays(Color.black),
+        CalendarTextWeekNumbers(Color.black),
+        TextClearLabel(new JLabel().getForeground()),
+        TextMonthAndYearMenuLabels(new JLabel().getForeground()),
+        TextMonthAndYearNavigationButtons(new JButton().getForeground()),
+        TextTodayLabel(new JLabel().getForeground()),
         TextFieldBackgroundDisallowedEmptyDate(Color.pink),
         TextFieldBackgroundInvalidDate(Color.white),
         TextFieldBackgroundValidDate(Color.white),
@@ -206,11 +216,51 @@ public class DatePickerSettings {
     private DayOfWeek firstDayOfWeek;
 
     /**
+     * fontCalendarDateLabels, This is the text font for the dates in the calendar panel. The
+     * default font is the normal undecorated font, as provided by the JLabel component.
+     */
+    private Font fontCalendarDateLabels;
+
+    /**
+     * fontCalendarWeekdayLabels, This is the text font for the weekdays in the calendar panel. The
+     * default font is the normal undecorated font, as provided by the JLabel component.
+     */
+    private Font fontCalendarWeekdayLabels;
+
+    /**
+     * fontCalendarWeekNumberLabels, This is the text font for the week numbers (if they are
+     * displayed) in the calendar panel. The default font is the normal undecorated font, as
+     * provided by the JLabel component.
+     */
+    private Font fontCalendarWeekNumberLabels;
+    /**
+     * fontClearButton, This is the text font for the clear button. The default font is the normal
+     * undecorated font, as provided by the JLabel component.
+     */
+    private Font fontClearLabel;
+
+    /**
      * fontInvalidDate, This is the text field text font for invalid dates. The default font is a
      * normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See also:
      * setColor() and "DateArea.DatePickerTextInvalidDate".)
      */
     private Font fontInvalidDate;
+    /**
+     * fontMonthAndYearMenuButtons, This is the text font for the month and year menu buttons. The
+     * default font is the normal undecorated font, as provided by the JLabel component.
+     */
+    private Font fontMonthAndYearMenuLabels;
+    /**
+     * fontMonthAndYearNavigationButtons, This is the text font for the month and year navigation
+     * buttons. The default font is the normal undecorated font, as provided by the JLabel
+     * component.
+     */
+    private Font fontMonthAndYearNavigationButtons;
+    /**
+     * fontTodayButton, This is the text font for the today button. The default font is the normal
+     * undecorated font, as provided by the JLabel component.
+     */
+    private Font fontTodayLabel;
 
     /**
      * fontValidDate, This is the text field text font for valid dates. The default font is a normal
@@ -558,7 +608,7 @@ public class DatePickerSettings {
      */
     public DatePickerSettings(Locale pickerLocale) {
         // Add all the default colors to the colors map.
-        colors = new HashMap< DateArea, Color>();
+        colors = new HashMap<DateArea, Color>();
         for (DateArea area : DateArea.values()) {
             colors.put(area, area.defaultColor);
         }
@@ -569,6 +619,15 @@ public class DatePickerSettings {
 
         // Generate the default fonts and text colors.
         // The font object is immutable, so it's okay to sign the same font to multiple settings.
+        Font defaultLabelFont = new JLabel().getFont();
+        fontClearLabel = defaultLabelFont;
+        fontCalendarDateLabels = defaultLabelFont;
+        fontCalendarWeekdayLabels = defaultLabelFont;
+        fontCalendarWeekNumberLabels = defaultLabelFont;
+        fontMonthAndYearMenuLabels = defaultLabelFont;
+        fontTodayLabel = defaultLabelFont;
+        Font defaultButtonFont = new JButton().getFont();
+        fontMonthAndYearNavigationButtons = defaultButtonFont;
         Font defaultTextFieldFont = new JTextField().getFont();
         fontValidDate = defaultTextFieldFont;
         fontInvalidDate = defaultTextFieldFont;
@@ -624,7 +683,14 @@ public class DatePickerSettings {
         }
         result.firstDayOfWeek = this.firstDayOfWeek;
         // The Font class is immutable.
+        result.fontClearLabel = this.fontClearLabel;
+        result.fontCalendarDateLabels = this.fontCalendarDateLabels;
+        result.fontCalendarWeekdayLabels = this.fontCalendarWeekdayLabels;
+        result.fontCalendarWeekNumberLabels = this.fontCalendarWeekNumberLabels;
         result.fontInvalidDate = this.fontInvalidDate;
+        result.fontMonthAndYearMenuLabels = this.fontMonthAndYearMenuLabels;
+        result.fontMonthAndYearNavigationButtons = this.fontMonthAndYearNavigationButtons;
+        result.fontTodayLabel = this.fontTodayLabel;
         result.fontValidDate = this.fontValidDate;
         result.fontVetoedDate = this.fontVetoedDate;
         // The DateTimeFormatter class is immutable.
@@ -782,11 +848,67 @@ public class DatePickerSettings {
     }
 
     /**
+     * getFontCalendarDateLabels, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public Font getFontCalendarDateLabels() {
+        return fontCalendarDateLabels;
+    }
+
+    /**
+     * getFontCalendarWeekNumberLabels, Returns the value of this setting. See the "set" function
+     * for setting information.
+     */
+    public Font getFontCalendarWeekNumberLabels() {
+        return fontCalendarWeekNumberLabels;
+    }
+
+    /**
+     * getFontCalendarWeekdayLabels, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public Font getFontCalendarWeekdayLabels() {
+        return fontCalendarWeekdayLabels;
+    }
+
+    /**
+     * getFontClearLabel, Returns the value of this setting. See the "set" function for setting
+     * information.
+     */
+    public Font getFontClearLabel() {
+        return fontClearLabel;
+    }
+
+    /**
      * getFontInvalidDate, Returns the value of this setting. See the "set" function for setting
      * information.
      */
     public Font getFontInvalidDate() {
         return fontInvalidDate;
+    }
+
+    /**
+     * getFontMonthAndYearMenuLabels, Returns the value of this setting. See the "set" function for
+     * setting information.
+     */
+    public Font getFontMonthAndYearMenuLabels() {
+        return fontMonthAndYearMenuLabels;
+    }
+
+    /**
+     * getFontMonthAndYearNavigationButtons, Returns the value of this setting. See the "set"
+     * function for setting information.
+     */
+    public Font getFontMonthAndYearNavigationButtons() {
+        return fontMonthAndYearNavigationButtons;
+    }
+
+    /**
+     * getFontTodayLabel, Returns the value of this setting. See the "set" function for setting
+     * information.
+     */
+    public Font getFontTodayLabel() {
+        return fontTodayLabel;
     }
 
     /**
@@ -1170,9 +1292,9 @@ public class DatePickerSettings {
         colors.put(area, color);
         // Call any "updating functions" that are appropriate for the specified area.
         switch (area) {
-            case BackgroundMonthAndYearMenuButtons:
-            case BackgroundTodayButton:
-            case BackgroundClearButton:
+            case BackgroundMonthAndYearMenuLabels:
+            case BackgroundTodayLabel:
+            case BackgroundClearLabel:
                 if (parentCalendarPanel != null) {
                     parentCalendarPanel.zSetAllLabelIndicatorColorsToDefaultState();
                 }
@@ -1312,6 +1434,42 @@ public class DatePickerSettings {
     }
 
     /**
+     * setFontCalendarDateLabels, This sets the font for the date numbers in the calendar panel.
+     * (Technical note: The date numbers are in JLabel instances.)
+     */
+    public void setFontCalendarDateLabels(Font fontCalendarDateLabels) {
+        this.fontCalendarDateLabels = fontCalendarDateLabels;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setFontCalendarWeekNumberLabels, This sets the font for the week numbers in the calendar
+     * panel. (This color will only appear if the week numbers are enabled.)
+     */
+    public void setFontCalendarWeekNumberLabels(Font fontCalendarWeekNumberLabels) {
+        this.fontCalendarWeekNumberLabels = fontCalendarWeekNumberLabels;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setFontCalendarWeekdayLabels, This sets the font for the weekday labels in the calendar
+     * panel.
+     */
+    public void setFontCalendarWeekdayLabels(Font fontCalendarWeekdayLabels) {
+        this.fontCalendarWeekdayLabels = fontCalendarWeekdayLabels;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setFontClearLabel, This sets the font for the clear label, (this also acts as a "button"), in
+     * the calendar panel.
+     */
+    public void setFontClearLabel(Font fontClearLabel) {
+        this.fontClearLabel = fontClearLabel;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
      * setFontInvalidDate, This sets the text field text font for invalid dates. The default font is
      * a normal undecorated font. (Note: The color for invalid dates defaults to Color.red. See
      * also: "colorTextInvalidDate".)
@@ -1321,8 +1479,35 @@ public class DatePickerSettings {
     }
 
     /**
+     * setFontMonthAndYearMenuLabels, This sets the font for the (two) month and year menu labels
+     * (these also act as "buttons") in the calendar panel.
+     */
+    public void setFontMonthAndYearMenuLabels(Font fontMonthAndYearMenuLabels) {
+        this.fontMonthAndYearMenuLabels = fontMonthAndYearMenuLabels;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setFontMonthAndYearNavigationButtons, This sets the font for the (four) month any year
+     * navigation buttons in the calendar panel.
+     */
+    public void setFontMonthAndYearNavigationButtons(Font fontMonthAndYearNavigationButtons) {
+        this.fontMonthAndYearNavigationButtons = fontMonthAndYearNavigationButtons;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
+     * setFontTodayLabel, This sets the font for the today label, (this also acts as a "button"), in
+     * the calendar panel.
+     */
+    public void setFontTodayLabel(Font fontTodayLabel) {
+        this.fontTodayLabel = fontTodayLabel;
+        zDrawIndependentCalendarPanelIfNeeded();
+    }
+
+    /**
      * setFontValidDate, This sets the text field text font for valid dates. The default font is a
-     * normal undecorated font.
+     * normal undecorated font, as provided by JTextField.
      *
      * Note: Changing the font for valid dates may also change the default minimum size for the date
      * picker. This will not affect the minimum size if it has been overridden by the programmer.

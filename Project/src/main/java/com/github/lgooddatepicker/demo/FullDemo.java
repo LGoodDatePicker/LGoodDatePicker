@@ -179,7 +179,7 @@ public class FullDemo {
         LocalDate today = LocalDate.now();
         dateSettings.setDateRangeLimits(today.minusDays(20), today.plusDays(20));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), 
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
                 "Date 6, Limit date range (+/- 20 days):");
 
         // Create a date picker: Custom button icon.
@@ -209,60 +209,6 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 8, Change Calendar Size:");
 
-        // Create a date picker: Change Colors.
-        dateSettings = new DatePickerSettings();
-        dateSettings.setColor(DateArea.BackgroundOverallCalendarPanel, Color.green);
-        dateSettings.setColorBackgroundWeekdayLabels(Color.orange, true);
-        dateSettings.setColor(DateArea.BackgroundMonthAndYearMenuButtons, Color.yellow);
-        dateSettings.setColor(DateArea.BackgroundTodayButton, Color.yellow);
-        dateSettings.setColor(DateArea.BackgroundClearButton, Color.yellow);
-        dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.cyan);
-        datePicker = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Change Colors:");
-
-        // Create a date picker: Custom font.
-        dateSettings = new DatePickerSettings();
-        dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
-        dateSettings.setColor(DateArea.DatePickerTextValidDate, new Color(0, 100, 0));
-        datePicker = new DatePicker(dateSettings);
-        datePicker.setDateToToday();
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Custom Font:");
-
-        // Create a date picker: Custom Date Format.
-        // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
-        // For more details about that, see: DatePickerSettings.setFormatForDatesBeforeCommonEra().
-        // The various codes for the date pattern string are described at this link:
-        // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
-        dateSettings = new DatePickerSettings();
-        dateSettings.setFormatForDatesCommonEra("yyyy/MM/dd");
-        dateSettings.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
-        datePicker = new DatePicker(dateSettings);
-        datePicker.setDateToToday();
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Custom Date Format:");
-
-        // Create a date picker: Another Custom Date Format.
-        // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
-        // For more details about that, see: DatePickerSettings.setFormatForDatesBeforeCommonEra().
-        // The various codes for the date pattern string are described at this link:
-        // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
-        dateSettings = new DatePickerSettings();
-        dateSettings.setFormatForDatesCommonEra("d MMM yyyy");
-        dateSettings.setFormatForDatesBeforeCommonEra("d MMM uuuu");
-        datePicker = new DatePicker(dateSettings);
-        datePicker.setDateToToday();
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Another Custom Date Format:");
-
-        // Create a date picker: Change first weekday.
-        dateSettings = new DatePickerSettings();
-        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
-        datePicker = new DatePicker(dateSettings);
-        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Set First Day Of Week (Mon):");
-
         // Create a date picker: Show Week Numbers.
         // This will display week numbers on the left side of the calendar.
         // By default, the week number rules are specific to the locale of the settings instance.
@@ -277,7 +223,85 @@ public class FullDemo {
         // dateSettings.setWeekNumberRules(WeekFields.ISO);
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Show Week Numbers:");
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 9, Show Week Numbers:");
+
+        // Create a date picker: Change Colors and Fonts.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setWeekNumbersDisplayed(true, true);
+        // Set backgrounds:
+        dateSettings.setColor(DateArea.CalendarBackgroundNormalDates, Color.CYAN);
+        dateSettings.setColor(DateArea.BackgroundOverallCalendarPanel, Color.GREEN);
+        dateSettings.setColor(DateArea.BackgroundMonthAndYearMenuLabels, Color.YELLOW);
+        dateSettings.setColor(DateArea.BackgroundTodayLabel, Color.YELLOW);
+        dateSettings.setColor(DateArea.BackgroundClearLabel, Color.YELLOW);
+        dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.CYAN);
+        dateSettings.setColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers, Color.ORANGE);
+        dateSettings.setColorBackgroundWeekdayLabels(Color.ORANGE, true);
+        dateSettings.setColorBackgroundWeekNumberLabels(Color.ORANGE, true);
+        // Set fonts:
+        Font randomFont = new Font("Monospaced", Font.ITALIC | Font.BOLD, 20);
+        Font smallerFont = new Font("Serif", Font.BOLD, 18);
+        dateSettings.setFontMonthAndYearMenuLabels(randomFont);
+        dateSettings.setFontMonthAndYearNavigationButtons(randomFont);
+        dateSettings.setFontTodayLabel(randomFont);
+        dateSettings.setFontClearLabel(randomFont);
+        dateSettings.setFontCalendarDateLabels(randomFont);
+        dateSettings.setFontCalendarWeekdayLabels(smallerFont);
+        dateSettings.setFontCalendarWeekNumberLabels(smallerFont);
+        // Set text colors:
+        dateSettings.setColor(DateArea.TextMonthAndYearMenuLabels, Color.BLUE);
+        dateSettings.setColor(DateArea.TextMonthAndYearNavigationButtons, Color.BLUE);
+        dateSettings.setColor(DateArea.TextTodayLabel, Color.BLUE);
+        dateSettings.setColor(DateArea.TextClearLabel, Color.BLUE);
+        dateSettings.setColor(DateArea.CalendarTextNormalDates, Color.MAGENTA);
+        dateSettings.setColor(DateArea.CalendarTextWeekdays, Color.RED);
+        dateSettings.setColor(DateArea.CalendarTextWeekNumbers, Color.RED);
+        // Create the date picker. 
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 10, Change Colors and Fonts:");
+
+        // Create a date picker: Custom font.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setFontValidDate(new Font("Monospaced", Font.ITALIC | Font.BOLD, 17));
+        dateSettings.setColor(DateArea.DatePickerTextValidDate, new Color(0, 100, 0));
+        datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 11, Custom Font:");
+
+        // Create a date picker: Custom Date Format.
+        // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
+        // For more details about that, see: DatePickerSettings.setFormatForDatesBeforeCommonEra().
+        // The various codes for the date pattern string are described at this link:
+        // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+        dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("yyyy/MM/dd");
+        dateSettings.setFormatForDatesBeforeCommonEra("uuuu/MM/dd");
+        datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 12, Custom Date Format:");
+
+        // Create a date picker: Another Custom Date Format.
+        // When creating a date pattern string for BCE dates, use "u" instead of "y" for the year.
+        // For more details about that, see: DatePickerSettings.setFormatForDatesBeforeCommonEra().
+        // The various codes for the date pattern string are described at this link:
+        // https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+        dateSettings = new DatePickerSettings();
+        dateSettings.setFormatForDatesCommonEra("d MMM yyyy");
+        dateSettings.setFormatForDatesBeforeCommonEra("d MMM uuuu");
+        datePicker = new DatePicker(dateSettings);
+        datePicker.setDateToToday();
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 13, Another Custom Date Format:");
+
+        // Create a date picker: Change first weekday.
+        dateSettings = new DatePickerSettings();
+        dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
+        datePicker = new DatePicker(dateSettings);
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date 14, Set First Day Of Week (Mon):");
 
         // Create a date picker: No empty dates. (aka null)
         dateSettings = new DatePickerSettings();
@@ -339,6 +363,7 @@ public class FullDemo {
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
                 "Date 18, Custom Borders with Week Numbers:");
 
+        //
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)
         //
@@ -546,6 +571,7 @@ public class FullDemo {
         addLocalizedPickerAndLabel(++rowMarker, "Indonesian:", "in");
         addLocalizedPickerAndLabel(++rowMarker, "Japanese:", "ja");
         addLocalizedPickerAndLabel(++rowMarker, "Korean:", "ko");
+        addLocalizedPickerAndLabel(++rowMarker, "Norwegian:", "no");
         addLocalizedPickerAndLabel(++rowMarker, "Polish:", "pl");
         addLocalizedPickerAndLabel(++rowMarker, "Portuguese:", "pt");
         addLocalizedPickerAndLabel(++rowMarker, "Romanian:", "ro");
@@ -790,7 +816,7 @@ public class FullDemo {
             }
         });
         buttonPanel.add(tableEditorsDemoButton);
-        
+
         // Add a button for showing system information.
         JButton showSystemInformationButton = new JButton("JDK Versions");
         showSystemInformationButton.addMouseListener(new MouseAdapter() {

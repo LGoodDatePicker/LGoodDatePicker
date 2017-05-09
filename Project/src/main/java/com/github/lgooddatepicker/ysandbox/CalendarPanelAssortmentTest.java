@@ -87,9 +87,9 @@ public class CalendarPanelAssortmentTest {
         dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
         dateSettings.setColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers, Color.PINK);
-        dateSettings.setColor(DateArea.BackgroundMonthAndYearMenuButtons, Color.ORANGE);
-        dateSettings.setColor(DateArea.BackgroundTodayButton, Color.CYAN);
-        dateSettings.setColor(DateArea.BackgroundClearButton, Color.GREEN);
+        dateSettings.setColor(DateArea.BackgroundMonthAndYearMenuLabels, Color.ORANGE);
+        dateSettings.setColor(DateArea.BackgroundTodayLabel, Color.CYAN);
+        dateSettings.setColor(DateArea.BackgroundClearLabel, Color.GREEN);
         dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.MAGENTA);
         dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
@@ -215,9 +215,9 @@ public class CalendarPanelAssortmentTest {
         dateSettings.setColorBackgroundWeekdayLabels(Color.PINK, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.PINK, true);
         dateSettings.setColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers, Color.PINK);
-        dateSettings.setColor(DateArea.BackgroundMonthAndYearMenuButtons, Color.ORANGE);
-        dateSettings.setColor(DateArea.BackgroundTodayButton, Color.CYAN);
-        dateSettings.setColor(DateArea.BackgroundClearButton, Color.GREEN);
+        dateSettings.setColor(DateArea.BackgroundMonthAndYearMenuLabels, Color.ORANGE);
+        dateSettings.setColor(DateArea.BackgroundTodayLabel, Color.CYAN);
+        dateSettings.setColor(DateArea.BackgroundClearLabel, Color.GREEN);
         dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.MAGENTA);
         panel.add(calendarPanel);
 

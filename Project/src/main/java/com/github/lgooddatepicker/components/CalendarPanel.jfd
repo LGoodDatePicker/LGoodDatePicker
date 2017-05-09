@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_91" encoding: "UTF-8"
+JFDML JFormDesigner: "5.2.1.0.138" Java: "1.8.0_121" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -12,7 +12,7 @@ new FormModel {
 			name: "this"
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 				"$columnSpecs": "pref, pref, pref, pref:grow, pref, pref, pref"
-				"$rowSpecs": "fill:pref"
+				"$rowSpecs": "fill:pref:grow"
 				"$columnGroupIds": "1, 1, 0, 0, 0, 1, 1"
 			} ) {
 				name: "headerControlsPanel"
