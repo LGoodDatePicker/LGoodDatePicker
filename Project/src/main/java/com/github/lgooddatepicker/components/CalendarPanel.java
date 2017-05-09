@@ -1167,7 +1167,7 @@ public class CalendarPanel extends JPanel {
         int heightNavigationButtons = buttonPreviousYear.getPreferredSize().height;
         int preferredHeightMonthLabel = labelMonth.getPreferredSize().height;
         int monthFontHeight = metrics.getHeight();
-        int monthFontHeightWithPadding = monthFontHeight + 4;
+        int monthFontHeightWithPadding = monthFontHeight + 2;
         int panelHeight = Math.max(monthFontHeightWithPadding, 
                 Math.max(preferredHeightMonthLabel, heightNavigationButtons));
         // Get the length of the longest translated month string (in pixels).
