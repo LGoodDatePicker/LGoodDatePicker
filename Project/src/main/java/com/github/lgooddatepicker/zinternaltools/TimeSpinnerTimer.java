@@ -44,7 +44,7 @@ public class TimeSpinnerTimer {
      * before moving onto the next value in the divisorList.
      */
     final private int[] millisForDivisorList = new int[]{
-        3200, 1800, 800, 800, 800, 800, 800, 0};
+        1800, 900, 400, 400, 400, 400, 400, 0};
     /**
      * divisorList, For as long as any particular index in this array remains in effect, the
      * currently used number indicates how many tick calls should pass before the time picker value
