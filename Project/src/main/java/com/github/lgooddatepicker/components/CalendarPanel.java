@@ -647,6 +647,8 @@ public class CalendarPanel extends JPanel {
         boolean insideValidRange = false;
         int dayOfMonth = 1;
         JLabel selectedDateLabel = null;
+        DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
+        DateHighlightPolicy highlightPolicy = settings.getHighlightPolicy();
         for (int dateLabelArrayIndex = 0; dateLabelArrayIndex < dateLabels.size(); ++dateLabelArrayIndex) {
             // Get the current date label.
             JLabel dateLabel = dateLabels.get(dateLabelArrayIndex);
@@ -693,8 +695,6 @@ public class CalendarPanel extends JPanel {
                 }
 
                 // Get the veto policy and highlight policy information for this date.
-                DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
-                DateHighlightPolicy highlightPolicy = settings.getHighlightPolicy();
                 boolean dateIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, currentDate);
                 HighlightInformation highlightInfo = null;
                 if (highlightPolicy != null) {
@@ -788,7 +788,6 @@ public class CalendarPanel extends JPanel {
         String todayLabel = settings.getTranslationToday() + ":  " + todayDateString;
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
-        DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
         boolean todayIsVetoed = InternalUtilities.isDateVetoed(
                 vetoPolicy, LocalDate.now());
         labelSetDateToToday.setEnabled(!todayIsVetoed);
@@ -1170,7 +1169,7 @@ public class CalendarPanel extends JPanel {
         int monthFontHeight = metrics.getHeight();
         int monthFontHeightWithPadding = monthFontHeight + 2;
         int panelHeight = Math.max(monthFontHeightWithPadding, Math.max(preferredHeightMonthLabel,
-                        Math.max(preferredHeightYearLabel, heightNavigationButtons)));
+                Math.max(preferredHeightYearLabel, heightNavigationButtons)));
         // Get the length of the longest translated month string (in pixels).
         DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         String[] allLocalMonths = symbols.getMonths();
