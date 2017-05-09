@@ -11,6 +11,8 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
+* [LGoodDatePicker 10.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on May 8, 2017. This version fixes a MacOSX related bug, adds the Norwegian language translation, and adds the option to customize any used font or component color.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).
+
 * [LGoodDatePicker 8.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on November 29, 2016. This version fixes a critical Linux related bug, adds the Bulgarian language translation, and adds to the optional visual customization capabilities.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
 
 * [LGoodDatePicker 7.6.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22).
@@ -27,8 +29,8 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 * The included components are the DatePicker, the TimePicker, the DateTimePicker, and the CalendarPanel.
 * Provides automatic internationalization.  
 (Month names, weekday names, the default first day of the week, default date and time formats, and button text.)
-* Translations include 24 languages.
-(Arabic, Bulgarian, Chinese, Czech, Danish, Dutch, English, Finnish, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
+* Translations include 25 languages.
+(Arabic, Bulgarian, Chinese, Czech, Danish, Dutch, English, Finnish, French, German, Greek, Hindi, Italian, Indonesian, Japanese, Korean, Norwegian, Polish, Portuguese, Romanian, Russian, Spanish, Swedish, Turkish, Vietnamese.)
 * Natively uses the standard Java 8 time package (java.time.LocalDate). This package is also called "JSR-310".<br/>
 (Can also run in Java 6 or 7, using the [Parallel Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).) 
 * Supports other legacy and common data types, such as "java.util.Date".
