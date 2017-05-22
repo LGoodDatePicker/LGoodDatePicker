@@ -3,7 +3,7 @@ Java Swing Date Picker. Easy to use, good looking, nice features, and localized.
 
 ## Project Links:
 Demo Application and Downloads in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
-Maven Central repository pages: [Page 1](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), [Page 2](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).  
+Maven Central repository pages: [Page 1](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker), [Page 2](http://mvnrepository.com/artifact/com.github.lgooddatepicker/LGoodDatePicker).  
 Get release updates: <a href="https://feedburner.google.com/fb/a/mailverify?uri=LGoodDatePickerUpdates&amp;loc=en_US">Subscribe for Updates</a>.<br>
 Contact the primary developer: [Email Form](http://www.emailmeform.com/builder/form/ZQcYut4393).  
 Submit bugs or feature requests: [Issues Section](https://github.com/LGoodDatePicker/LGoodDatePicker/issues).  
@@ -11,11 +11,11 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
-* [LGoodDatePicker 10.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on May 8, 2017. This version fixes a MacOSX related bug, adds the Norwegian language translation, and adds the option to customize any used font or component color.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
+* [LGoodDatePicker 10.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on May 8, 2017. This version fixes a MacOSX related bug, adds the Norwegian language translation, and adds the option to customize any used font or component color.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
 
-* [LGoodDatePicker 8.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on November 29, 2016. This version fixes a critical Linux related bug, adds the Bulgarian language translation, and adds to the optional visual customization capabilities.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
+* [LGoodDatePicker 8.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on November 29, 2016. This version fixes a critical Linux related bug, adds the Bulgarian language translation, and adds to the optional visual customization capabilities.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
 
-* [LGoodDatePicker 7.6.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22).
+* [LGoodDatePicker 7.6.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker).
 
 * [LGoodDatePicker 7.5.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on June 30, 2016. This release adds support to the library for JTable editors, and JavaBeans data binding.
 
@@ -23,7 +23,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 * [LGoodDatePicker 5.2.2](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released April 25, 2016. This release adds the CalendarPanel component to the library. This component allows the programmer to (optionally) use the calendar panel controls independently from the DatePicker component. An example for the independent calendar panel was also added to the [demo program](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).
 
-* [LGoodDatePicker 4.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 17, 2016. The requirements for publishing to the Maven Central repository were added to the project. (Including jar signing, global package name conventions, Pom file specifications, etc.). The project now has an entry [at Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22LGoodDatePicker%22). This makes the library easier to include in applications that use Apache Maven.
+* [LGoodDatePicker 4.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released March 17, 2016. The requirements for publishing to the Maven Central repository were added to the project. (Including jar signing, global package name conventions, Pom file specifications, etc.). The project now has an entry [at Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker). This makes the library easier to include in applications that use Apache Maven.
 
 ## General Features:
 * The included components are the DatePicker, the TimePicker, the DateTimePicker, and the CalendarPanel.
