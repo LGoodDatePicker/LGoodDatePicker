@@ -814,6 +814,18 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
+     * getDisplayedYearMonth, This returns the year and month that is currently displayed in the
+     * calendar. This will never return null. Note that this is -not- the same as the displayed
+     * selected date, and the displayed selected date may or may not be inside the
+     * displayedYearMonth. It is expected that this function will be rarely needed by developers.
+     */
+    public YearMonth getDisplayedYearMonth() {
+        // Return the displayedYearMonth.
+        // Technical note: YearMonth is an immutable class.
+        return displayedYearMonth;
+    }
+
+    /**
      * getSelectedDate, This returns the date that is currently marked as "selected" in the
      * calendar. If no date is selected, then this will return null.
      *
