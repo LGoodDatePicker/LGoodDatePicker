@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- -->
 <!-- To build for Maven Central: 
+(Note: Only the primary developers should ever need to build for Maven Central. 
+All other people and programmers can ignore this paragraph.)
 To build for Maven Central, with GPG signing, you will have to uncomment all 
 sections of this pom file that are marked with the word "signing".
 -->
