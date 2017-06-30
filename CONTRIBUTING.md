@@ -1,6 +1,7 @@
 First off, thank you for considering contributing to LGoodDatePicker. It's people like you that make LGoodDatePicker such a great tool.
 
-Contributions to the project are generally created by using one of these common options: 1) Writing a suggestion in the general discussion thread, 2) By submitting a new issue, or 3) By coding an improvement and submitting a pull request. Links to these three methods, and other general project resources, are pasted below. More details can be found in the [readme file](https://github.com/LGoodDatePicker/LGoodDatePicker/blob/master/README.md). 
+Contributions to the project are generally created by using one of these common options: 1) Writing a suggestion in the general discussion thread, 2) By submitting a new issue, or 3) By coding an improvement and submitting a pull request.  
+Links to these three methods, and other general project resources, are pasted below. More details can be found in the [readme file](https://github.com/LGoodDatePicker/LGoodDatePicker/blob/master/README.md). 
 
 ## Project Links:
 Demo Application and Downloads in the: [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases).  
