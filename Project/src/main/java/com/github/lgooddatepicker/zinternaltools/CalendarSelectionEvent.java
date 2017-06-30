@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 /**
  * CalendarSelectionEvent, An instance of this event class is passed to each registered
- * CalendarSelectionListener, each time that a date is selected in a CalendarPanel.
+ * CalendarListener, each time that a date is selected in a CalendarPanel.
  */
 public class CalendarSelectionEvent {
 

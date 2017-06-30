@@ -2,7 +2,6 @@ package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
@@ -15,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 
 /**
  * TestUpdateHighlightPolicy, This class tests the library to see if a highlight policy can be
@@ -47,7 +48,7 @@ public class TestUpdateHighlightPolicy {
         frame.setVisible(true);
     }
 
-    private static class ProcedureTest extends JPanel implements CalendarSelectionListener {
+    private static class ProcedureTest extends JPanel implements CalendarListener {
 
         private CalendarPanel picker;
         private LocalDate selectedDate;
@@ -65,15 +66,20 @@ public class TestUpdateHighlightPolicy {
             settings.setAllowEmptyDates(false);
             settings.setHighlightPolicy(new DynamicHighlightPolicy());
             CalendarPanel customizedPicker = new CalendarPanel(settings);
-            customizedPicker.addCalendarSelectionListener(this);
+            customizedPicker.addCalendarListener(this);
             settings.setVetoPolicy(new VetoPolicy());
             return customizedPicker;
         }
 
         @Override
-        public void selectionChanged(CalendarSelectionEvent event) {
+        public void selectedDateChanged(CalendarSelectionEvent event) {
             selectedDate = event.getNewDate();
             System.out.println(selectedDate);
+        }
+
+        @Override
+        public void yearMonthChanged(YearMonthChangeEvent event) {
+            // Not needed.
         }
 
         private class DynamicHighlightPolicy implements DateHighlightPolicy {

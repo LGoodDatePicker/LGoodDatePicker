@@ -36,7 +36,6 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.LineBorder;
-import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -51,6 +50,9 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
+import java.time.YearMonth;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
@@ -237,7 +239,7 @@ public class FullDemo {
         dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.CYAN);
         dateSettings.setColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers, Color.ORANGE);
         dateSettings.setColor(DateArea.CalendarBackgroundSelectedDate, Color.PINK);
-        dateSettings.setColor(DateArea.CalendarBorderSelectedDate, Color.WHITE);       
+        dateSettings.setColor(DateArea.CalendarBorderSelectedDate, Color.WHITE);
         dateSettings.setColorBackgroundWeekdayLabels(Color.ORANGE, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.ORANGE, true);
         // Set fonts:
@@ -588,7 +590,7 @@ public class FullDemo {
         DatePickerSettings settings = new DatePickerSettings();
         CalendarPanel calendarPanel = new CalendarPanel(settings);
         calendarPanel.setSelectedDate(LocalDate.now());
-        calendarPanel.addCalendarSelectionListener(new SampleCalendarSelectionListener());
+        calendarPanel.addCalendarListener(new SampleCalendarListener());
         calendarPanel.setBorder(new LineBorder(Color.lightGray));
         panel.independentCalendarPanel.add(calendarPanel, CC.xy(2, 2));
 
@@ -1125,28 +1127,59 @@ public class FullDemo {
     }
 
     /**
-     * SampleCalendarSelectionListener, A calendar selection listener provides a way for a class to
-     * receive notifications whenever a date has been selected in an -independent- CalendarPanel.
+     * SampleCalendarListener, A calendar listener provides a way for a class to receive
+     * notifications whenever a selected date or displayed YearMonth has been changed in an
+     * -independent- CalendarPanel.
      */
-    private static class SampleCalendarSelectionListener implements CalendarSelectionListener {
+    private static class SampleCalendarListener implements CalendarListener {
 
         /**
-         * selectionChanged, This function will be called each time that a date is selected in the
-         * independent CalendarPanel. The new and old selected dates are supplied in the event
+         * selectedDateChanged, This function will be called each time that a date is selected in
+         * the independent CalendarPanel. The new and old selected dates are supplied in the event
          * object. These parameters may contain null, which represents a cleared or empty date.
          *
-         * By intention, this function will be called even if the user selects the same value twice
-         * in a row. This is so that the programmer can catch all events of interest. Duplicate
-         * events can optionally be detected with the function CalendarSelectionEvent.isDuplicate().
+         * By intention, this function will be called even if the user selects the same date value
+         * twice in a row. This is so that the programmer can catch all events of interest.
+         * Duplicate events can optionally be detected with the function
+         * CalendarSelectionEvent.isDuplicate().
          */
         @Override
-        public void selectionChanged(CalendarSelectionEvent event) {
+        public void selectedDateChanged(CalendarSelectionEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
             String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
             String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
-            String messageStart = "\nIndependent Calendar Panel: The selected date has changed from '";
-            String fullMessage = messageStart + oldDateString + "' to '" + newDateString + "'. ";
+            String messageStart = "\nIndependent Calendar Panel:";
+            String messagePartTwo = " The selected date has changed from '";
+            String fullMessage = messageStart + messagePartTwo
+                    + oldDateString + "' to '" + newDateString + "'. ";
+            fullMessage += (event.isDuplicate()) ? "(Event marked as duplicate.)" : "";
+            if (!panel.messageTextArea.getText().startsWith(messageStart)) {
+                panel.messageTextArea.setText("");
+            }
+            panel.messageTextArea.append(fullMessage);
+        }
+
+        /**
+         * yearMonthChanged, This function will be called each time that the displayed YearMonth is
+         * changed in the independent CalendarPanel. The new and old selected YearMonths are
+         * supplied in the event object. These parameters will never be null.
+         *
+         * By intention, this function will be called even if the user selects the same YearMonth
+         * value twice in a row. This is so that the programmer can catch all events of interest.
+         * Duplicate events can optionally be detected with the function
+         * YearMonthChangeEvent.isDuplicate().
+         */
+        @Override
+        public void yearMonthChanged(YearMonthChangeEvent event) {
+            YearMonth oldYearMonth = event.getOldYearMonth();
+            YearMonth newYearMonth = event.getNewYearMonth();
+            String oldYearMonthString = oldYearMonth.toString();
+            String newYearMonthString = newYearMonth.toString();
+            String messageStart = "\nIndependent Calendar Panel:";
+            String messagePartTwo = " The displayed YearMonth has changed from '";
+            String fullMessage = messageStart + messagePartTwo
+                    + oldYearMonthString + "' to '" + newYearMonthString + "'. ";
             fullMessage += (event.isDuplicate()) ? "(Event marked as duplicate.)" : "";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {
                 panel.messageTextArea.setText("");

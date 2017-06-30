@@ -17,11 +17,12 @@ import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField.IntegerTextFieldNumberChangeListener;
-import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import com.github.lgooddatepicker.zinternaltools.MouseLiberalAdapter;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import com.privatejgoodies.forms.layout.CellConstraints;
 import java.time.temporal.WeekFields;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 
 /**
  * CalendarPanel,
@@ -92,11 +93,11 @@ public class CalendarPanel extends JPanel {
     private JLabel[][] borderLabels;
 
     /**
-     * calendarSelectionListeners, This holds a list of calendar selection listeners that wish to be
-     * notified each time that a date is selected in the calendar panel.
+     * calendarListeners, This holds a list of calendar listeners that wish to be notified each time
+     * that a date is selected in the calendar panel, or the YearMonth is changed in the calendar
+     * panel.
      */
-    private ArrayList<CalendarSelectionListener> calendarSelectionListeners
-            = new ArrayList<CalendarSelectionListener>();
+    private ArrayList<CalendarListener> calendarListeners = new ArrayList<CalendarListener>();
 
     /**
      * constantFirstWeekdayLabelCell, This constant indicates the location of the first weekday
@@ -447,11 +448,11 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
-     * addCalendarSelectionListener, This adds a calendar selection listener to this calendar panel.
-     * For additional details, see the CalendarSelectionListener class documentation.
+     * addCalendarListener, This adds a calendar listener to this calendar panel. For additional
+     * details, see the CalendarListener class documentation.
      */
-    public void addCalendarSelectionListener(CalendarSelectionListener listener) {
-        calendarSelectionListeners.add(listener);
+    public void addCalendarListener(CalendarListener listener) {
+        calendarListeners.add(listener);
     }
 
     /**
@@ -544,16 +545,41 @@ public class CalendarPanel extends JPanel {
      * drawCalendar, This is called whenever the calendar needs to be drawn. This takes a year and a
      * month to indicate which month should be drawn in the calendar.
      */
-    private void drawCalendar(YearMonth yearMonth) {
+    private void drawCalendar(YearMonth newYearMonth) {
+        drawCalendar(newYearMonth, null);
+    }
+
+    /**
+     * drawCalendar, This is called whenever the calendar needs to be drawn. This takes a year and a
+     * month to indicate which month should be drawn in the calendar. This can optionally take an
+     * old YearMonth, to be used in notification of listeners. If an old YearMonth is not supplied,
+     * the YearMonth in "this.displayedYearMonth" will be used as the old YearMonth.
+     */
+    private void drawCalendar(YearMonth newYearMonth, YearMonth oldYearMonthOrNull) {
         // Skip this function if the settings have not been applied.
         if (settings == null) {
             return;
         }
-        // Save the displayed yearMonth.
-        this.displayedYearMonth = yearMonth;
+        // Determine and save the old YearMonth, for later notifying any calendar listeners.
+        YearMonth oldYearMonth = (oldYearMonthOrNull == null)
+                ? this.displayedYearMonth : oldYearMonthOrNull;
+        // Save the (new) displayed yearMonth.
+        this.displayedYearMonth = newYearMonth;
+
+        // Notify any CalendarListeners of a possible change to the YearMonth.
+        // Note: It is intentional that this section of code does not have it's own function, 
+        // because this should not be called from anywhere else. 
+        // Note: this is placed at the beginning of the drawCalendar function, so that if desired, 
+        // a developer could change the appearance of the calendar in response to this event. 
+        for (CalendarListener calendarListener : calendarListeners) {
+            YearMonthChangeEvent yearMonthChangeEvent = new YearMonthChangeEvent(
+                    this, this.displayedYearMonth, oldYearMonth);
+            calendarListener.yearMonthChanged(yearMonthChangeEvent);
+        }
+
         // Get the displayed month and year.
-        Month displayedMonth = yearMonth.getMonth();
-        int displayedYear = yearMonth.getYear();
+        Month displayedMonth = newYearMonth.getMonth();
+        int displayedYear = newYearMonth.getYear();
         // Get an instance of the calendar symbols for the current locale.
         DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         // Get the days of the week in the local language.
@@ -807,11 +833,11 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
-     * getCalendarSelectionListeners, This returns a new ArrayList, that contains any calendar
-     * selection listeners that are registered with this CalendarPanel.
+     * getCalendarListeners, This returns a new ArrayList, that contains any calendar listeners that
+     * are registered with this CalendarPanel.
      */
-    public ArrayList<CalendarSelectionListener> getCalendarSelectionListeners() {
-        return new ArrayList<CalendarSelectionListener>(calendarSelectionListeners);
+    public ArrayList<CalendarListener> getCalendarListeners() {
+        return new ArrayList<CalendarListener>(calendarListeners);
     }
 
     /**
@@ -1047,11 +1073,10 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
-     * removeCalendarSelectionListener, This removes the specified calendar selection listener from
-     * this CalendarPanel.
+     * removeCalendarListener, This removes the specified calendar listener from this CalendarPanel.
      */
-    public void removeCalendarSelectionListener(CalendarSelectionListener listener) {
-        calendarSelectionListeners.remove(listener);
+    public void removeCalendarListener(CalendarListener listener) {
+        calendarListeners.remove(listener);
     }
 
     /**
@@ -1077,7 +1102,7 @@ public class CalendarPanel extends JPanel {
      */
     public void setSelectedDateWithoutShowing(LocalDate selectedDate) {
         // Save the selected date, redraw the calendar, and notify any listeners.
-        zInternalChangeSelectedDateProcedure(selectedDate);
+        zInternalChangeSelectedDateProcedure(selectedDate, null);
     }
 
     /**
@@ -1223,6 +1248,7 @@ public class CalendarPanel extends JPanel {
             }
         }
         // Save the selected year and month, in case it is needed later.
+        YearMonth oldYearMonth = displayedYearMonth;
         if (selectedDate != null) {
             YearMonth selectedDateYearMonth = YearMonth.from(selectedDate);
             displayedYearMonth = selectedDateYearMonth;
@@ -1232,7 +1258,7 @@ public class CalendarPanel extends JPanel {
         }
 
         // Save the selected date, redraw the calendar, and notify any listeners.
-        zInternalChangeSelectedDateProcedure(selectedDate);
+        zInternalChangeSelectedDateProcedure(selectedDate, oldYearMonth);
 
         // If this calendar panel is associated with a date picker, then set the DatePicker date
         // and close the popup.
@@ -1287,27 +1313,28 @@ public class CalendarPanel extends JPanel {
     /**
      * zInternalChangeSelectedDateProcedure, This should be called whenever we need to change the
      * selected date variable. This will store the supplied selected date and redraw the calendar.
-     * If needed, this will notify all calendar selection listeners that the selected date has been
-     * changed. This does not perform any other tasks besides those described here.
+     * If needed, this will notify all calendar listeners that the selected date has been changed.
+     * This does not perform any other tasks besides those described here.
      *
      * By intention, this will fire an event even if the user selects the same value twice. This is
      * so that programmers can catch all user interactions of interest to them. Duplicate events can
      * be detected by using the function CalendarSelectionEvent.isDuplicate().
      *
-     * Note: Any calendar selection listeners will be notified before the calendar is redrawn, so
-     * that the programmer may optionally update any tightly linked code that may affect this
-     * particular redrawing of the calendar. (For example, a programmer might be change a highlight
-     * policy based on the currently selected date.)
+     * Note: Any calendar listeners will be notified of date selection changes before the calendar
+     * is redrawn, so that the programmer may optionally update any tightly linked code that may
+     * affect this particular redrawing of the calendar. (For example, a programmer might be change
+     * a highlight policy based on the currently selected date.)
      */
-    private void zInternalChangeSelectedDateProcedure(LocalDate newDate) {
+    private void zInternalChangeSelectedDateProcedure(
+            LocalDate newDate, YearMonth oldYearMonthOrNull) {
         LocalDate oldDate = displayedSelectedDate;
         displayedSelectedDate = newDate;
-        for (CalendarSelectionListener calendarSelectionListener : calendarSelectionListeners) {
+        for (CalendarListener calendarListener : calendarListeners) {
             CalendarSelectionEvent dateSelectionEvent = new CalendarSelectionEvent(
                     this, newDate, oldDate);
-            calendarSelectionListener.selectionChanged(dateSelectionEvent);
+            calendarListener.selectedDateChanged(dateSelectionEvent);
         }
-        drawCalendar(displayedYearMonth);
+        drawCalendar(displayedYearMonth, oldYearMonthOrNull);
         // Fire a change event for beans binding.
         firePropertyChange("selectedDate", oldDate, newDate);
     }

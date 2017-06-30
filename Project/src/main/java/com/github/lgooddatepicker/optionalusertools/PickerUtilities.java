@@ -88,6 +88,28 @@ public class PickerUtilities {
         return first.isEqual(second);
     }
 
+    /**
+     * isSameYearMonth, This compares two YearMonth variables to see if their values are equal.
+     * Returns true if the values are equal, otherwise returns false.
+     *
+     * More specifically: This returns true if both values are null (an empty YearMonth). Or, this
+     * returns true if both of the supplied YearMonths contain a YearMonth and represent the same
+     * year and month. Otherwise this returns false.
+     */
+    public static boolean isSameYearMonth(YearMonth first, YearMonth second) {
+        // If both values are null, return true.
+        if (first == null && second == null) {
+            return true;
+        }
+        // At least one value contains a YearMonth. If the other value is null, then return false.
+        if (first == null || second == null) {
+            return false;
+        }
+        // Both values contain a YearMonth. 
+        // Return true if the YearMonth are equal, otherwise return false.
+        return first.equals(second);
+    }
+
     public static boolean isSameLocalTime(LocalTime first, LocalTime second) {
         // If both values are null, return true.
         if (first == null && second == null) {

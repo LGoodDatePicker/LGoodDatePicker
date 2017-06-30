@@ -15,11 +15,13 @@ import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import com.github.lgooddatepicker.optionalusertools.CalendarSelectionListener;
 import java.time.LocalDate;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
+import java.time.YearMonth;
 
 /**
- * IndependentCalendarPanelDemo,
+ * CalendarPanelTest,
  *
  * Programmers who only wish to create a DatePicker, a TimePicker, or a DateTimePicker, should not
  * use this demo. See the "BasicDemo" or "FullDemo" classes instead.
@@ -62,7 +64,7 @@ public class CalendarPanelTest {
         CalendarPanel calendarPanel = new CalendarPanel(settings);
 
         // Add a calendar selection listener to the CalendarPanel.
-        calendarPanel.addCalendarSelectionListener(new SampleCalendarSelectionListener());
+        calendarPanel.addCalendarListener(new SampleCalendarListener());
 
         // Add the CalendarPanel to the form.
         container.add(calendarPanel);
@@ -108,25 +110,40 @@ public class CalendarPanelTest {
     }
 
     /**
-     * SampleCalendarSelectionListener, A calendar selection listener provides a way for a class to
-     * receive notifications whenever a date has been selected in an independent CalendarPanel.
+     * SampleCalendarListener, A calendar listener provides a way for a class to receive
+     * notifications whenever a date or YearMonth has been selected in an independent CalendarPanel.
      */
-    private static class SampleCalendarSelectionListener implements CalendarSelectionListener {
+    private static class SampleCalendarListener implements CalendarListener {
 
         /**
-         * selectionChanged, This function will be called each time that a date is selected in the
+         * selectedDateChanged, This function will be called each time that a date is selected in the
          * applicable CalendarPanel. The new and old selected dates are supplied in the event
          * object. These parameters may contain null, which represents a cleared or empty date.
          */
         @Override
-        public void selectionChanged(CalendarSelectionEvent event) {
+        public void selectedDateChanged(CalendarSelectionEvent event) {
             LocalDate oldDate = event.getOldDate();
             LocalDate newDate = event.getNewDate();
             String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
             String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
             String messageStart = "The selected date has changed from: ";
             String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
+            fullMessage += (event.isDuplicate()) ? "(Event marked as duplicate.)" : "";
             informationLabel.setText(fullMessage);
+        }
+
+        @Override
+        public void yearMonthChanged(YearMonthChangeEvent event) {
+            YearMonth oldYearMonth = event.getOldYearMonth();
+            YearMonth newYearMonth = event.getNewYearMonth();
+            String oldYearMonthString = oldYearMonth.toString();
+            String newYearMonthString = newYearMonth.toString();
+            String messageStart = "The displayed YearMonth has changed from: '";
+            String fullMessage = messageStart
+                    + oldYearMonthString + "' to '" + newYearMonthString + "'. ";
+            fullMessage += (event.isDuplicate()) ? "(Event marked as duplicate.)" : "";
+            // This is commented out so you can see all "dateSelectionChanged" events in the label. 
+            // informationLabel.setText(fullMessage);
         }
     }
 }

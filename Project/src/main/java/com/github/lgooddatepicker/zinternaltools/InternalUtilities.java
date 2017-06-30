@@ -32,7 +32,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
-import javax.swing.UIDefaults;
 import javax.swing.table.TableCellEditor;
 
 /**
