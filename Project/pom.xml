@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- -->
+<!-- To build for Maven Central: 
+To build for Maven Central, with GPG signing, you will have to uncomment all 
+sections of this pom file that are marked with the word "signing".
+-->
+<!-- -->
 <!-- General notes:
 The ordering of the plugins in this file matters. The execution order for any plugin executions 
 that are on the same phase will be the same as the order of entries in the pom file. Multiple 
@@ -11,7 +17,7 @@ plugins in this file operate inside the "package" and "install" phases.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>10.2.5-BETA</version>
+    <version>10.2.6-BETA</version>
     <packaging>jar</packaging>
     <name>LGoodDatePicker</name>
     <description>Java Swing Date Picker. Easy to use, good looking, nice features, and 
@@ -183,19 +189,25 @@ plugins in this file operate inside the "package" and "install" phases.
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-unshaded-for-backport.jar"/>
                                
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/> 
-                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom"/>
-                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
-                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
-                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar.asc"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar"/>
-                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc"/>                              
                                 <copy file="${project.build.directory}/pom-for-users.xml" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom"/>
-                                <copy file="${project.build.directory}/pom-for-users.xml.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
                                 <delete file="${project.build.directory}/pom-for-users.xml"/>
+                                
+                                <!-- Uncomment this section for Maven signing. -->
+                                <!--
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
+                                <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar.asc"/>
+                                <delete file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc"/>                              
+                                <copy file="${project.build.directory}/pom-for-users.xml.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
                                 <delete file="${project.build.directory}/pom-for-users.xml.asc"/>
+                                -->
+                                
+                                
                             </tasks>
                         </configuration>
                         <goals>
@@ -231,6 +243,9 @@ plugins in this file operate inside the "package" and "install" phases.
             <!-- NOTE 1: Remove this plugin if you don't need to sign the jar for Maven Central release. -->
             <!-- NOTE 2: This will generate a warning, that can be ignored: -->
             <!-- "Artifact com.github.lgooddatepicker:LGoodDatePicker:pom.asc:4.2.2 already attached to project, ignoring duplicate" -->
+            
+            <!-- Uncomment this section for Maven signing. -->
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -249,8 +264,12 @@ plugins in this file operate inside the "package" and "install" phases.
                     </execution>
                 </executions>
             </plugin>
+            -->
             
             <!-- This must be positioned in the pom after other plugins on the "install" phase. -->
+            
+            <!-- Uncomment this section for Maven signing. -->
+            <!--           
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -283,6 +302,7 @@ plugins in this file operate inside the "package" and "install" phases.
                     </execution>
                 </executions>
             </plugin>
+            -->
             
         </plugins>
     </build>
