@@ -68,8 +68,8 @@ public class DatePickerSettings {
         BackgroundTopLeftLabelAboveWeekNumbers(new Color(184, 207, 229)),
         CalendarBackgroundNormalDates(Color.white),
         CalendarBackgroundSelectedDate(new Color(163, 184, 204)),
-        CalendarBorderSelectedDate()
         CalendarBackgroundVetoedDates(Color.lightGray),
+        CalendarBorderSelectedDate(new Color(99, 130, 191)),
         CalendarDefaultBackgroundHighlightedDates(Color.green),
         CalendarDefaultTextHighlightedDates(Color.black),
         CalendarTextNormalDates(Color.black),
