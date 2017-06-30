@@ -743,7 +743,8 @@ public class CalendarPanel extends JPanel {
         // If needed, change the color of the selected date.
         if (selectedDateLabel != null) {
             selectedDateLabel.setBackground(settings.getColor(DateArea.CalendarBackgroundSelectedDate));
-            selectedDateLabel.setBorder(settings.getColor(DateArea.CalendarBorderSelectedDate));
+            selectedDateLabel.setBorder(new LineBorder(
+                    settings.getColor(DateArea.CalendarBorderSelectedDate)));
         }
 
         // If needed, draw the week numbers.

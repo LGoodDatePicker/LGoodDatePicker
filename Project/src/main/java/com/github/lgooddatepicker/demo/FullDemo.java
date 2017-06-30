@@ -236,6 +236,8 @@ public class FullDemo {
         dateSettings.setColor(DateArea.BackgroundClearLabel, Color.YELLOW);
         dateSettings.setColor(DateArea.BackgroundMonthAndYearNavigationButtons, Color.CYAN);
         dateSettings.setColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers, Color.ORANGE);
+        dateSettings.setColor(DateArea.CalendarBackgroundSelectedDate, Color.PINK);
+        dateSettings.setColor(DateArea.CalendarBorderSelectedDate, Color.WHITE);       
         dateSettings.setColorBackgroundWeekdayLabels(Color.ORANGE, true);
         dateSettings.setColorBackgroundWeekNumberLabels(Color.ORANGE, true);
         // Set fonts:
