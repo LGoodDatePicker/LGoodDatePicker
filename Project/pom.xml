@@ -71,7 +71,7 @@ plugins in this file operate inside the "package" and "install" phases.
     <dependencies>
         
         <!-- JSRThreeTen Backport. Uncomment this section when building for target Java 1.6. -->
-        <!-- 
+        <!--
         <dependency>
             <groupId>org.threeten</groupId>
             <artifactId>threetenbp</artifactId>
@@ -199,7 +199,7 @@ plugins in this file operate inside the "package" and "install" phases.
                                 <delete file="${project.build.directory}/pom-for-users.xml"/>
                                 
                                 <!-- Uncomment this section for Maven signing. -->
-                                <!--
+                                <!-- 
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.pom.asc"/>
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
@@ -245,9 +245,11 @@ plugins in this file operate inside the "package" and "install" phases.
             <!-- NOTE 1: Remove this plugin if you don't need to sign the jar for Maven Central release. -->
             <!-- NOTE 2: This will generate a warning, that can be ignored: -->
             <!-- "Artifact com.github.lgooddatepicker:LGoodDatePicker:pom.asc:4.2.2 already attached to project, ignoring duplicate" -->
+            <!-- The "exec-maven-plugin"  must be positioned in the pom file after all other 
+            plugins on the "install" phase. -->
             
-            <!-- Uncomment this section for Maven signing. -->
-            <!--
+            <!-- Uncomment these two plugin sections for Maven signing. (maven-gpg-plugin and exec-maven-plugin). -->
+            <!-- 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -266,12 +268,6 @@ plugins in this file operate inside the "package" and "install" phases.
                     </execution>
                 </executions>
             </plugin>
-            -->
-            
-            <!-- This must be positioned in the pom after other plugins on the "install" phase. -->
-            
-            <!-- Uncomment this section for Maven signing. -->
-            <!--           
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
