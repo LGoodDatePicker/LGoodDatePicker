@@ -27,6 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
@@ -175,6 +176,14 @@ public class DatePickerSettings {
      * default colors for each area are defined the "Area" enums.
      */
     private HashMap<DateArea, Color> colors;
+
+    /**
+     * defaultYearMonth, This indicates which YearMonth should be displayed by default, when no date
+     * is currently selected. This is used only when a when a calendar panel (or calendar popup) is
+     * displayed or showing. If this is set to null, then the defaultYearMonth will be
+     * YearMonth.now().
+     */
+    private YearMonth defaultYearMonth = null;
 
     /**
      * enableMonthMenu, This determines whether the month popup menu is enabled or disabled. (Note:
@@ -812,6 +821,13 @@ public class DatePickerSettings {
     }
 
     /**
+     * getDefaultYearMonth, This returns the defaultYearMonth or null.
+     */
+    public YearMonth getDefaultYearMonth() {
+        return defaultYearMonth;
+    }
+
+    /**
      * getEnableMonthMenu, Returns the value of this setting. See the "set" function for setting
      * information.
      */
@@ -1386,6 +1402,17 @@ public class DatePickerSettings {
         }
         return setVetoPolicy(new DateVetoPolicyMinimumMaximumDate(
                 firstAllowedDate, lastAllowedDate));
+    }
+
+    /**
+     * setDefaultYearMonth, This sets which YearMonth should be displayed by default, when no date
+     * is currently selected. This is used only when a when a calendar panel (or calendar popup) is
+     * displayed or showing. If this is set to null, then the defaultYearMonth will be
+     * YearMonth.now().
+     */
+    public void setDefaultYearMonth(YearMonth defaultYearMonth) {
+        this.defaultYearMonth = defaultYearMonth;
+        zDrawIndependentCalendarPanelIfNeeded();
     }
 
     /**
@@ -2265,6 +2292,14 @@ public class DatePickerSettings {
         results.add(weekNumberBorderProperties);
         // Return the results.
         return results;
+    }
+
+    /**
+     * zGetDefaultYearMonthAsUsed, This returns the default YearMonth, but substitutes
+     * YearMonth.now() for any null value. This will never return null.
+     */
+    YearMonth zGetDefaultYearMonthAsUsed() {
+        return (defaultYearMonth == null) ? YearMonth.now() : defaultYearMonth;
     }
 
     /**

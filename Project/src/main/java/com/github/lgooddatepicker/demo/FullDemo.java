@@ -126,9 +126,10 @@ public class FullDemo {
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates DatePickers, with various features.
         //
-        // Create a settings variable for repeated use.
+        // Create variables for repeated use.
         DatePickerSettings dateSettings;
         int row = rowMultiplier;
+        final LocalDate today = LocalDate.now();
 
         // Create a date picker: With default settings
         datePicker1 = new DatePicker();
@@ -178,7 +179,6 @@ public class FullDemo {
         // the date picker.
         dateSettings = new DatePickerSettings();
         datePicker = new DatePicker(dateSettings);
-        LocalDate today = LocalDate.now();
         dateSettings.setDateRangeLimits(today.minusDays(20), today.plusDays(20));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
@@ -367,6 +367,28 @@ public class FullDemo {
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
                 "Date 18, Custom Borders with Week Numbers:");
 
+
+        // Create a date picker: With a default year month, and limited date range.
+        // Notes: 
+        // * When a default YearMonth has not been set, (or is set to null), the default YearMonth
+        // will be YearMonth.now().
+        // * If you only want to limit one side of the date range, you can optionally pass in null 
+        // for one of the date limits.
+        // * Date range limits (and other types of veto policies) can only be set after constructing 
+        // the date picker.
+        dateSettings = new DatePickerSettings();
+        datePicker = new DatePicker(dateSettings);
+        LocalDate startJuly = today.plusYears(1);
+        startJuly = startJuly.withMonth(7);
+        startJuly = startJuly.withDayOfMonth(1);
+        LocalDate endJuly = startJuly.withDayOfMonth(startJuly.lengthOfMonth());
+        YearMonth yearMonthJuly = YearMonth.from(startJuly);
+        dateSettings.setDefaultYearMonth(yearMonthJuly);
+        dateSettings.setDateRangeLimits(startJuly.minusDays(10), endJuly.plusDays(10));
+        panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
+                "Date 19, Set Default YearMonth and Range (Next July + 10):");
+        
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates TimePickers. (1 to 5)

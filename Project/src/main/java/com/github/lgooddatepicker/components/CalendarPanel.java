@@ -1253,8 +1253,8 @@ public class CalendarPanel extends JPanel {
             YearMonth selectedDateYearMonth = YearMonth.from(selectedDate);
             displayedYearMonth = selectedDateYearMonth;
         } else {
-            // The selected date was cleared, so set the displayed month and year to today's values.
-            displayedYearMonth = YearMonth.now();
+            // The selected date was cleared, so set the displayed YearMonth to the default value.
+            displayedYearMonth = settings.zGetDefaultYearMonthAsUsed();
         }
 
         // Save the selected date, redraw the calendar, and notify any listeners.
@@ -1776,6 +1776,12 @@ public class CalendarPanel extends JPanel {
         if (isIndependentCalendarPanel) {
             settings.zSetParentCalendarPanel(this);
         }
+        
+        // If no date is selected, then apply the default displayedYearMonth from settings.
+        if (displayedSelectedDate == null) {
+            displayedYearMonth = settings.zGetDefaultYearMonthAsUsed();
+        }
+
         // Apply the border properties settings.
         // This is applied regardless of whether the calendar panel was created by a date picker, 
         // or as an independent calendar panel.
