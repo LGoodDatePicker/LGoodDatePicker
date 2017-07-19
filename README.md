@@ -11,9 +11,11 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
-* [LGoodDatePicker 10.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on May 8, 2017. This version fixes a MacOSX related bug, adds the Norwegian language translation, and adds the option to customize any used font or component color.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
+* [LGoodDatePicker 10.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on July 5, 2017. This version adds listener notifications for changes to the YearMonth, and adds the colors for the selected date to the customizable colors in the DatePickerSettings. The pom file was enhanced to allow developers to optionally build the project from source, without first installing the GPG signing tools. This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
 
-* [LGoodDatePicker 8.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on November 29, 2016. This version fixes a critical Linux related bug, adds the Bulgarian language translation, and adds to the optional visual customization capabilities.  This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
+* [LGoodDatePicker 10.2.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on May 8, 2017. This version fixes a MacOSX related bug, adds the Norwegian language translation, and adds the option to customize any used font or component color. 
+
+* [LGoodDatePicker 8.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on November 29, 2016. This version fixes a critical Linux related bug, adds the Bulgarian language translation, and adds to the optional visual customization capabilities. 
 
 * [LGoodDatePicker 7.6.3](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was added [to Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker).
 
