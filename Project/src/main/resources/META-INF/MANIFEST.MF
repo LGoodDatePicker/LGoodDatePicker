@@ -3,6 +3,7 @@ Archiver-Version: Plexus Archiver
 Built-By: LGoodDatePicker
 Created-By: Apache Maven
 Main-Class: com.github.lgooddatepicker.demo.FullDemo
+Automatic-Module-Name: com.github.lgooddatepicker
 
 Name: com.github.lgooddatepicker.components.DatePicker.class
 Java-Bean: True
