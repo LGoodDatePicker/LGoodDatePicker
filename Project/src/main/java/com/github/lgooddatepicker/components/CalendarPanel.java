@@ -246,7 +246,7 @@ public class CalendarPanel extends JPanel {
      *
      */
     private CalendarPanel(DatePickerSettings datePickerSettings,
-            boolean isIndependentCalendarPanelInstance) {
+        boolean isIndependentCalendarPanelInstance) {
         // Save the information of whether this is an independent calendar panel.
         this.isIndependentCalendarPanel = isIndependentCalendarPanelInstance;
         // Call the JFormDesigner managed initialization function.
@@ -259,8 +259,8 @@ public class CalendarPanel extends JPanel {
         yearTextField.setMinimumValue(Year.MIN_VALUE);
         yearTextField.setMargin(new Insets(1, 1, 1, 1));
         yearEditorPanel.add(yearTextField, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
         // Add the text change listener to the yearTextField.
         yearTextField.numberChangeListener = new IntegerTextFieldNumberChangeListener() {
             @Override
@@ -330,9 +330,9 @@ public class CalendarPanel extends JPanel {
         // Create all the border labels.
         for (Point index : allBorderLabelIndexes) {
             Point labelLocationCell = new Point(labelLocations_X_forColumn[index.x],
-                    labelLocations_Y_forRow[index.y]);
+                labelLocations_Y_forRow[index.y]);
             Dimension labelSizeInCells = new Dimension(labelWidthsInCells_forColumn[index.x],
-                    labelHeightsInCells_forRow[index.y]);
+                labelHeightsInCells_forRow[index.y]);
             JLabel label = new JLabel();
             // The only properties we need on instantiation are that the label is opaque, and 
             // that it is not visible by default. The other default border properties will be 
@@ -341,7 +341,7 @@ public class CalendarPanel extends JPanel {
             label.setVisible(false);
             borderLabels[index.x][index.y] = label;
             centerPanel.add(label, CC.xywh(labelLocationCell.x, labelLocationCell.y,
-                    labelSizeInCells.width, labelSizeInCells.height));
+                labelSizeInCells.width, labelSizeInCells.height));
         }
     }
 
@@ -400,7 +400,7 @@ public class CalendarPanel extends JPanel {
             weekNumberLabel.setText("3" + i);
             weekNumberLabel.setVisible(false);
             CellConstraints constraints = CC.xywh(weekNumberLabelColumnX, weekNumberLabelRowY,
-                    weekNumberLabelWidthInCells, weekNumberLabelHeightInCells);
+                weekNumberLabelWidthInCells, weekNumberLabelHeightInCells);
             centerPanel.add(weekNumberLabel, constraints);
             weekNumberLabels.add(weekNumberLabel);
         }
@@ -428,7 +428,7 @@ public class CalendarPanel extends JPanel {
             weekdayLabel.setOpaque(true);
             weekdayLabel.setText("wd" + i);
             CellConstraints constraints = CC.xywh(weekdayLabelColumnX, weekdayLabelRowY,
-                    weekdayLabelWidthInCells, weekdayLabelHeightInCells);
+                weekdayLabelWidthInCells, weekdayLabelHeightInCells);
             centerPanel.add(weekdayLabel, constraints);
             weekdayLabels.add(weekdayLabel);
         }
@@ -444,7 +444,7 @@ public class CalendarPanel extends JPanel {
         topLeftLabel.setOpaque(true);
         topLeftLabel.setVisible(false);
         centerPanel.add(topLeftLabel, CC.xywh(
-                constantTopLeftLabelCell.x, constantTopLeftLabelCell.y, 1, 3));
+            constantTopLeftLabelCell.x, constantTopLeftLabelCell.y, 1, 3));
     }
 
     /**
@@ -520,7 +520,7 @@ public class CalendarPanel extends JPanel {
         // We have a label with a specific date, so set the date and close the calendar.
         int dayOfMonth = Integer.parseInt(labelText);
         LocalDate clickedDate = LocalDate.of(
-                displayedYearMonth.getYear(), displayedYearMonth.getMonth(), dayOfMonth);
+            displayedYearMonth.getYear(), displayedYearMonth.getMonth(), dayOfMonth);
         userSelectedADate(clickedDate);
     }
 
@@ -562,7 +562,7 @@ public class CalendarPanel extends JPanel {
         }
         // Determine and save the old YearMonth, for later notifying any calendar listeners.
         YearMonth oldYearMonth = (oldYearMonthOrNull == null)
-                ? this.displayedYearMonth : oldYearMonthOrNull;
+            ? this.displayedYearMonth : oldYearMonthOrNull;
         // Save the (new) displayed yearMonth.
         this.displayedYearMonth = newYearMonth;
 
@@ -573,7 +573,7 @@ public class CalendarPanel extends JPanel {
         // a developer could change the appearance of the calendar in response to this event. 
         for (CalendarListener calendarListener : calendarListeners) {
             YearMonthChangeEvent yearMonthChangeEvent = new YearMonthChangeEvent(
-                    this, this.displayedYearMonth, oldYearMonth);
+                this, this.displayedYearMonth, oldYearMonth);
             calendarListener.yearMonthChanged(yearMonthChangeEvent);
         }
 
@@ -595,8 +595,8 @@ public class CalendarPanel extends JPanel {
         int lastDateOfMonth = getLastDayOfMonth(displayedYearMonth);
         // Find out if we have a selected date that is inside the currently displayed month.
         boolean selectedDateIsInDisplayedMonth = (displayedSelectedDate != null)
-                && (displayedSelectedDate.getYear() == displayedYear)
-                && (displayedSelectedDate.getMonth() == displayedMonth);
+            && (displayedSelectedDate.getYear() == displayedYear)
+            && (displayedSelectedDate.getMonth() == displayedMonth);
         // Set the component colors and fonts.
         Color calendarPanelBackgroundColor = settings.getColor(DateArea.BackgroundOverallCalendarPanel);
         setBackground(calendarPanelBackgroundColor);
@@ -605,7 +605,7 @@ public class CalendarPanel extends JPanel {
         footerPanel.setBackground(calendarPanelBackgroundColor);
         // Set the background of the navigation buttons.
         Color navigationButtonsColor
-                = settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
+            = settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
         buttonPreviousYear.setBackground(navigationButtonsColor);
         buttonNextYear.setBackground(navigationButtonsColor);
         buttonPreviousMonth.setBackground(navigationButtonsColor);
@@ -663,7 +663,7 @@ public class CalendarPanel extends JPanel {
             DayOfWeek currentDayOfWeek = DayOfWeek.of(isoDayOfWeek);
             daysOfWeekAsDisplayed.add(currentDayOfWeek);
             weekdayLabels.get(weekdayLabelArrayIndex)
-                    .setText(localShortDaysOfWeek[localShortDaysOfWeekArrayIndex]);
+                .setText(localShortDaysOfWeek[localShortDaysOfWeekArrayIndex]);
             ++weekdayLabelArrayIndex;
         }
         // Set the dates of the month labels.
@@ -689,7 +689,7 @@ public class CalendarPanel extends JPanel {
             int daysOfWeekAsDisplayedArrayIndex = dateLabelArrayIndex % 7;
             // Check to see if we are inside the valid range for days of this month.
             if (daysOfWeekAsDisplayed.get(daysOfWeekAsDisplayedArrayIndex) == firstDayOfWeekOfMonth
-                    && dateLabelArrayIndex < 7) {
+                && dateLabelArrayIndex < 7) {
                 insideValidRange = true;
             }
             if (dayOfMonth > lastDateOfMonth) {
@@ -749,13 +749,13 @@ public class CalendarPanel extends JPanel {
                     dateLabel.setForeground(colorText);
                     // If needed, set the highlight tooltip text.
                     if (highlightInfo.tooltipText != null
-                            && (!(highlightInfo.tooltipText.isEmpty()))) {
+                        && (!(highlightInfo.tooltipText.isEmpty()))) {
                         dateLabel.setToolTipText(highlightInfo.tooltipText);
                     }
                 }
                 // If needed, save the label for the selected date.
                 if (selectedDateIsInDisplayedMonth && displayedSelectedDate != null
-                        && displayedSelectedDate.getDayOfMonth() == dayOfMonth) {
+                    && displayedSelectedDate.getDayOfMonth() == dayOfMonth) {
                     selectedDateLabel = dateLabel;
                 }
                 // Set the text for the current date.
@@ -770,7 +770,7 @@ public class CalendarPanel extends JPanel {
         if (selectedDateLabel != null) {
             selectedDateLabel.setBackground(settings.getColor(DateArea.CalendarBackgroundSelectedDate));
             selectedDateLabel.setBorder(new LineBorder(
-                    settings.getColor(DateArea.CalendarBorderSelectedDate)));
+                settings.getColor(DateArea.CalendarBorderSelectedDate)));
         }
 
         // If needed, draw the week numbers.
@@ -779,16 +779,16 @@ public class CalendarPanel extends JPanel {
         WeekFields weekNumberRules = settings.getWeekNumberRules();
         topLeftLabel.setVisible(showWeekNumbers);
         for (int weekNumberLabelIndex = 0; weekNumberLabelIndex < weekNumberLabels.size();
-                ++weekNumberLabelIndex) {
+            ++weekNumberLabelIndex) {
             JLabel currentLabel = weekNumberLabels.get(weekNumberLabelIndex);
             currentLabel.setVisible(showWeekNumbers);
             currentLabel.setText("");
             // If needed, populate the week number label with a week number.
             if ((showWeekNumbers) && (weekNumberRules != null)
-                    && (weekNumberLabelIndex < usedRowCount)) {
+                && (weekNumberLabelIndex < usedRowCount)) {
                 LocalDate firstDateInRow = firstDateInEachUsedRow.get(weekNumberLabelIndex);
                 int weekNumber = zGetWeekNumberForASevenDayRange(
-                        firstDateInRow, weekNumberRules, false);
+                    firstDateInRow, weekNumberRules, false);
                 currentLabel.setText("" + weekNumber);
             }
         }
@@ -816,7 +816,7 @@ public class CalendarPanel extends JPanel {
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
         boolean todayIsVetoed = InternalUtilities.isDateVetoed(
-                vetoPolicy, LocalDate.now());
+            vetoPolicy, LocalDate.now());
         labelSetDateToToday.setEnabled(!todayIsVetoed);
 
         // Set the visibility of all the calendar control buttons (and button labels).
@@ -830,6 +830,11 @@ public class CalendarPanel extends JPanel {
 
         // Set the size of the cell that contains the date panel.
         setSizeOfDatePanelCell();
+
+        // Repaint the component.
+        // This was a supplied fix for a redrawing issue on MacOS, from NicholasQu.
+        // https://github.com/LGoodDatePicker/LGoodDatePicker/issues/61
+        this.repaint();
     }
 
     /**
@@ -937,7 +942,7 @@ public class CalendarPanel extends JPanel {
         // Highlight the label.
         label.setBackground(new Color(184, 207, 229));
         label.setBorder(new CompoundBorder(
-                new LineBorder(Color.GRAY), labelIndicatorEmptyBorder));
+            new LineBorder(Color.GRAY), labelIndicatorEmptyBorder));
     }
 
     /**
@@ -968,7 +973,7 @@ public class CalendarPanel extends JPanel {
             label.setBackground(settings.getColor(DateArea.BackgroundClearLabel));
         }
         label.setBorder(new CompoundBorder(
-                new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));
+            new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));
     }
 
     /**
@@ -998,7 +1003,7 @@ public class CalendarPanel extends JPanel {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         drawCalendar(displayedYearMonth.getYear(),
-                                Month.of(localMonthZeroBasedIndex + 1));
+                            Month.of(localMonthZeroBasedIndex + 1));
                     }
                 }));
             }
@@ -1030,7 +1035,7 @@ public class CalendarPanel extends JPanel {
         int lastYearDifference = +11;
         JPopupMenu yearPopupMenu = new JPopupMenu();
         for (int yearDifference = firstYearDifference; yearDifference <= lastYearDifference;
-                ++yearDifference) {
+            ++yearDifference) {
             // No special processing is required for the BC to AD transition in the 
             // ISO 8601 calendar system. Year zero does exist in this system.
             // This try block handles exceptions that can occur at LocalDate.MAX.
@@ -1090,7 +1095,7 @@ public class CalendarPanel extends JPanel {
     public void setSelectedDate(LocalDate selectedDate) {
         setSelectedDateWithoutShowing(selectedDate);
         YearMonth yearMonthToShow
-                = (selectedDate == null) ? YearMonth.now() : YearMonth.from(selectedDate);
+            = (selectedDate == null) ? YearMonth.now() : YearMonth.from(selectedDate);
         setDisplayedYearMonth(yearMonthToShow);
     }
 
@@ -1113,7 +1118,7 @@ public class CalendarPanel extends JPanel {
     public void setDisplayedYearMonth(YearMonth yearMonth) {
         if (yearMonth == null) {
             throw new RuntimeException("CalendarPanel.setDisplayedYearMonth(), "
-                    + "The displayed year and month cannot be set to null.");
+                + "The displayed year and month cannot be set to null.");
         }
         drawCalendar(yearMonth);
     }
@@ -1207,7 +1212,7 @@ public class CalendarPanel extends JPanel {
         int monthFontHeight = metrics.getHeight();
         int monthFontHeightWithPadding = monthFontHeight + 2;
         int panelHeight = Math.max(monthFontHeightWithPadding, Math.max(preferredHeightMonthLabel,
-                Math.max(preferredHeightYearLabel, heightNavigationButtons)));
+            Math.max(preferredHeightYearLabel, heightNavigationButtons)));
         // Get the length of the longest translated month string (in pixels).
         DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
         String[] allLocalMonths = symbols.getMonths();
@@ -1326,12 +1331,12 @@ public class CalendarPanel extends JPanel {
      * a highlight policy based on the currently selected date.)
      */
     private void zInternalChangeSelectedDateProcedure(
-            LocalDate newDate, YearMonth oldYearMonthOrNull) {
+        LocalDate newDate, YearMonth oldYearMonthOrNull) {
         LocalDate oldDate = displayedSelectedDate;
         displayedSelectedDate = newDate;
         for (CalendarListener calendarListener : calendarListeners) {
             CalendarSelectionEvent dateSelectionEvent = new CalendarSelectionEvent(
-                    this, newDate, oldDate);
+                this, newDate, oldDate);
             calendarListener.selectedDateChanged(dateSelectionEvent);
         }
         drawCalendar(displayedYearMonth, oldYearMonthOrNull);
@@ -1383,8 +1388,8 @@ public class CalendarPanel extends JPanel {
         //======== headerControlsPanel ========
         {
             headerControlsPanel.setLayout(new FormLayout(
-                    "3*(pref), pref:grow, 3*(pref)",
-                    "fill:pref:grow"));
+                "3*(pref), pref:grow, 3*(pref)",
+                "fill:pref:grow"));
             ((FormLayout) headerControlsPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 6, 7}});
 
             //---- buttonPreviousYear ----
@@ -1420,14 +1425,14 @@ public class CalendarPanel extends JPanel {
             //======== monthAndYearOuterPanel ========
             {
                 monthAndYearOuterPanel.setLayout(new FormLayout(
-                        "pref:grow, pref, pref:grow",
-                        "fill:pref:grow"));
+                    "pref:grow, pref, pref:grow",
+                    "fill:pref:grow"));
 
                 //======== monthAndYearInnerPanel ========
                 {
                     monthAndYearInnerPanel.setLayout(new FormLayout(
-                            "pref, [1px,pref], pref",
-                            "fill:pref:grow"));
+                        "pref, [1px,pref], pref",
+                        "fill:pref:grow"));
 
                     //---- labelMonth ----
                     labelMonth.setText("September");
@@ -1507,21 +1512,21 @@ public class CalendarPanel extends JPanel {
             headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
         }
         add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
 
         //======== centerPanel ========
         {
             centerPanel.setBackground(new Color(210, 210, 210));
             centerPanel.setLayout(new FormLayout(
-                    "3*(min), 7*(default:grow), min",
-                    "fill:min, fill:2px, fill:default:grow, fill:1px, fill:min, 6*(fill:default:grow), fill:min"));
+                "3*(min), 7*(default:grow), min",
+                "fill:min, fill:2px, fill:default:grow, fill:1px, fill:min, 6*(fill:default:grow), fill:min"));
             ((FormLayout) centerPanel.getLayout()).setColumnGroups(new int[][]{{4, 5, 6, 7, 8, 9, 10}});
             ((FormLayout) centerPanel.getLayout()).setRowGroups(new int[][]{{3, 6, 7, 8, 9, 10, 11}});
         }
         add(centerPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
-                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                new Insets(0, 0, 0, 0), 0, 0));
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
 
         //======== footerPanel ========
         {
@@ -1536,19 +1541,19 @@ public class CalendarPanel extends JPanel {
             labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
             labelSetDateToToday.setOpaque(true);
             footerPanel.add(labelSetDateToToday, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
 
             //---- labelClearDate ----
             labelClearDate.setText("Clear");
             labelClearDate.setOpaque(true);
             footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
-        }
-        add(footerPanel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
+        }
+        add(footerPanel, new GridBagConstraints(1, 5, 1, 1, 0.0, 0.0,
+            GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+            new Insets(0, 0, 0, 0), 0, 0));
 
         //======== yearEditorPanel ========
         {
@@ -1568,8 +1573,8 @@ public class CalendarPanel extends JPanel {
                 }
             });
             yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
-                    GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                    new Insets(0, 0, 0, 0), 0, 0));
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         }
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
@@ -1589,13 +1594,13 @@ public class CalendarPanel extends JPanel {
         Color color = borderProperties.backgroundColor;
         Integer thickness = borderProperties.thicknessInPixels;
         if ((ul == null) || (lr == null) || (ul.x < 1) || (ul.x > 5) || (ul.y < 1) || (ul.y > 5)
-                || (lr.x < 1) || (lr.x > 5) || (lr.y < 1) || (lr.y > 5) || (ul.x > lr.x)
-                || (ul.y > lr.y)) {
+            || (lr.x < 1) || (lr.x > 5) || (lr.y < 1) || (lr.y > 5) || (ul.x > lr.x)
+            || (ul.y > lr.y)) {
             throw new RuntimeException("CalendarPanel.setBorderProperties(), "
-                    + "The supplied points cannot be null, and they must have x and y "
-                    + "coordinates with values in the range of 1 to 5 (inclusive). Additionally, "
-                    + "the upper left point values must be less than or equal to the lower right "
-                    + "point values.");
+                + "The supplied points cannot be null, and they must have x and y "
+                + "coordinates with values in the range of 1 to 5 (inclusive). Additionally, "
+                + "the upper left point values must be less than or equal to the lower right "
+                + "point values.");
         }
         for (int x = ul.x; x <= lr.x; ++x) {
             for (int y = ul.y; y <= lr.y; ++y) {
@@ -1610,7 +1615,7 @@ public class CalendarPanel extends JPanel {
                     boolean isVisible = (thickness > 0);
                     borderLabel.setVisible(isVisible);
                     Dimension minimumSize = (isVisible)
-                            ? new Dimension(thickness, thickness) : new Dimension(1, 1);
+                        ? new Dimension(thickness, thickness) : new Dimension(1, 1);
                     borderLabel.setMinimumSize(minimumSize);
                 }
             }
@@ -1635,7 +1640,7 @@ public class CalendarPanel extends JPanel {
         }
         // Clear the current borders. (Set them to be invisible and black.)
         CalendarBorderProperties clearBordersProperties = new CalendarBorderProperties(
-                new Point(1, 1), new Point(5, 5), Color.black, 0);
+            new Point(1, 1), new Point(5, 5), Color.black, 0);
         zApplyBorderPropertiesInstance(clearBordersProperties);
         // Apply the current borderPropertiesList settings.
         for (CalendarBorderProperties borderProperties : settings.getBorderPropertiesList()) {
@@ -1643,7 +1648,7 @@ public class CalendarPanel extends JPanel {
         }
         if (!(settings.getWeekNumbersDisplayed())) {
             CalendarBorderProperties hideWeekNumberBorders = new CalendarBorderProperties(
-                    new Point(1, 1), new Point(2, 5), Color.black, 0);
+                new Point(1, 1), new Point(2, 5), Color.black, 0);
             zApplyBorderPropertiesInstance(hideWeekNumberBorders);
         }
         drawCalendar();
@@ -1683,9 +1688,9 @@ public class CalendarPanel extends JPanel {
         labelClearDate.setVisible(showClearButton);
 
         boolean showMonthAndYearInnerPanel = (showMonthMenu || showYearMenu
-                || yearEditorPanelIsDisplayed);
+            || yearEditorPanelIsDisplayed);
         boolean showHeaderControlsPanel = (showMonthAndYearInnerPanel
-                || showNextMonth || showNextYear || showPreviousMonth || showPreviousYear);
+            || showNextMonth || showNextYear || showPreviousMonth || showPreviousYear);
         monthAndYearInnerPanel.setVisible(showMonthAndYearInnerPanel);
         headerControlsPanel.setVisible(showHeaderControlsPanel);
 
@@ -1726,7 +1731,7 @@ public class CalendarPanel extends JPanel {
      * minimalDaysInFirstWeek);
      */
     private Integer zGetWeekNumberForASevenDayRange(LocalDate firstDateInRange,
-            WeekFields weekFieldRules, boolean requireUnanimousWeekNumber) {
+        WeekFields weekFieldRules, boolean requireUnanimousWeekNumber) {
         // Get the week number for each of the seven days in the range. 
         ArrayList<Integer> weekNumbersList = new ArrayList<Integer>();
         for (int daysIntoTheFuture = 0; daysIntoTheFuture <= 6; ++daysIntoTheFuture) {
@@ -1743,7 +1748,7 @@ public class CalendarPanel extends JPanel {
         // Find out if all the week numbers are the same. 
         // We can check for a unanimous sequence by looking at the first and last number. 
         boolean isUnanimous = (InternalUtilities.areObjectsEqual(
-                weekNumbersList.get(0), weekNumbersList.get(6)));
+            weekNumbersList.get(0), weekNumbersList.get(6)));
         // If the week numbers are unanimous, then return the unanimous week number. 
         if (isUnanimous) {
             return weekNumbersList.get(0);
@@ -1776,7 +1781,7 @@ public class CalendarPanel extends JPanel {
         if (isIndependentCalendarPanel) {
             settings.zSetParentCalendarPanel(this);
         }
-        
+
         // If no date is selected, then apply the default displayedYearMonth from settings.
         if (displayedSelectedDate == null) {
             displayedYearMonth = settings.zGetDefaultYearMonthAsUsed();

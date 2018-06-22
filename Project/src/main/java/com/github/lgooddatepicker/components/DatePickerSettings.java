@@ -31,6 +31,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.format.ResolverStyle;
 import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import javax.swing.JButton;
@@ -286,17 +287,21 @@ public class DatePickerSettings {
     private Font fontVetoedDate;
 
     /**
-     * formatForDatesCommonEra, This holds the default format that is used to display or parse CE
-     * dates in the date picker. The default value is generated using the locale of the settings
+     * formatForDatesCommonEraStrict, This holds the default format that is used to display or parse
+     * CE dates in the date picker. The default value is generated using the locale of the settings
      * instance.
+     *
+     * Technical Note: In order to avoid validation problems with nonexistent dates like "Feb 31",
+     * all dates used for parsing (including this one), must be saved with ResolverStyle.STRICT.
+     * Therefore these formats will be set to the strict resolver style in their setter functions.
      */
-    private DateTimeFormatter formatForDatesCommonEra;
+    private DateTimeFormatter formatForDatesCommonEraStrict;
 
     /**
-     * formatForDatesBeforeCommonEra, This holds the default format that is used to display or parse
-     * BCE dates in the date picker. The default value is generated using the locale of the settings
-     * instance. A DateTimeFormatter can be created from a pattern string with the convenience
-     * function DateUtilities.createFormatterFromPatternString();
+     * formatForDatesBeforeCommonEraStrict, This holds the default format that is used to display or
+     * parse BCE dates in the date picker. The default value is generated using the locale of the
+     * settings instance. A DateTimeFormatter can be created from a pattern string with the
+     * convenience function DateUtilities.createFormatterFromPatternString();
      *
      * Note: It is important to use the letter "u" (astronomical year) instead of "y" (year of era)
      * when creating pattern strings for BCE dates. This is because the DatePicker uses ISO 8601,
@@ -304,8 +309,12 @@ public class DatePickerSettings {
      * "-1" and "1 BC" are not the same thing. Astronomical years are zero-based, and BC dates are
      * one-based. Astronomical year "0", is the same year as "1 BC", and astronomical year "-1" is
      * the same year as "2 BC", and so forth.)
+     *
+     * Technical Note: In order to avoid validation problems with nonexistent dates like "Feb 31",
+     * all dates used for parsing (including this one), must be saved with ResolverStyle.STRICT.
+     * Therefore these formats will be set to the strict resolver style in their setter functions.
      */
-    private DateTimeFormatter formatForDatesBeforeCommonEra;
+    private DateTimeFormatter formatForDatesBeforeCommonEraStrict;
 
     /**
      * formatTodayButton, This format is used to format today's date into a date string, which is
@@ -315,14 +324,18 @@ public class DatePickerSettings {
     private DateTimeFormatter formatForTodayButton;
 
     /**
-     * formatsForParsing, This holds a list of formats that are used to attempt to parse dates that
-     * are typed by the user. When parsing a date, these formats are tried in the order that they
-     * appear in this list. Note that the formatForDatesCommonEra and formatForDatesBeforeCommonEra
-     * are always tried (in that order) before any other parsing formats. The default values for the
-     * formatsForParsing are generated using the pickerLocale, using the enum constants in
-     * java.time.format.FormatStyle.
+     * formatsForParsingStrict, This holds a list of formats that are used to attempt to parse dates
+     * that are typed by the user. When parsing a date, these formats are tried in the order that
+     * they appear in this list. Note that the formatForDatesCommonEra and
+     * formatForDatesBeforeCommonEra are always tried (in that order) before any other parsing
+     * formats. The default values for the formatsForParsing are generated using the pickerLocale,
+     * using the enum constants in java.time.format.FormatStyle.
+     *
+     * Technical Note: In order to avoid validation problems with nonexistent dates like "Feb 31",
+     * all dates used for parsing (including these), must be saved with ResolverStyle.STRICT.
+     * Therefore these formats will be set to the strict resolver style in their setter functions.
      */
-    private ArrayList<DateTimeFormatter> formatsForParsing;
+    private ArrayList<DateTimeFormatter> formatsForParsingStrict;
 
     /**
      * gapBeforeButtonPixels, This specifies the desired width for the gap between the date picker
@@ -679,7 +692,7 @@ public class DatePickerSettings {
             result.borderPropertiesList = null;
         } else {
             result.borderPropertiesList
-                    = new ArrayList<CalendarBorderProperties>(this.borderPropertiesList.size());
+                = new ArrayList<CalendarBorderProperties>(this.borderPropertiesList.size());
             for (CalendarBorderProperties borderProperty : this.borderPropertiesList) {
                 result.borderPropertiesList.add(borderProperty.clone());
             }
@@ -705,11 +718,11 @@ public class DatePickerSettings {
         result.fontValidDate = this.fontValidDate;
         result.fontVetoedDate = this.fontVetoedDate;
         // The DateTimeFormatter class is immutable.
-        result.formatForDatesBeforeCommonEra = this.formatForDatesBeforeCommonEra;
-        result.formatForDatesCommonEra = this.formatForDatesCommonEra;
+        result.formatForDatesBeforeCommonEraStrict = this.formatForDatesBeforeCommonEraStrict;
+        result.formatForDatesCommonEraStrict = this.formatForDatesCommonEraStrict;
         result.formatForTodayButton = this.formatForTodayButton;
-        result.formatsForParsing = (this.formatsForParsing == null)
-                ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsing.clone();
+        result.formatsForParsingStrict = (this.formatsForParsingStrict == null)
+            ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsingStrict.clone();
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
         // "result.highlightPolicy" is left at its default value.
         result.isVisibleClearButton = this.isVisibleClearButton;
@@ -730,9 +743,9 @@ public class DatePickerSettings {
         result.sizeTextFieldMinimumWidthDefaultOverride = this.sizeTextFieldMinimumWidthDefaultOverride;
         // The translation arrays will never be null, and the String class is an immutable type.
         result.translationArrayStandaloneLongMonthNames
-                = this.translationArrayStandaloneLongMonthNames.clone();
+            = this.translationArrayStandaloneLongMonthNames.clone();
         result.translationArrayStandaloneShortMonthNames
-                = this.translationArrayStandaloneShortMonthNames.clone();
+            = this.translationArrayStandaloneShortMonthNames.clone();
         result.translationClear = this.translationClear;
         result.translationToday = this.translationToday;
         // "result.vetoPolicy" is left at its default value.
@@ -850,7 +863,7 @@ public class DatePickerSettings {
      */
     public DayOfWeek getFirstDayOfWeekDisplayedOnCalendar() {
         if (weekNumbersDisplayed && weekNumbersWillOverrideFirstDayOfWeek
-                && (weekNumberRules != null)) {
+            && (weekNumberRules != null)) {
             return weekNumberRules.getFirstDayOfWeek();
         }
         return firstDayOfWeek;
@@ -950,7 +963,7 @@ public class DatePickerSettings {
      * for setting information.
      */
     public DateTimeFormatter getFormatForDatesBeforeCommonEra() {
-        return formatForDatesBeforeCommonEra;
+        return formatForDatesBeforeCommonEraStrict;
     }
 
     /**
@@ -958,7 +971,7 @@ public class DatePickerSettings {
      * setting information.
      */
     public DateTimeFormatter getFormatForDatesCommonEra() {
-        return formatForDatesCommonEra;
+        return formatForDatesCommonEraStrict;
     }
 
     /**
@@ -974,7 +987,7 @@ public class DatePickerSettings {
      * information.
      */
     public ArrayList<DateTimeFormatter> getFormatsForParsing() {
-        return formatsForParsing;
+        return formatsForParsingStrict;
     }
 
     /**
@@ -1338,7 +1351,7 @@ public class DatePickerSettings {
      * current border settings will not be changed by this function.
      */
     public void setColorBackgroundWeekNumberLabels(Color colorBackgroundWeekNumberLabels,
-            boolean applyMatchingDefaultBorders) {
+        boolean applyMatchingDefaultBorders) {
         this.colorBackgroundWeekNumberLabels = colorBackgroundWeekNumberLabels;
         if (applyMatchingDefaultBorders) {
             setBorderPropertiesList(null);
@@ -1359,7 +1372,7 @@ public class DatePickerSettings {
      * current border settings will not be changed by this function.
      */
     public void setColorBackgroundWeekdayLabels(Color colorBackgroundWeekdayLabels,
-            boolean applyMatchingDefaultBorders) {
+        boolean applyMatchingDefaultBorders) {
         this.colorBackgroundWeekdayLabels = colorBackgroundWeekdayLabels;
         if (applyMatchingDefaultBorders) {
             setBorderPropertiesList(null);
@@ -1391,17 +1404,17 @@ public class DatePickerSettings {
     public boolean setDateRangeLimits(LocalDate firstAllowedDate, LocalDate lastAllowedDate) {
         if (!hasParent()) {
             throw new RuntimeException("DatePickerSettings.setDateRangeLimits(), "
-                    + "A date range limit can only be set after constructing the parent "
-                    + "DatePicker or the parent independent CalendarPanel. (The parent component "
-                    + "should be constructed using the DatePickerSettings instance where the "
-                    + "date range limits will be applied. The previous sentence is probably "
-                    + "simpler than it sounds.)");
+                + "A date range limit can only be set after constructing the parent "
+                + "DatePicker or the parent independent CalendarPanel. (The parent component "
+                + "should be constructed using the DatePickerSettings instance where the "
+                + "date range limits will be applied. The previous sentence is probably "
+                + "simpler than it sounds.)");
         }
         if (firstAllowedDate == null && lastAllowedDate == null) {
             return setVetoPolicy(null);
         }
         return setVetoPolicy(new DateVetoPolicyMinimumMaximumDate(
-                firstAllowedDate, lastAllowedDate));
+            firstAllowedDate, lastAllowedDate));
     }
 
     /**
@@ -1581,7 +1594,8 @@ public class DatePickerSettings {
      * immediate validation of the text field text.
      */
     public void setFormatForDatesBeforeCommonEra(DateTimeFormatter formatForDatesBeforeCommonEra) {
-        this.formatForDatesBeforeCommonEra = formatForDatesBeforeCommonEra;
+        this.formatForDatesBeforeCommonEraStrict
+            = formatForDatesBeforeCommonEra.withResolverStyle(ResolverStyle.STRICT);
         if (parentDatePicker != null) {
             parentDatePicker.setTextFieldToValidStateIfNeeded();
         }
@@ -1607,7 +1621,7 @@ public class DatePickerSettings {
      */
     public void setFormatForDatesBeforeCommonEra(String patternString) {
         DateTimeFormatter formatter
-                = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
+            = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
         setFormatForDatesBeforeCommonEra(formatter);
     }
 
@@ -1630,7 +1644,8 @@ public class DatePickerSettings {
      * picker text field.
      */
     public void setFormatForDatesCommonEra(DateTimeFormatter formatForDatesCommonEra) {
-        this.formatForDatesCommonEra = formatForDatesCommonEra;
+        this.formatForDatesCommonEraStrict
+            = formatForDatesCommonEra.withResolverStyle(ResolverStyle.STRICT);
         if (parentDatePicker != null) {
             parentDatePicker.setTextFieldToValidStateIfNeeded();
         }
@@ -1657,7 +1672,7 @@ public class DatePickerSettings {
      */
     public void setFormatForDatesCommonEra(String patternString) {
         DateTimeFormatter formatter
-                = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
+            = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
         setFormatForDatesCommonEra(formatter);
     }
 
@@ -1680,7 +1695,10 @@ public class DatePickerSettings {
      * using the enum constants in java.time.format.FormatStyle.
      */
     public void setFormatsForParsing(ArrayList<DateTimeFormatter> formatsForParsing) {
-        this.formatsForParsing = formatsForParsing;
+        this.formatsForParsingStrict = new ArrayList<DateTimeFormatter>();
+        for (DateTimeFormatter format : formatsForParsing) {
+            this.formatsForParsingStrict.add(format.withResolverStyle(ResolverStyle.STRICT));
+        }
     }
 
     /**
@@ -1754,16 +1772,16 @@ public class DatePickerSettings {
 
         // Set the default standalone month names for the locale.
         String[] standaloneLongMonthNames
-                = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
+            = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
         setTranslationArrayStandaloneLongMonthNames(standaloneLongMonthNames);
         String[] standaloneShortMonthNames
-                = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
+            = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
         setTranslationArrayStandaloneShortMonthNames(standaloneShortMonthNames);
 
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
         DateTimeFormatter formatForToday
-                = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
+            = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
         setFormatForTodayButton(formatForToday);
         DateTimeFormatter formatForDatesCE = InternalUtilities.generateDefaultFormatterCE(locale);
         setFormatForDatesCommonEra(formatForDatesCE);
@@ -1779,14 +1797,14 @@ public class DatePickerSettings {
         DateTimeFormatter parseFormat;
         for (int i = 0; i < allFormatStyles.length; ++i) {
             parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                    appendLocalized(allFormatStyles[i], null).toFormatter(locale);
+                appendLocalized(allFormatStyles[i], null).toFormatter(locale);
             parsingFormats.add(parseFormat);
         }
 
         // Get any common extra parsing formats for the specified locale, and append them to
         // the list of parsingFormatters.
         ArrayList<DateTimeFormatter> extraFormatters
-                = ExtraDateStrings.getExtraParsingFormatsForLocale(locale);
+            = ExtraDateStrings.getExtraParsingFormatsForLocale(locale);
         parsingFormats.addAll(extraFormatters);
 
         // Save the parsing formats.
@@ -1884,7 +1902,7 @@ public class DatePickerSettings {
     public void setTranslationArrayStandaloneLongMonthNames(String[] newTranslationArray) {
         if (newTranslationArray == null) {
             String[] defaultLongMonthNames
-                    = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
+                = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
             this.translationArrayStandaloneLongMonthNames = defaultLongMonthNames;
         } else {
             this.translationArrayStandaloneLongMonthNames = newTranslationArray;
@@ -1907,7 +1925,7 @@ public class DatePickerSettings {
     public void setTranslationArrayStandaloneShortMonthNames(String[] newTranslationArray) {
         if (newTranslationArray == null) {
             String[] defaultShortMonthNames
-                    = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
+                = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
             this.translationArrayStandaloneShortMonthNames = defaultShortMonthNames;
         } else {
             this.translationArrayStandaloneShortMonthNames = newTranslationArray;
@@ -1967,10 +1985,10 @@ public class DatePickerSettings {
     public boolean setVetoPolicy(DateVetoPolicy vetoPolicy) {
         if (!hasParent()) {
             throw new RuntimeException("DatePickerSettings.setVetoPolicy(), "
-                    + "A veto policy can only be set after constructing the parent DatePicker or "
-                    + "the parent independent CalendarPanel. (The parent component should be "
-                    + "constructed using the DatePickerSettings instance where the veto policy "
-                    + "will be applied. The previous sentence is probably simpler than it sounds.)");
+                + "A veto policy can only be set after constructing the parent DatePicker or "
+                + "the parent independent CalendarPanel. (The parent component should be "
+                + "constructed using the DatePickerSettings instance where the veto policy "
+                + "will be applied. The previous sentence is probably simpler than it sounds.)");
         }
         this.vetoPolicy = vetoPolicy;
         // If the parent is an independent calendar panel, redraw the panel to show the new policy.
@@ -2106,7 +2124,7 @@ public class DatePickerSettings {
      * not be changed by this function.
      */
     public void setWeekNumbersDisplayed(boolean weekNumbersDisplayed,
-            boolean applyMatchingDefaultBorders) {
+        boolean applyMatchingDefaultBorders) {
         this.weekNumbersDisplayed = weekNumbersDisplayed;
         if (applyMatchingDefaultBorders) {
             setBorderPropertiesList(null);
@@ -2146,7 +2164,7 @@ public class DatePickerSettings {
      * not exactly match the week number rules.
      */
     public void setWeekNumbersWillOverrideFirstDayOfWeek(
-            boolean weekNumbersWillOverrideFirstDayOfWeek) {
+        boolean weekNumbersWillOverrideFirstDayOfWeek) {
         this.weekNumbersWillOverrideFirstDayOfWeek = weekNumbersWillOverrideFirstDayOfWeek;
         zDrawIndependentCalendarPanelIfNeeded();
     }
@@ -2172,9 +2190,9 @@ public class DatePickerSettings {
             LocalDate today = LocalDate.now();
             if (InternalUtilities.isDateVetoed(vetoPolicy, today)) {
                 throw new RuntimeException("Exception in DatePickerSettings.zApplyAllowEmptyDates(), "
-                        + "Could not initialize a null date to today, because today is vetoed by "
-                        + "the veto policy. To prevent this exception, always call "
-                        + "setAllowEmptyDates() -before- setting a veto policy.");
+                    + "Could not initialize a null date to today, because today is vetoed by "
+                    + "the veto policy. To prevent this exception, always call "
+                    + "setAllowEmptyDates() -before- setting a veto policy.");
             }
             // Initialize the current date.
             zSetParentSelectedDate(today);
@@ -2192,10 +2210,10 @@ public class DatePickerSettings {
         parentDatePicker.getComponentDateTextField().setEditable(allowKeyboardEditing);
         // Set the text field border color based on whether the text field is editable.
         Color textFieldBorderColor = (allowKeyboardEditing)
-                ? InternalConstants.colorEditableTextFieldBorder
-                : InternalConstants.colorNotEditableTextFieldBorder;
+            ? InternalConstants.colorEditableTextFieldBorder
+            : InternalConstants.colorNotEditableTextFieldBorder;
         parentDatePicker.getComponentDateTextField().setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
+            new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
     }
 
     /**
@@ -2278,17 +2296,17 @@ public class DatePickerSettings {
         Color defaultWeekNumberEndcapsBorderColor = colorBackgroundWeekNumberLabels;
         // Set the borders properties for the date box.
         CalendarBorderProperties dateBoxBorderProperties = new CalendarBorderProperties(
-                new Point(3, 3), new Point(5, 5), defaultDateBoxBorderColor, 1);
+            new Point(3, 3), new Point(5, 5), defaultDateBoxBorderColor, 1);
         results.add(dateBoxBorderProperties);
         // Set the borders properties for the weekday label endcaps.
         CalendarBorderProperties weekdayLabelBorderProperties = new CalendarBorderProperties(
-                new Point(3, 2), new Point(5, 2), defaultWeekdayEndcapsBorderColor, 1);
+            new Point(3, 2), new Point(5, 2), defaultWeekdayEndcapsBorderColor, 1);
         results.add(weekdayLabelBorderProperties);
         // Set the border properties for borders above and below the week numbers.
         // Note that the week number borders are only displayed when the week numbers are also
         // displayed. (This is true of any borders located in columns 1 and 2.)
         CalendarBorderProperties weekNumberBorderProperties = new CalendarBorderProperties(
-                new Point(2, 3), new Point(2, 5), defaultWeekNumberEndcapsBorderColor, 1);
+            new Point(2, 3), new Point(2, 5), defaultWeekNumberEndcapsBorderColor, 1);
         results.add(weekNumberBorderProperties);
         // Return the results.
         return results;
@@ -2312,10 +2330,10 @@ public class DatePickerSettings {
     void zSetParentCalendarPanel(CalendarPanel parentCalendarPanel) {
         if (hasParent()) {
             throw new RuntimeException("DatePickerSettings.setParentCalendarPanel(), "
-                    + "A DatePickerSettings instance can only be used as the settings for "
-                    + "one parent object. (Settings instances cannot be reused for multiple "
-                    + "DatePickers, multiple independent CalendarPanels, or for combinations "
-                    + "of both. )");
+                + "A DatePickerSettings instance can only be used as the settings for "
+                + "one parent object. (Settings instances cannot be reused for multiple "
+                + "DatePickers, multiple independent CalendarPanels, or for combinations "
+                + "of both. )");
         }
         this.parentCalendarPanel = parentCalendarPanel;
     }
@@ -2327,10 +2345,10 @@ public class DatePickerSettings {
     void zSetParentDatePicker(DatePicker parentDatePicker) {
         if (hasParent()) {
             throw new RuntimeException("DatePickerSettings.setParentCalendarPanel(), "
-                    + "A DatePickerSettings instance can only be used as the settings for "
-                    + "one parent object. (Settings instances cannot be reused for multiple "
-                    + "DatePickers, multiple independent CalendarPanels, or for combinations "
-                    + "of both.)");
+                + "A DatePickerSettings instance can only be used as the settings for "
+                + "one parent object. (Settings instances cannot be reused for multiple "
+                + "DatePickers, multiple independent CalendarPanels, or for combinations "
+                + "of both.)");
         }
         this.parentDatePicker = parentDatePicker;
     }
