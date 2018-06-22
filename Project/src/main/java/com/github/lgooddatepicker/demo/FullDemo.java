@@ -416,7 +416,8 @@ public class FullDemo {
         dateSettings.setDateRangeLimits(startJuly.minusDays(10), endJuly.plusDays(10));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
-            "Date " + (++pickerNumber) + ", Set Default YearMonth and Range (Next July + 10):");
+            "<html>Date " + (++pickerNumber) + ", Set Default YearMonth with Range<br>"
+                + "(July Next Year + 10 days.):</html>");
 
         // Create a date picker: Change the text field background color.
         dateSettings = new DatePickerSettings();
