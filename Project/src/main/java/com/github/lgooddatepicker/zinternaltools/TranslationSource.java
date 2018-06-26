@@ -1,5 +1,6 @@
 package com.github.lgooddatepicker.zinternaltools;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -19,7 +20,8 @@ public class TranslationSource {
     /**
      * propertiesFileName, This holds the name of the properties file.
      */
-    static final private String propertiesFileName = "TranslationResources.properties";
+    //leading / since it is at the root of the jar
+    static final private String propertiesFileName = "/TranslationResources.properties";
 
     /**
      * getTranslation, This returns a local language translation for the text that is represented by
@@ -45,19 +47,17 @@ public class TranslationSource {
         if (translationResources != null) {
             return;
         }
-        String lastException = "";
         try {
             translationResources = new Properties();
-            ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+            ClassLoader classLoader = TranslationSource.class.getClassLoader();
             translationResources.load(classLoader.getResourceAsStream(
                     propertiesFileName));
-        } catch (Exception exception) {
-            lastException = exception.toString() + "\n----\n" + exception.getMessage();
-        }
-        if (translationResources == null) {
-            throw new RuntimeException("TranslationSource.initializePropertiesIfNeeded()"
-                    + "Could not load TranslationResources.properties file.\n"
-                    + "The exception follows:\n" + lastException);
+        } catch (IOException exception) {
+            //this should probably be logged instead of thrown if it is
+            //non-fatal
+            throw new RuntimeException("TranslationSource."
+                    + "initializePropertiesIfNeeded(): Could not load "
+                    + "TranslationResources.properties file.", exception);
         }
     }
 

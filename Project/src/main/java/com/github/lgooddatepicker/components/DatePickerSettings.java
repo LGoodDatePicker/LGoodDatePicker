@@ -33,6 +33,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.format.ResolverStyle;
 import java.time.temporal.WeekFields;
+import java.util.EnumMap;
 import java.util.HashMap;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -176,7 +177,7 @@ public class DatePickerSettings {
      * getColor() function. By default, this map is populated with a set of default colors. The
      * default colors for each area are defined the "Area" enums.
      */
-    private HashMap<DateArea, Color> colors;
+    private EnumMap<DateArea, Color> colors;
 
     /**
      * defaultYearMonth, This indicates which YearMonth should be displayed by default, when no date
@@ -632,7 +633,7 @@ public class DatePickerSettings {
      */
     public DatePickerSettings(Locale pickerLocale) {
         // Add all the default colors to the colors map.
-        colors = new HashMap<DateArea, Color>();
+        colors = new EnumMap<>(DateArea.class);
         for (DateArea area : DateArea.values()) {
             colors.put(area, area.defaultColor);
         }
@@ -656,7 +657,12 @@ public class DatePickerSettings {
         fontValidDate = defaultTextFieldFont;
         fontInvalidDate = defaultTextFieldFont;
         fontVetoedDate = defaultTextFieldFont;
-        Map attributes = fontVetoedDate.getAttributes();
+
+        //Attribute Map is
+        @SuppressWarnings("unchecked")
+
+        Map<TextAttribute, Object> attributes =
+                (Map<TextAttribute, Object>)fontVetoedDate.getAttributes();
         attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
         fontVetoedDate = new Font(attributes);
 
@@ -692,7 +698,7 @@ public class DatePickerSettings {
             result.borderPropertiesList = null;
         } else {
             result.borderPropertiesList
-                = new ArrayList<CalendarBorderProperties>(this.borderPropertiesList.size());
+                = new ArrayList<>(this.borderPropertiesList.size());
             for (CalendarBorderProperties borderProperty : this.borderPropertiesList) {
                 result.borderPropertiesList.add(borderProperty.clone());
             }
@@ -703,7 +709,7 @@ public class DatePickerSettings {
             result.colors = null;
         } else {
             // A shallow copy is okay here, because the map key and value are immutable types.
-            result.colors = new HashMap<DateArea, Color>(this.colors);
+            result.colors = new EnumMap<DateArea, Color>(this.colors);
         }
         result.firstDayOfWeek = this.firstDayOfWeek;
         // The Font class is immutable.
@@ -721,8 +727,17 @@ public class DatePickerSettings {
         result.formatForDatesBeforeCommonEraStrict = this.formatForDatesBeforeCommonEraStrict;
         result.formatForDatesCommonEraStrict = this.formatForDatesCommonEraStrict;
         result.formatForTodayButton = this.formatForTodayButton;
-        result.formatsForParsingStrict = (this.formatsForParsingStrict == null)
-            ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsingStrict.clone();
+        //just to suppress a warning
+        if (this.formatsForParsingStrict == null){
+            result.formatsForParsingStrict = null;
+        }
+        else{
+            @SuppressWarnings("unchecked")
+            ArrayList<DateTimeFormatter> shush =
+                    (ArrayList<DateTimeFormatter>) this.formatsForParsingStrict.
+                            clone();
+            result.formatsForParsingStrict = shush;
+        }
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
         // "result.highlightPolicy" is left at its default value.
         result.isVisibleClearButton = this.isVisibleClearButton;
