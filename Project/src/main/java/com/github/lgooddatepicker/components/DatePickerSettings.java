@@ -31,7 +31,6 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
-import java.time.format.ResolverStyle;
 import java.time.temporal.WeekFields;
 import java.util.HashMap;
 import javax.swing.JButton;
@@ -287,18 +286,14 @@ public class DatePickerSettings {
     private Font fontVetoedDate;
 
     /**
-     * formatForDatesCommonEraStrict, This holds the default format that is used to display or parse
-     * CE dates in the date picker. The default value is generated using the locale of the settings
+     * formatForDatesCommonEra, This holds the default format that is used to display or parse CE
+     * dates in the date picker. The default value is generated using the locale of the settings
      * instance.
-     *
-     * Technical Note: In order to avoid validation problems with nonexistent dates like "Feb 31",
-     * all dates used for parsing (including this one), must be saved with ResolverStyle.STRICT.
-     * Therefore these formats will be set to the strict resolver style in their setter functions.
      */
-    private DateTimeFormatter formatForDatesCommonEraStrict;
+    private DateTimeFormatter formatForDatesCommonEra;
 
     /**
-     * formatForDatesBeforeCommonEraStrict, This holds the default format that is used to display or
+     * formatForDatesBeforeCommonEra, This holds the default format that is used to display or
      * parse BCE dates in the date picker. The default value is generated using the locale of the
      * settings instance. A DateTimeFormatter can be created from a pattern string with the
      * convenience function DateUtilities.createFormatterFromPatternString();
@@ -309,12 +304,8 @@ public class DatePickerSettings {
      * "-1" and "1 BC" are not the same thing. Astronomical years are zero-based, and BC dates are
      * one-based. Astronomical year "0", is the same year as "1 BC", and astronomical year "-1" is
      * the same year as "2 BC", and so forth.)
-     *
-     * Technical Note: In order to avoid validation problems with nonexistent dates like "Feb 31",
-     * all dates used for parsing (including this one), must be saved with ResolverStyle.STRICT.
-     * Therefore these formats will be set to the strict resolver style in their setter functions.
      */
-    private DateTimeFormatter formatForDatesBeforeCommonEraStrict;
+    private DateTimeFormatter formatForDatesBeforeCommonEra;
 
     /**
      * formatTodayButton, This format is used to format today's date into a date string, which is
@@ -324,18 +315,14 @@ public class DatePickerSettings {
     private DateTimeFormatter formatForTodayButton;
 
     /**
-     * formatsForParsingStrict, This holds a list of formats that are used to attempt to parse dates
+     * formatsForParsing, This holds a list of formats that are used to attempt to parse dates
      * that are typed by the user. When parsing a date, these formats are tried in the order that
      * they appear in this list. Note that the formatForDatesCommonEra and
      * formatForDatesBeforeCommonEra are always tried (in that order) before any other parsing
      * formats. The default values for the formatsForParsing are generated using the pickerLocale,
      * using the enum constants in java.time.format.FormatStyle.
-     *
-     * Technical Note: In order to avoid validation problems with nonexistent dates like "Feb 31",
-     * all dates used for parsing (including these), must be saved with ResolverStyle.STRICT.
-     * Therefore these formats will be set to the strict resolver style in their setter functions.
      */
-    private ArrayList<DateTimeFormatter> formatsForParsingStrict;
+    private ArrayList<DateTimeFormatter> formatsForParsing;
 
     /**
      * gapBeforeButtonPixels, This specifies the desired width for the gap between the date picker
@@ -718,11 +705,11 @@ public class DatePickerSettings {
         result.fontValidDate = this.fontValidDate;
         result.fontVetoedDate = this.fontVetoedDate;
         // The DateTimeFormatter class is immutable.
-        result.formatForDatesBeforeCommonEraStrict = this.formatForDatesBeforeCommonEraStrict;
-        result.formatForDatesCommonEraStrict = this.formatForDatesCommonEraStrict;
+        result.formatForDatesBeforeCommonEra = this.formatForDatesBeforeCommonEra;
+        result.formatForDatesCommonEra = this.formatForDatesCommonEra;
         result.formatForTodayButton = this.formatForTodayButton;
-        result.formatsForParsingStrict = (this.formatsForParsingStrict == null)
-            ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsingStrict.clone();
+        result.formatsForParsing = (this.formatsForParsing == null)
+            ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsing.clone();
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
         // "result.highlightPolicy" is left at its default value.
         result.isVisibleClearButton = this.isVisibleClearButton;
@@ -963,7 +950,7 @@ public class DatePickerSettings {
      * for setting information.
      */
     public DateTimeFormatter getFormatForDatesBeforeCommonEra() {
-        return formatForDatesBeforeCommonEraStrict;
+        return formatForDatesBeforeCommonEra;
     }
 
     /**
@@ -971,7 +958,7 @@ public class DatePickerSettings {
      * setting information.
      */
     public DateTimeFormatter getFormatForDatesCommonEra() {
-        return formatForDatesCommonEraStrict;
+        return formatForDatesCommonEra;
     }
 
     /**
@@ -987,7 +974,7 @@ public class DatePickerSettings {
      * information.
      */
     public ArrayList<DateTimeFormatter> getFormatsForParsing() {
-        return formatsForParsingStrict;
+        return formatsForParsing;
     }
 
     /**
@@ -1594,8 +1581,7 @@ public class DatePickerSettings {
      * immediate validation of the text field text.
      */
     public void setFormatForDatesBeforeCommonEra(DateTimeFormatter formatForDatesBeforeCommonEra) {
-        this.formatForDatesBeforeCommonEraStrict
-            = formatForDatesBeforeCommonEra.withResolverStyle(ResolverStyle.STRICT);
+        this.formatForDatesBeforeCommonEra = formatForDatesBeforeCommonEra;
         if (parentDatePicker != null) {
             parentDatePicker.setTextFieldToValidStateIfNeeded();
         }
@@ -1644,8 +1630,7 @@ public class DatePickerSettings {
      * picker text field.
      */
     public void setFormatForDatesCommonEra(DateTimeFormatter formatForDatesCommonEra) {
-        this.formatForDatesCommonEraStrict
-            = formatForDatesCommonEra.withResolverStyle(ResolverStyle.STRICT);
+        this.formatForDatesCommonEra = formatForDatesCommonEra;
         if (parentDatePicker != null) {
             parentDatePicker.setTextFieldToValidStateIfNeeded();
         }
@@ -1695,10 +1680,7 @@ public class DatePickerSettings {
      * using the enum constants in java.time.format.FormatStyle.
      */
     public void setFormatsForParsing(ArrayList<DateTimeFormatter> formatsForParsing) {
-        this.formatsForParsingStrict = new ArrayList<DateTimeFormatter>();
-        for (DateTimeFormatter format : formatsForParsing) {
-            this.formatsForParsingStrict.add(format.withResolverStyle(ResolverStyle.STRICT));
-        }
+        this.formatsForParsing = formatsForParsing;
     }
 
     /**
