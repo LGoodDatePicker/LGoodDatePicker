@@ -95,7 +95,7 @@ import com.privatejgoodies.forms.util.LayoutStyle;
  * // Nested variables
  * LayoutMap.getRoot().columnPut("c-gap-c", "$half, 2dlu, $half");
  * new FormLayout(
- *     "pref, $lcgap, ${c-gap-c}", // -> "pref, $lcgap, $half, 2dlu, $half",
+ *     "pref, $lcgap, ${c-gap-c}", // -&gt; "pref, $lcgap, $half, 2dlu, $half",
  *     "p, $lcgap, $table");
  * </pre>
  *
