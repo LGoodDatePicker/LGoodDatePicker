@@ -18,12 +18,15 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.io.DataInputStream;
 import java.io.InputStream;
+import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +59,47 @@ public class InternalUtilities {
      */
     public static boolean areObjectsEqual(Object a, Object b) {
         return (a == b) || (a != null && a.equals(b));
+    }
+
+/**
+     * doesParsedDateMatchText, This compares the numbers in a parsed date, to the original text
+     * from which the date was parsed. Specifically this compares the day of the month and the year
+     * of the parsed date to the text. 
+     *
+     * Testing note: Invalid dates this function should detect are any of the following: The 31st
+     * day of February, April, June, September, or November. The 30th day of February. Or the 29th
+     * day of February on any year that is not a leap year.
+     */
+    static public boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
+            DateTimeFormatter usedFormatter) {
+        if (parsedDate == null || text == null) {
+            return false;
+        }
+
+        final TemporalAccessor parseResult = usedFormatter.parseUnresolved(text, new ParsePosition(0));
+
+        if (parseResult.isSupported(ChronoField.YEAR)) {
+            if (parseResult.get(ChronoField.YEAR) != parsedDate.get(ChronoField.YEAR)) {
+                return false;
+            }
+        }
+        if (parseResult.isSupported(ChronoField.YEAR_OF_ERA)) {
+            if (parseResult.get(ChronoField.YEAR_OF_ERA) != parsedDate.get(ChronoField.YEAR_OF_ERA)) {
+                return false;
+            }
+        }
+        if (parseResult.isSupported(ChronoField.DAY_OF_MONTH)) {
+            if (parseResult.get(ChronoField.DAY_OF_MONTH) != parsedDate.get(ChronoField.DAY_OF_MONTH)) {
+                return false;
+            }
+        }
+        if (parseResult.isSupported(ChronoField.ERA)) {
+            if (parseResult.get(ChronoField.ERA) != parsedDate.get(ChronoField.ERA)) {
+                return false;
+            }
+        }
+
+      return true;
     }
 
     /**
@@ -256,37 +300,43 @@ public class InternalUtilities {
      * function calls another function called doesParsedDateMatchText(), to analyze and reject those
      * kinds of mistakes. If the parsed text does not match the day of the month (and year) of the
      * parsed date, then this function will return null.
-     * 
-     * Technical note: Nonexistent dates like "Feb 31", are now handled by exclusively passing in
-     * parsing formats that are set to ResolverStyle.STRICT.
      */
     static public LocalDate getParsedDateOrNull(String text,
-        DateTimeFormatter displayFormatterADStrict, DateTimeFormatter displayFormatterBCStrict, 
-        ArrayList<DateTimeFormatter> parsingFormattersStrict,
-        Locale formatLocale) {
+        DateTimeFormatter displayFormatterAD, DateTimeFormatter displayFormatterBC, 
+        ArrayList<DateTimeFormatter> parsingFormatters) {
         if (text == null || text.trim().isEmpty()) {
             return null;
         }
-        text = text.trim().toLowerCase();
+        text = text.trim();
+        DateTimeFormatter usedFormatter = null;
         LocalDate parsedDate = null;
         if (parsedDate == null) {
             try {
-                parsedDate = LocalDate.parse(text, displayFormatterADStrict);
+                parsedDate = LocalDate.parse(text, displayFormatterAD);
+                usedFormatter = displayFormatterBC;
             } catch (Exception ex) {
             }
         }
         if (parsedDate == null) {
             try {
                 // Note: each parse attempt must have its own try/catch block.
-                parsedDate = LocalDate.parse(text, displayFormatterBCStrict);
+                parsedDate = LocalDate.parse(text, displayFormatterBC);
+                usedFormatter = displayFormatterBC;
             } catch (Exception ex) {
             }
         }
-        for (int i = 0; ((parsedDate == null) && (i < parsingFormattersStrict.size())); ++i) {
+        for (int i = 0; ((parsedDate == null) && (i < parsingFormatters.size())); ++i) {
             try {
-                parsedDate = LocalDate.parse(text, parsingFormattersStrict.get(i));
+                parsedDate = LocalDate.parse(text, parsingFormatters.get(i));
+                usedFormatter = parsingFormatters.get(i);
             } catch (Exception ex) {
             }
+        }
+        // Check for any "successfully" parsed but nonexistent dates like Feb 31.
+        // Note, this function has been thoroughly tested. See the function docs for details.
+        if ((parsedDate != null) && (!InternalUtilities.doesParsedDateMatchText(
+                parsedDate, text, usedFormatter))) {
+            return null;
         }
         return parsedDate;
     }

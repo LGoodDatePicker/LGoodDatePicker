@@ -437,7 +437,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(
                 text, settings.getFormatForDatesCommonEra(),
                 settings.getFormatForDatesBeforeCommonEra(),
-                settings.getFormatsForParsing(), settings.getLocale());
+                settings.getFormatsForParsing());
 
         // If the date could not be parsed, return false.
         if (parsedDate == null) {
@@ -880,7 +880,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
                     settings.getFormatForDatesCommonEra(),
                     settings.getFormatForDatesBeforeCommonEra(),
-                    settings.getFormatsForParsing(), settings.getLocale());
+                    settings.getFormatsForParsing());
         }
         // If the date was parsed successfully, then check it against the veto policy.
         boolean dateIsVetoed = false;
@@ -999,7 +999,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
                 settings.getFormatForDatesCommonEra(),
                 settings.getFormatForDatesBeforeCommonEra(),
-                settings.getFormatsForParsing(), settings.getLocale());
+                settings.getFormatsForParsing());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
             dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundInvalidDate));
