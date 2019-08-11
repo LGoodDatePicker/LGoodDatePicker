@@ -49,8 +49,7 @@ public class TranslationSource {
         }
         try {
             translationResources = new Properties();
-            ClassLoader classLoader = TranslationSource.class.getClassLoader();
-            translationResources.load(classLoader.getResourceAsStream(
+            translationResources.load(TranslationSource.class.getResourceAsStream(
                     propertiesFileName));
         } catch (IOException exception) {
             //this should probably be logged instead of thrown if it is
