@@ -86,6 +86,14 @@ plugins in this file operate inside the "package" and "install" phases.
             <version>1.2.1</version>
         </dependency>
         
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        
     </dependencies>
     
     <build>
@@ -119,6 +127,7 @@ plugins in this file operate inside the "package" and "install" phases.
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
+                    <source>8</source>
                     <!-- Turn off errors resulting from the new (strict) Java 8 Javadoc standards. -->
                     <additionalparam>-Xdoclint:none</additionalparam>
                 </configuration>

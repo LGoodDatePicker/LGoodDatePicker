@@ -49,7 +49,7 @@ public final class Preconditions {
      * methods and constructors, e.g.:
      * <blockquote><pre>
      * public void foo(int count) {
-     *    Preconditions.checkArgument(count > 0, "count must be positive.");
+     *    Preconditions.checkArgument(count &gt; 0, "count must be positive.");
      * }
      * </pre></blockquote>
      *
@@ -70,7 +70,7 @@ public final class Preconditions {
      * methods and constructors, e.g.:
      * <blockquote><pre>
      * public void foo(int count) {
-     *    Preconditions.checkArgument(count > 0, "count must be positive: %s.", count);
+     *    Preconditions.checkArgument(count &gt; 0, "count must be positive: %s.", count);
      * }
      * </pre></blockquote>
      *

@@ -313,7 +313,7 @@ public class InternalUtilities {
         if (parsedDate == null) {
             try {
                 parsedDate = LocalDate.parse(text, displayFormatterAD);
-                usedFormatter = displayFormatterBC;
+                usedFormatter = displayFormatterAD;
             } catch (Exception ex) {
             }
         }
