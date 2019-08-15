@@ -24,22 +24,66 @@
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.zinternaltools.Pair;
 import java.awt.Color;
+import java.awt.event.WindowEvent;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
 public class TestGithubIssues {
     DatePicker date_picker;
-    
+
     @Before
     public void setUp()
     {
         date_picker = new DatePicker();
     }
-    
+
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestIssue82() throws InterruptedException
+    {
+        // The exception that might be thrown by the date picker control
+        // will be thrown in an AWT-EventQueue thread. To be able to detect
+        // these exceptions we register an UncaughtExceptionHandler that
+        // writes all occurring exceptions into exInfo.
+        // As a result we always have access to the latest thrown exception
+        // from any running thread
+        final ExceptionInfo exInfo = new ExceptionInfo();
+        try {
+            RegisterUncaughtExceptionHandlerToAllThreads(new Thread.UncaughtExceptionHandler() {
+                @Override
+                public void uncaughtException( Thread t, Throwable e ) {
+                    exInfo.set(t.getName(), e);
+                }
+            });
+            JFrame testWin = new JFrame();
+            testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            testWin.add(date_picker);
+            testWin.pack();
+            testWin.setVisible(true);
+            Thread.sleep(10);
+            assertFalse("DatePicker must not have an open popup.", date_picker.isPopupOpen());
+            Thread.sleep(10);
+            date_picker.openPopup();
+            Thread.sleep(10);
+            assertTrue("DatePicker must have an open popup.", date_picker.isPopupOpen());
+            testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
+            Thread.sleep(50);
+            assertFalse("Exception in antother Thread triggered:\n"
+                    +"ThreadName: "+exInfo.getThreadName()+"\n"
+                    +"Exception: "+exInfo.getExceptionMessage()
+                    +"\nStacktrace:\n"+exInfo.getStackTrace()
+                    , exInfo.wasSet());
+            } finally {
+                RegisterUncaughtExceptionHandlerToAllThreads(null);
+        }
+    }
+
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue76()
     {
@@ -69,7 +113,7 @@ public class TestGithubIssues {
         date_picker.setText("Wed, 31 Apr 2019");
         AssertDateTextValidity(false);
     }
-    
+
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue74()
     {
@@ -84,7 +128,7 @@ public class TestGithubIssues {
         date_picker.setText("30/04/2019");
         AssertDateTextValidity(true);
     }
-    
+
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue60()
     {
@@ -99,7 +143,9 @@ public class TestGithubIssues {
         date_picker.setText(" 30042019 ");
         AssertDateTextValidity(true);
     }
-    
+
+    // helper functions
+
     private void AssertDateTextValidity(boolean isDateTexValid)
     {
         final Color invalidDate = date_picker.getSettings().getColor(DatePickerSettings.DateArea.DatePickerTextInvalidDate);
@@ -109,11 +155,58 @@ public class TestGithubIssues {
         if (isDateTexValid) {
             assertTrue("False negative! Text should be accpeted: "+date_picker.getText(), textfieldcolor == validDate);
             assertTrue("False negative! Text should be accepted: "+date_picker.getText(), textfieldcolor != invalidDate);
-        } 
+        }
         else {
             assertTrue("False positive! Text should not be accepted: "+date_picker.getText(), textfieldcolor == invalidDate);
             assertTrue("False positive! Text should not be accepted: "+date_picker.getText(), textfieldcolor != validDate);
         }
     }
-    
+
+    static private void RegisterUncaughtExceptionHandlerToAllThreads(Thread.UncaughtExceptionHandler handler)
+    {
+        Thread.setDefaultUncaughtExceptionHandler(handler);
+        //activeCount is only an estimation
+        int activeCountOversize = 1;
+        Thread[] threads;
+        do {
+          threads = new Thread[Thread.activeCount() + activeCountOversize];
+          Thread.enumerate(threads);
+          activeCountOversize++;
+        } while (threads[threads.length-1] != null);
+        for (Thread thread : threads) {
+          if (thread != null) {
+              thread.setUncaughtExceptionHandler(handler);
+          }
+        }
+    }
+
+    private class ExceptionInfo
+    {
+        Pair<String, Throwable> info = new Pair<>("", null);
+
+        synchronized boolean wasSet() {
+            return !info.first.isEmpty() || info.second != null;
+        }
+        synchronized void set(String threadname, Throwable ex) {
+            info.first = threadname;
+            info.second = ex;
+        }
+        synchronized String getThreadName() {
+            return info.first;
+        }
+        synchronized String getExceptionMessage() {
+            return info.second != null ? info.second.getMessage() : "";
+        }
+        synchronized String getStackTrace()
+        {
+            String result = "";
+            if (info.second != null) {
+                for (StackTraceElement elem : info.second.getStackTrace()) {
+                    result += elem.toString()+"\n";
+                }
+            }
+            return result;
+        }
+    }
+
 }
