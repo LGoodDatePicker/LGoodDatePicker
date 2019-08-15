@@ -412,6 +412,12 @@ public class InternalUtilities {
      * otherwise returns false.
      */
     static public boolean isMouseWithinComponent(Component component) {
+        if (!component.isVisible()) {
+            // component.getLocationOnScreen() will throw an
+            // IllegalComponentStateException if the component
+            // is currently not visible
+            return false;
+        }
         Point mousePos = MouseInfo.getPointerInfo().getLocation();
         Rectangle bounds = component.getBounds();
         bounds.setLocation(component.getLocationOnScreen());
