@@ -16,7 +16,7 @@ public class ComboBoxTesting extends JPanel {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         textField1 = new JTextField();
         textField2 = new JTextField();
-        comboBox1 = new JComboBox();
+        comboBox1 = new JComboBox<>();
         spinner1 = new JSpinner();
 
         //======== this ========
@@ -37,7 +37,7 @@ public class ComboBoxTesting extends JPanel {
         add(textField2, CC.xy(5, 1));
 
         //---- comboBox1 ----
-        comboBox1.setModel(new DefaultComboBoxModel(new String[]{
+        comboBox1.setModel(new DefaultComboBoxModel<>(new String[]{
             "beeef123",
             "2",
             "3",
@@ -74,7 +74,7 @@ public class ComboBoxTesting extends JPanel {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JTextField textField1;
     private JTextField textField2;
-    private JComboBox comboBox1;
+    private JComboBox<String> comboBox1;
     private JSpinner spinner1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

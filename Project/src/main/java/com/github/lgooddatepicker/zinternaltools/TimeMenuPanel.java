@@ -50,13 +50,13 @@ public class TimeMenuPanel extends JPanel {
     /**
      * timeListModel, The holds the list model that is used for populating the time list.
      */
-    private DefaultListModel timeListModel;
+    final private DefaultListModel<String> timeListModel;
 
     public TimeMenuPanel(TimePicker parentTimePicker, TimePickerSettings settings) {
         this.parentTimePicker = parentTimePicker;
         this.settings = settings;
         initComponents();
-        timeListModel = new DefaultListModel();
+        timeListModel = new DefaultListModel<>();
         timeList.setModel(timeListModel);
 
         timeList.addMouseMotionListener(new MouseAdapter() {
@@ -80,7 +80,7 @@ public class TimeMenuPanel extends JPanel {
             public void keyReleased(KeyEvent event) {
                 if (event.getKeyCode() == KeyEvent.VK_ENTER) {
                     event.consume();
-                    String selectedTimeString = (String) timeList.getSelectedValue();
+                    String selectedTimeString = timeList.getSelectedValue();
                     if (selectedTimeString != null) {
                         userSelectedATime(selectedTimeString);
                     }
@@ -146,7 +146,7 @@ public class TimeMenuPanel extends JPanel {
             return;
         }
         try {
-            String selectedTimeString = (String) timeList.getModel().getElementAt(index);
+            String selectedTimeString = timeList.getModel().getElementAt(index);
             if (selectedTimeString != null && !selectedTimeString.isEmpty()) {
                 userSelectedATime(selectedTimeString);
             }
@@ -203,7 +203,7 @@ public class TimeMenuPanel extends JPanel {
     private void initComponents() {
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         timeScrollPane = new JScrollPane();
-        timeList = new JList();
+        timeList = new JList<>();
 
         //======== this ========
         setBorder(null);
@@ -226,7 +226,7 @@ public class TimeMenuPanel extends JPanel {
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JScrollPane timeScrollPane;
-    private JList timeList;
+    private JList<String> timeList;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
     private void tryClosePopup() {
