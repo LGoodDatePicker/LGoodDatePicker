@@ -133,8 +133,7 @@ public final class RenderingUtils {
         if (drawStringUnderlineCharAtMethod != null) {
             try {
                 drawStringUnderlineCharAtMethod.invoke(null,
-                        new Object[]{c, g, text, new Integer(underlinedIndex),
-                            new Integer(x), new Integer(y)});
+                        new Object[]{c, g, text, underlinedIndex, x, y});
                 return;
             } catch (IllegalArgumentException e) {
                 // Use the BasicGraphicsUtils as fallback
@@ -201,7 +200,7 @@ public final class RenderingUtils {
 
     private static Method getMethodDrawStringUnderlineCharAt() {
         try {
-            Class clazz = Class.forName(SWING_UTILITIES2_NAME);
+            Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
             return clazz.getMethod(
                     "drawStringUnderlineCharAt",
                     new Class[]{JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE}
@@ -218,7 +217,7 @@ public final class RenderingUtils {
 
     private static Method getMethodGetFontMetrics() {
         try {
-            Class clazz = Class.forName(SWING_UTILITIES2_NAME);
+            Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
             return clazz.getMethod(
                     "getFontMetrics",
                     new Class[]{JComponent.class, Graphics.class}
@@ -234,10 +233,10 @@ public final class RenderingUtils {
     }
 
     private static Map installDesktopHints(Graphics2D g2) {
-        Map oldRenderingHints = null;
+        Map<RenderingHints.Key, Object> oldRenderingHints = null;
         Map desktopHints = desktopHints(g2);
         if (desktopHints != null && !desktopHints.isEmpty()) {
-            oldRenderingHints = new HashMap(desktopHints.size());
+            oldRenderingHints = new HashMap<>(desktopHints.size());
             RenderingHints.Key key;
             for (Iterator i = desktopHints.keySet().iterator(); i.hasNext();) {
                 key = (RenderingHints.Key) i.next();

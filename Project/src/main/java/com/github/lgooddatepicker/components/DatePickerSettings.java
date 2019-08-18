@@ -645,13 +645,9 @@ public class DatePickerSettings {
         fontInvalidDate = defaultTextFieldFont;
         fontVetoedDate = defaultTextFieldFont;
 
-        //Attribute Map is
-        @SuppressWarnings("unchecked")
-
-        Map<TextAttribute, Object> attributes =
-                (Map<TextAttribute, Object>)fontVetoedDate.getAttributes();
-        attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
-        fontVetoedDate = new Font(attributes);
+        Map<TextAttribute, Boolean> additionalAttributes = new HashMap<>();
+        additionalAttributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+        fontVetoedDate = fontVetoedDate.deriveFont(additionalAttributes);
 
         // Set the default border properties.
         // (Setting this to null will create and save, (and apply when needed) a default set of
@@ -715,7 +711,7 @@ public class DatePickerSettings {
         result.formatForDatesCommonEra = this.formatForDatesCommonEra;
         result.formatForTodayButton = this.formatForTodayButton;
         result.formatsForParsing = (this.formatsForParsing == null)
-            ? null : (ArrayList<DateTimeFormatter>) this.formatsForParsing.clone();
+            ? null : new ArrayList<>(this.formatsForParsing);
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
         // "result.highlightPolicy" is left at its default value.
         result.isVisibleClearButton = this.isVisibleClearButton;

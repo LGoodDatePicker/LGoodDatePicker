@@ -72,9 +72,9 @@ public class DurationConverterSettings {
         translationsUnitsPlural.put(DurationUnit.Year,
                 TranslationSource.getTranslation(locale, "plural.Year", "years"));
 
-        translationsParsingPrefixes = new HashMap<DurationUnit, ArrayList<String>>();
+        translationsParsingPrefixes = new HashMap<>();
         for (DurationUnit unit : DurationUnit.values()) {
-            translationsParsingPrefixes.put(unit, new ArrayList());
+            translationsParsingPrefixes.put(unit, new ArrayList<>());
         }
         String[] prefixArray;
         String parseKey = "parsingprefixlist.";
