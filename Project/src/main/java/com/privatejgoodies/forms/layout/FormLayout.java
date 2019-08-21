@@ -203,13 +203,13 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * Holds the components that occupy exactly one column. For each column we keep a list of these
      * components.
      */
-    private transient List<Component>[] colComponents;
+    private transient List<List<Component>> colComponents;
 
     /**
      * Holds the components that occupy exactly one row. For each row we keep a list of these
      * components.
      */
-    private transient List<Component>[] rowComponents;
+    private transient List<List<Component>> rowComponents;
 
     /**
      * Caches component minimum and preferred sizes. All requests for component sizes shall be
@@ -1194,14 +1194,14 @@ public final class FormLayout implements LayoutManager2, Serializable {
      * column span or row span of 1 is put into the column's or row's component list.
      */
     private void initializeColAndRowComponentLists() {
-        colComponents = new List[getColumnCount()];
+        colComponents = new ArrayList<>(getColumnCount());
         for (int i = 0; i < getColumnCount(); i++) {
-            colComponents[i] = new ArrayList<Component>();
+            colComponents.add(new ArrayList<>());
         }
 
-        rowComponents = new List[getRowCount()];
+        rowComponents = new ArrayList<>(getRowCount());
         for (int i = 0; i < getRowCount(); i++) {
-            rowComponents[i] = new ArrayList<Component>();
+            rowComponents.add(new ArrayList<>());
         }
 
         for (Object element : constraintMap.entrySet()) {
@@ -1210,11 +1210,11 @@ public final class FormLayout implements LayoutManager2, Serializable {
             CellConstraints constraints = (CellConstraints) entry.getValue();
             if (takeIntoAccount(component, constraints)) {
                 if (constraints.gridWidth == 1) {
-                    colComponents[constraints.gridX - 1].add(component);
+                    colComponents.get(constraints.gridX - 1).add(component);
                 }
 
                 if (constraints.gridHeight == 1) {
-                    rowComponents[constraints.gridY - 1].add(component);
+                    rowComponents.get(constraints.gridY - 1).add(component);
                 }
             }
         }
@@ -1325,7 +1325,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
     private static int[] computeGridOrigins(Container container,
             int totalSize, int offset,
             List formSpecs,
-            List[] componentLists,
+            List<List<Component>> componentLists,
             int[][] groupIndices,
             Measure minMeasure,
             Measure prefMeasure) {
@@ -1429,7 +1429,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
      */
     private static int[] maximumSizes(Container container,
             List formSpecs,
-            List[] componentLists,
+            List<List<Component>> componentLists,
             Measure minMeasure,
             Measure prefMeasure,
             Measure defaultMeasure) {
@@ -1439,7 +1439,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
         for (int i = 0; i < size; i++) {
             formSpec = (FormSpec) formSpecs.get(i);
             result[i] = formSpec.maximumSize(container,
-                    componentLists[i],
+                    componentLists.get(i),
                     minMeasure,
                     prefMeasure,
                     defaultMeasure);

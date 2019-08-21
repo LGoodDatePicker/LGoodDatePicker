@@ -292,7 +292,7 @@ public final class ConstantSize implements Size, Serializable {
      */
     @Override
     public int hashCode() {
-        return new Double(value).hashCode() + 37 * unit.hashCode();
+        return Double.valueOf(value).hashCode() + 37 * unit.hashCode();
     }
 
     /**

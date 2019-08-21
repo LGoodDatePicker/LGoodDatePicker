@@ -348,9 +348,9 @@ public class TimePickerSettings {
         fontValidTime = new JTextField().getFont();
         fontInvalidTime = new JTextField().getFont();
         fontVetoedTime = new JTextField().getFont();
-        Map attributes = fontVetoedTime.getAttributes();
-        attributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
-        fontVetoedTime = new Font(attributes);
+        Map<TextAttribute, Boolean> additionalAttributes = new HashMap<>();
+        additionalAttributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
+        fontVetoedTime = fontVetoedTime.deriveFont(additionalAttributes);
     }
 
     /**
@@ -509,7 +509,7 @@ public class TimePickerSettings {
      * additional details, see TimePickerSettings.potentialMenuTimes.
      */
     public ArrayList<LocalTime> getPotentialMenuTimes() {
-        return (ArrayList<LocalTime>) potentialMenuTimes.clone();
+        return new ArrayList<>(potentialMenuTimes);
     }
 
     /**

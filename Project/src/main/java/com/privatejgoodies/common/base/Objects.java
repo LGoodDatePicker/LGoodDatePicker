@@ -69,8 +69,10 @@ public final class Objects {
             oas.flush();
             // close is unnecessary
             final ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-            final ObjectInputStream ois = new ObjectInputStream(bais);
-            return (T) ois.readObject();
+            final ObjectInputStream ois = new ObjectInputStream(bais);            
+            @SuppressWarnings("unchecked") 
+            T readObject = (T) ois.readObject();
+            return readObject;
         } catch (Throwable e) {
             throw new RuntimeException("Deep copy failed", e);
         }
