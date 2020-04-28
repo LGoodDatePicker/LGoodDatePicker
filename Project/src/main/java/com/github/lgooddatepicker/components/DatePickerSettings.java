@@ -63,6 +63,7 @@ public class DatePickerSettings {
      */
     public enum DateArea {
         BackgroundClearLabel(new Color(240, 240, 240)),
+        BackgroundHoverLabel(new Color(184, 207, 229)),
         BackgroundMonthAndYearMenuLabels(new Color(240, 240, 240)),
         BackgroundMonthAndYearNavigationButtons(new JButton().getBackground()),
         BackgroundOverallCalendarPanel(new Color(240, 240, 240)),
@@ -78,6 +79,7 @@ public class DatePickerSettings {
         CalendarTextWeekdays(Color.black),
         CalendarTextWeekNumbers(Color.black),
         TextClearLabel(new JLabel().getForeground()),
+        TextHoverLabel(Color.black),
         TextMonthAndYearMenuLabels(new JLabel().getForeground()),
         TextMonthAndYearNavigationButtons(new JButton().getForeground()),
         TextTodayLabel(new JLabel().getForeground()),

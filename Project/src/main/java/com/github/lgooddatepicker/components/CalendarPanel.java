@@ -940,7 +940,8 @@ public class CalendarPanel extends JPanel {
             return;
         }
         // Highlight the label.
-        label.setBackground(new Color(184, 207, 229));
+        label.setBackground(settings.getColor(DateArea.BackgroundHoverLabel));
+        label.setForeground(settings.getColor(DateArea.TextHoverLabel));
         label.setBorder(new CompoundBorder(
             new LineBorder(Color.GRAY), labelIndicatorEmptyBorder));
     }
@@ -964,13 +965,16 @@ public class CalendarPanel extends JPanel {
         }
         if (label == labelMonth || label == labelYear) {
             label.setBackground(settings.getColor(DateArea.BackgroundMonthAndYearMenuLabels));
+            label.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
             monthAndYearInnerPanel.setBackground(settings.getColor(DateArea.BackgroundMonthAndYearMenuLabels));
         }
         if (label == labelSetDateToToday) {
             label.setBackground(settings.getColor(DateArea.BackgroundTodayLabel));
+            label.setForeground(settings.getColor(DateArea.TextTodayLabel));
         }
         if (label == labelClearDate) {
             label.setBackground(settings.getColor(DateArea.BackgroundClearLabel));
+            label.setForeground(settings.getColor(DateArea.TextClearLabel));
         }
         label.setBorder(new CompoundBorder(
             new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));
