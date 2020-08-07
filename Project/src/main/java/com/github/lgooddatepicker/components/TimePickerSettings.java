@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.time.Clock;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -100,6 +101,12 @@ public class TimePickerSettings {
      * default, a simple border is drawn.
      */
     public Border borderTimePopup;
+    
+    /**
+     * clock, A clock used to determine current date and time 
+     * The default is to use the System Clock
+     */
+    private Clock clock = Clock.systemDefaultZone();
 
     /**
      * colors, This hash map holds the current color settings for different areas of the TimePicker.
@@ -433,6 +440,13 @@ public class TimePickerSettings {
     public boolean getAllowKeyboardEditing() {
         return allowKeyboardEditing;
     }
+    
+    /**
+     * getClock, Returns the currently set clock
+     */
+    public Clock getClock() {
+    	return clock;
+    }
 
     /**
      * getColor, This returns the currently set color for the specified area.
@@ -594,6 +608,15 @@ public class TimePickerSettings {
             zApplyAllowKeyboardEditing();
         }
     }
+    
+    /**
+     * setClock, This sets the clock to use for determining the current
+     * date. By default the system clock is used.
+     * @param clock A clock to use
+     */
+    public void setClock(Clock clock) {
+    	this.clock = clock;
+    }
 
     /**
      * setColor, This sets a color for the specified area. Setting an area to null will restore the
@@ -720,7 +743,7 @@ public class TimePickerSettings {
      * function only has an effect before the time picker is constructed.
      */
     public void setInitialTimeToNow() {
-        initialTime = LocalTime.now();
+        initialTime = LocalTime.now(clock);
     }
 
     /**

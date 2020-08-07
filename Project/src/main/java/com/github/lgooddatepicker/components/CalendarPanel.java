@@ -148,7 +148,7 @@ public class CalendarPanel extends JPanel {
      * displayedYearMonth, This stores the currently displayed year and month. This defaults to the
      * current year and month. This will never be null.
      */
-    private YearMonth displayedYearMonth = YearMonth.now();
+    private YearMonth displayedYearMonth = null;
 
     /**
      * isIndependentCalendarPanel, This indicates whether or not this is an independent calendar
@@ -249,6 +249,9 @@ public class CalendarPanel extends JPanel {
         boolean isIndependentCalendarPanelInstance) {
         // Save the information of whether this is an independent calendar panel.
         this.isIndependentCalendarPanel = isIndependentCalendarPanelInstance;
+        
+        displayedYearMonth = YearMonth.now(datePickerSettings.getClock());
+        
         // Call the JFormDesigner managed initialization function.
         initComponents();
         // Add needed mouse listeners to the today and clear buttons. 
@@ -811,12 +814,12 @@ public class CalendarPanel extends JPanel {
         setSizeOfWeekNumberLabels();
 
         // Set the label for the today button.
-        String todayDateString = settings.getFormatForTodayButton().format(LocalDate.now());
+        String todayDateString = settings.getFormatForTodayButton().format(LocalDate.now(settings.getClock()));
         String todayLabel = settings.getTranslationToday() + ":  " + todayDateString;
         labelSetDateToToday.setText(todayLabel);
         // If today is vetoed, disable the today button.
         boolean todayIsVetoed = InternalUtilities.isDateVetoed(
-            vetoPolicy, LocalDate.now());
+            vetoPolicy, LocalDate.now(settings.getClock()));
         labelSetDateToToday.setEnabled(!todayIsVetoed);
 
         // Set the visibility of all the calendar control buttons (and button labels).
@@ -926,7 +929,7 @@ public class CalendarPanel extends JPanel {
         // Do not highlight the today label if today is vetoed.
         if (label == labelSetDateToToday) {
             DateVetoPolicy vetoPolicy = settings.getVetoPolicy();
-            boolean todayIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, LocalDate.now());
+            boolean todayIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, LocalDate.now(settings.getClock()));
             if (todayIsVetoed) {
                 return;
             }
@@ -1017,7 +1020,7 @@ public class CalendarPanel extends JPanel {
      * date picker. This sets the date picker date to today.
      */
     private void labelSetDateToTodayMousePressed(MouseEvent e) {
-        userSelectedADate(LocalDate.now());
+        userSelectedADate(LocalDate.now(settings.getClock()));
     }
 
     /**
@@ -1095,7 +1098,7 @@ public class CalendarPanel extends JPanel {
     public void setSelectedDate(LocalDate selectedDate) {
         setSelectedDateWithoutShowing(selectedDate);
         YearMonth yearMonthToShow
-            = (selectedDate == null) ? YearMonth.now() : YearMonth.from(selectedDate);
+            = (selectedDate == null) ? YearMonth.now(settings.getClock()) : YearMonth.from(selectedDate);
         setDisplayedYearMonth(yearMonthToShow);
     }
 

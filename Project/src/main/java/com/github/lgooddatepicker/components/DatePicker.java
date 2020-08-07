@@ -568,7 +568,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * additional details.
      */
     public void setDateToToday() {
-        setDate(LocalDate.now());
+        setDate(LocalDate.now(settings.getClock()));
     }
 
     /**
