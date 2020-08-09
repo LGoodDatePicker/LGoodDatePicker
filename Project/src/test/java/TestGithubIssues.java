@@ -42,11 +42,19 @@ public class TestGithubIssues {
     public void setUp()
     {
         date_picker = new DatePicker();
+        date_picker.getSettings().setLocale(Locale.ENGLISH);
+        date_picker.getSettings().getFormatsForParsing().clear();
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue82() throws InterruptedException
     {
+      if (!isUiAvailable())
+      {
+        // don't run under CI
+        System.out.println("TestIssue82 was skipped");
+        return;
+      }
         // The exception that might be thrown by the date picker control
         // will be thrown in an AWT-EventQueue thread. To be able to detect
         // these exceptions we register an UncaughtExceptionHandler that
@@ -87,8 +95,9 @@ public class TestGithubIssues {
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue76()
     {
-        DatePickerSettings dateSettingsPgmDate = new DatePickerSettings();
+        DatePickerSettings dateSettingsPgmDate = new DatePickerSettings(Locale.ENGLISH);
         dateSettingsPgmDate.setAllowEmptyDates(true);
+        dateSettingsPgmDate.getFormatsForParsing().clear();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy").withLocale(Locale.ENGLISH);
         dateSettingsPgmDate.setFormatForDatesCommonEra(dateFormatter);
         date_picker.setSettings(dateSettingsPgmDate);
@@ -102,16 +111,11 @@ public class TestGithubIssues {
         date_picker.getComponentDateTextField().setDisabledTextColor(Color.BLACK);
         date_picker.setBounds(115, 50, 160, 20);
         date_picker.setDateToToday();
-        date_picker.setText("sun, 11 Aug 2019");
-        AssertDateTextValidity(false);
-        date_picker.setText("Sun, 11 Aug 2019");
-        AssertDateTextValidity(true);
-        date_picker.setText("Mon, 11 Aug 2019");
-        AssertDateTextValidity(false);
-        date_picker.setText("Tue, 30 Apr 2019");
-        AssertDateTextValidity(true);
-        date_picker.setText("Wed, 31 Apr 2019");
-        AssertDateTextValidity(false);
+        AssertDateTextValidity("sun, 11 Aug 2019", false);
+        AssertDateTextValidity("Sun, 11 Aug 2019", true);
+        AssertDateTextValidity("Mon, 11 Aug 2019", false);
+        AssertDateTextValidity("Tue, 30 Apr 2019", true);
+        AssertDateTextValidity("Wed, 31 Apr 2019", false);
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
@@ -119,14 +123,10 @@ public class TestGithubIssues {
     {
         DateTimeFormatter era_date = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         date_picker.getSettings().setFormatForDatesCommonEra(era_date);
-        date_picker.setText("12/31/2019");
-        AssertDateTextValidity(false);
-        date_picker.setText("31/12/2019");
-        AssertDateTextValidity(true);
-        date_picker.setText("31/04/2019");
-        AssertDateTextValidity(false);
-        date_picker.setText("30/04/2019");
-        AssertDateTextValidity(true);
+        AssertDateTextValidity("12/31/2019", false);
+        AssertDateTextValidity("31/12/2019", true);
+        AssertDateTextValidity("31/04/2019", false);
+        AssertDateTextValidity("30/04/2019", true);
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
@@ -134,32 +134,38 @@ public class TestGithubIssues {
     {
         DateTimeFormatter era_date = DateTimeFormatter.ofPattern("ddMMyyyy");
         date_picker.getSettings().setFormatForDatesCommonEra(era_date);
-        date_picker.setText("30 04 2019");
-        AssertDateTextValidity(false);
-        date_picker.setText("30042019");
-        AssertDateTextValidity(true);
-        date_picker.setText("31042019");
-        AssertDateTextValidity(false);
-        date_picker.setText(" 30042019 ");
-        AssertDateTextValidity(true);
+        AssertDateTextValidity("30 04 2019", false);
+        AssertDateTextValidity("30042019", true);
+        AssertDateTextValidity("31042019", false);
+        AssertDateTextValidity(" 30042019 ", true);
     }
 
     // helper functions
 
-    private void AssertDateTextValidity(boolean isDateTexValid)
+    private void AssertDateTextValidity(String dateString, boolean isDateTexValid)
     {
-        final Color invalidDate = date_picker.getSettings().getColor(DatePickerSettings.DateArea.DatePickerTextInvalidDate);
-        final Color validDate = date_picker.getSettings().getColor(DatePickerSettings.DateArea.DatePickerTextValidDate);
-        assertTrue("Foreground colors must be different for this test to work", invalidDate != validDate);
-        final Color textfieldcolor = date_picker.getComponentDateTextField().getForeground();
+        final boolean dateValid = date_picker.isTextValid(dateString);
         if (isDateTexValid) {
-            assertTrue("False negative! Text should be accpeted: "+date_picker.getText(), textfieldcolor == validDate);
-            assertTrue("False negative! Text should be accepted: "+date_picker.getText(), textfieldcolor != invalidDate);
+            assertTrue("False negative in isTextValid! Text should be accepted: "+dateString, dateValid);
         }
         else {
-            assertTrue("False positive! Text should not be accepted: "+date_picker.getText(), textfieldcolor == invalidDate);
-            assertTrue("False positive! Text should not be accepted: "+date_picker.getText(), textfieldcolor != validDate);
+            assertFalse("False positive in isTextValid! Text should not be accepted: "+dateString, dateValid);
         }
+
+        date_picker.setText(dateString);
+        assertTrue("Date text field value was not successfully set", date_picker.getText().equals(dateString));
+        if (date_picker.isTextFieldValid()) {
+            assertTrue("False negative in isTextFieldValid! Text should be accepted: "+dateString, dateValid);
+        }
+        else {
+            assertFalse("False positive in isTextFieldValid! Text should not be accepted: "+dateString, dateValid);
+        }
+    }
+
+    // detect funcionality of UI, which is not available on most CI systems
+    boolean isUiAvailable()
+    {
+      return !java.awt.GraphicsEnvironment.isHeadless();
     }
 
     static private void RegisterUncaughtExceptionHandlerToAllThreads(Thread.UncaughtExceptionHandler handler)
