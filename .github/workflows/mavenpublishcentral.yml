@@ -1,10 +1,14 @@
 name: Publish release to Maven Central Repository
 
-# Run workflow on commits to the `releases` branch (used for debugging first steps)
+# Run workflow for every prerelease and published release
 on:
-  push:
-    branches:
-      - releases
+  release:
+    types: [prereleased, published]
+# if you want to debug the deployment workflow you can run this workflow for every commit on a branch (e.g. releases)
+#on:
+  #push:
+  #  branches:
+  #    - releases
 
 jobs:
   release:
@@ -19,7 +23,7 @@ jobs:
           java-version: 1.8
 
       - name: Release Maven package
-        uses: samuelmeuli/action-maven-publish@v1.4
+        uses: samuelmeuli/action-maven-publish@v1.4.0
         with:
           gpg_private_key: ${{ secrets.MVN_GPG_SIGN_SECRET_KEY }}
           gpg_passphrase: ${{ secrets.MVN_GPG_SIGN_PASSPHRASE }}
