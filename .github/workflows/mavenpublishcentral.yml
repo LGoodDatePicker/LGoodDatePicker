@@ -1,0 +1,29 @@
+name: Publish release to Maven Central Repository
+
+# Run workflow on commits to the `releases` branch (used for debugging first steps)
+on:
+  push:
+    branches:
+      - releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Release Maven package
+        uses: samuelmeuli/action-maven-publish@v1.4
+        with:
+          gpg_private_key: ${{ secrets.MVN_GPG_SIGN_SECRET_KEY }}
+          gpg_passphrase: ${{ secrets.MVN_GPG_SIGN_PASSPHRASE }}
+          nexus_username: ${{ secrets.SONATYPE_USR }}
+          nexus_password: ${{ secrets.SONATYPE_PWD }}
+          server_id: ossrh
+          directory: Project
