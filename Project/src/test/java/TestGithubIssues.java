@@ -1,7 +1,6 @@
 /*
  * The MIT License
  *
- * Copyright 2019 Restricted.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -159,6 +158,19 @@ public class TestGithubIssues {
         }
         else {
             assertFalse("False positive in isTextFieldValid! Text should not be accepted: "+dateString, dateValid);
+        }
+
+        final Color invalidDate = date_picker.getSettings().getColor(DatePickerSettings.DateArea.DatePickerTextInvalidDate);
+        final Color validDate = date_picker.getSettings().getColor(DatePickerSettings.DateArea.DatePickerTextValidDate);
+        assertTrue("Foreground colors must be different for this test to work", invalidDate != validDate);
+        final Color textfieldcolor = date_picker.getComponentDateTextField().getForeground();
+        if (isDateTexValid) {
+            assertTrue("False negative! Text should have valid color: "+date_picker.getText(), textfieldcolor == validDate);
+            assertTrue("False negative! Text should not have invalid color: "+date_picker.getText(), textfieldcolor != invalidDate);
+        }
+        else {
+            assertTrue("False positive! Text should have invalid color: "+date_picker.getText(), textfieldcolor == invalidDate);
+            assertTrue("False positive! Text should not have valid color: "+date_picker.getText(), textfieldcolor != validDate);
         }
     }
 
