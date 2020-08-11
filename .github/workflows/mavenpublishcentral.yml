@@ -1,0 +1,33 @@
+name: Publish release to Maven Central Repository
+
+# Run workflow for every prerelease and published release
+on:
+  release:
+    types: [prereleased, published]
+# if you want to debug the deployment workflow you can run this workflow for every commit on a branch (e.g. releases)
+#on:
+  #push:
+  #  branches:
+  #    - releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Install Java and Maven
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Release Maven package
+        uses: samuelmeuli/action-maven-publish@v1.4.0
+        with:
+          gpg_private_key: ${{ secrets.MVN_GPG_SIGN_SECRET_KEY }}
+          gpg_passphrase: ${{ secrets.MVN_GPG_SIGN_PASSPHRASE }}
+          nexus_username: ${{ secrets.SONATYPE_USR }}
+          nexus_password: ${{ secrets.SONATYPE_PWD }}
+          server_id: ossrh
+          directory: Project

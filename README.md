@@ -11,6 +11,8 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
+* [LGoodDatePicker 11.0.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on August 10, 2020. This version adds a feature for optionally setting a user supplied clock, using 'DatePickerSettings.setClock()'. This can be useful in some simulation environments, when the developer may not want to use the real system time. The build infrastructure was improved to simplify the process of adding new releases to Maven Central. Some minor bugs were fixed, including an issue with using certain types of date formats.
+
 * [LGoodDatePicker 10.4.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on June 22, 2018. This version fixes a few minor issues and bugs, and adds a new function DatePickerSettings.setDefaultYearMonth().
 
 * [LGoodDatePicker 10.3.1](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on July 5, 2017. This version adds listener notifications for changes to the YearMonth, and adds the colors for the selected date to the customizable colors in the DatePickerSettings. The pom file was enhanced to allow developers to optionally build the project from source, without first installing the GPG signing tools. This release was added to the [Release Section](https://github.com/LGoodDatePicker/LGoodDatePicker/releases), [Maven Central](http://search.maven.org/#search%7Cga%7C1%7CLGoodDatePicker), and [LGoodDatePicker Backports](https://github.com/LGoodDatePicker/LGoodDatePicker/releases/tag/Backports).
