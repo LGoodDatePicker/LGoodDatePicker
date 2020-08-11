@@ -179,8 +179,8 @@ public class TimePicker
         zAddKeyListenersToTextField();
 
         // Create a toggleTimeMenuButton listener for mouse dragging events.
-        // Note: The toggleTimeMenuButton listeners should be created here in the constructor, 
-        // because they do not require the timeMenuPanel to exist. These listeners are never 
+        // Note: The toggleTimeMenuButton listeners should be created here in the constructor,
+        // because they do not require the timeMenuPanel to exist. These listeners are never
         // deregistered. They will continue to exist for as long as the time picker exists.
         toggleTimeMenuButton.addMouseMotionListener(new MouseAdapter() {
             @Override
@@ -232,7 +232,7 @@ public class TimePicker
      * times, then the last valid time will not be changed by this function.
      */
     public void clear() {
-        // Calling this function with null clears the time picker text. 
+        // Calling this function with null clears the time picker text.
         // If empty times are allowed, this will also clear the last valid time.
         setTime(null);
     }
@@ -677,7 +677,7 @@ public class TimePicker
      * for additional details.
      */
     public void setTimeToNow() {
-        setTime(LocalTime.now());
+        setTime(LocalTime.now(settings.getClock()));
     }
 
     /**
@@ -749,7 +749,7 @@ public class TimePicker
                         timeMenuPanel.selectFirstEntry();
                     }
                 }
-                // Handled the up arrow key, which activates the spinner function to increase 
+                // Handled the up arrow key, which activates the spinner function to increase
                 // the time value.
                 if (enableArrowKeys && e.isActionKey() && e.getKeyCode() == KeyEvent.VK_UP) {
                     e.consume();
@@ -763,7 +763,7 @@ public class TimePicker
                     zInternalTryChangeTimeByIncrement(1);
                     increaseTimer.start();
                 }
-                // Handled the down arrow key, which activates the spinner function to decrease 
+                // Handled the down arrow key, which activates the spinner function to decrease
                 // the time value.
                 if (enableArrowKeys && e.isActionKey() && e.getKeyCode() == KeyEvent.VK_DOWN) {
                     e.consume();
