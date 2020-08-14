@@ -26,6 +26,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -36,6 +38,7 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Locale;
+import javax.swing.JLabel;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -56,7 +59,7 @@ public class TestFeatures
       assertTrue("Set clock must be returned", settings.getClock() == myClock);
       settings.setClock(getClockFixedToInstant(1993, Month.MARCH, 15, 12, 00));
       settings.setDefaultYearMonth(null);
-      YearMonth defaultyearmonth = (YearMonth)invokePrivateMethod(DatePickerSettings.class, settings, "zGetDefaultYearMonthAsUsed");
+      YearMonth defaultyearmonth = (YearMonth)accessPrivateMethod(DatePickerSettings.class, "zGetDefaultYearMonthAsUsed").invoke(settings);
       assertTrue(defaultyearmonth.getYear() == 1993);
       assertTrue(defaultyearmonth.getMonth() == Month.MARCH);
     }
@@ -130,6 +133,53 @@ public class TestFeatures
       assertTrue("Picker must have set a time of 14:33 / 2:33pm", picker.getTime().equals(LocalTime.of(14, 33)));
     }
 
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestMouseHoverCalendarPanel() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
+      // Allow access to private methods of Component, only needed if compiled for java > 1.8
+      //if (!TestFeatures.class.getModule().isNamed()) {
+      //  java.awt.Component.class.getModule().addOpens(java.awt.Component.class.getPackageName(), TestFeatures.class.getModule());
+      //}
+
+      DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
+      CalendarPanel panel = new CalendarPanel(settings);
+
+      final Color generalHighlight = new Color(184,207,229);
+      final Color yearMonthBackground = settings.getColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels);
+      final Color yearMonthText = settings.getColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels);
+
+      verifyLabelHover(panel, "labelMonth", yearMonthBackground, yearMonthText, generalHighlight,
+              yearMonthText);
+      verifyLabelHover(panel, "labelYear", yearMonthBackground, yearMonthText, generalHighlight,
+              yearMonthText);
+
+      final Color todayLabelBackground = settings.getColor(DatePickerSettings.DateArea.BackgroundTodayLabel);
+      final Color todayLabelText = settings.getColor(DatePickerSettings.DateArea.TextTodayLabel);
+      verifyLabelHover(panel, "labelSetDateToToday", todayLabelBackground, todayLabelText, generalHighlight,
+              todayLabelText);
+
+      final Color clearLabelBackground = settings.getColor(DatePickerSettings.DateArea.BackgroundClearLabel);
+      final Color clearLabelText = settings.getColor(DatePickerSettings.DateArea.TextClearLabel);
+      verifyLabelHover(panel, "labelClearDate", clearLabelBackground, clearLabelText, generalHighlight,
+              clearLabelText);
+    }
+
+    void verifyLabelHover(CalendarPanel panel, String labelname, Color defaultBackground, Color defaultText, Color highlightBackground, Color highlightText) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
+      JLabel labeltoverify = (JLabel)readPrivateField(CalendarPanel.class, panel, labelname);
+
+      assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(defaultBackground));
+      assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(defaultText));
+      MouseEvent testEvent = new MouseEvent(labeltoverify, MouseEvent.MOUSE_ENTERED, 0, 0, 0, 0, 0, false);
+      accessPrivateMethod(java.awt.Component.class, "processEvent", java.awt.AWTEvent.class).invoke(labeltoverify, testEvent);
+      assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(highlightBackground));
+      assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(highlightText));
+      testEvent = new MouseEvent(labeltoverify, MouseEvent.MOUSE_EXITED, 0, 0, 0, 0, 0, false);
+      accessPrivateMethod(java.awt.Component.class, "processEvent", java.awt.AWTEvent.class).invoke(labeltoverify, testEvent);
+      assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(defaultBackground));
+      assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(defaultText));
+    }
+
     // helper functions
 
     Clock getClockFixedToInstant(int year, Month month, int day, int hours, int minutes)
@@ -145,10 +195,10 @@ public class TestFeatures
         return private_field.get(instance);
     }
 
-    Object invokePrivateMethod(Class<?> clazz, Object instance, String method, Object... args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    java.lang.reflect.Method accessPrivateMethod(Class<?> clazz, String method, Class<?>... argclasses) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        java.lang.reflect.Method private_method =  clazz.getDeclaredMethod(method);
+        java.lang.reflect.Method private_method =  clazz.getDeclaredMethod(method, argclasses);
         private_method.setAccessible(true);
-        return private_method.invoke(instance, args);
+        return private_method;
     }
 }
