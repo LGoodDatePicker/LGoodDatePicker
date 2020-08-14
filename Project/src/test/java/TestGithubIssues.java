@@ -51,9 +51,10 @@ public class TestGithubIssues {
       if (!isUiAvailable())
       {
         // don't run under CI
-        System.out.println("TestIssue82 was skipped");
-        return;
+        System.out.println("TestIssue82 requires UI to run and was skipped");
       }
+      org.junit.Assume.assumeTrue(isUiAvailable());
+
         // The exception that might be thrown by the date picker control
         // will be thrown in an AWT-EventQueue thread. To be able to detect
         // these exceptions we register an UncaughtExceptionHandler that
