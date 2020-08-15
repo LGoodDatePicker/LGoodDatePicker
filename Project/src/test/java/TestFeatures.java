@@ -200,6 +200,63 @@ public class TestFeatures
         assertTrue("Arrow keys not enabled", picker.getEnableArrowKeys());
         picker.setEnableArrowKeys(false);
         assertFalse("Arrow keys not disabled", picker.getEnableArrowKeys());
+        
+        assertNotNull("Picker settings were null", picker.getSettings());       
+        
+        picker.setEnabled(false);
+        assertFalse("Picker was not disabled", picker.isEnabled());
+        assertFalse("Menu component was not disabled", picker.getComponentToggleTimeMenuButton().isEnabled());
+        assertFalse("TextField component was not disabled", picker.getComponentTimeTextField().isEnabled());
+        
+        picker.setEnabled(true);
+        assertTrue("Picker was not disabled", picker.isEnabled());
+        assertTrue("Menu component was not enabled", picker.getComponentToggleTimeMenuButton().isEnabled());
+        assertTrue("TextField component was not enabled", picker.getComponentTimeTextField().isEnabled());
+        
+        picker.setTime(LocalTime.NOON);
+        assertEquals("noon local time could not be used", LocalTime.NOON, picker.getTime());
+        picker.clear();
+        assertNull("Clear did not make the time null", picker.getTime());
+        
+        // valid text
+        picker.setText("12:22");
+        assertTrue("Expected time to be valid", picker.isTextValid("12:22"));
+        assertTrue("Expected field to be valid", picker.isTextFieldValid());
+        assertEquals("Did not retain user text", "12:22", picker.getText());
+        assertEquals("Entered time not translated to local time", LocalTime.of(12, 22), picker.getTime());
+        assertEquals("Expected time string for valid time", "12:22", picker.getTimeStringOrSuppliedString("supply"));
+        
+        // invalid text
+        picker.setText("44:17");
+        assertFalse("Expected time to be invalid", picker.isTextValid("44:17"));
+        assertFalse("Expected timefield  to be invalid", picker.isTextFieldValid());
+        assertEquals("Did not retain user text", "44:17", picker.getText());
+        // because time is invalid the old local time should still be present
+        assertEquals("Invalid time was translated to local time", LocalTime.of(12, 22), picker.getTime());
+        
+        // null time
+        picker.setTime(null);
+        assertEquals("Expected empty string for null time", "", picker.getTimeStringOrEmptyString());
+        assertEquals("Expected supplied string for null time", "supply", picker.getTimeStringOrSuppliedString("supply"));
+        
+        // null text
+        assertFalse("null text was considered valid", picker.isTextValid(null));
+        picker.setText(null);
+        assertEquals("null text did not become blank text", "", picker.getText());
+        
+        // empty text
+        assertTrue("spaces only text was considered valid", picker.isTextValid("  "));
+        picker.setText("  ");
+        assertEquals("spaces text was not returned", "  ", picker.getText());
+        
+        // toString
+        picker.setTime(LocalTime.of(8, 32));
+        assertEquals("toString should match toTime", picker.getTimeStringOrEmptyString(), picker.toString());
+        picker.setTime(LocalTime.of(8, 32, 12));
+        assertEquals("toString should match toTime", picker.getTimeStringOrEmptyString(), picker.toString());
+        
+        assertTrue("Expect noon to be an allowed time", picker.isTimeAllowed(LocalTime.NOON));
+        
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
@@ -224,6 +281,13 @@ public class TestFeatures
 
         picker.setTime(null);
         assertNull("Listener did not receive null time", listener.getLastEvent().getNewTime());
+        
+        assertTrue("Listener was not in the list of listeners", picker.getTimeChangeListeners().contains(listener));
+        
+        picker.removeTimeChangeListener(listener);
+        picker.setTime(LocalTime.NOON);
+        assertNull("Listener received an update after being uninstalled", listener.getLastEvent().getNewTime());
+        
     }
 
     // helper functions
