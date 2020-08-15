@@ -994,7 +994,7 @@ public class TimePicker
      */
     private void zInternalSetTimeTextField(String text) {
         skipTextFieldChangedFunctionWhileTrue = true;
-        if (settings.useLowercaseForDisplayTime) {
+        if (settings.useLowercaseForDisplayTime && text != null) {
             text = text.toLowerCase(settings.getLocale());
         }
         timeTextField.setText(text);

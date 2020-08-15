@@ -21,13 +21,7 @@
  * THE SOFTWARE.
  */
 
-import com.github.lgooddatepicker.components.CalendarPanel;
-import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.components.TimePicker;
-import com.github.lgooddatepicker.components.TimePickerSettings;
-import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
-import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -40,11 +34,17 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.Locale;
+
 import javax.swing.JLabel;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.github.lgooddatepicker.components.CalendarPanel;
+import com.github.lgooddatepicker.components.DatePicker;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.TimePicker;
+import com.github.lgooddatepicker.components.TimePickerSettings;
 
 // add tests for your new features here
 public class TestFeatures
@@ -184,47 +184,7 @@ public class TestFeatures
         assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(defaultText));
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void verifyTimePicker()
-    {
-        TimePicker picker = new TimePicker();
-        picker.setTime(LocalTime.MIN);
-        assertEquals("minium local time could not be used", LocalTime.MIN, picker.getTime());
-        picker.setTime(LocalTime.NOON);
-        assertEquals("noon local time could not be used", LocalTime.NOON, picker.getTime());
-        picker.setTime(LocalTime.MAX);
-        assertEquals("maximum local time could not be used", LocalTime.MAX.truncatedTo(ChronoUnit.MINUTES), picker.getTime());
-        picker.setTime(null);
-        assertNull("null time could not be used", picker.getTime());
-        picker.setEnableArrowKeys(true);
-        assertTrue("Arrow keys not enabled", picker.getEnableArrowKeys());
-        picker.setEnableArrowKeys(false);
-        assertFalse("Arrow keys not disabled", picker.getEnableArrowKeys());
-    }
-
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void verifyTimeChangeListeners()
-    {
-        TimePicker picker = new TimePicker();
-        TestableTimeChangeListener listener = new TestableTimeChangeListener();
-        picker.addTimeChangeListener(listener);
-        assertNull("listener event not null at start", listener.getLastEvent());
-        picker.setTime(LocalTime.MIN);
-        assertEquals("Listener did not receive new time", LocalTime.MIN, listener.getLastEvent().getNewTime());
-        assertNull("Listener did not remember old time", listener.getLastEvent().getOldTime());
-        assertEquals("Event did not originate from time picker", picker, listener.getLastEvent().getSource());
-
-        TimeChangeEvent lastEvent = listener.getLastEvent();
-        picker.setTime(LocalTime.MIN);
-        assertTrue("Event updated when time did not change", lastEvent == listener.getLastEvent());
-
-        picker.setTime(LocalTime.NOON);
-        assertEquals("Listener did not remember old time", LocalTime.MIN, listener.getLastEvent().getOldTime());
-        assertEquals("Listener did not receive new time", LocalTime.NOON, listener.getLastEvent().getNewTime());
-
-        picker.setTime(null);
-        assertNull("Listener did not receive null time", listener.getLastEvent().getNewTime());
-    }
+   
 
     // helper functions
     Clock getClockFixedToInstant(int year, Month month, int day, int hours, int minutes)
@@ -247,18 +207,5 @@ public class TestFeatures
         return private_method;
     }
 
-    //helper class
-    private class TestableTimeChangeListener implements TimeChangeListener
-    {
-        TimeChangeEvent lastEvent;
-
-        @Override
-        public void timeChanged(TimeChangeEvent event) {
-            lastEvent = event;
-        }
-
-        TimeChangeEvent getLastEvent() {
-            return lastEvent;
-        }
-    }
+   
 }
