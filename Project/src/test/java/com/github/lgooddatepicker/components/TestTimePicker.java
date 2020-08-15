@@ -41,15 +41,15 @@ import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
  * Tests for the TimePicker component features
  */
 public class TestTimePicker {
-    
+
     /**
      * Basic test of the time picker functions
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimePickerBasics() 
+    public void verifyTimePickerBasics()
     {
         TimePicker picker = new TimePicker();
-        
+
         // Test the range of Local times
         picker.setTime(LocalTime.MIN);
         assertEquals("minium local time could not be used", LocalTime.MIN, picker.getTime());
@@ -58,29 +58,29 @@ public class TestTimePicker {
         picker.setTime(LocalTime.MAX);
         assertEquals("maximum local time could not be used", LocalTime.MAX.truncatedTo(ChronoUnit.MINUTES),
                 picker.getTime());
-        
+
         // test clearing the component by setting the time to null
         picker.setTime(null);
         assertNull("null time could not be used", picker.getTime());
-        
+
         // reset the the picker back to noon
         picker.setTime(LocalTime.NOON);
         // ensure it can be set again after set to null
         assertEquals("noon local time could not be used", LocalTime.NOON, picker.getTime());
-        
+
         // clear it again
         picker.clear();
         // ensure that clear also sets time to null
         assertNull("Clear did not make the time null", picker.getTime());
-        
+
     }
-    
+
     /**
      * Tests that the various parts of the TimePicker can be enabled
      * and disabled as expected
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimePickerEnabled() 
+    public void verifyTimePickerEnabled()
     {
         TimePicker picker = new TimePicker();
         picker.setEnableArrowKeys(true);
@@ -100,16 +100,17 @@ public class TestTimePicker {
         assertTrue("Menu component was not enabled", picker.getComponentToggleTimeMenuButton().isEnabled());
         assertTrue("TextField component was not enabled", picker.getComponentTimeTextField().isEnabled());
     }
-        
+
     /**
      * Test to ensure that the parsing and strings work as expected.
-     * Here Locale.ENGLISH is specified to ensure the test is 
+     * Here Locale.ENGLISH is specified to ensure the test is
      * consistent when run on systems in other Locales.
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimePickerParsingAndStrings() 
+    public void verifyTimePickerParsingAndStrings()
     {
         TimePickerSettings settings = new TimePickerSettings(Locale.ENGLISH);
+        settings.useLowercaseForDisplayTime = true;
         TimePicker picker = new TimePicker(settings);
         // valid text
         picker.setText("12:22");
@@ -158,7 +159,7 @@ public class TestTimePicker {
      * as expected.
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimeChangeListeners() 
+    public void verifyTimeChangeListeners()
     {
         TimePicker picker = new TimePicker();
         TestableTimeChangeListener listener = new TestableTimeChangeListener();
@@ -179,7 +180,7 @@ public class TestTimePicker {
 
         picker.setTime(null);
         assertNull("Listener did not receive null time", listener.getLastEvent().getNewTime());
-        
+
         assertTrue("Listener was not in the list of listeners", picker.getTimeChangeListeners().contains(listener));
 
         picker.removeTimeChangeListener(listener);
@@ -189,7 +190,7 @@ public class TestTimePicker {
     }
 
     // helper class
-    private class TestableTimeChangeListener implements TimeChangeListener 
+    private class TestableTimeChangeListener implements TimeChangeListener
     {
         TimeChangeEvent lastEvent;
 
