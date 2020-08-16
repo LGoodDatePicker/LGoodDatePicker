@@ -148,7 +148,8 @@ public class TestFeatures
         DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
         CalendarPanel panel = new CalendarPanel(settings);
 
-        final Color generalHighlight = new Color(184,207,229);
+        final Color generalHighlight = settings.getColor(
+                DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover);
         final Color yearMonthBackground = settings.getColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels);
         final Color yearMonthText = settings.getColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels);
 
@@ -168,6 +169,35 @@ public class TestFeatures
                 clearLabelText);
     }
 
+        @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestCustomMouseHoverColorCalendarPanel() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
+        DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
+        settings.setColor(DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover, Color.red);
+        settings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, Color.yellow);
+        CalendarPanel panel = new CalendarPanel(settings);
+
+        final Color generalHighlight = Color.red;
+        final Color generalHighlightText = Color.yellow;
+        final Color yearMonthBackground = settings.getColor(DatePickerSettings.DateArea.BackgroundMonthAndYearMenuLabels);
+        final Color yearMonthText = settings.getColor(DatePickerSettings.DateArea.TextMonthAndYearMenuLabels);
+
+        verifyLabelHover(panel, "labelMonth", yearMonthBackground, yearMonthText, generalHighlight,
+                generalHighlightText);
+        verifyLabelHover(panel, "labelYear", yearMonthBackground, yearMonthText, generalHighlight,
+                generalHighlightText);
+
+        final Color todayLabelBackground = settings.getColor(DatePickerSettings.DateArea.BackgroundTodayLabel);
+        final Color todayLabelText = settings.getColor(DatePickerSettings.DateArea.TextTodayLabel);
+        verifyLabelHover(panel, "labelSetDateToToday", todayLabelBackground, todayLabelText, generalHighlight,
+                generalHighlightText);
+
+        final Color clearLabelBackground = settings.getColor(DatePickerSettings.DateArea.BackgroundClearLabel);
+        final Color clearLabelText = settings.getColor(DatePickerSettings.DateArea.TextClearLabel);
+        verifyLabelHover(panel, "labelClearDate", clearLabelBackground, clearLabelText, generalHighlight,
+                generalHighlightText);
+    }
+
     void verifyLabelHover(CalendarPanel panel, String labelname, Color defaultBackground, Color defaultText, Color highlightBackground, Color highlightText) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
     {
         JLabel labeltoverify = (JLabel)readPrivateField(CalendarPanel.class, panel, labelname);
@@ -184,7 +214,7 @@ public class TestFeatures
         assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(defaultText));
     }
 
-   
+
 
     // helper functions
     Clock getClockFixedToInstant(int year, Month month, int day, int hours, int minutes)
@@ -207,5 +237,5 @@ public class TestFeatures
         return private_method;
     }
 
-   
+
 }
