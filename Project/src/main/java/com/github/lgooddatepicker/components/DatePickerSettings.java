@@ -25,6 +25,8 @@ import java.awt.Point;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+
+import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -159,6 +161,12 @@ public class DatePickerSettings {
      * This variable will never be null.
      */
     private ArrayList<CalendarBorderProperties> borderPropertiesList;
+    
+    /**
+     * clock, A clock used to determine current date and time 
+     * The default is to use the System Clock
+     */
+    private Clock clock = Clock.systemDefaultZone();
 
     /**
      * colorBackgroundWeekdayLabels, This is the calendar background color for the weekday labels.
@@ -779,6 +787,13 @@ public class DatePickerSettings {
     public ArrayList<CalendarBorderProperties> getBorderPropertiesList() {
         return borderPropertiesList;
     }
+    
+    /**
+     * getClock, Returns the currently set clock
+     */
+    public Clock getClock() {
+    	return clock;
+    }
 
     /**
      * getColor, This returns the currently set color for the specified area.
@@ -1177,7 +1192,7 @@ public class DatePickerSettings {
     public boolean getWeekNumbersWillOverrideFirstDayOfWeek() {
         return weekNumbersWillOverrideFirstDayOfWeek;
     }
-
+    
     /**
      * hasParent, This returns true if this settings instance has a parent, otherwise returns false.
      * A settings instance will have a parent if the settings instance has already been used to
@@ -1299,6 +1314,15 @@ public class DatePickerSettings {
         if (parentCalendarPanel != null) {
             parentCalendarPanel.zApplyBorderPropertiesList();
         }
+    }
+    
+    /**
+     * setClock, This sets the clock to use for determining the current
+     * date. By default the system clock is used.
+     * @param clock A clock to use
+     */
+    public void setClock(Clock clock) {
+    	this.clock = clock;
     }
 
     /**
@@ -2173,7 +2197,7 @@ public class DatePickerSettings {
         LocalDate selectedDate = zGetParentSelectedDate();
         if ((!allowEmptyDates) && (selectedDate == null)) {
             // We need to initialize the current date, so find out if today is vetoed.
-            LocalDate today = LocalDate.now();
+            LocalDate today = LocalDate.now(clock);
             if (InternalUtilities.isDateVetoed(vetoPolicy, today)) {
                 throw new RuntimeException("Exception in DatePickerSettings.zApplyAllowEmptyDates(), "
                     + "Could not initialize a null date to today, because today is vetoed by "
@@ -2303,7 +2327,7 @@ public class DatePickerSettings {
      * YearMonth.now() for any null value. This will never return null.
      */
     YearMonth zGetDefaultYearMonthAsUsed() {
-        return (defaultYearMonth == null) ? YearMonth.now() : defaultYearMonth;
+        return (defaultYearMonth == null) ? YearMonth.now(clock) : defaultYearMonth;
     }
 
     /**
