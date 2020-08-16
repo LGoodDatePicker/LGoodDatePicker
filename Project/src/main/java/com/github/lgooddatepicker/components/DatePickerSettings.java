@@ -67,6 +67,7 @@ public class DatePickerSettings {
         BackgroundClearLabel(new Color(240, 240, 240)),
         BackgroundMonthAndYearMenuLabels(new Color(240, 240, 240)),
         BackgroundMonthAndYearNavigationButtons(new JButton().getBackground()),
+        BackgroundCalendarPanelLabelsOnHover(new Color(184, 207, 229)),
         BackgroundOverallCalendarPanel(new Color(240, 240, 240)),
         BackgroundTodayLabel(new Color(240, 240, 240)),
         BackgroundTopLeftLabelAboveWeekNumbers(new Color(184, 207, 229)),
@@ -83,6 +84,7 @@ public class DatePickerSettings {
         TextMonthAndYearMenuLabels(new JLabel().getForeground()),
         TextMonthAndYearNavigationButtons(new JButton().getForeground()),
         TextTodayLabel(new JLabel().getForeground()),
+        TextCalendarPanelLabelsOnHover(new JLabel().getForeground()),
         TextFieldBackgroundDisallowedEmptyDate(Color.pink),
         TextFieldBackgroundInvalidDate(Color.white),
         TextFieldBackgroundValidDate(Color.white),
@@ -159,9 +161,9 @@ public class DatePickerSettings {
      * This variable will never be null.
      */
     private ArrayList<CalendarBorderProperties> borderPropertiesList;
-    
+
     /**
-     * clock, A clock used to determine current date and time 
+     * clock, A clock used to determine current date and time
      * The default is to use the System Clock
      */
     private Clock clock = Clock.systemDefaultZone();
@@ -785,7 +787,7 @@ public class DatePickerSettings {
     public ArrayList<CalendarBorderProperties> getBorderPropertiesList() {
         return borderPropertiesList;
     }
-    
+
     /**
      * getClock, Returns the currently set clock
      */
@@ -1190,7 +1192,7 @@ public class DatePickerSettings {
     public boolean getWeekNumbersWillOverrideFirstDayOfWeek() {
         return weekNumbersWillOverrideFirstDayOfWeek;
     }
-    
+
     /**
      * hasParent, This returns true if this settings instance has a parent, otherwise returns false.
      * A settings instance will have a parent if the settings instance has already been used to
@@ -1313,7 +1315,7 @@ public class DatePickerSettings {
             parentCalendarPanel.zApplyBorderPropertiesList();
         }
     }
-    
+
     /**
      * setClock, This sets the clock to use for determining the current
      * date. By default the system clock is used.
