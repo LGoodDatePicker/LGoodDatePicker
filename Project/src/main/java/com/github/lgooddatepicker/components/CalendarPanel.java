@@ -943,8 +943,8 @@ public class CalendarPanel extends JPanel {
             return;
         }
         // Highlight the label.
-        label.setBackground(settings.getColor(DateArea.BackgroundHoverLabel));
-        label.setForeground(settings.getColor(DateArea.TextHoverLabel));
+        label.setBackground(settings.getColor(DateArea.BackgroundCalendarPanelLabelsOnHover));
+        label.setForeground(settings.getColor(DateArea.TextCalendarPanelLabelsOnHover));
         label.setBorder(new CompoundBorder(
             new LineBorder(Color.GRAY), labelIndicatorEmptyBorder));
     }
