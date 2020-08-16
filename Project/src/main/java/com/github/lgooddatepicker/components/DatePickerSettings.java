@@ -81,7 +81,7 @@ public class DatePickerSettings {
         CalendarTextWeekdays(Color.black),
         CalendarTextWeekNumbers(Color.black),
         TextClearLabel(new JLabel().getForeground()),
-        TextHoverLabel(Color.black),
+        TextHoverLabel(new JLabel().getForeground()),
         TextMonthAndYearMenuLabels(new JLabel().getForeground()),
         TextMonthAndYearNavigationButtons(new JButton().getForeground()),
         TextTodayLabel(new JLabel().getForeground()),
@@ -161,9 +161,9 @@ public class DatePickerSettings {
      * This variable will never be null.
      */
     private ArrayList<CalendarBorderProperties> borderPropertiesList;
-    
+
     /**
-     * clock, A clock used to determine current date and time 
+     * clock, A clock used to determine current date and time
      * The default is to use the System Clock
      */
     private Clock clock = Clock.systemDefaultZone();
@@ -787,7 +787,7 @@ public class DatePickerSettings {
     public ArrayList<CalendarBorderProperties> getBorderPropertiesList() {
         return borderPropertiesList;
     }
-    
+
     /**
      * getClock, Returns the currently set clock
      */
@@ -1192,7 +1192,7 @@ public class DatePickerSettings {
     public boolean getWeekNumbersWillOverrideFirstDayOfWeek() {
         return weekNumbersWillOverrideFirstDayOfWeek;
     }
-    
+
     /**
      * hasParent, This returns true if this settings instance has a parent, otherwise returns false.
      * A settings instance will have a parent if the settings instance has already been used to
@@ -1315,7 +1315,7 @@ public class DatePickerSettings {
             parentCalendarPanel.zApplyBorderPropertiesList();
         }
     }
-    
+
     /**
      * setClock, This sets the clock to use for determining the current
      * date. By default the system clock is used.
