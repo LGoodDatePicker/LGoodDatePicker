@@ -66,6 +66,7 @@ plugins in this file operate inside the "package" and "install" phases.
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- <maven.compiler.release>8</maven.compiler.release> you might need to uncomment this this to compile with JDK > 8 -->
     </properties>
 
     <dependencies>
@@ -91,7 +92,7 @@ plugins in this file operate inside the "package" and "install" phases.
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13</version>
             <scope>test</scope>
         </dependency>
 
@@ -141,7 +142,6 @@ plugins in this file operate inside the "package" and "install" phases.
                                         <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar.asc"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar.asc" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar.asc"/>
-
                                     </tasks>
                                 </configuration>
                                 <goals>
@@ -216,7 +216,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -230,11 +230,11 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>3.0.1</version>
                 <configuration>
                     <source>8</source>
                     <!-- Turn off errors resulting from the new (strict) Java 8 Javadoc standards. -->
-                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <doclint>none</doclint>
                 </configuration>
                 <executions>
                     <execution>
@@ -249,7 +249,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -307,7 +307,6 @@ plugins in this file operate inside the "package" and "install" phases.
                                 <delete file="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}.jar"/>
                                 <copy file="${project.build.directory}/${project.artifactId}-${project.version}-core.jar" tofile="${project.build.directory}/${project.artifactId}-${project.version}-executable-demo.jar"/>
-
                             </tasks>
                         </configuration>
                         <goals>
@@ -320,7 +319,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>1.7</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>attach-artifacts</id>
