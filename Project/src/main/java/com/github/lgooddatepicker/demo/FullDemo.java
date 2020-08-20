@@ -5,6 +5,7 @@ import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
 import java.awt.Color;
@@ -120,7 +121,8 @@ public class FullDemo {
         frame.setTitle("LGoodDatePicker Demo " + InternalUtilities.getProjectVersionString());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new DemoPanel();
-        frame.getContentPane().add(panel);
+        JScrollPane jsp = new JScrollPane(panel);
+        frame.getContentPane().add(jsp);
         createDemoButtons();
 
         ///////////////////////////////////////////////////////////////////////////////////////////
