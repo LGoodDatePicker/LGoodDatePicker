@@ -96,7 +96,7 @@ public class FullDemo {
      */
     public static void main(String[] args) {
         ///////////////////////////////////////////////////////////////////////////////////////////
-        // If desired, set a swing look and feel here. 
+        // If desired, set a swing look and feel here.
         try {
             /*
             // Set a specific look and feel.
@@ -106,8 +106,8 @@ public class FullDemo {
                     break;
                 }
             }
-            
-            // Set a random look and feel. 
+
+            // Set a random look and feel.
             LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
             int lookIndex = (int) (Math.random() * installedLooks.length);
             UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
@@ -170,7 +170,7 @@ public class FullDemo {
             + ", Both Policies:");
 
         // Create a date picker: With Hidden text field (Showing button only).
-        // Note: A developer might want to do this if they were providing their own component 
+        // Note: A developer might want to do this if they were providing their own component
         // for displaying the date.
         dateSettings = new DatePickerSettings();
         dateSettings.setVisibleDateTextField(false);
@@ -181,10 +181,10 @@ public class FullDemo {
             "Date " + (++pickerNumber) + ", Hidden text field (Showing button only):");
 
         // Create a date picker: With date range limits.
-        // Notes: 
-        // * If you only want to limit one side of the date range, you can optionally pass in null 
+        // Notes:
+        // * If you only want to limit one side of the date range, you can optionally pass in null
         // for one of the date limits.
-        // * Date range limits (and other types of veto policies) can only be set after constructing 
+        // * Date range limits (and other types of veto policies) can only be set after constructing
         // the date picker.
         dateSettings = new DatePickerSettings();
         datePicker = new DatePicker(dateSettings);
@@ -225,7 +225,7 @@ public class FullDemo {
         // Create a date picker: Show Week Numbers.
         // This will display week numbers on the left side of the calendar.
         // By default, the week number rules are specific to the locale of the settings instance.
-        // For custom configuration of week numbers, see also these DatePickerSettings: 
+        // For custom configuration of week numbers, see also these DatePickerSettings:
         // setWeekNumberRules(), and setWeekNumbersForceFirstDayOfWeekToMatch();
         dateSettings = new DatePickerSettings();
         dateSettings.setWeekNumbersDisplayed(true, true);
@@ -272,7 +272,9 @@ public class FullDemo {
         dateSettings.setColor(DateArea.CalendarTextNormalDates, Color.MAGENTA);
         dateSettings.setColor(DateArea.CalendarTextWeekdays, Color.RED);
         dateSettings.setColor(DateArea.CalendarTextWeekNumbers, Color.RED);
-        // Create the date picker. 
+        dateSettings.setColor(DateArea.BackgroundCalendarPanelLabelsOnHover, Color.BLUE);
+        dateSettings.setColor(DateArea.TextCalendarPanelLabelsOnHover, Color.YELLOW);
+        // Create the date picker.
         datePicker = new DatePicker(dateSettings);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier), "Date " + (++pickerNumber)
@@ -363,12 +365,12 @@ public class FullDemo {
         // calendar in the order that they appear this list.
         ArrayList<CalendarBorderProperties> borderProperties
             = new ArrayList<CalendarBorderProperties>();
-        // Set all borders to be yellow, and 10 pixels thick. 
+        // Set all borders to be yellow, and 10 pixels thick.
         // (Parts of the yellow border will be overwritten by other border settings.)
         borderProperties.add(new CalendarBorderProperties(
             new Point(1, 1), new Point(5, 5), Color.YELLOW, 10));
-        // Make the top center border extra thick. Note: All borders in the same row or column will 
-        // be displayed with the same thickness as the thickest border in the same line. 
+        // Make the top center border extra thick. Note: All borders in the same row or column will
+        // be displayed with the same thickness as the thickest border in the same line.
         borderProperties.add(new CalendarBorderProperties(
             new Point(4, 1), new Point(4, 1), Color.YELLOW, 15));
         // Set the borders surrounding the date box to be green.
@@ -381,7 +383,7 @@ public class FullDemo {
             new Point(5, 3), new Point(5, 3), Color.BLUE, 1));
 
         // Create a date picker: Custom Borders.
-        // Note: Week number borders are always hidden (invisible) unless the the week numbers are 
+        // Note: Week number borders are always hidden (invisible) unless the the week numbers are
         // displayed. ("Week number borders" are all borders located in columns 1 and 2.)
         dateSettings = new DatePickerSettings();
         dateSettings.setBorderPropertiesList(borderProperties);
@@ -391,7 +393,7 @@ public class FullDemo {
             + ", Custom Borders:");
 
         // Create a date picker: Custom Borders with Week Numbers.
-        // Note: Week number borders are always hidden (invisible) unless the the week numbers are 
+        // Note: Week number borders are always hidden (invisible) unless the the week numbers are
         // displayed. ("Week number borders" are all borders located in columns 1 and 2.)
         dateSettings = new DatePickerSettings();
         dateSettings.setWeekNumbersDisplayed(true, true);
@@ -402,12 +404,12 @@ public class FullDemo {
             "Date " + (++pickerNumber) + ", Custom Borders with Week Numbers:");
 
         // Create a date picker: With a default year month, and limited date range.
-        // Notes: 
+        // Notes:
         // * When a default YearMonth has not been set, (or is set to null), the default YearMonth
         // will be YearMonth.now().
-        // * If you only want to limit one side of the date range, you can optionally pass in null 
+        // * If you only want to limit one side of the date range, you can optionally pass in null
         // for one of the date limits.
-        // * Date range limits (and other types of veto policies) can only be set after constructing 
+        // * Date range limits (and other types of veto policies) can only be set after constructing
         // the date picker.
         dateSettings = new DatePickerSettings();
         datePicker = new DatePicker(dateSettings);
