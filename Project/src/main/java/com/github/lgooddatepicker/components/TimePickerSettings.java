@@ -61,10 +61,12 @@ public class TimePickerSettings {
         TimePickerTextValidTime(Color.black),
         TimePickerTextInvalidTime(Color.red),
         TimePickerTextVetoedTime(Color.black),
+        TimePickerTextDisabledTime(new Color(109, 109, 109)),
         TextFieldBackgroundValidTime(Color.white),
         TextFieldBackgroundInvalidTime(Color.white),
         TextFieldBackgroundVetoedTime(Color.white),
-        TextFieldBackgroundDisallowedEmptyTime(Color.pink);
+        TextFieldBackgroundDisallowedEmptyTime(Color.pink),
+        TextFieldBackgroundDisabledTime(new Color(240, 240, 240));
 
         TimeArea(Color defaultColor) {
             this.defaultColor = defaultColor;
