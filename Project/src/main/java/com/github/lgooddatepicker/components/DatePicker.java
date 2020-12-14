@@ -975,7 +975,6 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             // the component is disabled.
             dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundDisabled));
             dateTextField.setForeground(settings.getColor(DateArea.DatePickerTextDisabled));
-
             dateTextField.setFont(settings.getFontValidDate());
             return;
         }
