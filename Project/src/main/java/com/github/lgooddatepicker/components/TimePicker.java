@@ -846,8 +846,8 @@ public class TimePicker
             // (Possibility: DisabledComponent)
             // Note: The time should always be validated (as if the component lost focus), before
             // the component is disabled.
-            timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundDisabledTime));
-            timeTextField.setForeground(settings.getColor(TimeArea.TimePickerTextDisabledTime));
+            timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundDisabled));
+            timeTextField.setForeground(settings.getColor(TimeArea.TimePickerTextDisabled));
             timeTextField.setFont(settings.fontValidTime);
             return;
         }

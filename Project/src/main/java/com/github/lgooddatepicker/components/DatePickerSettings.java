@@ -89,11 +89,11 @@ public class DatePickerSettings {
         TextFieldBackgroundInvalidDate(Color.white),
         TextFieldBackgroundValidDate(Color.white),
         TextFieldBackgroundVetoedDate(Color.white),
-        TextFieldBackgroundDisabledDate(new Color(240, 240, 240)),
+        TextFieldBackgroundDisabled(new Color(240, 240, 240)),
         DatePickerTextInvalidDate(Color.red),
         DatePickerTextValidDate(Color.black),
         DatePickerTextVetoedDate(Color.black),
-        DatePickerTextDisabledDate(new Color(109, 109, 109));
+        DatePickerTextDisabled(new Color(109, 109, 109));
 
         DateArea(Color defaultColor) {
             this.defaultColor = defaultColor;
