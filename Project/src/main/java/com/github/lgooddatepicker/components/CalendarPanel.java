@@ -23,6 +23,8 @@ import com.privatejgoodies.forms.layout.CellConstraints;
 import java.time.temporal.WeekFields;
 import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 /**
  * CalendarPanel,
@@ -171,6 +173,26 @@ public class CalendarPanel extends JPanel {
      * return if null, before continuing the function.
      */
     private DatePickerSettings settings;
+
+    private class PopupCancelWatcher implements PopupMenuListener
+    {
+        private long cancelTime = 0;
+
+        public boolean wasJustCanceled() {
+            return (System.currentTimeMillis()-cancelTime) < 100;
+        }
+        @Override
+        public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {}
+        @Override
+        public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {}
+        @Override
+        public void popupMenuCanceled( PopupMenuEvent e ) {
+             cancelTime = System.currentTimeMillis();
+        }
+    }
+
+    private final PopupCancelWatcher yearPopupCancelWatcher = new PopupCancelWatcher();
+    private final PopupCancelWatcher monthPopupCancelWatcher= new PopupCancelWatcher();
 
     /**
      * yearTextField, The year text field is displayed any time that the user clicks the ellipsis
@@ -997,8 +1019,12 @@ public class CalendarPanel extends JPanel {
         if (settings.getEnableMonthMenu() == false) {
             return;
         }
+        if (monthPopupCancelWatcher.wasJustCanceled()) {
+            return;
+        }
         // Create and show the month popup menu.
         JPopupMenu monthPopupMenu = new JPopupMenu();
+        monthPopupMenu.addPopupMenuListener(monthPopupCancelWatcher);
         String[] allLocalMonths = settings.getTranslationArrayStandaloneLongMonthNames();
         for (int i = 0; i < allLocalMonths.length; ++i) {
             final String localMonth = allLocalMonths[i];
@@ -1037,10 +1063,14 @@ public class CalendarPanel extends JPanel {
         if (settings.getEnableYearMenu() == false) {
             return;
         }
+        if (yearPopupCancelWatcher.wasJustCanceled()) {
+            return;
+        }
         // Create and show the year menu.
         int firstYearDifference = -11;
         int lastYearDifference = +11;
         JPopupMenu yearPopupMenu = new JPopupMenu();
+        yearPopupMenu.addPopupMenuListener(yearPopupCancelWatcher);
         for (int yearDifference = firstYearDifference; yearDifference <= lastYearDifference;
             ++yearDifference) {
             // No special processing is required for the BC to AD transition in the
