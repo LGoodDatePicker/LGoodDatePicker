@@ -21,14 +21,21 @@
  * THE SOFTWARE.
  */
 
+import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.Pair;
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -138,6 +145,101 @@ public class TestGithubIssues {
         AssertDateTextValidity("30042019", true);
         AssertDateTextValidity("31042019", false);
         AssertDateTextValidity(" 30042019 ", true);
+    }
+
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestIssue110() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, AWTException
+    {
+        if (!isUiAvailable())
+        {
+          // don't run under CI
+          System.out.println("TestIssue110 requires UI to run and was skipped");
+        }
+        org.junit.Assume.assumeTrue(isUiAvailable());
+
+
+        DatePickerSettings dateSettings = new DatePickerSettings(Locale.ENGLISH);
+        CalendarPanel testPanel = new CalendarPanel(dateSettings);
+
+        JFrame testWin = new JFrame();
+        testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        testWin.add(testPanel);
+        testWin.pack();
+        testWin.setVisible(true);
+
+        java.awt.Robot bot = new java.awt.Robot();
+        bot.delay(100);
+
+        JLabel labelMonth = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelMonth");
+        final java.awt.Point monthScreenLoc = labelMonth.getLocationOnScreen();
+        bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
+
+        boolean popupVisible = false;
+
+        JPopupMenu popupMonth = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupMonth");
+        assertTrue(popupMonth.isVisible() == popupVisible);
+        // Verify that clicking on labalMonth opens and closes its popup in an alternating fashion
+        for( int i = 0; i < 8; ++i)
+        {
+            bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
+            bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            bot.delay(50);
+            popupVisible = !popupVisible;
+            assertTrue(popupMonth.isVisible() == popupVisible);
+            bot.delay(51);
+        }
+
+        JLabel labelYear = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelYear");
+        final java.awt.Point yearScreenLoc = labelYear.getLocationOnScreen();
+        bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+
+        popupVisible = false;
+
+        JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupYear");
+        assertTrue(popupYear.isVisible() == popupVisible);
+        // Verify that clicking on labelYear opens and closes its popup in an alternating fashion
+        for( int i = 0; i < 8; ++i)
+        {
+            bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+            bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+            bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            bot.delay(50);
+            popupVisible = !popupVisible;
+            assertTrue(popupYear.isVisible() == popupVisible);
+            bot.delay(51);
+        }
+
+        boolean yearPopupSelected = true;
+
+        // Verify that if clicking is alternated between labelYear and labelMonth their popup menus open everytime
+        for( int i = 0; i < 8; ++i)
+        {
+            if (yearPopupSelected)
+            {
+                bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+                bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                bot.delay(50);
+                assertTrue(popupYear.isVisible() == true);
+                assertTrue(popupMonth.isVisible() == false);
+                bot.delay(51);
+            }
+            else
+            {
+                bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
+                bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                bot.delay(50);
+                assertTrue(popupYear.isVisible() == false);
+                assertTrue(popupMonth.isVisible() == true);
+                bot.keyPress(KeyEvent.VK_ESCAPE);
+                bot.delay(51);
+            }
+            yearPopupSelected = !yearPopupSelected;
+        }
+
+        testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
     }
 
     // helper functions

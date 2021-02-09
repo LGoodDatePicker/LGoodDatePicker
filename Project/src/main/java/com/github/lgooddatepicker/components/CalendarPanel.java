@@ -224,6 +224,9 @@ public class CalendarPanel extends JPanel {
     private JButton doneEditingYearButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
+    private JPopupMenu popupMonth = new JPopupMenu();
+    private JPopupMenu popupYear = new JPopupMenu();
+
     /**
      * Constructor, Independent CalendarPanel with default settings. This creates an independent
      * calendar panel with a default set of DatePickerSettings. The calendar panel will use the
@@ -271,6 +274,9 @@ public class CalendarPanel extends JPanel {
         boolean isIndependentCalendarPanelInstance) {
         // Save the information of whether this is an independent calendar panel.
         this.isIndependentCalendarPanel = isIndependentCalendarPanelInstance;
+
+        popupMonth.addPopupMenuListener(monthPopupCancelWatcher);
+        popupYear.addPopupMenuListener(yearPopupCancelWatcher);
 
         displayedYearMonth = YearMonth.now(getClockForToday());
 
@@ -1023,14 +1029,13 @@ public class CalendarPanel extends JPanel {
             return;
         }
         // Create and show the month popup menu.
-        JPopupMenu monthPopupMenu = new JPopupMenu();
-        monthPopupMenu.addPopupMenuListener(monthPopupCancelWatcher);
+        popupMonth.removeAll();
         String[] allLocalMonths = settings.getTranslationArrayStandaloneLongMonthNames();
         for (int i = 0; i < allLocalMonths.length; ++i) {
             final String localMonth = allLocalMonths[i];
             final int localMonthZeroBasedIndexTemp = i;
             if (!localMonth.isEmpty()) {
-                monthPopupMenu.add(new JMenuItem(new AbstractAction(localMonth) {
+                popupMonth.add(new JMenuItem(new AbstractAction(localMonth) {
                     int localMonthZeroBasedIndex = localMonthZeroBasedIndexTemp;
 
                     @Override
@@ -1041,8 +1046,8 @@ public class CalendarPanel extends JPanel {
                 }));
             }
         }
-        Point menuLocation = getMonthOrYearMenuLocation(labelMonth, monthPopupMenu);
-        monthPopupMenu.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+        Point menuLocation = getMonthOrYearMenuLocation(labelMonth, popupMonth);
+        popupMonth.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
     }
 
     /**
@@ -1069,8 +1074,7 @@ public class CalendarPanel extends JPanel {
         // Create and show the year menu.
         int firstYearDifference = -11;
         int lastYearDifference = +11;
-        JPopupMenu yearPopupMenu = new JPopupMenu();
-        yearPopupMenu.addPopupMenuListener(yearPopupCancelWatcher);
+        popupYear.removeAll();
         for (int yearDifference = firstYearDifference; yearDifference <= lastYearDifference;
             ++yearDifference) {
             // No special processing is required for the BC to AD transition in the
@@ -1079,7 +1083,7 @@ public class CalendarPanel extends JPanel {
             try {
                 YearMonth choiceYearMonth = displayedYearMonth.plusYears(yearDifference);
                 String choiceYearMonthString = "" + choiceYearMonth.getYear();
-                yearPopupMenu.add(new JMenuItem(new AbstractAction(choiceYearMonthString) {
+                popupYear.add(new JMenuItem(new AbstractAction(choiceYearMonthString) {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String chosenMenuText = ((JMenuItem) e.getSource()).getText();
@@ -1091,14 +1095,14 @@ public class CalendarPanel extends JPanel {
             }
         }
         String choiceOtherYearString = "( . . . )";
-        yearPopupMenu.add(new JMenuItem(new AbstractAction(choiceOtherYearString) {
+        popupYear.add(new JMenuItem(new AbstractAction(choiceOtherYearString) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 otherYearMenuItemClicked();
             }
         }));
-        Point menuLocation = getMonthOrYearMenuLocation(labelYear, yearPopupMenu);
-        yearPopupMenu.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+        Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+        popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
     }
 
     private void doneEditingYearButtonActionPerformed(ActionEvent e) {
