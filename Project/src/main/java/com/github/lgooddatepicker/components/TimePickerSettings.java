@@ -873,6 +873,7 @@ public class TimePickerSettings {
         zApplyMinimumSpinnerButtonWidthInPixels();
         zApplyDisplayToggleTimeMenuButton();
         zApplyDisplaySpinnerButtons();
+        zApplyDisabledTextColor();
     }
 
     /**
@@ -1013,6 +1014,12 @@ public class TimePickerSettings {
         width = (width < minimumWidth) ? minimumWidth : width;
         Dimension newSize = new Dimension(width, height);
         parent.getComponentToggleTimeMenuButton().setPreferredSize(newSize);
+    }
+
+    void zApplyDisabledTextColor()
+    {
+        parent.getComponentTimeTextField().setDisabledTextColor(getColor(
+                TimeArea.TimePickerTextDisabled));
     }
 
     /**

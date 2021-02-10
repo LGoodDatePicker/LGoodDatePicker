@@ -1347,6 +1347,11 @@ public class DatePickerSettings {
                     parentCalendarPanel.zSetAllLabelIndicatorColorsToDefaultState();
                 }
                 break;
+            case DatePickerTextDisabled:
+                if (parentDatePicker != null) {
+                    zApplyDisabledTextColor();
+                }
+                break;
             default:
                 if (parentDatePicker != null) {
                     parentDatePicker.zDrawTextFieldIndicators();
@@ -2249,6 +2254,12 @@ public class DatePickerSettings {
         if (parentCalendarPanel != null) {
             parentCalendarPanel.zApplyVisibilityOfButtons();
         }
+    }
+
+    void zApplyDisabledTextColor()
+    {
+        parentDatePicker.getComponentDateTextField().setDisabledTextColor(
+                getColor(DateArea.DatePickerTextDisabled));
     }
 
     /**

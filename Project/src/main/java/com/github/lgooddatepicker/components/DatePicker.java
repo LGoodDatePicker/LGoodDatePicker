@@ -181,6 +181,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         settings.zApplyGapBeforeButtonPixels();
         settings.zApplyAllowKeyboardEditing();
         settings.zApplyAllowEmptyDates();
+        settings.zApplyDisabledTextColor();
         // Draw the text field indicators, because they may not have been drawn if the initialDate
         // was null. (This is because the text would not have changed in that case.)
         // This should be called after the DatePickerSettings have been saved.
@@ -974,7 +975,6 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
             // Note: The date should always be validated (as if the component lost focus), before
             // the component is disabled.
             dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundDisabled));
-            dateTextField.setForeground(settings.getColor(DateArea.DatePickerTextDisabled));
             dateTextField.setFont(settings.getFontValidDate());
             return;
         }
