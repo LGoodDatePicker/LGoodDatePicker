@@ -22,6 +22,7 @@
  */
 package com.github.lgooddatepicker.components;
 
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -36,6 +37,7 @@ import org.junit.Test;
 
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import java.awt.Color;
 
 /**
  * Tests for the TimePicker component features
@@ -187,6 +189,60 @@ public class TestTimePicker {
         picker.setTime(LocalTime.NOON);
         assertNull("Listener received an update after being uninstalled", listener.getLastEvent().getNewTime());
 
+    }
+
+    /**
+     * Test to ensure that the custom colors for the disabled time picker work as excepcted
+     */
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void verifyCustomDisabledColors()
+    {
+        final Color defaultDisabledText =  new TimePickerSettings().getColor(
+                TimeArea.TimePickerTextDisabled);
+        final Color defaultDisabledBackground = new TimePickerSettings().getColor(
+                TimeArea.TextFieldBackgroundDisabled);
+
+        TimePickerSettings settings = new TimePickerSettings(Locale.ENGLISH);
+        settings.setColor(TimeArea.TimePickerTextDisabled, Color.yellow);
+        settings.setColor(TimeArea.TextFieldBackgroundDisabled, Color.blue);
+
+        TimePicker picker = new TimePicker(settings);
+
+        validateTimePickerDisabledColor(picker, Color.yellow, Color.blue);
+        picker.setEnabled(false);
+        validateTimePickerDisabledColor(picker, Color.yellow, Color.blue);
+
+        picker = new TimePicker(new TimePickerSettings(Locale.ENGLISH));
+        validateTimePickerDisabledColor(picker, defaultDisabledText, defaultDisabledBackground);
+        picker.setEnabled(false);
+        validateTimePickerDisabledColor(picker, defaultDisabledText, defaultDisabledBackground);
+
+        picker.getSettings().setColor(TimeArea.TimePickerTextDisabled, Color.yellow);
+        validateTimePickerDisabledColor(picker, Color.yellow, defaultDisabledBackground);
+        picker.getSettings().setColor(TimeArea.TextFieldBackgroundDisabled, Color.blue);
+        validateTimePickerDisabledColor(picker, Color.yellow, Color.blue);
+        picker.setEnabled(true);
+        validateTimePickerDisabledColor(picker, Color.yellow, Color.blue);
+    }
+
+    void validateTimePickerDisabledColor(TimePicker picker, Color disabledTextColor, Color disabledBackground)
+    {
+        final Color validText = new TimePickerSettings().getColor(
+                TimeArea.TimePickerTextValidTime);
+        final Color enabledBackground = new TimePickerSettings().getColor(
+                TimeArea.TextFieldBackgroundValidTime);
+
+        assertTrue(picker.getComponentTimeTextField().getForeground().equals(validText));
+        assertFalse(picker.getComponentTimeTextField().getForeground().equals(disabledTextColor));
+        assertTrue(picker.getComponentTimeTextField().getDisabledTextColor().equals(disabledTextColor));
+        assertFalse(picker.getComponentTimeTextField().getDisabledTextColor().equals(validText));
+        if (picker.isEnabled()) {
+            assertTrue(picker.getComponentTimeTextField().getBackground().equals(enabledBackground));
+            assertFalse(picker.getComponentTimeTextField().getBackground().equals(disabledBackground));
+        } else {
+            assertTrue(picker.getComponentTimeTextField().getBackground().equals(disabledBackground));
+            assertFalse(picker.getComponentTimeTextField().getBackground().equals(enabledBackground));
+        }
     }
 
     // helper class

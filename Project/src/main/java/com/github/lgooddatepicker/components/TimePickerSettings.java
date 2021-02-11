@@ -634,7 +634,12 @@ public class TimePickerSettings {
 
         // Call any "updating functions" that are appropriate for the specified area.
         if (parent != null) {
-            parent.zDrawTextFieldIndicators();
+            if (area == TimeArea.TimePickerTextDisabled)
+            {
+                zApplyDisabledTextColor();
+            } else {
+                parent.zDrawTextFieldIndicators();
+            }
         }
     }
 
