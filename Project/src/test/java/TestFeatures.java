@@ -43,8 +43,10 @@ import org.junit.Test;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import static org.junit.Assert.assertFalse;
 
 // add tests for your new features here
 public class TestFeatures
@@ -164,7 +166,7 @@ public class TestFeatures
                 clearLabelText);
     }
 
-        @Test( expected = Test.None.class /* no exception expected */ )
+    @Test( expected = Test.None.class /* no exception expected */ )
     public void TestCustomMouseHoverColorCalendarPanel() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
     {
         DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
@@ -210,7 +212,57 @@ public class TestFeatures
         assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(defaultText));
     }
 
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestCustomDisabledPickerColor()
+    {
+        final Color defaultDisabledText =  new DatePickerSettings().getColor(
+                DateArea.DatePickerTextDisabled);
+        final Color defaultDisabledBackground = new DatePickerSettings().getColor(
+                DateArea.TextFieldBackgroundDisabled);
 
+        DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
+        settings.setColor(DateArea.DatePickerTextDisabled, Color.yellow);
+        settings.setColor(DateArea.TextFieldBackgroundDisabled, Color.blue);
+
+        DatePicker picker = new DatePicker(settings);
+
+        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
+        picker.setEnabled(false);
+        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
+
+        picker.setSettings(new DatePickerSettings(Locale.ENGLISH));
+        validateDatePickerDisabledColor(picker, defaultDisabledText, defaultDisabledBackground);
+
+        picker.getSettings().setColor(DateArea.DatePickerTextDisabled, Color.yellow);
+        validateDatePickerDisabledColor(picker, Color.yellow, defaultDisabledBackground);
+        picker.getSettings().setColor(DateArea.TextFieldBackgroundDisabled, Color.blue);
+        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
+        picker.setEnabled(true);
+        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
+
+        picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
+        validateDatePickerDisabledColor(picker, defaultDisabledText, defaultDisabledBackground);
+    }
+
+    void validateDatePickerDisabledColor(DatePicker picker, Color disabledTextColor, Color disabledBackground)
+    {
+        final Color validText = new DatePickerSettings().getColor(
+                DatePickerSettings.DateArea.DatePickerTextValidDate);
+        final Color enabledBackground = new DatePickerSettings().getColor(
+                DateArea.TextFieldBackgroundValidDate);
+
+        assertTrue(picker.getComponentDateTextField().getForeground().equals(validText));
+        assertFalse(picker.getComponentDateTextField().getForeground().equals(disabledTextColor));
+        assertTrue(picker.getComponentDateTextField().getDisabledTextColor().equals(disabledTextColor));
+        assertFalse(picker.getComponentDateTextField().getDisabledTextColor().equals(validText));
+        if (picker.isEnabled()) {
+            assertTrue(picker.getComponentDateTextField().getBackground().equals(enabledBackground));
+            assertFalse(picker.getComponentDateTextField().getBackground().equals(disabledBackground));
+        } else {
+            assertTrue(picker.getComponentDateTextField().getBackground().equals(disabledBackground));
+            assertFalse(picker.getComponentDateTextField().getBackground().equals(enabledBackground));
+        }
+    }
 
     // helper functions
     Clock getClockFixedToInstant(int year, Month month, int day, int hours, int minutes)
