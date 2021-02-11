@@ -61,10 +61,12 @@ public class TimePickerSettings {
         TimePickerTextValidTime(Color.black),
         TimePickerTextInvalidTime(Color.red),
         TimePickerTextVetoedTime(Color.black),
+        TimePickerTextDisabled(new Color(109, 109, 109)),
         TextFieldBackgroundValidTime(Color.white),
         TextFieldBackgroundInvalidTime(Color.white),
         TextFieldBackgroundVetoedTime(Color.white),
-        TextFieldBackgroundDisallowedEmptyTime(Color.pink);
+        TextFieldBackgroundDisallowedEmptyTime(Color.pink),
+        TextFieldBackgroundDisabled(new Color(240, 240, 240));
 
         TimeArea(Color defaultColor) {
             this.defaultColor = defaultColor;
@@ -632,7 +634,12 @@ public class TimePickerSettings {
 
         // Call any "updating functions" that are appropriate for the specified area.
         if (parent != null) {
-            parent.zDrawTextFieldIndicators();
+            if (area == TimeArea.TimePickerTextDisabled)
+            {
+                zApplyDisabledTextColor();
+            } else {
+                parent.zDrawTextFieldIndicators();
+            }
         }
     }
 
@@ -871,6 +878,7 @@ public class TimePickerSettings {
         zApplyMinimumSpinnerButtonWidthInPixels();
         zApplyDisplayToggleTimeMenuButton();
         zApplyDisplaySpinnerButtons();
+        zApplyDisabledTextColor();
     }
 
     /**
@@ -1011,6 +1019,12 @@ public class TimePickerSettings {
         width = (width < minimumWidth) ? minimumWidth : width;
         Dimension newSize = new Dimension(width, height);
         parent.getComponentToggleTimeMenuButton().setPreferredSize(newSize);
+    }
+
+    void zApplyDisabledTextColor()
+    {
+        parent.getComponentTimeTextField().setDisabledTextColor(getColor(
+                TimeArea.TimePickerTextDisabled));
     }
 
     /**
