@@ -35,6 +35,7 @@ import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 import com.privatejgoodies.forms.factories.CC;
 import javax.swing.border.LineBorder;
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
+import java.awt.Checkbox;
 import java.time.YearMonth;
 
 /**
@@ -421,17 +423,27 @@ public class FullDemo {
         dateSettings.setDefaultYearMonth(yearMonthJuly);
         dateSettings.setDateRangeLimits(startJuly.minusDays(10), endJuly.plusDays(10));
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        Checkbox enabledCheckbox = new Checkbox("enabled", true);
+        panel.panel1.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
+                GridBagConstraints.EAST));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
             "<html>Date " + (++pickerNumber) + ", Set Default YearMonth with Range<br>"
                 + "(July Next Year + 10 days.):</html>");
+        registerEnabledCheckbox(enabledCheckbox, datePicker);
 
         // Create a date picker: Change the text field background color.
         dateSettings = new DatePickerSettings();
         datePicker = new DatePicker(dateSettings);
         dateSettings.setColor(DateArea.TextFieldBackgroundValidDate, Color.cyan);
+        dateSettings.setColor(DateArea.TextFieldBackgroundDisabled, Color.blue);
+        dateSettings.setColor(DateArea.DatePickerTextDisabled, Color.yellow);
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+        enabledCheckbox = new Checkbox("enabled", true);
+        panel.panel1.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
+                GridBagConstraints.EAST));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
             "Date " + (++pickerNumber) + ", Change the text field background color:");
+        registerEnabledCheckbox(enabledCheckbox, datePicker);
 
         //
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -608,15 +620,32 @@ public class FullDemo {
         timeSettings.initialTime = LocalTime.of(15, 00, 00, 999999999);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        enabledCheckbox = new Checkbox("enabled", true);
+        panel.panel2.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
+                GridBagConstraints.EAST));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
             "<html>Time 15, Nanosecond precision:<br/>(ISO format. Use \".\" to type nanoseconds.)</html>");
+        registerEnabledCheckbox(enabledCheckbox, timePicker);
+
+        //create a time picker with custom background
+        timeSettings = new TimePickerSettings();
+        timeSettings.setColor(TimeArea.TextFieldBackgroundValidTime, Color.cyan);
+        timeSettings.setColor(TimeArea.TextFieldBackgroundDisabled, Color.blue);
+        timeSettings.setColor(TimeArea.TimePickerTextDisabled, Color.yellow);
+        timePicker = new TimePicker(timeSettings);
+        panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
+        enabledCheckbox = new Checkbox("enabled", true);
+        panel.panel2.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
+                GridBagConstraints.EAST));
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 16, custom backgroud color:");
+        registerEnabledCheckbox(enabledCheckbox, timePicker);
 
         // Create a time picker: Disallow Keyboard Editing.
         timeSettings = new TimePickerSettings();
         timeSettings.setAllowKeyboardEditing(false);
         timePicker = new TimePicker(timeSettings);
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
-        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 16, Disallow Keyboard Editing:");
+        panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 17, Disallow Keyboard Editing:");
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // This section creates any remaining DateTimePickers.
@@ -670,14 +699,29 @@ public class FullDemo {
         frame.setVisible(true);
     }
 
+    private static void registerEnabledCheckbox(Checkbox cb, java.awt.Component managedComp) {
+        cb.addItemListener(new java.awt.event.ItemListener()
+        {
+            @Override
+            public void itemStateChanged( java.awt.event.ItemEvent e ) {
+                managedComp.setEnabled(e.getStateChange() == java.awt.event.ItemEvent.SELECTED);
+            }
+        });
+    }
+
+
     /**
      * getConstraints, This returns a grid bag constraints object that can be used for placing a
      * component appropriately into a grid bag layout.
      */
     private static GridBagConstraints getConstraints(int gridx, int gridy, int gridwidth) {
+        return getConstraints(gridx, gridy, gridwidth, GridBagConstraints.WEST);
+    }
+
+    private static GridBagConstraints getConstraints(int gridx, int gridy, int gridwidth, int anchor) {
         GridBagConstraints gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.NONE;
-        gc.anchor = GridBagConstraints.WEST;
+        gc.anchor = anchor;
         gc.gridx = gridx;
         gc.gridy = gridy;
         gc.gridwidth = gridwidth;
