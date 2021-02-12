@@ -85,7 +85,7 @@ public class TestGithubIssues {
             assertFalse("DatePicker must not have an open popup.", date_picker.isPopupOpen());
             Thread.sleep(10);
             date_picker.openPopup();
-            Thread.sleep(10);
+            Thread.sleep(30);
             assertTrue("DatePicker must have an open popup.", date_picker.isPopupOpen());
             testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
             Thread.sleep(50);
