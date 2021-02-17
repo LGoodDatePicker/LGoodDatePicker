@@ -35,7 +35,7 @@ jobs:
       with:
         java-version: 11
     - name: Build and test with Maven
-      run: mvn -B package --file Project/pom.xml
+      run: mvn -B package --file Project/pom.xml --define testrunparams='--illegal-access=deny --add-opens java.desktop/java.awt=ALL-UNNAMED'
 
 
   buildAndTestJava8-windows:
@@ -63,4 +63,4 @@ jobs:
       with:
         java-version: 11
     - name: Build and test with Maven
-      run: mvn -B package --file Project/pom.xml
+      run: mvn -B package --file Project/pom.xml --define testrunparams="--illegal-access=deny --add-opens java.desktop/java.awt=ALL-UNNAMED"
