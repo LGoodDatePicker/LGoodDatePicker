@@ -67,7 +67,7 @@ plugins in this file operate inside the "package" and "install" phases.
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- <maven.compiler.release>8</maven.compiler.release> you might need to uncomment this this to compile with JDK > 8 -->
-        <testrunparams></testrunparams> <!-- allows parameters for the test execution to be set via mvn command line -->
+        <testrunparams>--add-opens java.desktop/java.awt=ALL-UNNAMED</testrunparams> <!-- allows parameters for the test execution to be set via mvn command line -->
     </properties>
 
     <dependencies>
