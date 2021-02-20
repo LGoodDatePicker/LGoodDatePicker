@@ -199,7 +199,7 @@ public class FullDemo {
         // You can replace the example image with any image file that is desired.
         // See also: JButton.setPressedIcon() and JButton.setDisabledIcon().
         // Get the example image icon.
-        URL dateImageURL = FullDemo.class.getResource("/images/datepickerbutton1.png");
+        URL dateImageURL = FullDemo.class.getResource("/com/github/lgooddatepicker/datepickerbutton1.png");
         Image dateExampleImage = Toolkit.getDefaultToolkit().getImage(dateImageURL);
         ImageIcon dateExampleIcon = new ImageIcon(dateExampleImage);
         // Create the date picker, and apply the image icon.
@@ -504,7 +504,7 @@ public class FullDemo {
         // You can replace the example image with any desired image file.
         // See also: JButton.setPressedIcon() and JButton.setDisabledIcon().
         // Get the example image icon.
-        URL timeIconURL = FullDemo.class.getResource("/images/timepickerbutton1.png");
+        URL timeIconURL = FullDemo.class.getResource("/com/github/lgooddatepicker/timepickerbutton1.png");
         Image timeExampleImage = Toolkit.getDefaultToolkit().getImage(timeIconURL);
         ImageIcon timeExampleIcon = new ImageIcon(timeExampleImage);
         // Create the time picker, and apply the image icon.

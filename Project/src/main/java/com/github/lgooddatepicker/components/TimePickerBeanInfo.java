@@ -38,10 +38,10 @@ public class TimePickerBeanInfo extends SimpleBeanInfo {
     private static HashMap<Integer, Pair<String, Image>> iconInformation
             = new HashMap<Integer, Pair<String, Image>>() {
         {
-            put(ICON_MONO_16x16, new Pair<>("/images/TimePickerIcon 16x16.png", null));
-            put(ICON_COLOR_16x16, new Pair<>("/images/TimePickerIcon 16x16.png", null));
-            put(ICON_MONO_32x32, new Pair<>("/images/TimePickerIcon 32x32.png", null));
-            put(ICON_COLOR_32x32, new Pair<>("/images/TimePickerIcon 32x32.png", null));
+            put(ICON_MONO_16x16, new Pair<>("/com/github/lgooddatepicker/TimePickerIcon 16x16.png", null));
+            put(ICON_COLOR_16x16, new Pair<>("/com/github/lgooddatepicker/TimePickerIcon 16x16.png", null));
+            put(ICON_MONO_32x32, new Pair<>("/com/github/lgooddatepicker/TimePickerIcon 32x32.png", null));
+            put(ICON_COLOR_32x32, new Pair<>("/com/github/lgooddatepicker/TimePickerIcon 32x32.png", null));
         }
     };
 
