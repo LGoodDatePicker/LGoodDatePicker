@@ -19,7 +19,7 @@ plugins in this file operate inside the "package" and "install" phases.
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
-    <version>11.2.0</version>
+    <version>11.2.1</version>
     <packaging>jar</packaging>
     <name>LGoodDatePicker</name>
     <description>Java Swing Date Picker. Easy to use, good looking, nice features, and
@@ -229,6 +229,17 @@ plugins in this file operate inside the "package" and "install" phases.
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                  <archive>
+                    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                  </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.1</version>
                 <configuration>
@@ -261,16 +272,10 @@ plugins in this file operate inside the "package" and "install" phases.
                             <shadedClassifierName>core</shadedClassifierName> <!-- Any name that makes sense -->
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <transformers>
-                                <!-- Note: Do not include any other transformers or lines which
-                                might cause maven or shade to create a manifest file. -->
-                                <!-- This will exclude any other manifest files from the jar, besides my custom manifest file. -->
+                                <!-- This will exclude the pom-for-users text file which is only
+                                attachedto force its inclusion into the automatic signing process -->
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
-                                    <resource>MANIFEST.MF</resource>
-                                </transformer>
-                                <!-- This will add my custom manifest file to the jar. -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.IncludeResourceTransformer">
-                                    <resource>META-INF/MANIFEST.MF</resource>
-                                    <file>src/main/resources/META-INF/MANIFEST.MF</file>
+                                    <resource>pom-for-users.txt</resource>
                                 </transformer>
                             </transformers>
                             <minimizeJar>true</minimizeJar>
