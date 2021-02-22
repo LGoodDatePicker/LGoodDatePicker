@@ -85,10 +85,10 @@ public class TestGithubIssues {
             assertFalse("DatePicker must not have an open popup.", date_picker.isPopupOpen());
             Thread.sleep(10);
             date_picker.openPopup();
-            Thread.sleep(50);
+            Thread.sleep(80);
             assertTrue("DatePicker must have an open popup.", date_picker.isPopupOpen());
             testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
-            Thread.sleep(50);
+            Thread.sleep(100);
             assertFalse("Exception in antother Thread triggered:\n"
                     +"ThreadName: "+exInfo.getThreadName()+"\n"
                     +"Exception: "+exInfo.getExceptionMessage()
@@ -168,6 +168,7 @@ public class TestGithubIssues {
         testWin.setVisible(true);
 
         java.awt.Robot bot = new java.awt.Robot();
+        bot.waitForIdle();
         bot.delay(100);
 
         JLabel labelMonth = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelMonth");
@@ -184,10 +185,12 @@ public class TestGithubIssues {
             bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
             bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            bot.waitForIdle();
             bot.delay(50);
             popupVisible = !popupVisible;
-            assertTrue(popupMonth.isVisible() == popupVisible);
-            bot.delay(51);
+            assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
+                    popupMonth.isVisible() == popupVisible);
+            bot.delay(80);
         }
 
         JLabel labelYear = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelYear");
@@ -204,10 +207,12 @@ public class TestGithubIssues {
             bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
             bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+            bot.waitForIdle();
             bot.delay(50);
             popupVisible = !popupVisible;
-            assertTrue(popupYear.isVisible() == popupVisible);
-            bot.delay(51);
+            assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
+                    popupYear.isVisible() == popupVisible);
+            bot.delay(80);
         }
 
         boolean yearPopupSelected = true;
@@ -220,6 +225,7 @@ public class TestGithubIssues {
                 bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
                 bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                bot.waitForIdle();
                 bot.delay(50);
                 assertTrue(popupYear.isVisible() == true);
                 assertTrue(popupMonth.isVisible() == false);
@@ -230,6 +236,7 @@ public class TestGithubIssues {
                 bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
                 bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                bot.waitForIdle();
                 bot.delay(50);
                 assertTrue(popupYear.isVisible() == false);
                 assertTrue(popupMonth.isVisible() == true);
