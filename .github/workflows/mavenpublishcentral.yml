@@ -29,3 +29,4 @@ jobs:
           nexus_password: ${{ secrets.SONATYPE_PWD }}
           server_id: ossrh
           directory: Project
+          maven_args: --define testrunparams=

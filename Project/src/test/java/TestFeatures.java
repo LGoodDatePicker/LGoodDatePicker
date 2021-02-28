@@ -197,7 +197,6 @@ public class TestFeatures
 
     void verifyLabelHover(CalendarPanel panel, String labelname, Color defaultBackground, Color defaultText, Color highlightBackground, Color highlightText) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
     {
-        TestHelpers.suppressIllegalReflectiveAccessWarning(java.awt.Component.class, TestFeatures.class);
         JLabel labeltoverify = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, panel, labelname);
 
         assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(defaultBackground));
