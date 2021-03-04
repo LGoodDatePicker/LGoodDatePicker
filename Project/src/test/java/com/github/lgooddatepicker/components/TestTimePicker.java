@@ -22,6 +22,7 @@
  */
 package com.github.lgooddatepicker.components;
 
+import com.github.lgooddatepicker.TestHelpers;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -31,6 +32,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.time.Clock;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.Locale;
 
 import org.junit.Test;
@@ -43,6 +47,39 @@ import java.awt.Color;
  * Tests for the TimePicker component features
  */
 public class TestTimePicker {
+
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestCustomClockTimeSettings() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
+    {
+        TimePickerSettings settings = new TimePickerSettings();
+        assertTrue("Default clock must be available", settings.getClock() != null);
+        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
+        settings = new TimePickerSettings(Locale.ENGLISH);
+        assertTrue("Default clock must be available", settings.getClock() != null);
+        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
+        Clock myClock = Clock.systemUTC();
+        settings.setClock(myClock);
+        assertTrue("Set clock must be returned", settings.getClock() == myClock);
+        LocalTime initialTime = (LocalTime) TestHelpers.readPrivateField(TimePickerSettings.class, settings, "initialTime");
+        assertTrue("intialtime is null as long as setInitialTimeToNow() has not been called", initialTime == null);
+        settings.setClock(TestHelpers.getClockFixedToInstant(2000, Month.JANUARY, 1, 15,55));
+        settings.setInitialTimeToNow();
+        initialTime = (LocalTime) TestHelpers.readPrivateField(TimePickerSettings.class, settings, "initialTime");
+        assertTrue("intialtime is not null after call to as long as setInitialTimeToNow()", initialTime != null);
+        assertTrue("intialtime must be 15:55 / 3:55pm", initialTime.equals(LocalTime.of(15, 55)));
+    }
+
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestCustomClockTimePicker()
+    {
+        TimePicker picker = new TimePicker();
+        assertTrue(picker.getTime() == null);
+        TimePickerSettings settings = new TimePickerSettings(Locale.ENGLISH);
+        settings.setClock(TestHelpers.getClockFixedToInstant(1995, Month.OCTOBER, 31, 14, 33));
+        picker = new TimePicker(settings);
+        picker.setTimeToNow();
+        assertTrue("Picker must have set a time of 14:33 / 2:33pm", picker.getTime().equals(LocalTime.of(14, 33)));
+    }
 
     /**
      * Basic test of the time picker functions

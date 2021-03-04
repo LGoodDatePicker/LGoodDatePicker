@@ -20,78 +20,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.lgooddatepicker;
+package com.github.lgooddatepicker.components;
 
-import static org.junit.Assert.assertTrue;
-
+import com.github.lgooddatepicker.TestHelpers;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.time.Clock;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.Month;
-import java.time.YearMonth;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Locale;
-
 import javax.swing.JLabel;
-
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-import com.github.lgooddatepicker.components.CalendarPanel;
-import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
-import com.github.lgooddatepicker.components.TimePicker;
-import com.github.lgooddatepicker.components.TimePickerSettings;
-import static org.junit.Assert.assertFalse;
-
-// add tests for your new features here
-public class TestFeatures
+public class TestCalendarPanel
 {
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockDateSettings() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
-        DatePickerSettings settings = new DatePickerSettings();
-        assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
-        settings = new DatePickerSettings(Locale.ENGLISH);
-        assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
-        Clock myClock = Clock.systemUTC();
-        settings.setClock(myClock);
-        assertTrue("Set clock must be returned", settings.getClock() == myClock);
-        settings.setClock(getClockFixedToInstant(1993, Month.MARCH, 15, 12, 00));
-        settings.setDefaultYearMonth(null);
-        YearMonth defaultyearmonth = (YearMonth) TestHelpers.accessPrivateMethod(DatePickerSettings.class, "zGetDefaultYearMonthAsUsed").invoke(settings);
-        assertTrue(defaultyearmonth.getYear() == 1993);
-        assertTrue(defaultyearmonth.getMonth() == Month.MARCH);
-    }
-
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockTimeSettings() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
-    {
-        TimePickerSettings settings = new TimePickerSettings();
-        assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
-        settings = new TimePickerSettings(Locale.ENGLISH);
-        assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
-        Clock myClock = Clock.systemUTC();
-        settings.setClock(myClock);
-        assertTrue("Set clock must be returned", settings.getClock() == myClock);
-        LocalTime initialTime = (LocalTime) TestHelpers.readPrivateField(TimePickerSettings.class, settings, "initialTime");
-        assertTrue("intialtime is null as long as setInitialTimeToNow() has not been called", initialTime == null);
-        settings.setClock(getClockFixedToInstant(2000, Month.JANUARY, 1, 15,55));
-        settings.setInitialTimeToNow();
-        initialTime = (LocalTime) TestHelpers.readPrivateField(TimePickerSettings.class, settings, "initialTime");
-        assertTrue("intialtime is not null after call to as long as setInitialTimeToNow()", initialTime != null);
-        assertTrue("intialtime must be 15:55 / 3:55pm", initialTime.equals(LocalTime.of(15, 55)));
-    }
-
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestCustomClockCalenderPanel()
     {
@@ -108,36 +51,12 @@ public class TestFeatures
         assertTrue("Month must be the month of today", defaultDateNeverNull.getMonthValue()== LocalDate.now().getMonthValue());
 
         DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
-        settings.setClock(getClockFixedToInstant(1995, Month.OCTOBER, 31, 0, 0));
+        settings.setClock(TestHelpers.getClockFixedToInstant(1995, Month.OCTOBER, 31, 0, 0));
         panel = new CalendarPanel(settings);
         defaultDateNeverNull = panel.getDisplayedYearMonth();
         assertTrue("displayedYearMonth may never be null", defaultDateNeverNull != null);
         assertTrue("Year must be the year 1995", defaultDateNeverNull.getYear() == 1995);
         assertTrue("Month must be the month October", defaultDateNeverNull.getMonth()== Month.OCTOBER);
-    }
-
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockDatePicker()
-    {
-        DatePicker picker = new DatePicker();
-        assertTrue(picker.getDate() == null);
-        DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
-        settings.setClock(getClockFixedToInstant(1995, Month.OCTOBER, 31, 14, 33));
-        picker = new DatePicker(settings);
-        picker.setDateToToday();
-        assertTrue("Picker must have set a date of 1995-10-31", picker.getDate().equals(LocalDate.of(1995, Month.OCTOBER, 31)));
-    }
-
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockTimePicker()
-    {
-        TimePicker picker = new TimePicker();
-        assertTrue(picker.getTime() == null);
-        TimePickerSettings settings = new TimePickerSettings(Locale.ENGLISH);
-        settings.setClock(getClockFixedToInstant(1995, Month.OCTOBER, 31, 14, 33));
-        picker = new TimePicker(settings);
-        picker.setTimeToNow();
-        assertTrue("Picker must have set a time of 14:33 / 2:33pm", picker.getTime().equals(LocalTime.of(14, 33)));
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
@@ -210,65 +129,6 @@ public class TestFeatures
         TestHelpers.accessPrivateMethod(java.awt.Component.class, "processEvent", java.awt.AWTEvent.class).invoke(labeltoverify, testEvent);
         assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(defaultBackground));
         assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(defaultText));
-    }
-
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomDisabledPickerColor()
-    {
-        final Color defaultDisabledText =  new DatePickerSettings().getColor(
-                DateArea.DatePickerTextDisabled);
-        final Color defaultDisabledBackground = new DatePickerSettings().getColor(
-                DateArea.TextFieldBackgroundDisabled);
-
-        DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
-        settings.setColor(DateArea.DatePickerTextDisabled, Color.yellow);
-        settings.setColor(DateArea.TextFieldBackgroundDisabled, Color.blue);
-
-        DatePicker picker = new DatePicker(settings);
-
-        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
-        picker.setEnabled(false);
-        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
-
-        picker.setSettings(new DatePickerSettings(Locale.ENGLISH));
-        validateDatePickerDisabledColor(picker, defaultDisabledText, defaultDisabledBackground);
-
-        picker.getSettings().setColor(DateArea.DatePickerTextDisabled, Color.yellow);
-        validateDatePickerDisabledColor(picker, Color.yellow, defaultDisabledBackground);
-        picker.getSettings().setColor(DateArea.TextFieldBackgroundDisabled, Color.blue);
-        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
-        picker.setEnabled(true);
-        validateDatePickerDisabledColor(picker, Color.yellow, Color.blue);
-
-        picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
-        validateDatePickerDisabledColor(picker, defaultDisabledText, defaultDisabledBackground);
-    }
-
-    void validateDatePickerDisabledColor(DatePicker picker, Color disabledTextColor, Color disabledBackground)
-    {
-        final Color validText = new DatePickerSettings().getColor(
-                DatePickerSettings.DateArea.DatePickerTextValidDate);
-        final Color enabledBackground = new DatePickerSettings().getColor(
-                DateArea.TextFieldBackgroundValidDate);
-
-        assertTrue(picker.getComponentDateTextField().getForeground().equals(validText));
-        assertFalse(picker.getComponentDateTextField().getForeground().equals(disabledTextColor));
-        assertTrue(picker.getComponentDateTextField().getDisabledTextColor().equals(disabledTextColor));
-        assertFalse(picker.getComponentDateTextField().getDisabledTextColor().equals(validText));
-        if (picker.isEnabled()) {
-            assertTrue(picker.getComponentDateTextField().getBackground().equals(enabledBackground));
-            assertFalse(picker.getComponentDateTextField().getBackground().equals(disabledBackground));
-        } else {
-            assertTrue(picker.getComponentDateTextField().getBackground().equals(disabledBackground));
-            assertFalse(picker.getComponentDateTextField().getBackground().equals(enabledBackground));
-        }
-    }
-
-    // helper functions
-    Clock getClockFixedToInstant(int year, Month month, int day, int hours, int minutes)
-    {
-        LocalDateTime fixedInstant = LocalDateTime.of(LocalDate.of(year, month, day), LocalTime.of(hours,minutes));
-        return Clock.fixed(fixedInstant.toInstant(ZoneOffset.UTC), ZoneId.of("Z"));
     }
 
 }

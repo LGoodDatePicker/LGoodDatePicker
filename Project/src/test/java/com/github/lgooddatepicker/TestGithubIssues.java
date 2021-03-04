@@ -22,10 +22,10 @@
  */
 package com.github.lgooddatepicker;
 
+import com.github.lgooddatepicker.TestHelpers.ExceptionInfo;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
-import com.github.lgooddatepicker.zinternaltools.Pair;
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.event.InputEvent;
@@ -40,28 +40,18 @@ import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Before;
 
 public class TestGithubIssues {
-    DatePicker date_picker;
-
-    @Before
-    public void setUp()
-    {
-        date_picker = new DatePicker();
-        date_picker.getSettings().setLocale(Locale.ENGLISH);
-        date_picker.getSettings().getFormatsForParsing().clear();
-    }
 
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue82() throws InterruptedException
     {
-      if (!isUiAvailable())
+      if (!TestHelpers.isUiAvailable())
       {
         // don't run under CI
         System.out.println("TestIssue82 requires UI to run and was skipped");
       }
-      org.junit.Assume.assumeTrue(isUiAvailable());
+      org.junit.Assume.assumeTrue(TestHelpers.isUiAvailable());
 
         // The exception that might be thrown by the date picker control
         // will be thrown in an AWT-EventQueue thread. To be able to detect
@@ -71,13 +61,14 @@ public class TestGithubIssues {
         // from any running thread
         final ExceptionInfo exInfo = new ExceptionInfo();
         try {
-            RegisterUncaughtExceptionHandlerToAllThreads(new Thread.UncaughtExceptionHandler() {
+            TestHelpers.registerUncaughtExceptionHandlerToAllThreads(new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException( Thread t, Throwable e ) {
                     exInfo.set(t.getName(), e);
                 }
             });
             JFrame testWin = new JFrame();
+            DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
             testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             testWin.add(date_picker);
             testWin.pack();
@@ -96,7 +87,7 @@ public class TestGithubIssues {
                     +"\nStacktrace:\n"+exInfo.getStackTrace()
                     , exInfo.wasSet());
             } finally {
-                RegisterUncaughtExceptionHandlerToAllThreads(null);
+            TestHelpers.registerUncaughtExceptionHandlerToAllThreads(null);
         }
     }
 
@@ -108,7 +99,7 @@ public class TestGithubIssues {
         dateSettingsPgmDate.getFormatsForParsing().clear();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy").withLocale(Locale.ENGLISH);
         dateSettingsPgmDate.setFormatForDatesCommonEra(dateFormatter);
-        date_picker.setSettings(dateSettingsPgmDate);
+        DatePicker date_picker = new DatePicker(dateSettingsPgmDate);
         date_picker.getComponentDateTextField().setEditable(false);
         date_picker.getComponentDateTextField().setToolTipText("The earliest date for booking to display.");
         date_picker.getComponentToggleCalendarButton().setToolTipText("The earliest date for booking to display.");
@@ -119,44 +110,48 @@ public class TestGithubIssues {
         date_picker.getComponentDateTextField().setDisabledTextColor(Color.BLACK);
         date_picker.setBounds(115, 50, 160, 20);
         date_picker.setDateToToday();
-        AssertDateTextValidity("sun, 11 Aug 2019", false);
-        AssertDateTextValidity("Sun, 11 Aug 2019", true);
-        AssertDateTextValidity("Mon, 11 Aug 2019", false);
-        AssertDateTextValidity("Tue, 30 Apr 2019", true);
-        AssertDateTextValidity("Wed, 31 Apr 2019", false);
+        AssertDateTextValidity(date_picker, "sun, 11 Aug 2019", false);
+        AssertDateTextValidity(date_picker, "Sun, 11 Aug 2019", true);
+        AssertDateTextValidity(date_picker, "Mon, 11 Aug 2019", false);
+        AssertDateTextValidity(date_picker, "Tue, 30 Apr 2019", true);
+        AssertDateTextValidity(date_picker, "Wed, 31 Apr 2019", false);
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue74()
     {
         DateTimeFormatter era_date = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
+        date_picker.getSettings().getFormatsForParsing().clear();
         date_picker.getSettings().setFormatForDatesCommonEra(era_date);
-        AssertDateTextValidity("12/31/2019", false);
-        AssertDateTextValidity("31/12/2019", true);
-        AssertDateTextValidity("31/04/2019", false);
-        AssertDateTextValidity("30/04/2019", true);
+        AssertDateTextValidity(date_picker, "12/31/2019", false);
+        AssertDateTextValidity(date_picker, "31/12/2019", true);
+        AssertDateTextValidity(date_picker, "31/04/2019", false);
+        AssertDateTextValidity(date_picker, "30/04/2019", true);
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue60()
     {
         DateTimeFormatter era_date = DateTimeFormatter.ofPattern("ddMMyyyy");
+        DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
+        date_picker.getSettings().getFormatsForParsing().clear();
         date_picker.getSettings().setFormatForDatesCommonEra(era_date);
-        AssertDateTextValidity("30 04 2019", false);
-        AssertDateTextValidity("30042019", true);
-        AssertDateTextValidity("31042019", false);
-        AssertDateTextValidity(" 30042019 ", true);
+        AssertDateTextValidity(date_picker, "30 04 2019", false);
+        AssertDateTextValidity(date_picker, "30042019", true);
+        AssertDateTextValidity(date_picker, "31042019", false);
+        AssertDateTextValidity(date_picker, " 30042019 ", true);
     }
 
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue110() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, AWTException
     {
-        if (!isUiAvailable())
+        if (!TestHelpers.isUiAvailable())
         {
           // don't run under CI
           System.out.println("TestIssue110 requires UI to run and was skipped");
         }
-        org.junit.Assume.assumeTrue(isUiAvailable());
+        org.junit.Assume.assumeTrue(TestHelpers.isUiAvailable());
 
 
         DatePickerSettings dateSettings = new DatePickerSettings(Locale.ENGLISH);
@@ -252,7 +247,7 @@ public class TestGithubIssues {
 
     // helper functions
 
-    private void AssertDateTextValidity(String dateString, boolean isDateTexValid)
+    private void AssertDateTextValidity(DatePicker date_picker, String dateString, boolean isDateTexValid)
     {
         final boolean dateValid = date_picker.isTextValid(dateString);
         if (isDateTexValid) {
@@ -282,59 +277,6 @@ public class TestGithubIssues {
         else {
             assertTrue("False positive! Text should have invalid color: "+date_picker.getText(), textfieldcolor == invalidDate);
             assertTrue("False positive! Text should not have valid color: "+date_picker.getText(), textfieldcolor != validDate);
-        }
-    }
-
-    // detect funcionality of UI, which is not available on most CI systems
-    boolean isUiAvailable()
-    {
-      return !java.awt.GraphicsEnvironment.isHeadless();
-    }
-
-    static private void RegisterUncaughtExceptionHandlerToAllThreads(Thread.UncaughtExceptionHandler handler)
-    {
-        Thread.setDefaultUncaughtExceptionHandler(handler);
-        //activeCount is only an estimation
-        int activeCountOversize = 1;
-        Thread[] threads;
-        do {
-          threads = new Thread[Thread.activeCount() + activeCountOversize];
-          Thread.enumerate(threads);
-          activeCountOversize++;
-        } while (threads[threads.length-1] != null);
-        for (Thread thread : threads) {
-          if (thread != null) {
-              thread.setUncaughtExceptionHandler(handler);
-          }
-        }
-    }
-
-    private class ExceptionInfo
-    {
-        Pair<String, Throwable> info = new Pair<>("", null);
-
-        synchronized boolean wasSet() {
-            return !info.first.isEmpty() || info.second != null;
-        }
-        synchronized void set(String threadname, Throwable ex) {
-            info.first = threadname;
-            info.second = ex;
-        }
-        synchronized String getThreadName() {
-            return info.first;
-        }
-        synchronized String getExceptionMessage() {
-            return info.second != null ? info.second.getMessage() : "";
-        }
-        synchronized String getStackTrace()
-        {
-            String result = "";
-            if (info.second != null) {
-                for (StackTraceElement elem : info.second.getStackTrace()) {
-                    result += elem.toString()+"\n";
-                }
-            }
-            return result;
         }
     }
 
