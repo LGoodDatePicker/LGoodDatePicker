@@ -20,6 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.github.lgooddatepicker;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -36,7 +37,7 @@ public class TestHelpers
         return true;
     }
 
-    static Object readPrivateField(Class<?> clazz, Object instance, String field)
+    public static Object readPrivateField(Class<?> clazz, Object instance, String field)
             throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
     {
         java.lang.reflect.Field private_field = clazz.getDeclaredField(field);
@@ -44,7 +45,7 @@ public class TestHelpers
         return private_field.get(instance);
     }
 
-    static java.lang.reflect.Method accessPrivateMethod(Class<?> clazz, String method, Class<?>... argclasses)
+    public static java.lang.reflect.Method accessPrivateMethod(Class<?> clazz, String method, Class<?>... argclasses)
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         java.lang.reflect.Method private_method = clazz.getDeclaredMethod(method, argclasses);

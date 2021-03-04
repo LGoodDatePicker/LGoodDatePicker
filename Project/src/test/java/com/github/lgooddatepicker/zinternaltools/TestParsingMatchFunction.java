@@ -1,7 +1,8 @@
+package com.github.lgooddatepicker.zinternaltools;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
