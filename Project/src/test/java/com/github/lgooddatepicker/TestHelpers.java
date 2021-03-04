@@ -70,7 +70,7 @@ public class TestHelpers
     // detect funcionality of UI, which is not available on most CI systems
     public static boolean isUiAvailable()
     {
-      return !java.awt.GraphicsEnvironment.isHeadless();
+        return !java.awt.GraphicsEnvironment.isHeadless();
     }
 
     static public void registerUncaughtExceptionHandlerToAllThreads(Thread.UncaughtExceptionHandler handler)
@@ -80,14 +80,14 @@ public class TestHelpers
         int activeCountOversize = 1;
         Thread[] threads;
         do {
-          threads = new Thread[Thread.activeCount() + activeCountOversize];
-          Thread.enumerate(threads);
-          activeCountOversize++;
+            threads = new Thread[Thread.activeCount() + activeCountOversize];
+            Thread.enumerate(threads);
+            activeCountOversize++;
         } while (threads[threads.length-1] != null);
         for (Thread thread : threads) {
-          if (thread != null) {
-              thread.setUncaughtExceptionHandler(handler);
-          }
+            if (thread != null) {
+                thread.setUncaughtExceptionHandler(handler);
+            }
         }
     }
 
