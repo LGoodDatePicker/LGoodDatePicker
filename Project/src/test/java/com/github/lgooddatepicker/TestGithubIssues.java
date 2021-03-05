@@ -34,7 +34,6 @@ import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
 import javax.swing.WindowConstants;
@@ -46,12 +45,12 @@ public class TestGithubIssues {
     @Test( expected = Test.None.class /* no exception expected */ )
     public void TestIssue82() throws InterruptedException
     {
-      if (!TestHelpers.isUiAvailable())
-      {
-        // don't run under CI
-        System.out.println("TestIssue82 requires UI to run and was skipped");
-      }
-      org.junit.Assume.assumeTrue(TestHelpers.isUiAvailable());
+        if (!TestHelpers.isUiAvailable())
+        {
+            // don't run under CI
+            System.out.println("TestIssue82 requires UI to run and was skipped");
+        }
+        org.junit.Assume.assumeTrue(TestHelpers.isUiAvailable());
 
         // The exception that might be thrown by the date picker control
         // will be thrown in an AWT-EventQueue thread. To be able to detect
@@ -67,26 +66,27 @@ public class TestGithubIssues {
                     exInfo.set(t.getName(), e);
                 }
             });
-            JFrame testWin = new JFrame();
-            DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
-            testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            testWin.add(date_picker);
-            testWin.pack();
-            testWin.setVisible(true);
-            Thread.sleep(100);
-            assertFalse("DatePicker must not have an open popup.", date_picker.isPopupOpen());
-            Thread.sleep(10);
-            date_picker.openPopup();
-            Thread.sleep(80);
-            assertTrue("DatePicker must have an open popup.", date_picker.isPopupOpen());
-            testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
-            Thread.sleep(100);
-            assertFalse("Exception in antother Thread triggered:\n"
-                    +"ThreadName: "+exInfo.getThreadName()+"\n"
-                    +"Exception: "+exInfo.getExceptionMessage()
-                    +"\nStacktrace:\n"+exInfo.getStackTrace()
-                    , exInfo.wasSet());
-            } finally {
+            try (AutoDisposeFrame testWin = new AutoDisposeFrame()) {
+                DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
+                testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+                testWin.add(date_picker);
+                testWin.pack();
+                testWin.setVisible(true);
+                Thread.sleep(100);
+                assertFalse("DatePicker must not have an open popup.", date_picker.isPopupOpen());
+                Thread.sleep(10);
+                date_picker.openPopup();
+                Thread.sleep(80);
+                assertTrue("DatePicker must have an open popup.", date_picker.isPopupOpen());
+                testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
+                Thread.sleep(100);
+                assertFalse("Exception in antother Thread triggered:\n"
+                        +"ThreadName: "+exInfo.getThreadName()+"\n"
+                        +"Exception: "+exInfo.getExceptionMessage()
+                        +"\nStacktrace:\n"+exInfo.getStackTrace()
+                        , exInfo.wasSet());
+            }
+        } finally {
             TestHelpers.registerUncaughtExceptionHandlerToAllThreads(null);
         }
     }
@@ -148,8 +148,8 @@ public class TestGithubIssues {
     {
         if (!TestHelpers.isUiAvailable())
         {
-          // don't run under CI
-          System.out.println("TestIssue110 requires UI to run and was skipped");
+            // don't run under CI
+            System.out.println("TestIssue110 requires UI to run and was skipped");
         }
         org.junit.Assume.assumeTrue(TestHelpers.isUiAvailable());
 
@@ -157,92 +157,91 @@ public class TestGithubIssues {
         DatePickerSettings dateSettings = new DatePickerSettings(Locale.ENGLISH);
         CalendarPanel testPanel = new CalendarPanel(dateSettings);
 
-        JFrame testWin = new JFrame();
-        testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        testWin.add(testPanel);
-        testWin.pack();
-        testWin.setVisible(true);
+        try ( AutoDisposeFrame testWin = new AutoDisposeFrame() ) {
+            testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            testWin.add(testPanel);
+            testWin.pack();
+            testWin.setVisible(true);
 
-        java.awt.Robot bot = new java.awt.Robot();
-        bot.waitForIdle();
-        bot.delay(100);
+            java.awt.Robot bot = new java.awt.Robot();
+            bot.waitForIdle();
+            bot.delay(100);
 
-        JLabel labelMonth = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelMonth");
-        final java.awt.Point monthScreenLoc = labelMonth.getLocationOnScreen();
-        bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
-
-        boolean popupVisible = false;
-
-        JPopupMenu popupMonth = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupMonth");
-        assertTrue(popupMonth.isVisible() == popupVisible);
-        // Verify that clicking on labalMonth opens and closes its popup in an alternating fashion
-        for( int i = 0; i < 8; ++i)
-        {
+            JLabel labelMonth = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelMonth");
+            final java.awt.Point monthScreenLoc = labelMonth.getLocationOnScreen();
             bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
-            bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-            bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-            bot.waitForIdle();
-            bot.delay(50);
-            popupVisible = !popupVisible;
-            assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
-                    popupMonth.isVisible() == popupVisible);
-            bot.delay(80);
-        }
 
-        JLabel labelYear = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelYear");
-        final java.awt.Point yearScreenLoc = labelYear.getLocationOnScreen();
-        bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+            boolean popupVisible = false;
 
-        popupVisible = false;
-
-        JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupYear");
-        assertTrue(popupYear.isVisible() == popupVisible);
-        // Verify that clicking on labelYear opens and closes its popup in an alternating fashion
-        for( int i = 0; i < 8; ++i)
-        {
-            bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
-            bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-            bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-            bot.waitForIdle();
-            bot.delay(50);
-            popupVisible = !popupVisible;
-            assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
-                    popupYear.isVisible() == popupVisible);
-            bot.delay(80);
-        }
-
-        boolean yearPopupSelected = true;
-
-        // Verify that if clicking is alternated between labelYear and labelMonth their popup menus open everytime
-        for( int i = 0; i < 8; ++i)
-        {
-            if (yearPopupSelected)
-            {
-                bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
-                bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-                bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-                bot.waitForIdle();
-                bot.delay(50);
-                assertTrue(popupYear.isVisible() == true);
-                assertTrue(popupMonth.isVisible() == false);
-                bot.delay(51);
-            }
-            else
+            JPopupMenu popupMonth = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupMonth");
+            assertTrue(popupMonth.isVisible() == popupVisible);
+            // Verify that clicking on labalMonth opens and closes its popup in an alternating fashion
+            for( int i = 0; i < 8; ++i)
             {
                 bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
                 bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                 bot.waitForIdle();
                 bot.delay(50);
-                assertTrue(popupYear.isVisible() == false);
-                assertTrue(popupMonth.isVisible() == true);
-                bot.keyPress(KeyEvent.VK_ESCAPE);
-                bot.delay(51);
+                popupVisible = !popupVisible;
+                assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
+                        popupMonth.isVisible() == popupVisible);
+                bot.delay(80);
             }
-            yearPopupSelected = !yearPopupSelected;
-        }
 
-        testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
+            JLabel labelYear = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelYear");
+            final java.awt.Point yearScreenLoc = labelYear.getLocationOnScreen();
+            bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+
+            popupVisible = false;
+
+            JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupYear");
+            assertTrue(popupYear.isVisible() == popupVisible);
+            // Verify that clicking on labelYear opens and closes its popup in an alternating fashion
+            for( int i = 0; i < 8; ++i)
+            {
+                bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+                bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                bot.waitForIdle();
+                bot.delay(50);
+                popupVisible = !popupVisible;
+                assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
+                        popupYear.isVisible() == popupVisible);
+                bot.delay(80);
+            }
+
+            boolean yearPopupSelected = true;
+
+            // Verify that if clicking is alternated between labelYear and labelMonth their popup menus open everytime
+            for( int i = 0; i < 8; ++i)
+            {
+                if (yearPopupSelected)
+                {
+                    bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+                    bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                    bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                    bot.waitForIdle();
+                    bot.delay(50);
+                    assertTrue(popupYear.isVisible() == true);
+                    assertTrue(popupMonth.isVisible() == false);
+                    bot.delay(51);
+                }
+                else
+                {
+                    bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
+                    bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                    bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                    bot.waitForIdle();
+                    bot.delay(50);
+                    assertTrue(popupYear.isVisible() == false);
+                    assertTrue(popupMonth.isVisible() == true);
+                    bot.keyPress(KeyEvent.VK_ESCAPE);
+                    bot.delay(51);
+                }
+                yearPopupSelected = !yearPopupSelected;
+            }
+        }
     }
 
     // helper functions
