@@ -23,11 +23,18 @@
 package com.github.lgooddatepicker.components;
 
 import com.github.lgooddatepicker.TestHelpers;
+import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
+import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
+import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.JLabel;
 import static org.junit.Assert.assertTrue;
@@ -129,6 +136,71 @@ public class TestCalendarPanel
         TestHelpers.accessPrivateMethod(java.awt.Component.class, "processEvent", java.awt.AWTEvent.class).invoke(labeltoverify, testEvent);
         assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(defaultBackground));
         assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(defaultText));
+    }
+
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestDateHighlightAndVetoPolicy() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
+        DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
+        settings.setHighlightPolicy(new DateHighlightPolicy()
+        {
+            @Override
+            public HighlightInformation getHighlightInformationOrNull( LocalDate date )
+            {
+                if (date.get(ChronoField.DAY_OF_MONTH) % 2 == 0)
+                {
+                    return new HighlightInformation(Color.green, Color.blue, "highlighted");
+                }
+                return null;
+            }
+        });
+        CalendarPanel panel = new CalendarPanel(settings);
+        settings.setVetoPolicy(new DateVetoPolicy()
+        {
+            @Override
+            public boolean isDateAllowed( LocalDate date )
+            {
+                final int day = date.get(ChronoField.DAY_OF_MONTH);
+                return (day % 5 != 0);
+            }
+        });
+        panel.setDisplayedYearMonth(YearMonth.of(2021, Month.MARCH));
+
+        final Color defaultColor = settings.getColor(DateArea.CalendarBackgroundNormalDates);
+        final Color defaultTextColor = settings.getColor(DateArea.CalendarTextNormalDates);
+        final Color defaultVetoedColor = settings.getColor(DateArea.CalendarBackgroundVetoedDates);
+
+        for (int dayLabelIdx = 0; dayLabelIdx < 42; ++dayLabelIdx)
+        {
+            if (dayLabelIdx < 1 || dayLabelIdx > 31)
+            {
+                verifyDateLabelColorAndToolTip(panel, dayLabelIdx, defaultColor, defaultTextColor, null);
+                continue;
+            }
+            if (dayLabelIdx % 5 == 0)
+            {
+                verifyDateLabelColorAndToolTip(panel, dayLabelIdx, defaultVetoedColor, defaultTextColor, null);
+                continue;
+            }
+            if (dayLabelIdx % 2 == 0)
+            {
+                verifyDateLabelColorAndToolTip(panel, dayLabelIdx, Color.green, Color.blue, "highlighted");
+                continue;
+            }
+            verifyDateLabelColorAndToolTip(panel, dayLabelIdx, defaultColor, defaultTextColor, null);
+        }
+    }
+
+    void verifyDateLabelColorAndToolTip(CalendarPanel panel, int labelIdx, Color bgColor, Color textColor, String tooltip)
+            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
+        ArrayList<?> labelList = (ArrayList<?>) TestHelpers.readPrivateField(CalendarPanel.class, panel, "dateLabels");
+        JLabel labeltoverify = (JLabel) labelList.get(labelIdx);
+        String labelname = "DateLabel_"+labelIdx;
+        String labelToolTip = labeltoverify.getToolTipText();
+        assertTrue(labelname+" has wrong tool tip text: "+labelToolTip, labelToolTip != null ? labelToolTip.equals(tooltip) : tooltip == null);
+        assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(bgColor));
+        assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(textColor));
     }
 
 }
