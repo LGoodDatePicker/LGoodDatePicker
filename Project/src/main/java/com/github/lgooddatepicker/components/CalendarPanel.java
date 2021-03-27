@@ -1059,8 +1059,8 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
-     * populateYearPopupMenu, Create entries of year PopUpMenu matching the current year,
-     * entries have to updated every time the current year changes
+     * populateYearPopupMenu, Create entries of year PopUpMenu matching the currently selected year,
+     * entries have to be updated every time the selected year changes
      */
     private void populateYearPopupMenu()
     {
