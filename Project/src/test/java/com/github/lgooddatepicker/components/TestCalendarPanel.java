@@ -213,7 +213,7 @@ public class TestCalendarPanel
     public void TestYearEditor() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
     {
         verifyYearEditor(YearEditorFinalizer.doneEditingButton);
-        //verifyYearEditor(YearEditorFinalizer.yearTextField); uncomment once code for issue #113 has been implemented
+        verifyYearEditor(YearEditorFinalizer.yearTextField);
     }
 
     enum YearEditorFinalizer

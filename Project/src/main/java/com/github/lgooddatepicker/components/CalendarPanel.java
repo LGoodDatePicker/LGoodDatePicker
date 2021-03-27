@@ -300,6 +300,13 @@ public class CalendarPanel extends JPanel {
                 drawCalendar(newYearMonth);
             }
         };
+        // Issue #113: Pressing enter does the same as pressing the doneEditingYearButton.
+        yearTextField.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    doneEditingYearButtonActionPerformed(e);
+                }
+        });
         // Initialize the doneEditingYearButton.
         doneEditingYearButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
         doneEditingYearButton.setText("\u2713");
