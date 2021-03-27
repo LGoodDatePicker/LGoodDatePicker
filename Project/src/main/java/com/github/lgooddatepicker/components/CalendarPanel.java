@@ -300,12 +300,10 @@ public class CalendarPanel extends JPanel {
                 drawCalendar(newYearMonth);
             }
         };
-        // Code passes Maven's tests and compiles successfully.
-        // Issue #113: Pressing enter does the same as pressing the doneEditingYearButton
+        // Issue #113: Pressing enter does the same as pressing the doneEditingYearButton.
         yearTextField.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // This should behave the same as the doneEditingYearButton
                     doneEditingYearButtonActionPerformed(e);
                 }
         });
