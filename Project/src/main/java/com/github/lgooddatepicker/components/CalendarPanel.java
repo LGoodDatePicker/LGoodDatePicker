@@ -224,8 +224,8 @@ public class CalendarPanel extends JPanel {
     private JButton doneEditingYearButton;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
-    private JPopupMenu popupMonth = new JPopupMenu();
-    private JPopupMenu popupYear = new JPopupMenu();
+    private final JPopupMenu popupMonth = new JPopupMenu();
+    private final JPopupMenu popupYear = new JPopupMenu();
 
     /**
      * Constructor, Independent CalendarPanel with default settings. This creates an independent
@@ -1068,21 +1068,13 @@ public class CalendarPanel extends JPanel {
     }
 
     /**
-     * labelYearIndicatorMousePressed, This event is called any time that the user clicks on the
-     * year display label in the calendar. This opens a menu that the user can use to select a new
-     * year within a chosen range of the previously displayed year.
+     * populateYearPopupMenu, Create entries of year PopUpMenu matching the currently selected year,
+     * entries have to be updated every time the selected year changes
      */
-    private void labelYearIndicatorMousePressed(MouseEvent e) {
-        // If the year menu is disabled, then return.
-        if (settings.getEnableYearMenu() == false) {
-            return;
-        }
-        if (yearPopupCancelWatcher.wasJustCanceled()) {
-            return;
-        }
-        // Create and show the year menu.
-        int firstYearDifference = -11;
-        int lastYearDifference = +11;
+    private void populateYearPopupMenu()
+    {
+        final int firstYearDifference = -11;
+        final int lastYearDifference = +11;
         popupYear.removeAll();
         for (int yearDifference = firstYearDifference; yearDifference <= lastYearDifference;
             ++yearDifference) {
@@ -1103,13 +1095,30 @@ public class CalendarPanel extends JPanel {
             } catch (Exception ex) {
             }
         }
-        String choiceOtherYearString = "( . . . )";
+        final String choiceOtherYearString = "( . . . )";
         popupYear.add(new JMenuItem(new AbstractAction(choiceOtherYearString) {
             @Override
             public void actionPerformed(ActionEvent e) {
                 otherYearMenuItemClicked();
             }
         }));
+    }
+
+    /**
+     * labelYearIndicatorMousePressed, This event is called any time that the user clicks on the
+     * year display label in the calendar. This opens a menu that the user can use to select a new
+     * year within a chosen range of the previously displayed year.
+     */
+    private void labelYearIndicatorMousePressed(MouseEvent e) {
+        // If the year menu is disabled, then return.
+        if (settings.getEnableYearMenu() == false) {
+            return;
+        }
+        if (yearPopupCancelWatcher.wasJustCanceled()) {
+            return;
+        }
+        // Create and show the year menu.
+        populateYearPopupMenu();
         Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
         popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
     }

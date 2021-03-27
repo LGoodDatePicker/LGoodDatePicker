@@ -36,7 +36,13 @@ import java.time.YearMonth;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Locale;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+import javax.swing.MenuElement;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -201,6 +207,77 @@ public class TestCalendarPanel
         assertTrue(labelname+" has wrong tool tip text: "+labelToolTip, labelToolTip != null ? labelToolTip.equals(tooltip) : tooltip == null);
         assertTrue(labelname+" has wrong background color: "+labeltoverify.getBackground().toString(), labeltoverify.getBackground().equals(bgColor));
         assertTrue(labelname+" has wrong text color: "+labeltoverify.getForeground().toString(), labeltoverify.getForeground().equals(textColor));
+    }
+
+    @Test( expected = Test.None.class /* no exception expected */ )
+    public void TestYearEditor() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
+        verifyYearEditor(YearEditorFinalizer.doneEditingButton);
+        //verifyYearEditor(YearEditorFinalizer.yearTextField); uncomment once code for issue #113 has been implemented
+    }
+
+    enum YearEditorFinalizer
+    {
+        doneEditingButton,
+        yearTextField
+    }
+
+    void verifyYearEditor(YearEditorFinalizer editorFinalizer) throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException
+    {
+        DatePickerSettings dateSettings = new DatePickerSettings(Locale.ENGLISH);
+        CalendarPanel testPanel = new CalendarPanel(dateSettings);
+
+        JPanel monthAndYearInnerPanel = (JPanel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "monthAndYearInnerPanel");
+        JPanel yearEditorPanel = (JPanel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "yearEditorPanel");
+
+        // monthAndYearInnerPanel invisible as default
+        assertTrue(!monthAndYearInnerPanel.isAncestorOf(yearEditorPanel));
+
+        final String currentYear = String.valueOf(LocalDate.now().getYear());
+        JLabel labelYear = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelYear");
+        assertTrue("Wrong text in labelYear: "+labelYear.getText(), labelYear.getText().equals(currentYear));
+        assertTrue("Wrong text in yearTextField: "+labelYear.getText(), labelYear.getText().equals(currentYear));
+
+        TestHelpers.accessPrivateMethod(CalendarPanel.class, "populateYearPopupMenu").invoke(testPanel);
+
+        JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupYear");
+
+        boolean found = false;
+        for (MenuElement elem : popupYear.getSubElements())
+        {
+            JMenuItem menuItem = (JMenuItem)elem.getComponent();
+            if (menuItem.getText().equals("( . . . )"))
+            {
+                menuItem.doClick();
+                found = true;
+                break;
+            }
+        }
+        assertTrue(found);
+        // monthAndYearInnerPanel now visible
+        assertTrue(monthAndYearInnerPanel.isAncestorOf(yearEditorPanel));
+
+        JTextField yearTextField = (JTextField) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "yearTextField");
+        yearTextField.setText("2005");
+        assertTrue("Wrong text in labelYear: "+labelYear.getText(), labelYear.getText().equals("2005"));
+        assertTrue("Wrong text in labelYear: "+labelYear.getText(), !labelYear.getText().equals(currentYear));
+
+        switch (editorFinalizer)
+        {
+
+            case doneEditingButton:
+                JButton doneEditingYearButton = (JButton) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "doneEditingYearButton");
+                doneEditingYearButton.doClick();
+                break;
+            case yearTextField:
+                yearTextField.postActionEvent();
+                break;
+            default:
+                assertTrue("Unknown finalizer value "+editorFinalizer, false);
+        }
+
+        // monthAndYearInnerPanel invisible after finishing editing
+        assertTrue(!monthAndYearInnerPanel.isAncestorOf(yearEditorPanel));
     }
 
 }
