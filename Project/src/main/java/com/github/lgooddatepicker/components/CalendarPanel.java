@@ -1604,6 +1604,11 @@ public class CalendarPanel extends JPanel {
             ((GridBagLayout) yearEditorPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 0.0, 1.0E-4};
             ((GridBagLayout) yearEditorPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
+            // Issue #113, enter-press behaves same as the doneEditingYearButton.
+            yearTextField.addActionListener(event -> {
+                doneEditingYearButtonActionPerformed(event);
+            });
+
             //---- doneEditingYearButton ----
             doneEditingYearButton.setFocusPainted(false);
             doneEditingYearButton.setFocusable(false);
