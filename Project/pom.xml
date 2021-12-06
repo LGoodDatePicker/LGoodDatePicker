@@ -68,8 +68,8 @@ plugins in this file operate inside the "package" and "install" phases.
         <maven.compiler.target>1.8</maven.compiler.target>
         <!-- <maven.compiler.release>8</maven.compiler.release> you might need to uncomment this this to compile with JDK > 8 -->
         <testrunparams>--add-opens java.desktop/java.awt=ALL-UNNAMED</testrunparams> <!-- allows parameters for the test execution to be set via mvn command line -->
+        <license.maven.plugin.version>4.1</license.maven.plugin.version>
     </properties>
-
     <dependencies>
 
         <!-- JSRThreeTen Backport. Uncomment this section when building for target Java 1.6. -->
@@ -363,6 +363,36 @@ plugins in this file operate inside the "package" and "install" phases.
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license.maven.plugin.version}</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>.license-header/license-header.txt</header>
+                            <excludes>
+                                <exclude>./license-header/**</exclude>
+                                <exclude>./ide-settings/eclipse/**</exclude>
+                                <exclude>./ide-settings/idea/**</exclude>
+                                <exclude>.editorconfig</exclude>
+                                <exclude>**/LICENSE</exclude>
+                                <exclude>**/*.md</exclude>
+                                <exclude>lib/**</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                                <exclude>**/*.properties</exclude>
+                                <exclude>**/*.xml</exclude>
+                                <exclude>**/*.yml</exclude>
+                                <exclude>**/*.jfd</exclude>
+                                <exclude>**/*.form</exclude>
+                                <exclude>src/main/java/**/privatejgoodies/**</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
                 </configuration>
             </plugin>
 
