@@ -73,7 +73,7 @@ public class TestHelpers
         return !java.awt.GraphicsEnvironment.isHeadless();
     }
 
-    static public void registerUncaughtExceptionHandlerToAllThreads(Thread.UncaughtExceptionHandler handler)
+    public static void registerUncaughtExceptionHandlerToAllThreads(Thread.UncaughtExceptionHandler handler)
     {
         Thread.setDefaultUncaughtExceptionHandler(handler);
         //activeCount is only an estimation

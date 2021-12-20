@@ -14,8 +14,8 @@ public enum DurationUnit {
     Month((int) ChronoUnit.MONTHS.getDuration().getSeconds()),
     Year((int) ChronoUnit.YEARS.getDuration().getSeconds());
 
-    final public int inSeconds;
-    final public int thirtyMinutesInSeconds = (30 * 60);
+    public final int inSeconds;
+    public final int thirtyMinutesInSeconds = (30 * 60);
 
     DurationUnit(int secondsConstant) {
         inSeconds = secondsConstant;

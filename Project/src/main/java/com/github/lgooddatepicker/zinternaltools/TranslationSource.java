@@ -15,13 +15,13 @@ public class TranslationSource {
      * translationResources, This holds the translation properties. This variable is only loaded
      * once, the first time that it is needed.
      */
-    static private Properties translationResources;
+    private static Properties translationResources;
 
     /**
      * propertiesFileName, This holds the name of the properties file.
      */
     //leading / since it is at the root of the jar
-    static final private String propertiesFileName = "/TranslationResources.properties";
+    private static final String propertiesFileName = "/TranslationResources.properties";
 
     /**
      * getTranslation, This returns a local language translation for the text that is represented by

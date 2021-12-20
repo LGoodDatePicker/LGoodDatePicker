@@ -50,7 +50,7 @@ public class CalculateMinimumDateFieldSize {
      * greater than four digits, or by using BC years. This function assumes four digit Common Era
      * years, in performing its calculations.
      */
-    static public int getFormattedDateWidthInPixels(DateTimeFormatter formatCE, Locale locale,
+    public static int getFormattedDateWidthInPixels(DateTimeFormatter formatCE, Locale locale,
             Font fontValidDate, int numberOfExtraCharacters) {
         // Create the font metrics that will be used in the calculation.
         JTextField textField = new JTextField();
@@ -103,7 +103,7 @@ public class CalculateMinimumDateFieldSize {
      * "tied" as the "longest month", then the longest month that is closest to the end of the year
      * will be the one that is returned.
      */
-    static private Month getLongestTextMonthInLocale(Locale locale, FontMetrics fontMetrics) {
+    private static Month getLongestTextMonthInLocale(Locale locale, FontMetrics fontMetrics) {
         // Get the "formatting names" of all the months for this locale.
         // Request the capitalized long version of the translated month names.
         String[] formattingMonthNames = ExtraDateStrings.getFormattingMonthNamesArray(

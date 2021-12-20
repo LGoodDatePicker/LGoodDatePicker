@@ -142,7 +142,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * mousePressed, Final function. Handles mouse pressed events.
      */
     @Override
-    final public void mousePressed(MouseEvent e) {
+    public final void mousePressed(MouseEvent e) {
         // Record that the component is "pressed down".
         isComponentPressedDown = true;
         // Call the mouse press event.
@@ -154,7 +154,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * liberal single clicks, and liberal double clicks.
      */
     @Override
-    final public void mouseReleased(MouseEvent e) {
+    public final void mouseReleased(MouseEvent e) {
         // Check to see if this mouse release completes a liberal single click.
         if (isComponentPressedDown) {
             // A liberal single click has occurred.
@@ -182,7 +182,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * mouseEntered, Final function. Handles mouse entered events.
      */
     @Override
-    final public void mouseEntered(MouseEvent e) {
+    public final void mouseEntered(MouseEvent e) {
         // Call the mouse enter event.
         mouseEnter(e);
     }
@@ -191,7 +191,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * mouseExited, Final function. Handles mouse exited events.
      */
     @Override
-    final public void mouseExited(MouseEvent e) {
+    public final void mouseExited(MouseEvent e) {
         // Since the mouse left the component, the component is no longer considered "press down".
         isComponentPressedDown = false;
         // Call the mouse exit event.
@@ -202,7 +202,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * mouseClicked, Final function. Handles mouse clicked events.
      */
     @Override
-    final public void mouseClicked(MouseEvent e) {
+    public final void mouseClicked(MouseEvent e) {
         // Call the mouse click event.
         mouseClick(e);
     }
@@ -211,7 +211,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * mouseWheelMoved, Final function. Handles mouse wheel moved events.
      */
     @Override
-    final public void mouseWheelMoved(MouseWheelEvent e) {
+    public final void mouseWheelMoved(MouseWheelEvent e) {
         // Call the mouse wheel move event.
         mouseWheelMove(e);
     }
@@ -220,7 +220,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * mouseDragged, Final function. Handles mouse dragged events.
      */
     @Override
-    final public void mouseDragged(MouseEvent e) {
+    public final void mouseDragged(MouseEvent e) {
         // Call the mouse drag event.
         mouseDrag(e);
     }
@@ -229,7 +229,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
      * mouseMoved, Final function. Handles mouse moved events.
      */
     @Override
-    final public void mouseMoved(MouseEvent e) {
+    public final void mouseMoved(MouseEvent e) {
         // Call the mouse move event.
         mouseMove(e);
     }

@@ -122,7 +122,7 @@ public class TestParsingMatchFunction {
         checkDate("ddMMuuuuG", "31062019AD", false);
     }
 
-    static private boolean isLeapYear(int year) {
+    private static boolean isLeapYear(int year) {
         if (year % 4 != 0) {
             return false;
         } else if (year % 400 == 0) {
@@ -133,7 +133,7 @@ public class TestParsingMatchFunction {
         return true;
     }
 
-    static private void checkDate(String dateformat, String dateValue, boolean isValidDate) {
+    private static void checkDate(String dateformat, String dateValue, boolean isValidDate) {
         final DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern(dateformat).toFormatter(Locale.ENGLISH);
         final LocalDate parsedDate = LocalDate.parse(dateValue, formatter);
         final boolean determinedValidity = InternalUtilities.doesParsedDateMatchText(parsedDate, dateValue, formatter);

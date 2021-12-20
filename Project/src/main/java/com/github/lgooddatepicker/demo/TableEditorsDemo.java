@@ -228,7 +228,7 @@ public class TableEditorsDemo extends JPanel {
         /**
          * dateTimeColumnIndex, This specifies the index of the date time column.
          */
-        static public int dateTimeColumnIndex = 2;
+        public static int dateTimeColumnIndex = 2;
 
         /**
          * data, This is the initial data that is contained in the table cells.

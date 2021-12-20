@@ -29,6 +29,6 @@ public interface DateHighlightPolicy {
      *
      * Dates that are passed to this function will never be null.
      */
-    abstract public HighlightInformation getHighlightInformationOrNull(LocalDate date);
+    public abstract HighlightInformation getHighlightInformationOrNull(LocalDate date);
 
 }

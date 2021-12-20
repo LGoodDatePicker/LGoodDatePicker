@@ -75,7 +75,7 @@ public class PickerUtilities {
      * returns true if both of the supplied dates contain a date and represent the same date.
      * Otherwise this returns false.
      */
-    static public boolean isSameLocalDate(LocalDate first, LocalDate second) {
+    public static boolean isSameLocalDate(LocalDate first, LocalDate second) {
         // If both values are null, return true.
         if (first == null && second == null) {
             return true;
@@ -177,7 +177,7 @@ public class PickerUtilities {
      * characters. Years before or after that range will output longer strings. If the date is null,
      * this will return an empty string ("").
      */
-    static public String localDateToString(LocalDate date) {
+    public static String localDateToString(LocalDate date) {
         return localDateToString(date, "");
     }
 
@@ -187,7 +187,7 @@ public class PickerUtilities {
      * characters. Years before or after that range will output longer strings. If the date is null,
      * this will return the value of emptyDateString.
      */
-    static public String localDateToString(LocalDate date, String emptyDateString) {
+    public static String localDateToString(LocalDate date, String emptyDateString) {
         return (date == null) ? emptyDateString : date.toString();
     }
 

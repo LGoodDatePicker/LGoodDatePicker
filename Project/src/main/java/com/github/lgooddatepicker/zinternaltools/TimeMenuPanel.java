@@ -50,7 +50,7 @@ public class TimeMenuPanel extends JPanel {
     /**
      * timeListModel, The holds the list model that is used for populating the time list.
      */
-    final private DefaultListModel<String> timeListModel;
+    private final DefaultListModel<String> timeListModel;
 
     public TimeMenuPanel(TimePicker parentTimePicker, TimePickerSettings settings) {
         this.parentTimePicker = parentTimePicker;

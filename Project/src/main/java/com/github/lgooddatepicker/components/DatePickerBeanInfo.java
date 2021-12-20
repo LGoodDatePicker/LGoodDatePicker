@@ -88,7 +88,7 @@ public class DatePickerBeanInfo extends SimpleBeanInfo {
      * zPropertyDescriptorArray, This holds the array of BeanInfo property descriptors. This is
      * initialized when the class is first loaded, and not changed afterwards.
      */
-    static private PropertyDescriptor[] zPropertyDescriptorArray;
+    private static PropertyDescriptor[] zPropertyDescriptorArray;
 
     /**
      * Static Initializer, This code is run when the class is first accessed or instantiated. This

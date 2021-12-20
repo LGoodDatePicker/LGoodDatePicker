@@ -279,7 +279,7 @@ public class CustomPopup extends Popup
      * implement this interface to be notified when the CustomPopup is closed. The implementing
      * class should pass itself into the CustomPopup constructor.
      */
-    static public interface CustomPopupCloseListener {
+    public static interface CustomPopupCloseListener {
 
         /**
          * zEventCustomPopupWasClosed, This will be called whenever the CustomPopup is closed,
