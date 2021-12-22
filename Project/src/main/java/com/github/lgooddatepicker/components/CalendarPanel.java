@@ -127,37 +127,37 @@ public class CalendarPanel extends JPanel {
      * constantFirstWeekdayLabelCell, This constant indicates the location of the first weekday
      * label inside of the center panel.
      */
-    static private final Point constantFirstWeekdayLabelCell = new Point(4, 2);
+    private static final Point constantFirstWeekdayLabelCell = new Point(4, 2);
 
     /**
      * constantFirstWeekNumberLabelCell, This constant indicates the location of the first week
      * number label inside of the center panel.
      */
-    static private final Point constantFirstWeekNumberLabelCell = new Point(2, 6);
+    private static final Point constantFirstWeekNumberLabelCell = new Point(2, 6);
 
     /**
      * constantFirstDateLabelCell, This constant indicates the location of the first date label
      * inside of the center panel.
      */
-    static private final Point constantFirstDateLabelCell = new Point(4, 6);
+    private static final Point constantFirstDateLabelCell = new Point(4, 6);
 
     /**
      * constantSizeOfCenterPanelBorders, This constant indicates the (total) size of all the borders
      * in the center panel, in pixels.
      */
-    static private final Dimension constantSizeOfCenterPanelBorders = new Dimension(2, 5);
+    private static final Dimension constantSizeOfCenterPanelBorders = new Dimension(2, 5);
 
     /**
      * constantTopLeftLabelCell, This constant indicates the location of the topLeftLabel inside the
      * center panel.
      */
-    static private final Point constantTopLeftLabelCell = new Point(2, 2);
+    private static final Point constantTopLeftLabelCell = new Point(2, 2);
 
     /**
      * constantWeekNumberLabelInsets, This is the size of the border of the week number labels, in
      * pixels.
      */
-    static private final Insets constantWeekNumberLabelInsets = new Insets(0, 6, 0, 5);
+    private static final Insets constantWeekNumberLabelInsets = new Insets(0, 6, 0, 5);
 
     /**
      * displayedSelectedDate, This stores a date that will be highlighted in the calendar as the

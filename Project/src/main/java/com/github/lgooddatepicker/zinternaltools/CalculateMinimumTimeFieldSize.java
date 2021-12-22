@@ -49,7 +49,7 @@ public class CalculateMinimumTimeFieldSize {
      * calculation, by supplying a nonzero value for the parameter numberOfExtraCharacters. This
      * parameter can also be used with a negative value to reduce the size that is returned.
      */
-    static public int getFormattedTimeWidthInPixels(DateTimeFormatter formatForDisplayTime,
+    public static int getFormattedTimeWidthInPixels(DateTimeFormatter formatForDisplayTime,
             Font fontValidTime, int numberOfExtraCharacters) {
         // Create the font metrics that will be used in the calculation.
         JTextField textField = new JTextField();

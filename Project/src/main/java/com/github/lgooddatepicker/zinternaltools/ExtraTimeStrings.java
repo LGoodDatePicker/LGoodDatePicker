@@ -38,7 +38,7 @@ public class ExtraTimeStrings {
      * extraParsingFormatsForLanguage_en, This is a constant list of extra parsing formats, which
      * are used for parsing times in an English locale.
      */
-    final static private String[] extraParsingFormatsForLanguage_en = new String[]{
+    private static final String[] extraParsingFormatsForLanguage_en = new String[]{
         "h:ma", "h.ma", "ha"};
 
     /**

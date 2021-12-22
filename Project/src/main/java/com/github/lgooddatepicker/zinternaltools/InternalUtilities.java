@@ -92,7 +92,7 @@ public class InternalUtilities {
      * day of February, April, June, September, or November. The 30th day of February. Or the 29th
      * day of February on any year that is not a leap year.
      */
-    static public boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
+public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
             DateTimeFormatter usedFormatter) {
         if (parsedDate == null || text == null) {
             return false;
@@ -206,7 +206,7 @@ public class InternalUtilities {
      * window is supplied, then the the monitor that contains the window will be used. If a window
      * is not supplied, then the primary monitor will be used.
      */
-    static public Insets getScreenInsets(Window windowOrNull) {
+    public static Insets getScreenInsets(Window windowOrNull) {
         Insets insets;
         if (windowOrNull == null) {
             insets = Toolkit.getDefaultToolkit().getScreenInsets(GraphicsEnvironment
@@ -225,7 +225,7 @@ public class InternalUtilities {
      * the the monitor that contains the window will be used. If a window is not supplied, then the
      * primary monitor will be used.
      */
-    static public Rectangle getScreenTotalArea(Window windowOrNull) {
+    public static Rectangle getScreenTotalArea(Window windowOrNull) {
         Rectangle bounds;
         if (windowOrNull == null) {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -243,7 +243,7 @@ public class InternalUtilities {
      * then the the monitor that contains the window will be used. If a window is not supplied, then
      * the primary monitor will be used.
      */
-    static public Rectangle getScreenWorkingArea(Window windowOrNull) {
+    public static Rectangle getScreenWorkingArea(Window windowOrNull) {
         Insets insets;
         Rectangle bounds;
         if (windowOrNull == null) {
@@ -323,7 +323,7 @@ public class InternalUtilities {
      * kinds of mistakes. If the parsed text does not match the day of the month (and year) of the
      * parsed date, then this function will return null.
      */
-    static public LocalDate getParsedDateOrNull(String text,
+    public static LocalDate getParsedDateOrNull(String text,
         DateTimeFormatter displayFormatterAD, DateTimeFormatter displayFormatterBC, 
         ArrayList<DateTimeFormatter> parsingFormatters) {
         if (text == null || text.trim().isEmpty()) {
@@ -409,7 +409,7 @@ public class InternalUtilities {
      * getConstraints, This returns a grid bag constraints object that can be used for placing a
      * component appropriately into a grid bag layout.
      */
-    static public GridBagConstraints getConstraints(int gridx, int gridy) {
+    public static GridBagConstraints getConstraints(int gridx, int gridy) {
         GridBagConstraints gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.BOTH;
         gc.gridx = gridx;
@@ -422,7 +422,7 @@ public class InternalUtilities {
      * vetoed. Note that veto policies do not have any say about null dates, so this function always
      * returns false for null dates.
      */
-    static public boolean isDateVetoed(DateVetoPolicy policy, LocalDate date) {
+    public static boolean isDateVetoed(DateVetoPolicy policy, LocalDate date) {
         if (policy == null || date == null) {
             return false;
         }
@@ -433,7 +433,7 @@ public class InternalUtilities {
      * isMouseWithinComponent, This returns true if the mouse is inside of the specified component,
      * otherwise returns false.
      */
-    static public boolean isMouseWithinComponent(Component component) {
+    public static boolean isMouseWithinComponent(Component component) {
         if (!component.isVisible()) {
             // component.getLocationOnScreen() will throw an
             // IllegalComponentStateException if the component
@@ -460,7 +460,7 @@ public class InternalUtilities {
      * within the bounds of the supplied string. If the beginIndex is greater than or equal to
      * endIndexExclusive, then this will return an empty string.
      */
-    static public String safeSubstring(String text, int beginIndex, int endIndexExclusive) {
+    public static String safeSubstring(String text, int beginIndex, int endIndexExclusive) {
         if (text == null) {
             return null;
         }

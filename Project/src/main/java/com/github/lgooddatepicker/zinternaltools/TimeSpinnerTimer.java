@@ -38,34 +38,34 @@ public class TimeSpinnerTimer {
     /**
      * timePicker, This holds the time picker that is associated with this class.
      */
-    final private TimePicker timePicker;
+    private final TimePicker timePicker;
 
     /**
      * timePicker, This holds the number of minutes that should be added or subtracted with each
      * increment of the time picker value. This will typically be -1 or 1.
      */
-    final private int changeAmountMinutes;
+    private final int changeAmountMinutes;
 
     /**
      * timer, This holds the timer associated with this class.
      */
-    final private Timer timer;
+    private final Timer timer;
 
     /**
      * startDelayMillis, This indicates how long the timer should wait before firing its first tick.
      * This value is used to make sure that the user can easily increase or decrease the date picker
      * value by only 1 minute.
      */
-    final private int startDelayMillis = 700;
+    private final int startDelayMillis = 700;
     /**
      * timerRate, This indicates how often the timer should call the tick function, in milliseconds.
      */
-    final private int timerRate = 20;
+    private final int timerRate = 20;
     /**
      * millisForDivisorList, This indicates how long each value in the divisorList should be used,
      * before moving onto the next value in the divisorList.
      */
-    final private int[] millisForDivisorList = new int[]{
+    private final int[] millisForDivisorList = new int[]{
         1800, 900, 400, 400, 400, 400, 400, 0};
     /**
      * divisorList, For as long as any particular index in this array remains in effect, the
@@ -74,7 +74,7 @@ public class TimeSpinnerTimer {
      * changed only once for every 3 calls to the tick function. Higher numbers make the spinner
      * change slower, lower numbers make the spinner change faster.
      */
-    final private int[] divisorList = new int[]{12, 10, 8, 6, 4, 3, 2, 1};
+    private final int[] divisorList = new int[]{12, 10, 8, 6, 4, 3, 2, 1};
     /**
      * startedIndexTimeStamp, This indicates the time that the currently used index in the
      * divisorList started to be used.

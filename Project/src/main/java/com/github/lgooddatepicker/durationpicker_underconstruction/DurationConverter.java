@@ -38,7 +38,7 @@ public class DurationConverter {
      *
      * Note: This function will return null if the string cannot be parsed for any reason.
      */
-    static public Duration convertStringToDuration(String text, DurationConverterSettings settings) {
+    public static Duration convertStringToDuration(String text, DurationConverterSettings settings) {
         if (text == null) {
             return null;
         }
@@ -126,7 +126,7 @@ public class DurationConverter {
      * This function will return an empty string if the duration is null or less than zero. This
      * function will never return null.
      */
-    static public String convertStringFromDuration(
+    public static String convertStringFromDuration(
             Duration duration, DurationConverterSettings settings) {
         if ((duration == null) || (duration.isNegative())) {
             return "";

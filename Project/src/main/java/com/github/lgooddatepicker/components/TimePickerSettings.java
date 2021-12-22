@@ -1060,7 +1060,7 @@ public class TimePickerSettings {
         /**
          * minutes, This holds the number of minutes represented by the time increment.
          */
-        final public int minutes;
+        public final int minutes;
 
         /**
          * Constructor. This takes the number of minutes represented by the time increment.
