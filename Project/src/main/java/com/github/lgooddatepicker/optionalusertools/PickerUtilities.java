@@ -24,8 +24,6 @@ package com.github.lgooddatepicker.optionalusertools;
 
 import java.time.*;
 import java.time.format.*;
-import java.time.chrono.*;
-import java.time.temporal.*;
 import java.util.Locale;
 
 /**

@@ -22,8 +22,6 @@
  */
 package com.github.lgooddatepicker.ysandbox;
 
-import com.github.lgooddatepicker.components.CalendarPanel;
-import java.util.Locale;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
