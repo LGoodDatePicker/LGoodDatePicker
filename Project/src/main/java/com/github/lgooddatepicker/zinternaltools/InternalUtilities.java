@@ -523,6 +523,12 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
                 return "Java 7";
             case 52:
                 return "Java 8";
+            case 53:
+                return "Java 9";
+            case 54:
+                return "Java 10";
+            case 55:
+                return "Java 11";
             default:
                 return "Could not find version string for major version: " + majorVersion;
         }

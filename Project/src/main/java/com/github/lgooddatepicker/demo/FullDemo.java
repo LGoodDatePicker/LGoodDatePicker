@@ -1026,17 +1026,13 @@ public class FullDemo {
         String runningJavaVersion = InternalUtilities.getJavaRunningVersionAsString();
         String targetJavaVersion = InternalUtilities.getJavaTargetVersionFromPom();
         String projectVersion = InternalUtilities.getProjectVersionString();
-        boolean isBackport = ("1.6".equals(targetJavaVersion));
         String message = "";
         message += "## Current configuration ##";
-        message += "\nLGoodDatePicker version: \"LGoodDatePicker ";
-        message += (isBackport) ? ("Backport " + projectVersion) : (projectVersion + " (Standard)");
+        message += "\nLGoodDatePicker version: \"LGoodDatePicker " + projectVersion;
         message += "\".";
         message += "\nJava target version: Java " + targetJavaVersion;
         message += "\nJava running version: " + runningJavaVersion;
-        message += "\n\nMinimum Requirements:"
-            + "\n\"LGoodDatePicker Standard\" requires Java 1.8 (or above). "
-            + "\n\"LGoodDatePicker Backport\" requires Java 1.6 or 1.7.";
+        message += "\n\nMinimum Requirements:\nLGoodDatePicker requires Java 8 (or above).";
         panel.messageTextArea.setText(message);
     }
 

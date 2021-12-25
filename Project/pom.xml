@@ -45,23 +45,6 @@ plugins in this file operate inside the "package" and "install" phases.
         <url>git@github.com:LGoodDatePicker/LGoodDatePicker.git</url>
     </scm>
 
-    <!-- ## Instructions for switching between Java 1.8 releases, and Java 1.6 releases. ##
-        Note: The project should only be committed to the GitHub master branch, while configured
-        for Java 1.8.
-
-        * For Java 1.6:
-        * In the POM properties section: Switch the maven source and target to 1.6.
-        * In the POM dependencies section: Uncomment the dependency section for "threetenbp".
-        * Replace the following string in all the project source files:
-          - "import java(dot)time" with "import org.threeten(dot)bp".
-
-        * For Java 1.8:
-        * In the POM properties section: Switch the maven source and target to 1.8.
-        * In the POM dependencies section: Comment out the dependency section for "threetenbp".
-        * Replace the following string in all the project source files:
-          - "import org.threeten(dot)bp" with "import java(dot)time".
-    -->
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -70,17 +53,8 @@ plugins in this file operate inside the "package" and "install" phases.
         <testrunparams>--add-opens java.desktop/java.awt=ALL-UNNAMED</testrunparams> <!-- allows parameters for the test execution to be set via mvn command line -->
         <license.maven.plugin.version>4.1</license.maven.plugin.version>
     </properties>
+
     <dependencies>
-
-        <!-- JSRThreeTen Backport. Uncomment this section when building for target Java 1.6. -->
-        <!--
-        <dependency>
-            <groupId>org.threeten</groupId>
-            <artifactId>threetenbp</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-        -->
-
         <!-- BeansBinding, This is only used in the data binding demo.
              uncomment this if you want to compile the data binding demo
         <dependency>
@@ -96,7 +70,6 @@ plugins in this file operate inside the "package" and "install" phases.
             <version>4.13.1</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <profiles>
@@ -109,7 +82,7 @@ plugins in this file operate inside the "package" and "install" phases.
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -217,7 +190,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.12.4</version>
+                <version>2.22.2</version>
                 <configuration>
                      <argLine>${testrunparams} -Dfile.encoding=${project.build.sourceEncoding}</argLine>
                 </configuration>
@@ -226,7 +199,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -240,7 +213,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
+                <version>3.2.0</version>
                 <configuration>
                   <archive>
                     <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
@@ -251,7 +224,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
+                <version>3.3.1</version>
                 <configuration>
                     <source>8</source>
                     <!-- Turn off errors resulting from the new (strict) Java 8 Javadoc standards. -->
@@ -270,7 +243,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -334,7 +307,7 @@ plugins in this file operate inside the "package" and "install" phases.
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>attach-artifacts</id>
