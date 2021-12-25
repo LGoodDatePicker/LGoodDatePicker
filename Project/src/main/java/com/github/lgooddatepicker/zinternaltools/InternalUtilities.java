@@ -167,7 +167,7 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
         if (sourceList == null || sourceList.isEmpty()) {
             return null;
         }
-        Map<T, Integer> hashMap = new HashMap<T, Integer>();
+        Map<T, Integer> hashMap = new HashMap<>();
         for (T element : sourceList) {
             Integer countOrNull = hashMap.get(element);
             int newCount = (countOrNull == null) ? 1 : (countOrNull + 1);

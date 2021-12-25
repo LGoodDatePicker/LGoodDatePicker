@@ -138,7 +138,7 @@ public class TimePicker
      * timeChangeListeners, This holds a list of time change listeners that wish to be notified
      * whenever the last valid time is changed.
      */
-    private ArrayList<TimeChangeListener> timeChangeListeners = new ArrayList<TimeChangeListener>();
+    private ArrayList<TimeChangeListener> timeChangeListeners = new ArrayList<>();
 
     /**
      * timeMenuPanel, This holds the menu panel GUI component of this time picker. This should be
@@ -410,7 +410,7 @@ public class TimePicker
      * that are registered with this TimePicker.
      */
     public ArrayList<TimeChangeListener> getTimeChangeListeners() {
-        return new ArrayList<TimeChangeListener>(timeChangeListeners);
+        return new ArrayList<>(timeChangeListeners);
     }
 
     /**

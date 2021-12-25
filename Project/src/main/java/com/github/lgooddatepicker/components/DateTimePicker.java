@@ -72,7 +72,7 @@ public class DateTimePicker extends JPanel {
      * notified whenever the last valid date or the last valid time has changed.
      */
     private ArrayList<DateTimeChangeListener> dateTimeChangeListeners
-            = new ArrayList<DateTimeChangeListener>();
+            = new ArrayList<>();
 
     /**
      * timePicker, This holds the time picker component of this DateTimePicker.
@@ -168,7 +168,7 @@ public class DateTimePicker extends JPanel {
      * that are registered with this DateTimePicker.
      */
     public ArrayList<DateTimeChangeListener> getDateTimeChangeListeners() {
-        return new ArrayList<DateTimeChangeListener>(dateTimeChangeListeners);
+        return new ArrayList<>(dateTimeChangeListeners);
     }
 
     /**

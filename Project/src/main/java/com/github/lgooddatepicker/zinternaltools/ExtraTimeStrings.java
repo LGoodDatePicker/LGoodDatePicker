@@ -57,7 +57,7 @@ public class ExtraTimeStrings {
         }
 
         // If no extra parsing formats were found, then return an empty list.
-        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<DateTimeFormatter>();
+        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<>();
         if (definedFormats == null) {
             return extraParsingFormatters;
         }

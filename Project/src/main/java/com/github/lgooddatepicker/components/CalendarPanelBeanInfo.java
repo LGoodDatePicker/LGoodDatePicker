@@ -72,8 +72,7 @@ public class CalendarPanelBeanInfo extends SimpleBeanInfo {
      * lowercase strings. Any properties that are not in this list, will be marked as "not
      * preferred". (All of the defaults for preferred properties are overwritten.)
      */
-    private static HashSet<String> preferredProperties = new HashSet<String>(Arrays.asList(
-            "selecteddate"));
+    private static HashSet<String> preferredProperties = new HashSet<>(Arrays.asList("selecteddate"));
 
     /**
      * propertyDescriptions, These are the descriptions to add to the properties. The key is the

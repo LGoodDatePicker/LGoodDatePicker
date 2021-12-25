@@ -72,8 +72,7 @@ public class DatePickerBeanInfo extends SimpleBeanInfo {
      * lowercase strings. Any properties that are not in this list, will be marked as "not
      * preferred". (All of the defaults for preferred properties are overwritten.)
      */
-    private static HashSet<String> preferredProperties = new HashSet<String>(Arrays.asList(
-            "date", "text"));
+    private static HashSet<String> preferredProperties = new HashSet<>(Arrays.asList("date", "text"));
 
     /**
      * propertyDescriptions, These are the descriptions to add to the properties. The key is the

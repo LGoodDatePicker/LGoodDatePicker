@@ -130,7 +130,7 @@ public final class FormSpecParser {
 
     // Parser Implementation **************************************************
     private List<String> split(String expression, int offset) {
-        List<String> encodedSpecs = new ArrayList<String>();
+        List<String> encodedSpecs = new ArrayList<>();
         int parenthesisLevel = 0;  // number of open '('
         int bracketLevel = 0;      // number of open '['
         int quoteLevel = 0;        // number of open '\''

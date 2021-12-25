@@ -413,12 +413,12 @@ public final class FormLayout implements LayoutManager2, Serializable {
     public FormLayout(ColumnSpec[] colSpecs, RowSpec[] rowSpecs) {
         checkNotNull(colSpecs, "The column specifications must not be null.");
         checkNotNull(rowSpecs, "The row specifications must not be null.");
-        this.colSpecs = new ArrayList<ColumnSpec>(Arrays.asList(colSpecs));
-        this.rowSpecs = new ArrayList<RowSpec>(Arrays.asList(rowSpecs));
+        this.colSpecs = new ArrayList<>(Arrays.asList(colSpecs));
+        this.rowSpecs = new ArrayList<>(Arrays.asList(rowSpecs));
         colGroupIndices = new int[][]{};
         rowGroupIndices = new int[][]{};
         int initialCapacity = colSpecs.length * rowSpecs.length / 4;
-        constraintMap = new HashMap<Component, CellConstraints>(initialCapacity);
+        constraintMap = new HashMap<>(initialCapacity);
         componentSizeCache = new ComponentSizeCache(initialCapacity);
         minimumWidthMeasure = new MinimumWidthMeasure(componentSizeCache);
         minimumHeightMeasure = new MinimumHeightMeasure(componentSizeCache);
@@ -1786,8 +1786,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
          * @param initialCapacity	the initial cache capacity
          */
         private ComponentSizeCache(int initialCapacity) {
-            minimumSizes = new HashMap<Component, Dimension>(initialCapacity);
-            preferredSizes = new HashMap<Component, Dimension>(initialCapacity);
+            minimumSizes = new HashMap<>(initialCapacity);
+            preferredSizes = new HashMap<>(initialCapacity);
         }
 
         /**

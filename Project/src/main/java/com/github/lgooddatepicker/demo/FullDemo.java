@@ -388,7 +388,7 @@ public class FullDemo {
         // Create a list to hold our border properties. Borders properties will be applied to the
         // calendar in the order that they appear this list.
         ArrayList<CalendarBorderProperties> borderProperties
-            = new ArrayList<CalendarBorderProperties>();
+            = new ArrayList<>();
         // Set all borders to be yellow, and 10 pixels thick.
         // (Parts of the yellow border will be overwritten by other border settings.)
         borderProperties.add(new CalendarBorderProperties(

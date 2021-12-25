@@ -202,7 +202,7 @@ public class TableEditorsDemo extends JPanel {
         columnLoop:
         for (int columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
             TableColumn column = table.getColumnModel().getColumn(columnIndex);
-            ArrayList<Class> nonNullTypes = new ArrayList<Class>();
+            ArrayList<Class> nonNullTypes = new ArrayList<>();
             // Loop through all the rows that should be sampled.
             rowLoop:
             for (int rowIndex = 0; (rowIndex < rowCount);
