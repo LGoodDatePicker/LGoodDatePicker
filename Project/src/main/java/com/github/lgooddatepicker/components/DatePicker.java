@@ -104,7 +104,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * dateChangeListeners, This holds a list of date change listeners that wish to be notified each
      * time that the last valid date is changed.
      */
-    private ArrayList<DateChangeListener> dateChangeListeners = new ArrayList<DateChangeListener>();
+    private ArrayList<DateChangeListener> dateChangeListeners = new ArrayList<>();
 
     /**
      * lastPopupCloseTime, This holds a timestamp that indicates when the calendar was last closed.
@@ -349,7 +349,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * that are registered with this DatePicker.
      */
     public ArrayList<DateChangeListener> getDateChangeListeners() {
-        return new ArrayList<DateChangeListener>(dateChangeListeners);
+        return new ArrayList<>(dateChangeListeners);
     }
 
     /**
@@ -1059,7 +1059,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
 
     public void addComponentListener(ComponentListener listener) {
         if (componentListeners == null) {
-            componentListeners = new ArrayList<ComponentListener>();
+            componentListeners = new ArrayList<>();
         }
         componentListeners.add(listener);
     }

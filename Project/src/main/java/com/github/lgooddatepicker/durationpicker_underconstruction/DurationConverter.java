@@ -247,7 +247,7 @@ public class DurationConverter {
 
     private static HashSet<DurationUnit> getUsedDurationUnitSet(
             DurationUnit smallestUnit, DurationUnit largestUnit) {
-        HashSet<DurationUnit> result = new HashSet<DurationUnit>();
+        HashSet<DurationUnit> result = new HashSet<>();
         for (DurationUnit unit : DurationUnit.values()) {
             if (unit.compareTo(smallestUnit) >= 0 && unit.compareTo(largestUnit) <= 0) {
                 result.add(unit);

@@ -142,7 +142,7 @@ public class CalendarPanelAssortmentTest {
         dateSettings = new DatePickerSettings();
         // Create a list to hold the border properties.
         ArrayList<CalendarBorderProperties> customPropertiesList
-                = new ArrayList<CalendarBorderProperties>();
+                = new ArrayList<>();
         // Set the borders properties for everything to Blue.
         CalendarBorderProperties weekdayLabelBorderProperties = new CalendarBorderProperties(
                 new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);
@@ -270,7 +270,7 @@ public class CalendarPanelAssortmentTest {
         calendarPanel = new CalendarPanel(dateSettings);
         // Create a list to hold the border properties.
         ArrayList<CalendarBorderProperties> customPropertiesList2
-                = new ArrayList<CalendarBorderProperties>();
+                = new ArrayList<>();
         // Set the borders properties for everything to Blue.
         CalendarBorderProperties weekdayLabelBorderProperties2 = new CalendarBorderProperties(
                 new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);

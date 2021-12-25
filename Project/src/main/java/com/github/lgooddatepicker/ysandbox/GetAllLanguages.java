@@ -35,7 +35,7 @@ import java.util.TreeSet;
 public class GetAllLanguages {
 
     public static void main(String[] args) {
-        TreeSet<String> languageCodes = new TreeSet<String>();
+        TreeSet<String> languageCodes = new TreeSet<>();
         for (Locale locale : Locale.getAvailableLocales()) {
             languageCodes.add(locale.getLanguage());
 

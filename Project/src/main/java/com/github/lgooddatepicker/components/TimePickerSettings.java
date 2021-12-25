@@ -340,7 +340,7 @@ public class TimePickerSettings {
      */
     public TimePickerSettings(Locale timeLocale) {
         // Add all the default colors to the colors map.
-        colors = new HashMap< TimeArea, Color>();
+        colors = new HashMap<>();
         for (TimeArea area : TimeArea.values()) {
             colors.put(area, area.defaultColor);
         }
@@ -357,7 +357,7 @@ public class TimePickerSettings {
         // Generate default parsing formats.
         FormatStyle[] allFormatStyles = new FormatStyle[]{
             FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
-        formatsForParsing = new ArrayList<DateTimeFormatter>();
+        formatsForParsing = new ArrayList<>();
         formatsForParsing.add(DateTimeFormatter.ISO_LOCAL_TIME);
         for (FormatStyle formatStyle : allFormatStyles) {
             DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().parseLenient().
@@ -406,7 +406,7 @@ public class TimePickerSettings {
         LocalTime startTime = (optionalStartTime == null) ? LocalTime.MIN : optionalStartTime;
         LocalTime endTime = (optionalEndTime == null) ? LocalTime.MAX : optionalEndTime;
         // Initialize our needed variables.
-        potentialMenuTimes = new ArrayList<LocalTime>();
+        potentialMenuTimes = new ArrayList<>();
         int increment = timeIncrement.minutes;
         // Start at midnight, which is the earliest time of day for LocalTime values.
         LocalTime entry = LocalTime.MIDNIGHT;
@@ -434,11 +434,11 @@ public class TimePickerSettings {
      * by this function.
      */
     public void generatePotentialMenuTimes(ArrayList<LocalTime> desiredTimes) {
-        potentialMenuTimes = new ArrayList<LocalTime>();
+        potentialMenuTimes = new ArrayList<>();
         if (desiredTimes == null || desiredTimes.isEmpty()) {
             return;
         }
-        TreeSet<LocalTime> timeSet = new TreeSet<LocalTime>();
+        TreeSet<LocalTime> timeSet = new TreeSet<>();
         for (LocalTime desiredTime : desiredTimes) {
             if (desiredTime != null) {
                 timeSet.add(desiredTime);

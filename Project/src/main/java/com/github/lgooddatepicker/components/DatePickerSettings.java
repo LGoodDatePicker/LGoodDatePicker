@@ -726,7 +726,7 @@ public class DatePickerSettings {
             result.colors = null;
         } else {
             // A shallow copy is okay here, because the map key and value are immutable types.
-            result.colors = new EnumMap<DateArea, Color>(this.colors);
+            result.colors = new EnumMap<>(this.colors);
         }
         result.firstDayOfWeek = this.firstDayOfWeek;
         // The Font class is immutable.
@@ -1832,7 +1832,7 @@ public class DatePickerSettings {
             FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
 
         // Create a set of default parsing formatters for the specified locale.
-        ArrayList<DateTimeFormatter> parsingFormats = new ArrayList<DateTimeFormatter>();
+        ArrayList<DateTimeFormatter> parsingFormats = new ArrayList<>();
         DateTimeFormatter parseFormat;
         for (int i = 0; i < allFormatStyles.length; ++i) {
             parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
@@ -2335,7 +2335,7 @@ public class DatePickerSettings {
      * invisible.
      */
     private ArrayList<CalendarBorderProperties> zGetDefaultBorderPropertiesList() {
-        ArrayList<CalendarBorderProperties> results = new ArrayList<CalendarBorderProperties>();
+        ArrayList<CalendarBorderProperties> results = new ArrayList<>();
         Color defaultDateBoxBorderColor = new Color(99, 130, 191);
         Color defaultWeekdayEndcapsBorderColor = colorBackgroundWeekdayLabels;
         Color defaultWeekNumberEndcapsBorderColor = colorBackgroundWeekNumberLabels;

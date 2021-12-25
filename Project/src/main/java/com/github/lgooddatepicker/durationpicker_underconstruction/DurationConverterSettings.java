@@ -62,7 +62,7 @@ public class DurationConverterSettings {
         }
         this.locale = locale;
 
-        translationsUnitsSingular = new HashMap<DurationUnit, String>();
+        translationsUnitsSingular = new HashMap<>();
         translationsUnitsSingular.put(DurationUnit.Second,
                 TranslationSource.getTranslation(locale, "singular.Second", "sec"));
         translationsUnitsSingular.put(DurationUnit.Minute,
@@ -78,7 +78,7 @@ public class DurationConverterSettings {
         translationsUnitsSingular.put(DurationUnit.Year,
                 TranslationSource.getTranslation(locale, "singular.Year", "year"));
 
-        translationsUnitsPlural = new HashMap<DurationUnit, String>();
+        translationsUnitsPlural = new HashMap<>();
         translationsUnitsPlural.put(DurationUnit.Second,
                 TranslationSource.getTranslation(locale, "plural.Second", "secs"));
         translationsUnitsPlural.put(DurationUnit.Minute,
@@ -117,7 +117,7 @@ public class DurationConverterSettings {
     }
 
     public HashMap<DurationUnit, Boolean> getSimplePluralUnitsMap(boolean settingForAllUnits) {
-        HashMap<DurationUnit, Boolean> result = new HashMap<DurationUnit, Boolean>();
+        HashMap<DurationUnit, Boolean> result = new HashMap<>();
         result.put(DurationUnit.Second, settingForAllUnits);
         result.put(DurationUnit.Minute, settingForAllUnits);
         result.put(DurationUnit.Hour, settingForAllUnits);

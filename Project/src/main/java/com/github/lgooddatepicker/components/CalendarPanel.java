@@ -121,7 +121,7 @@ public class CalendarPanel extends JPanel {
      * that a date is selected in the calendar panel, or the YearMonth is changed in the calendar
      * panel.
      */
-    private ArrayList<CalendarListener> calendarListeners = new ArrayList<CalendarListener>();
+    private ArrayList<CalendarListener> calendarListeners = new ArrayList<>();
 
     /**
      * constantFirstWeekdayLabelCell, This constant indicates the location of the first weekday
@@ -413,7 +413,7 @@ public class CalendarPanel extends JPanel {
      * This function should not depend on any settings variables.
      */
     private void addDateLabels() {
-        dateLabels = new ArrayList<JLabel>();
+        dateLabels = new ArrayList<>();
         for (int i = 0; i < 42; ++i) {
             int dateLabelColumnX = ((i % 7)) + constantFirstDateLabelCell.x;
             int dateLabelRowY = ((i / 7) + constantFirstDateLabelCell.y);
@@ -446,7 +446,7 @@ public class CalendarPanel extends JPanel {
      * This function should not depend on any settings variables.
      */
     private void addWeekNumberLabels() {
-        weekNumberLabels = new ArrayList<JLabel>();
+        weekNumberLabels = new ArrayList<>();
         int weekNumberLabelColumnX = constantFirstWeekNumberLabelCell.x;
         int weekNumberLabelWidthInCells = 1;
         int weekNumberLabelHeightInCells = 1;
@@ -475,7 +475,7 @@ public class CalendarPanel extends JPanel {
      * This function should not depend on any settings variables.
      */
     private void addWeekdayLabels() {
-        weekdayLabels = new ArrayList<JLabel>();
+        weekdayLabels = new ArrayList<>();
         int weekdayLabelRowY = constantFirstWeekdayLabelCell.y;
         int weekdayLabelWidthInCells = 1;
         int weekdayLabelHeightInCells = 3;
@@ -713,7 +713,7 @@ public class CalendarPanel extends JPanel {
             });
         }
         // Set the days of the week labels, and create an array to represent the weekday positions.
-        ArrayList<DayOfWeek> daysOfWeekAsDisplayed = new ArrayList<DayOfWeek>();
+        ArrayList<DayOfWeek> daysOfWeekAsDisplayed = new ArrayList<>();
         int isoFirstDayOfWeekValue = settings.getFirstDayOfWeekDisplayedOnCalendar().getValue();
         int isoLastDayOfWeekOverflowed = isoFirstDayOfWeekValue + 6;
         int weekdayLabelArrayIndex = 0;
@@ -729,7 +729,7 @@ public class CalendarPanel extends JPanel {
         // Set the dates of the month labels.
         // Also save the label for the selected date, if one is present in the current month.
         // Also save the first date in each used row, for later use while displaying week numbers.
-        ArrayList<LocalDate> firstDateInEachUsedRow = new ArrayList<LocalDate>();
+        ArrayList<LocalDate> firstDateInEachUsedRow = new ArrayList<>();
         boolean insideValidRange = false;
         int dayOfMonth = 1;
         JLabel selectedDateLabel = null;
@@ -902,7 +902,7 @@ public class CalendarPanel extends JPanel {
      * are registered with this CalendarPanel.
      */
     public ArrayList<CalendarListener> getCalendarListeners() {
-        return new ArrayList<CalendarListener>(calendarListeners);
+        return new ArrayList<>(calendarListeners);
     }
 
     /**
@@ -1812,7 +1812,7 @@ public class CalendarPanel extends JPanel {
     private Integer zGetWeekNumberForASevenDayRange(LocalDate firstDateInRange,
         WeekFields weekFieldRules, boolean requireUnanimousWeekNumber) {
         // Get the week number for each of the seven days in the range.
-        ArrayList<Integer> weekNumbersList = new ArrayList<Integer>();
+        ArrayList<Integer> weekNumbersList = new ArrayList<>();
         for (int daysIntoTheFuture = 0; daysIntoTheFuture <= 6; ++daysIntoTheFuture) {
             LocalDate currentDateInRange;
             // This try block handles an exception that can occur at LocalDate.MAX

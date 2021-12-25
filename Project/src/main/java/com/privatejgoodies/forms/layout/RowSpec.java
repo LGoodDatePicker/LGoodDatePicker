@@ -91,7 +91,7 @@ public final class RowSpec extends FormSpec {
      * Maps encoded row specifications to RowSpec instances.
      */
     private static final Map<String, RowSpec> CACHE
-            = new HashMap<String, RowSpec>();
+            = new HashMap<>();
 
     // Instance Creation ****************************************************
     /**

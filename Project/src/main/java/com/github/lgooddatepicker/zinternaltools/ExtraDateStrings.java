@@ -81,7 +81,7 @@ public class ExtraDateStrings {
         }
 
         // If no extra parsing formats were found, then return an empty list.
-        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<DateTimeFormatter>();
+        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<>();
         if (definedFormats == null) {
             return extraParsingFormatters;
         }
@@ -163,7 +163,7 @@ public class ExtraDateStrings {
     private static String[] getStandaloneMonthNamesArray(Locale locale, boolean capitalize,
             boolean shortVersion) {
         Month[] monthEnums = Month.values();
-        ArrayList<String> monthNamesArrayList = new ArrayList<String>();
+        ArrayList<String> monthNamesArrayList = new ArrayList<>();
         for (Month monthEnum : monthEnums) {
             monthNamesArrayList.add(getStandaloneMonthName(monthEnum, locale, capitalize, shortVersion));
         }
@@ -209,7 +209,7 @@ public class ExtraDateStrings {
     public static String[] getFormattingMonthNamesArray(Locale locale, boolean capitalize,
             boolean shortVersion) {
         Month[] monthEnums = Month.values();
-        ArrayList<String> monthNamesArrayList = new ArrayList<String>();
+        ArrayList<String> monthNamesArrayList = new ArrayList<>();
         for (Month monthEnum : monthEnums) {
             monthNamesArrayList.add(getFormattingMonthName(
                     monthEnum, locale, capitalize, shortVersion));

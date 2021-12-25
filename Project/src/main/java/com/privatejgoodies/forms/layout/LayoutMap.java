@@ -130,13 +130,13 @@ public final class LayoutMap {
      * {@code "rgap"} -> {@code "related-gap"}.
      */
     private static final Map<String, String> COLUMN_ALIASES
-            = new HashMap<String, String>();
+            = new HashMap<>();
 
     /**
      * Maps row aliases to their default name, for example {@code "rgap"} -> {@code "related-gap"}.
      */
     private static final Map<String, String> ROW_ALIASES
-            = new HashMap<String, String>();
+            = new HashMap<>();
 
     /**
      * Holds the lazily initialized root map.
@@ -189,10 +189,10 @@ public final class LayoutMap {
      */
     public LayoutMap(LayoutMap parent) {
         this.parent = parent;
-        columnMap = new HashMap<String, String>();
-        rowMap = new HashMap<String, String>();
-        columnMapCache = new HashMap<String, String>();
-        rowMapCache = new HashMap<String, String>();
+        columnMap = new HashMap<>();
+        rowMap = new HashMap<>();
+        columnMapCache = new HashMap<>();
+        rowMapCache = new HashMap<>();
     }
 
     // Default ****************************************************************
