@@ -112,6 +112,7 @@ public class DatePickerSettings {
         TextFieldBackgroundValidDate(Color.white),
         TextFieldBackgroundVetoedDate(Color.white),
         TextFieldBackgroundDisabled(new Color(240, 240, 240)),
+        TextFieldBorder(new Color(122, 138, 153)),
         DatePickerTextInvalidDate(Color.red),
         DatePickerTextValidDate(Color.black),
         DatePickerTextVetoedDate(Color.black),

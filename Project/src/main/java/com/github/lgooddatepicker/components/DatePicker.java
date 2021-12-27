@@ -25,7 +25,6 @@ package com.github.lgooddatepicker.components;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
 import java.awt.event.*;
-import javax.swing.border.*;
 import com.github.lgooddatepicker.zinternaltools.*;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalculateMinimumDateFieldSize;
 import com.github.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
@@ -45,6 +43,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
 import java.util.Locale;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -952,9 +951,6 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
 
         //---- dateTextField ----
         dateTextField.setMargin(new Insets(1, 3, 2, 2));
-        dateTextField.setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-                new EmptyBorder(1, 3, 2, 2)));
         dateTextField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusLost(FocusEvent e) {
@@ -1005,6 +1001,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         // (Possibility: ValidFullOrEmptyValue)
         dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundValidDate));
         dateTextField.setForeground(settings.getColor(DateArea.DatePickerTextValidDate));
+        dateTextField.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, settings.getColor(DateArea.TextFieldBorder)),
+                BorderFactory.createEmptyBorder(1, 3, 2, 2)));
         dateTextField.setFont(settings.getFontValidDate());
         // Get the text, and check to see if it is empty.
         String dateText = dateTextField.getText();
