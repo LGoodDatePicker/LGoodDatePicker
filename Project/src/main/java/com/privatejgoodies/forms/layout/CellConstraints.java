@@ -769,12 +769,12 @@ public final class CellConstraints implements Cloneable, Serializable {
         Integer nextInt = decodeInt(tokenizer.nextToken());
         checkArgument(nextInt != null,
                 "First cell constraint element must be a number.");
-        gridX = nextInt.intValue();
+        gridX = nextInt;
         checkArgument(gridX > 0, "The grid x must be a positive number.");
         nextInt = decodeInt(tokenizer.nextToken());
         checkArgument(nextInt != null,
                 "Second cell constraint element must be a number.");
-        gridY = nextInt.intValue();
+        gridY = nextInt;
         checkArgument(gridY > 0, "The grid y must be a positive number.");
         if (!tokenizer.hasMoreTokens()) {
             return;
@@ -785,7 +785,7 @@ public final class CellConstraints implements Cloneable, Serializable {
         if (nextInt != null) {
             // Case: "x, y, w, h" or
             //       "x, y, w, h, hAlign, vAlign"
-            gridWidth = nextInt.intValue();
+            gridWidth = nextInt;
             if (gridWidth <= 0) {
                 throw new IndexOutOfBoundsException(
                         "The grid width must be a positive number.");
@@ -795,7 +795,7 @@ public final class CellConstraints implements Cloneable, Serializable {
                 throw new IllegalArgumentException(
                         "Fourth cell constraint element must be like third.");
             }
-            gridHeight = nextInt.intValue();
+            gridHeight = nextInt;
             if (gridHeight <= 0) {
                 throw new IndexOutOfBoundsException(
                         "The grid height must be a positive number.");
@@ -1175,7 +1175,7 @@ public final class CellConstraints implements Cloneable, Serializable {
             buffer.append(insets);
         }
         if (honorsVisibility != null) {
-            buffer.append(honorsVisibility.booleanValue()
+            buffer.append(honorsVisibility
                     ? "honors visibility"
                     : "ignores visibility");
         }
