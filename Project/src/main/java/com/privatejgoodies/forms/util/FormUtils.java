@@ -59,9 +59,9 @@ public final class FormUtils {
     public static boolean isLafAqua() {
         ensureValidCache();
         if (cachedIsLafAqua == null) {
-            cachedIsLafAqua = Boolean.valueOf(computeIsLafAqua());
+            cachedIsLafAqua = computeIsLafAqua();
         }
-        return cachedIsLafAqua.booleanValue();
+        return cachedIsLafAqua;
     }
 
     // Caching and Lazily Computing the Laf State *****************************

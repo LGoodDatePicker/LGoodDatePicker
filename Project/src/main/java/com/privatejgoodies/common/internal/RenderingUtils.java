@@ -100,7 +100,7 @@ public final class RenderingUtils {
         if (drawStringMethod != null) {
             try {
                 drawStringMethod.invoke(null,
-                        c, g, text, Integer.valueOf(x), Integer.valueOf(y));
+                        c, g, text, x, y);
                 return;
             } catch (IllegalArgumentException e) {
                 // Use the BasicGraphicsUtils as fallback
