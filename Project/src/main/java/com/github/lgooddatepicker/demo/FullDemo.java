@@ -66,7 +66,6 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionListener;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -722,13 +721,7 @@ public class FullDemo {
     }
 
     private static void registerEnabledCheckbox(Checkbox cb, java.awt.Component managedComp) {
-        cb.addItemListener(new java.awt.event.ItemListener()
-        {
-            @Override
-            public void itemStateChanged( java.awt.event.ItemEvent e ) {
-                managedComp.setEnabled(e.getStateChange() == java.awt.event.ItemEvent.SELECTED);
-            }
-        });
+        cb.addItemListener(e -> managedComp.setEnabled(e.getStateChange() == java.awt.event.ItemEvent.SELECTED));
     }
 
 
@@ -871,52 +864,22 @@ public class FullDemo {
         // Create each demo button, and add it to the panel.
         // Add an action listener to link it to its appropriate function.
         JButton showIntro = new JButton("Show Introduction Message");
-        showIntro.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showIntroductionClicked(e);
-            }
-        });
+        showIntro.addActionListener(e -> showIntroductionClicked(e));
         buttonPanel.add(showIntro);
         JButton setTwoWithY2K = new JButton("Set DatePicker Two with New Years Day 2000");
-        setTwoWithY2K.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setTwoWithY2KButtonClicked(e);
-            }
-        });
+        setTwoWithY2K.addActionListener(e -> setTwoWithY2KButtonClicked(e));
         buttonPanel.add(setTwoWithY2K);
         JButton setDateOneWithTwo = new JButton("Set DatePicker One with the date in Two");
-        setDateOneWithTwo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setOneWithTwoButtonClicked(e);
-            }
-        });
+        setDateOneWithTwo.addActionListener(e -> setOneWithTwoButtonClicked(e));
         buttonPanel.add(setDateOneWithTwo);
         JButton setOneWithFeb31 = new JButton("Set Text in DatePicker One to Feb 31, 1950");
-        setOneWithFeb31.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setOneWithFeb31ButtonClicked(e);
-            }
-        });
+        setOneWithFeb31.addActionListener(e -> setOneWithFeb31ButtonClicked(e));
         buttonPanel.add(setOneWithFeb31);
         JButton getOneAndShow = new JButton("Get and show the date in DatePicker One");
-        getOneAndShow.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                getOneAndShowButtonClicked(e);
-            }
-        });
+        getOneAndShow.addActionListener(e -> getOneAndShowButtonClicked(e));
         buttonPanel.add(getOneAndShow);
         JButton clearOneAndTwo = new JButton("Clear DatePickers One and Two");
-        clearOneAndTwo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                clearOneAndTwoButtonClicked(e);
-            }
-        });
+        clearOneAndTwo.addActionListener(e -> clearOneAndTwoButtonClicked(e));
         buttonPanel.add(clearOneAndTwo);
         JButton toggleButton = new JButton("Toggle DatePicker One");
         toggleButton.addMouseListener(new MouseAdapter() {
@@ -927,12 +890,7 @@ public class FullDemo {
         });
         buttonPanel.add(toggleButton);
         JButton setTimeOneWithTwo = new JButton("TimePickers: Set TimePicker One with the time in Two");
-        setTimeOneWithTwo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setTimeOneWithTimeTwoButtonClicked(e);
-            }
-        });
+        setTimeOneWithTwo.addActionListener(e -> setTimeOneWithTimeTwoButtonClicked(e));
         buttonPanel.add(setTimeOneWithTwo);
         JButton timeToggleButton = new JButton("Toggle TimePicker One");
         timeToggleButton.addMouseListener(new MouseAdapter() {

@@ -144,12 +144,7 @@ public class TableEditorsDemo extends JPanel {
      * run by pressing the matching button in the "FullDemo" program.
      */
     public static void main(String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                createAndShowTableDemoFrame();
-            }
-        });
+        javax.swing.SwingUtilities.invokeLater(() -> createAndShowTableDemoFrame());
     }
 
     /**

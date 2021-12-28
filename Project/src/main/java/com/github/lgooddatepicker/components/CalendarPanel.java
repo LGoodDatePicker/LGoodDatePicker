@@ -38,7 +38,6 @@ import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
-import com.github.lgooddatepicker.zinternaltools.JIntegerTextField.IntegerTextFieldNumberChangeListener;
 import com.github.lgooddatepicker.zinternaltools.MouseLiberalAdapter;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import com.privatejgoodies.forms.layout.CellConstraints;
@@ -315,20 +314,12 @@ public class CalendarPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
         // Add the text change listener to the yearTextField.
-        yearTextField.numberChangeListener = new IntegerTextFieldNumberChangeListener() {
-            @Override
-            public void integerTextFieldNumberChanged(JIntegerTextField source, int newValue) {
-                YearMonth newYearMonth = YearMonth.of(newValue, displayedYearMonth.getMonth());
-                drawCalendar(newYearMonth);
-            }
+        yearTextField.numberChangeListener = (source, newValue) -> {
+            YearMonth newYearMonth = YearMonth.of(newValue, displayedYearMonth.getMonth());
+            drawCalendar(newYearMonth);
         };
         // Issue #113: Pressing enter does the same as pressing the doneEditingYearButton.
-        yearTextField.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    doneEditingYearButtonActionPerformed(e);
-                }
-        });
+        yearTextField.addActionListener(e -> doneEditingYearButtonActionPerformed(e));
         // Initialize the doneEditingYearButton.
         doneEditingYearButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
         doneEditingYearButton.setText("\u2713");
@@ -703,13 +694,10 @@ public class CalendarPanel extends JPanel {
             // This invokeLater call fixes a bug where an exception was being thrown if you typed
             // "0X" into the year text field. The exception was:
             // "IllegalStateException: Attempt to mutate in notification".
-            SwingUtilities.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    yearTextField.skipNotificationOfNumberChangeListenerWhileTrue = true;
-                    yearTextField.setText(displayedYearString);
-                    yearTextField.skipNotificationOfNumberChangeListenerWhileTrue = false;
-                }
+            SwingUtilities.invokeLater(() -> {
+                yearTextField.skipNotificationOfNumberChangeListenerWhileTrue = true;
+                yearTextField.setText(displayedYearString);
+                yearTextField.skipNotificationOfNumberChangeListenerWhileTrue = false;
             });
         }
         // Set the days of the week labels, and create an array to represent the weekday positions.
@@ -1478,12 +1466,7 @@ public class CalendarPanel extends JPanel {
             buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
             buttonPreviousYear.setFont(new Font("Monospaced", Font.BOLD, 12));
-            buttonPreviousYear.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonPreviousYearActionPerformed(e);
-                }
-            });
+            buttonPreviousYear.addActionListener(e -> buttonPreviousYearActionPerformed(e));
             headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
             //---- buttonPreviousMonth ----
@@ -1493,12 +1476,7 @@ public class CalendarPanel extends JPanel {
             buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
             buttonPreviousMonth.setFont(new Font("Monospaced", Font.BOLD, 12));
-            buttonPreviousMonth.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonPreviousMonthActionPerformed(e);
-                }
-            });
+            buttonPreviousMonth.addActionListener(e -> buttonPreviousMonthActionPerformed(e));
             headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
             //======== monthAndYearOuterPanel ========
@@ -1567,12 +1545,7 @@ public class CalendarPanel extends JPanel {
             buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
             buttonNextMonth.setFont(new Font("Monospaced", Font.BOLD, 12));
-            buttonNextMonth.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonNextMonthActionPerformed(e);
-                }
-            });
+            buttonNextMonth.addActionListener(e -> buttonNextMonthActionPerformed(e));
             headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
 
             //---- buttonNextYear ----
@@ -1582,12 +1555,7 @@ public class CalendarPanel extends JPanel {
             buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
             buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
             buttonNextYear.setFont(new Font("Monospaced", Font.BOLD, 12));
-            buttonNextYear.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    buttonNextYearActionPerformed(e);
-                }
-            });
+            buttonNextYear.addActionListener(e -> buttonNextYearActionPerformed(e));
             headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
         }
         add(headerControlsPanel, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
@@ -1645,12 +1613,7 @@ public class CalendarPanel extends JPanel {
             //---- doneEditingYearButton ----
             doneEditingYearButton.setFocusPainted(false);
             doneEditingYearButton.setFocusable(false);
-            doneEditingYearButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    doneEditingYearButtonActionPerformed(e);
-                }
-            });
+            doneEditingYearButton.addActionListener(e -> doneEditingYearButtonActionPerformed(e));
             yearEditorPanel.add(doneEditingYearButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
