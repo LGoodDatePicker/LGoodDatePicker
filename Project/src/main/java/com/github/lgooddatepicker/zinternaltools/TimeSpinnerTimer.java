@@ -23,8 +23,7 @@
 package com.github.lgooddatepicker.zinternaltools;
 
 import com.github.lgooddatepicker.components.TimePicker;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import javax.swing.Timer;
 
 /**
@@ -98,12 +97,7 @@ public class TimeSpinnerTimer {
     public TimeSpinnerTimer(TimePicker timePicker, int changeAmountMinutes) {
         this.timePicker = timePicker;
         this.changeAmountMinutes = changeAmountMinutes;
-        timer = new Timer(timerRate, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                tick();
-            }
-        });
+        timer = new Timer(timerRate, event -> tick());
         timer.setInitialDelay(startDelayMillis);
     }
 

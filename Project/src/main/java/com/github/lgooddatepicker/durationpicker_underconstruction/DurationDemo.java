@@ -47,14 +47,11 @@ public class DurationDemo extends JFrame {
      */
     public static void main(String[] args) {
         // Use the standard swing code to start this demo inside a swing thread.
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // Create an instance of the demo.
-                DurationDemo demo = new DurationDemo();
-                // Make the demo visible on the screen.
-                demo.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            // Create an instance of the demo.
+            DurationDemo demo = new DurationDemo();
+            // Make the demo visible on the screen.
+            demo.setVisible(true);
         });
     }
 
