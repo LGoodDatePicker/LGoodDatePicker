@@ -11,7 +11,7 @@ General Discussion: [Discussion Thread](https://github.com/LGoodDatePicker/LGood
 
 ## News:
 
-* [LGoodDatePicker 11.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on February 28, 2021. This version adds the Icelandic language translation and the possibility to customize the colors of date and time pickers in disabled state. This is the last version that supports Java 6 and 7.
+* [LGoodDatePicker 11.2.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on February 28, 2021. This version adds the Icelandic language translation and the possibility to customize the colors of date and time pickers in disabled state. This is the last version that will still support the older Java versions, Java 6 or 7. Future releases will require Java 8 or higher.
 
 * [LGoodDatePicker 11.1.0](https://github.com/LGoodDatePicker/LGoodDatePicker/releases) was released on September 30, 2020. This version adds the possibility to customize the colors used for the mouse hover highlight of the calendar panel labels.
 
