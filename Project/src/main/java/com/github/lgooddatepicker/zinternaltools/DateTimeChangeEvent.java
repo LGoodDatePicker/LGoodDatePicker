@@ -42,7 +42,7 @@ public class DateTimeChangeEvent {
      * Constructor.
      */
     public DateTimeChangeEvent(DateTimePicker source, DatePicker datePicker, TimePicker timePicker,
-            DateChangeEvent dateChangeEvent, TimeChangeEvent timeChangeEvent) {
+        DateChangeEvent dateChangeEvent, TimeChangeEvent timeChangeEvent) {
         this.source = source;
         this.datePicker = datePicker;
         this.timePicker = timePicker;

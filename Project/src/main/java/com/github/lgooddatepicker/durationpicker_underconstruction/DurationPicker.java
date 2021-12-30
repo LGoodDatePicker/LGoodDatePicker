@@ -58,13 +58,12 @@ import javax.swing.JComboBox;
 public class DurationPicker extends JComboBox {
 
     private DurationConverterSettings converterSettings;
-    // Red border when text is in disallowed state. 
+    // Red border when text is in disallowed state.
     private boolean allowEmptyDuration = true;
     private boolean allowZeroDuration = false;
     private Duration allowMinimumDuration = Duration.ofSeconds(0);
-    // 4,000,000 days is a little over 10,000 years. 
+    // 4,000,000 days is a little over 10,000 years.
     private Duration allowMaximumDuration = Duration.ofDays(4000000);
-
 
     public DurationPicker() {
         this(null);
@@ -72,37 +71,37 @@ public class DurationPicker extends JComboBox {
     }
 
     public DurationPicker(DurationConverterSettings converterSettings) {
-        if(converterSettings == null) {
-            converterSettings = new DurationConverterSettings(); 
+        if (converterSettings == null) {
+            converterSettings = new DurationConverterSettings();
         }
         this.converterSettings = converterSettings;
     }
 
     public void setDuration(Duration duration) {
-        //Todo: implement setDuration().
+        // Todo: implement setDuration().
     }
 
     public Duration getDuration() {
         return null;
-        //Todo: implement getDuration().
+        // Todo: implement getDuration().
     }
 
     public void setText(String text) {
-        //Todo: implement setText().
+        // Todo: implement setText().
     }
 
     public String getText() {
         return null;
-        //Todo: implement getText().
+        // Todo: implement getText().
     }
 
     public void setMenuItems(ArrayList<Duration> menuItemDurations) {
-        //Todo: implement setMenuItems().
+        // Todo: implement setMenuItems().
     }
 
     public ArrayList<Duration> getMenuItems() {
         return null;
-        //Todo: implement getMenuItems().
+        // Todo: implement getMenuItems().
     }
 
 }

@@ -83,7 +83,7 @@ public class TableEditorsDemo extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         this.add(scrollPane);
 
-        // Set a background color for the table. Note that by default, the picker table editors 
+        // Set a background color for the table. Note that by default, the picker table editors
         // will match the table background color. This is expected behavior for table editors.
         // Color matching can be turned off if desired, from the table editor class constructors.
         table.setBackground(new Color(190, 240, 255));
@@ -94,7 +94,7 @@ public class TableEditorsDemo extends JPanel {
 
         // Add table renderers and editors for the LocalDate, LocalTime, and LocalDateTime types.
         //
-        // Note: The editors and renders for each type should be separate instances of the 
+        // Note: The editors and renders for each type should be separate instances of the
         // matching table editor class. Don't use the same instance as both a renderer and editor.
         // If you did, it would be immediately obvious because the cells would not render properly.
         table.setDefaultRenderer(LocalDate.class, new DateTableEditor());
@@ -112,7 +112,7 @@ public class TableEditorsDemo extends JPanel {
         dateTimeEdit.clickCountToEdit = clickCountToEdit;
         table.setDefaultEditor(LocalDateTime.class, dateTimeEdit);
 
-        // Explicitly set the default editor instance (data type) for each column, by looking at 
+        // Explicitly set the default editor instance (data type) for each column, by looking at
         // the most common data type found in each column.
         zSetAllColumnEditorsAndRenderers(table);
 
@@ -126,13 +126,13 @@ public class TableEditorsDemo extends JPanel {
     public static void createAndShowTableDemoFrame() {
         // Create and set up the frame and the table demo panel.
         JFrame frame = new JFrame("LGoodDatePicker Table Editors Demo "
-                + InternalUtilities.getProjectVersionString());
+            + InternalUtilities.getProjectVersionString());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         TableEditorsDemo tableDemoPanel = new TableEditorsDemo();
         frame.setContentPane(tableDemoPanel);
         tableDemoPanel.setOpaque(true);
 
-        //Display the frame.
+        // Display the frame.
         frame.pack();
         frame.setSize(new Dimension(1000, 700));
         frame.setLocationRelativeTo(null);
@@ -194,14 +194,12 @@ public class TableEditorsDemo extends JPanel {
         // Calculate the increment for looping through the bulk rows.
         int bulkRowIncrement = Math.max(1, (rowCount / maxBulkRowsToRead));
         // Loop through all the columns.
-        columnLoop:
-        for (int columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
+        columnLoop: for (int columnIndex = 0; columnIndex < columnCount; ++columnIndex) {
             TableColumn column = table.getColumnModel().getColumn(columnIndex);
             ArrayList<Class> nonNullTypes = new ArrayList<>();
             // Loop through all the rows that should be sampled.
-            rowLoop:
-            for (int rowIndex = 0; (rowIndex < rowCount);
-                    rowIndex += ((rowIndex < maxStartRowsToRead) ? 1 : bulkRowIncrement)) {
+            rowLoop: for (int rowIndex = 0; (rowIndex < rowCount); rowIndex += ((rowIndex < maxStartRowsToRead) ? 1
+                : bulkRowIncrement)) {
                 // Get the value in each row.
                 Object value = model.getValueAt(rowIndex, columnIndex);
                 if (value == null) {
@@ -209,7 +207,7 @@ public class TableEditorsDemo extends JPanel {
                 }
                 // Save any found non-null types.
                 nonNullTypes.add(value.getClass());
-                // If we have already found "maxFoundSamplesToExamine" types, then use those 
+                // If we have already found "maxFoundSamplesToExamine" types, then use those
                 // samples to determine the column type.
                 if (nonNullTypes.size() >= maxFoundSamplesToExamine) {
                     Class mostCommonType = InternalUtilities.getMostCommonElementInList(nonNullTypes);
@@ -218,8 +216,8 @@ public class TableEditorsDemo extends JPanel {
                     continue columnLoop;
                 }
             } // End: rowLoop
-            // There are no more rows to examine.
-            // If we found any non-null types at all, then use those to choose the column type.
+              // There are no more rows to examine.
+              // If we found any non-null types at all, then use those to choose the column type.
             if (nonNullTypes.size() > 0) {
                 Class mostCommonType = InternalUtilities.getMostCommonElementInList(nonNullTypes);
                 column.setCellRenderer(table.getDefaultRenderer(mostCommonType));
@@ -240,7 +238,7 @@ public class TableEditorsDemo extends JPanel {
         /**
          * columnNames, These are the names of the table columns.
          */
-        private String[] columnNames = {"Date", "Time", "DateTime", "String", "Integer", "Boolean"};
+        private String[] columnNames = { "Date", "Time", "DateTime", "String", "Integer", "Boolean" };
 
         /**
          * dateTimeColumnIndex, This specifies the index of the date time column.
@@ -251,13 +249,13 @@ public class TableEditorsDemo extends JPanel {
          * data, This is the initial data that is contained in the table cells.
          */
         private Object[][] data = {
-            {LocalDate.now(), LocalTime.now(), LocalDateTime.now(), "Jane", 5, false},
-            {LocalDate.now().plusDays(1), LocalTime.now().plusHours(1), LocalDateTime.now(), "Alison", 3, true},
-            {LocalDate.now().plusDays(2), LocalTime.now().plusHours(2), LocalDateTime.now(), "Kathy", -2, false},
-            {LocalDate.now().plusDays(3), LocalTime.now().plusHours(3), LocalDateTime.now(), "Sharon", 2, true},
-            {LocalDate.now().plusDays(4), LocalTime.now().plusHours(4), LocalDateTime.now(), "Philip", 10, false},
-            {"randomtext", "randomtext", "randomtext", "randomtext", "randomtext", false},
-            {null, null, null, null, null, null}
+            { LocalDate.now(), LocalTime.now(), LocalDateTime.now(), "Jane", 5, false },
+            { LocalDate.now().plusDays(1), LocalTime.now().plusHours(1), LocalDateTime.now(), "Alison", 3, true },
+            { LocalDate.now().plusDays(2), LocalTime.now().plusHours(2), LocalDateTime.now(), "Kathy", -2, false },
+            { LocalDate.now().plusDays(3), LocalTime.now().plusHours(3), LocalDateTime.now(), "Sharon", 2, true },
+            { LocalDate.now().plusDays(4), LocalTime.now().plusHours(4), LocalDateTime.now(), "Philip", 10, false },
+            { "randomtext", "randomtext", "randomtext", "randomtext", "randomtext", false },
+            { null, null, null, null, null, null }
         };
 
         /**

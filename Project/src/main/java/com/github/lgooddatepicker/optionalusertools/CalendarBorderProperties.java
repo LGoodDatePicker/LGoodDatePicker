@@ -73,7 +73,7 @@ public class CalendarBorderProperties {
      * Constructor, with properties.
      */
     public CalendarBorderProperties(Point upperLeft, Point lowerRight,
-            Color backgroundColor, Integer thicknessInPixels) {
+        Color backgroundColor, Integer thicknessInPixels) {
         this.upperLeft = upperLeft;
         this.lowerRight = lowerRight;
         this.backgroundColor = backgroundColor;

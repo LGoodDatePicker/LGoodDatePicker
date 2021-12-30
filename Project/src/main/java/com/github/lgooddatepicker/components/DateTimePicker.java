@@ -22,16 +22,16 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.layout.ConstantSize;
-import com.privatejgoodies.forms.layout.ColumnSpec;
-import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.ConstantSize;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -71,8 +71,7 @@ public class DateTimePicker extends JPanel {
      * dateTimeChangeListeners, This holds a list of dateTimeChangeListeners that wish to be
      * notified whenever the last valid date or the last valid time has changed.
      */
-    private ArrayList<DateTimeChangeListener> dateTimeChangeListeners
-            = new ArrayList<>();
+    private ArrayList<DateTimeChangeListener> dateTimeChangeListeners = new ArrayList<>();
 
     /**
      * timePicker, This holds the time picker component of this DateTimePicker.
@@ -92,24 +91,26 @@ public class DateTimePicker extends JPanel {
      * supplied DatePicker and TimePicker settings.
      */
     public DateTimePicker(DatePickerSettings datePickerSettingsOrNull,
-            TimePickerSettings timePickerSettingsOrNull) {
+        TimePickerSettings timePickerSettingsOrNull) {
         initComponents();
         DatePickerSettings dateSettings = (datePickerSettingsOrNull == null)
-                ? new DatePickerSettings() : datePickerSettingsOrNull;
+            ? new DatePickerSettings()
+            : datePickerSettingsOrNull;
         TimePickerSettings timeSettings = (timePickerSettingsOrNull == null)
-                ? new TimePickerSettings() : timePickerSettingsOrNull;
+            ? new TimePickerSettings()
+            : timePickerSettingsOrNull;
         datePicker = new DatePicker(dateSettings);
         timePicker = new TimePicker(timeSettings);
         add(datePicker, CC.xy(1, 1));
         add(timePicker, CC.xy(3, 1));
         // Create a change listener instance, and add it to each component.
-        DateTimeChangeListenerImplementation listener
-                = new DateTimeChangeListenerImplementation(this);
+        DateTimeChangeListenerImplementation listener = new DateTimeChangeListenerImplementation(this);
         datePicker.addDateChangeListener(listener);
         timePicker.addTimeChangeListener(listener);
         // Set the gap size between the date picker and the time picker.
         int gapPixels = (timeSettings.zDateTimePicker_GapBeforeTimePickerPixels == null)
-                ? 5 : timeSettings.zDateTimePicker_GapBeforeTimePickerPixels;
+            ? 5
+            : timeSettings.zDateTimePicker_GapBeforeTimePickerPixels;
         this.setGapSize(gapPixels, ConstantSize.PIXEL);
         // If the user has not changed the gap size for the date picker, then set it to zero.
         if (dateSettings.getGapBeforeButtonPixels() == null) {
@@ -429,12 +430,12 @@ public class DateTimePicker extends JPanel {
      */
     private void initComponents() {
 
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        //======== this ========
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
+        // ======== this ========
         setLayout(new FormLayout(
-                "pref:grow, 5px, pref:grow(0.6)",
-                "fill:pref:grow"));
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
+            "pref:grow, 5px, pref:grow(0.6)",
+            "fill:pref:grow"));
+        // JFormDesigner - End of component initialization //GEN-END:initComponents
     }
 
     /**
@@ -442,8 +443,8 @@ public class DateTimePicker extends JPanel {
      * JFormDesigner. This should not be modified directly, it should only be modified from within
      * JFormDesigner. These are any variables which are contained in the panel.
      */
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
+    // JFormDesigner - End of variables declaration //GEN-END:variables
     //
     /**
      * DateTimeChangeListenerImplementation, This private class implements the listener interfaces
@@ -451,7 +452,7 @@ public class DateTimePicker extends JPanel {
      * and the TimePicker, so that the DateTimePicker can listen for changes to those components.
      */
     private class DateTimeChangeListenerImplementation
-            implements DateChangeListener, TimeChangeListener {
+        implements DateChangeListener, TimeChangeListener {
 
         /**
          * source, This holds a reference to the parent DateTimePicker.
@@ -487,15 +488,15 @@ public class DateTimePicker extends JPanel {
          */
         private void reportDateOrTimeChange(DateChangeEvent dateEvent, TimeChangeEvent timeEvent) {
             DateTimeChangeEvent summaryEvent = new DateTimeChangeEvent(source,
-                    source.datePicker, source.timePicker, dateEvent, timeEvent);
+                source.datePicker, source.timePicker, dateEvent, timeEvent);
             for (DateTimeChangeListener listener : dateTimeChangeListeners) {
                 listener.dateOrTimeChanged(summaryEvent);
             }
             // Fire change events for beans binding.
             firePropertyChange("dateTimePermissive", summaryEvent.getOldDateTimePermissive(),
-                    summaryEvent.getNewDateTimePermissive());
+                summaryEvent.getNewDateTimePermissive());
             firePropertyChange("dateTimeStrict", summaryEvent.getOldDateTimeStrict(),
-                    summaryEvent.getNewDateTimeStrict());
+                summaryEvent.getNewDateTimeStrict());
         }
 
     }

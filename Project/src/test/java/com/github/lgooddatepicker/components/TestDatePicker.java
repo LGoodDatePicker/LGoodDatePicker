@@ -22,6 +22,9 @@
  */
 package com.github.lgooddatepicker.components;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.github.lgooddatepicker.TestHelpers;
 import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
@@ -31,51 +34,50 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Locale;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
-public class TestDatePicker
-{
+public class TestDatePicker {
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockDateSettings() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestCustomClockDateSettings()
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         DatePickerSettings settings = new DatePickerSettings();
         assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
+        assertTrue("Default clock must be in system default time zone",
+            settings.getClock().getZone().equals(ZoneId.systemDefault()));
         settings = new DatePickerSettings(Locale.ENGLISH);
         assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
+        assertTrue("Default clock must be in system default time zone",
+            settings.getClock().getZone().equals(ZoneId.systemDefault()));
         Clock myClock = Clock.systemUTC();
         settings.setClock(myClock);
         assertTrue("Set clock must be returned", settings.getClock() == myClock);
         settings.setClock(TestHelpers.getClockFixedToInstant(1993, Month.MARCH, 15, 12, 00));
         settings.setDefaultYearMonth(null);
-        YearMonth defaultyearmonth = (YearMonth) TestHelpers.accessPrivateMethod(DatePickerSettings.class, "zGetDefaultYearMonthAsUsed").invoke(settings);
+        YearMonth defaultyearmonth = (YearMonth) TestHelpers
+            .accessPrivateMethod(DatePickerSettings.class, "zGetDefaultYearMonthAsUsed").invoke(settings);
         assertTrue(defaultyearmonth.getYear() == 1993);
         assertTrue(defaultyearmonth.getMonth() == Month.MARCH);
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockDatePicker()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestCustomClockDatePicker() {
         DatePicker picker = new DatePicker();
         assertTrue(picker.getDate() == null);
         DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
         settings.setClock(TestHelpers.getClockFixedToInstant(1995, Month.OCTOBER, 31, 14, 33));
         picker = new DatePicker(settings);
         picker.setDateToToday();
-        assertTrue("Picker must have set a date of 1995-10-31", picker.getDate().equals(LocalDate.of(1995, Month.OCTOBER, 31)));
+        assertTrue("Picker must have set a date of 1995-10-31",
+            picker.getDate().equals(LocalDate.of(1995, Month.OCTOBER, 31)));
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomDisabledPickerColor()
-    {
-        final Color defaultDisabledText =  new DatePickerSettings().getColor(
-                DatePickerSettings.DateArea.DatePickerTextDisabled);
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestCustomDisabledPickerColor() {
+        final Color defaultDisabledText = new DatePickerSettings().getColor(
+            DatePickerSettings.DateArea.DatePickerTextDisabled);
         final Color defaultDisabledBackground = new DatePickerSettings().getColor(
-                DatePickerSettings.DateArea.TextFieldBackgroundDisabled);
+            DatePickerSettings.DateArea.TextFieldBackgroundDisabled);
 
         DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
         settings.setColor(DatePickerSettings.DateArea.DatePickerTextDisabled, Color.yellow);
@@ -101,12 +103,11 @@ public class TestDatePicker
         validateDatePickerDisabledColor(picker, defaultDisabledText, defaultDisabledBackground);
     }
 
-    void validateDatePickerDisabledColor(DatePicker picker, Color disabledTextColor, Color disabledBackground)
-    {
+    void validateDatePickerDisabledColor(DatePicker picker, Color disabledTextColor, Color disabledBackground) {
         final Color validText = new DatePickerSettings().getColor(
-                DatePickerSettings.DateArea.DatePickerTextValidDate);
+            DatePickerSettings.DateArea.DatePickerTextValidDate);
         final Color enabledBackground = new DatePickerSettings().getColor(
-                DatePickerSettings.DateArea.TextFieldBackgroundValidDate);
+            DatePickerSettings.DateArea.TextFieldBackgroundValidDate);
 
         assertTrue(picker.getComponentDateTextField().getForeground().equals(validText));
         assertFalse(picker.getComponentDateTextField().getForeground().equals(disabledTextColor));

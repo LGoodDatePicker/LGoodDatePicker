@@ -50,7 +50,7 @@ import java.awt.event.MouseWheelEvent;
  * two new functions are also provided: mouseLiberalClick() and mouseLiberalDoubleClick(). A usage
  * example is shown below.
  *
- * Usage example:  <code>
+ * Usage example: <code>
  * JLabel labelSingleClick = new JLabel("Single click me.");
  * JLabel labelDoubleClick = new JLabel("Double click me.");
  * labelSingleClick.addMouseListener(new MouseLiberalAdapter() {

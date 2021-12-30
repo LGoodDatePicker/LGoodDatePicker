@@ -22,26 +22,24 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.factories.CC;
-import java.awt.event.*;
-import com.github.lgooddatepicker.zinternaltools.*;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.util.ArrayList;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
+import com.github.lgooddatepicker.zinternaltools.*;
 import com.github.lgooddatepicker.zinternaltools.CalculateMinimumDateFieldSize;
 import com.github.lgooddatepicker.zinternaltools.CustomPopup.CustomPopupCloseListener;
+import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Window;
+import java.awt.event.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.chrono.IsoEra;
+import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -49,6 +47,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  * DatePicker, This class implements a date picker GUI component.
@@ -153,10 +153,10 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * This section should not be modified by hand, but only modified from within the JFormDesigner
      * program.
      */
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
     private JTextField dateTextField;
     private JButton toggleCalendarButton;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    // JFormDesigner - End of variables declaration //GEN-END:variables
 
     /**
      * Constructor with Default Values, Create a date picker instance using the default operating
@@ -198,7 +198,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         this.settings = settings;
 
         // Apply needed settings from the settings instance to this date picker.
-        // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel 
+        // Note: CalendarPanel.zApplyBorderPropertiesList() is called from the calendar panel
         // constructor so it will be run both for independent and date picker calendar panels.
         settings.zApplyGapBeforeButtonPixels();
         settings.zApplyAllowKeyboardEditing();
@@ -232,7 +232,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * dates, then the last valid date will not be changed by this function.
      */
     public void clear() {
-        // Calling this function with null clears the date picker text. 
+        // Calling this function with null clears the date picker text.
         // If empty dates are allowed, this will also clear the last valid date.
         setDate(null);
     }
@@ -458,9 +458,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Try to get a parsed date.
         LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(
-                text, settings.getFormatForDatesCommonEra(),
-                settings.getFormatForDatesBeforeCommonEra(),
-                settings.getFormatsForParsing());
+            text, settings.getFormatForDatesCommonEra(),
+            settings.getFormatForDatesBeforeCommonEra(),
+            settings.getFormatsForParsing());
 
         // If the date could not be parsed, return false.
         if (parsedDate == null) {
@@ -508,7 +508,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Get the last valid date, to pass to the calendar if needed.
         LocalDate selectedDateForCalendar = lastValidDate;
-        // Create a new calendar panel. 
+        // Create a new calendar panel.
         // Use the CalendarPanel constructor that is made for the DatePicker class.
         DatePicker thisDatePicker = this;
         calendarPanel = new CalendarPanel(thisDatePicker);
@@ -524,15 +524,16 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         }
         // Create a new custom popup.
         popup = new CustomPopup(calendarPanel, SwingUtilities.getWindowAncestor(this),
-                this, settings.getBorderCalendarPopup());
+            this, settings.getBorderCalendarPopup());
         // Calculate the default origin for the popup.
         int defaultX = toggleCalendarButton.getLocationOnScreen().x
-                + toggleCalendarButton.getBounds().width - popup.getBounds().width - 2;
+            + toggleCalendarButton.getBounds().width - popup.getBounds().width - 2;
         int defaultY = toggleCalendarButton.getLocationOnScreen().y
-                + toggleCalendarButton.getBounds().height + 2;
+            + toggleCalendarButton.getBounds().height + 2;
         // Determine which component to use as the vertical flip reference component.
         JComponent verticalFlipReference = (settings.getVisibleDateTextField())
-                ? dateTextField : toggleCalendarButton;
+            ? dateTextField
+            : toggleCalendarButton;
         // Set the popup location.
         zSetPopupLocation(popup, defaultX, defaultY, this, verticalFlipReference, 2, 6);
         // Show the popup and focus the calendar.
@@ -704,6 +705,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      */
     private void zAddTextChangeListener() {
         dateTextField.getDocument().addDocumentListener(new DocumentListener() {
+
             @Override
             public void insertUpdate(DocumentEvent e) {
                 zEventTextFieldChanged();
@@ -753,8 +755,8 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         Integer programmerSuppliedWidth = settings.getSizeTextFieldMinimumWidth();
         // Determine the appropriate minimum width for the text field.
         int minimumWidthPixels = CalculateMinimumDateFieldSize.getFormattedDateWidthInPixels(
-                settings.getFormatForDatesCommonEra(), settings.getLocale(),
-                settings.getFontValidDate(), 0);
+            settings.getFormatForDatesCommonEra(), settings.getLocale(),
+            settings.getFontValidDate(), 0);
         if (programmerSuppliedWidth != null) {
             if (settings.getSizeTextFieldMinimumWidthDefaultOverride()) {
                 minimumWidthPixels = Math.max(programmerSuppliedWidth, minimumWidthPixels);
@@ -778,7 +780,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * for both the DatePicker and the TimePicker.
      */
     static void zSetPopupLocation(CustomPopup popup, int defaultX, int defaultY, JComponent picker,
-            JComponent verticalFlipReference, int verticalFlipDistance, int bottomOverlapAllowed) {
+        JComponent verticalFlipReference, int verticalFlipDistance, int bottomOverlapAllowed) {
         // Gather some variables that we will need.
         Window topWindowOrNull = SwingUtilities.getWindowAncestor(picker);
         Rectangle workingArea = InternalUtilities.getScreenWorkingArea(topWindowOrNull);
@@ -786,11 +788,11 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         int popupHeight = popup.getBounds().height;
         // Calculate the default rectangle for the popup.
         Rectangle popupRectangle = new Rectangle(defaultX, defaultY, popupWidth, popupHeight);
-        // If the popup rectangle is below the bottom of the working area, then move it upwards by 
+        // If the popup rectangle is below the bottom of the working area, then move it upwards by
         // the minimum amount which will ensure that it will never cover the picker component.
         if (popupRectangle.getMaxY() > (workingArea.getMaxY() + bottomOverlapAllowed)) {
             popupRectangle.y = verticalFlipReference.getLocationOnScreen().y - popupHeight
-                    - verticalFlipDistance;
+                - verticalFlipDistance;
         }
         // Confine the popup to be within the working area.
         if (popupRectangle.getMaxX() > (workingArea.getMaxX())) {
@@ -901,9 +903,9 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         LocalDate parsedDate = null;
         if (!textIsEmpty) {
             parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
-                    settings.getFormatForDatesCommonEra(),
-                    settings.getFormatForDatesBeforeCommonEra(),
-                    settings.getFormatsForParsing());
+                settings.getFormatForDatesCommonEra(),
+                settings.getFormatForDatesBeforeCommonEra(),
+                settings.getFormatsForParsing());
         }
         // If the date was parsed successfully, then check it against the veto policy.
         boolean dateIsVetoed = false;
@@ -940,18 +942,19 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
      * "commit" and "revert" capability as the JFormattedTextField class.
      */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
         dateTextField = new JTextField();
         toggleCalendarButton = new JButton();
 
-        //======== this ========
+        // ======== this ========
         setLayout(new FormLayout(
-                "pref:grow, [3px,pref], [26px,pref]",
-                "fill:pref:grow"));
+            "pref:grow, [3px,pref], [26px,pref]",
+            "fill:pref:grow"));
 
-        //---- dateTextField ----
+        // ---- dateTextField ----
         dateTextField.setMargin(new Insets(1, 3, 2, 2));
         dateTextField.addFocusListener(new FocusAdapter() {
+
             @Override
             public void focusLost(FocusEvent e) {
                 setTextFieldToValidStateIfNeeded();
@@ -959,18 +962,19 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         });
         add(dateTextField, CC.xy(1, 1));
 
-        //---- toggleCalendarButton ----
+        // ---- toggleCalendarButton ----
         toggleCalendarButton.setText("...");
         toggleCalendarButton.setFocusPainted(false);
         toggleCalendarButton.setFocusable(false);
         toggleCalendarButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mousePressed(MouseEvent e) {
                 zEventToggleCalendarButtonMousePressed(e);
             }
         });
         add(toggleCalendarButton, CC.xy(3, 1));
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
+        // JFormDesigner - End of component initialization //GEN-END:initComponents
     }
 
     /**
@@ -1013,16 +1017,16 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
         if (textIsEmpty) {
             if (!settings.getAllowEmptyDates()) {
                 // (Possibility: DisallowedEmptyValue)
-                // Note, there is no text to reflect a foreground or font. 
+                // Note, there is no text to reflect a foreground or font.
                 dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundDisallowedEmptyDate));
             }
             return;
         }
         // The text is not empty.
         LocalDate parsedDate = InternalUtilities.getParsedDateOrNull(dateText,
-                settings.getFormatForDatesCommonEra(),
-                settings.getFormatForDatesBeforeCommonEra(),
-                settings.getFormatsForParsing());
+            settings.getFormatForDatesCommonEra(),
+            settings.getFormatForDatesBeforeCommonEra(),
+            settings.getFormatsForParsing());
         if (parsedDate == null) {
             // (Possibility: UnparsableValue)
             dateTextField.setBackground(settings.getColor(DateArea.TextFieldBackgroundInvalidDate));

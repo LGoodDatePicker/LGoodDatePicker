@@ -38,7 +38,7 @@ public class YearMonthChangeEvent {
      * Constructor.
      */
     public YearMonthChangeEvent(CalendarPanel source,
-            YearMonth newYearMonth, YearMonth oldYearMonth) {
+        YearMonth newYearMonth, YearMonth oldYearMonth) {
         this.source = source;
         this.newYearMonth = newYearMonth;
         this.oldYearMonth = oldYearMonth;

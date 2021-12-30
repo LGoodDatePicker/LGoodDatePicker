@@ -47,7 +47,8 @@ public class GetAllLanguages {
 
             Locale localeForLanguage = new Locale(languageCode);
             // Locale localeForLanguage = Locale.forLanguageTag(languageCode);
-            DateTimeFormatter format = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(localeForLanguage);
+            DateTimeFormatter format = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                .withLocale(localeForLanguage);
             System.out.print(localeForLanguage.getDisplayLanguage() + ": ");
             System.out.print(format.format(localTime) + "\n");
         }

@@ -73,7 +73,7 @@ public class CalculateMinimumDateFieldSize {
      * years, in performing its calculations.
      */
     public static int getFormattedDateWidthInPixels(DateTimeFormatter formatCE, Locale locale,
-            Font fontValidDate, int numberOfExtraCharacters) {
+        Font fontValidDate, int numberOfExtraCharacters) {
         // Create the font metrics that will be used in the calculation.
         JTextField textField = new JTextField();
         FontMetrics fontMetrics = textField.getFontMetrics(fontValidDate);
@@ -129,7 +129,7 @@ public class CalculateMinimumDateFieldSize {
         // Get the "formatting names" of all the months for this locale.
         // Request the capitalized long version of the translated month names.
         String[] formattingMonthNames = ExtraDateStrings.getFormattingMonthNamesArray(
-                locale, true, false);
+            locale, true, false);
         // Find out which month is longest, using the supplied font metrics.
         int longestMonthWidth = 0;
         Month longestMonth = Month.JANUARY;

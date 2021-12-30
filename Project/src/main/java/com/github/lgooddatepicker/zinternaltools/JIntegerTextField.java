@@ -105,7 +105,7 @@ public class JIntegerTextField extends JTextField {
             number = Integer.parseInt(text);
         } catch (Exception e) {
             throw new RuntimeException("JIntegerTextField.getValue(), "
-                    + "The text value could not be parsed. This should never happen.");
+                + "The text value could not be parsed. This should never happen.");
         }
         return number;
     }
@@ -196,16 +196,17 @@ public class JIntegerTextField extends JTextField {
         public IntegerFilter(JIntegerTextField parentField) {
             if (parentField == null) {
                 throw new RuntimeException("IntegerTextField.IntegerFilter, "
-                        + "The parent text field cannot be null.");
+                    + "The parent text field cannot be null.");
             }
             this.parentField = parentField;
         }
+
         private JIntegerTextField parentField;
         private boolean skipFiltersWhileTrue = false;
 
         @Override
         public void remove(DocumentFilter.FilterBypass fb, int offset, int length)
-                throws BadLocationException {
+            throws BadLocationException {
             if (skipFiltersWhileTrue) {
                 super.remove(fb, offset, length);
                 return;
@@ -227,7 +228,7 @@ public class JIntegerTextField extends JTextField {
 
         @Override
         public void replace(FilterBypass fb, int offset, int length, String newChars, AttributeSet a)
-                throws BadLocationException {
+            throws BadLocationException {
             if (skipFiltersWhileTrue) {
                 super.replace(fb, offset, length, newChars, a);
                 return;
@@ -243,7 +244,7 @@ public class JIntegerTextField extends JTextField {
             } else if (allowNegativeNumbers() && newText.trim().equals("-")) {
                 setFieldToNegativeOne();
             } else if (length == oldTextLength && isValidInteger(newText.trim())) {
-                // If the entire document is being replaced, allow a trimmed replacement of 
+                // If the entire document is being replaced, allow a trimmed replacement of
                 // integers that originally included surrounding whitespace.
                 // (This makes it easier to paste a number from the clipboard.)
                 super.replace(fb, 0, length, newText.trim(), a);
@@ -256,7 +257,7 @@ public class JIntegerTextField extends JTextField {
 
         @Override
         public void insertString(FilterBypass fb, int offset, String newChars,
-                AttributeSet a) throws BadLocationException {
+            AttributeSet a) throws BadLocationException {
             if (skipFiltersWhileTrue) {
                 super.insertString(fb, offset, newChars, a);
                 return;

@@ -22,14 +22,14 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.ColumnSpec;
-import com.privatejgoodies.forms.layout.ConstantSize;
-import com.privatejgoodies.forms.layout.FormLayout;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.ExtraTimeStrings;
 import com.github.lgooddatepicker.zinternaltools.InternalConstants;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.ConstantSize;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -80,6 +80,7 @@ public class TimePickerSettings {
      * the swing component.
      */
     public enum TimeArea {
+
         TimePickerTextValidTime(Color.black),
         TimePickerTextInvalidTime(Color.red),
         TimePickerTextVetoedTime(Color.black),
@@ -93,6 +94,7 @@ public class TimePickerSettings {
         TimeArea(Color defaultColor) {
             this.defaultColor = defaultColor;
         }
+
         public Color defaultColor;
     }
 
@@ -125,9 +127,9 @@ public class TimePickerSettings {
      * default, a simple border is drawn.
      */
     public Border borderTimePopup;
-    
+
     /**
-     * clock, A clock used to determine current date and time 
+     * clock, A clock used to determine current date and time
      * The default is to use the System Clock
      */
     private Clock clock = Clock.systemDefaultZone();
@@ -355,24 +357,23 @@ public class TimePickerSettings {
         formatForMenuTimes = ExtraTimeStrings.getDefaultFormatForMenuTimes(timeLocale);
 
         // Generate default parsing formats.
-        FormatStyle[] allFormatStyles = new FormatStyle[]{
-            FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
+        FormatStyle[] allFormatStyles = new FormatStyle[] {
+            FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL };
         formatsForParsing = new ArrayList<>();
         formatsForParsing.add(DateTimeFormatter.ISO_LOCAL_TIME);
         for (FormatStyle formatStyle : allFormatStyles) {
-            DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().parseLenient().
-                    parseCaseInsensitive().appendLocalized(null, formatStyle).
-                    toFormatter(timeLocale);
+            DateTimeFormatter parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive()
+                .appendLocalized(null, formatStyle)
+                .toFormatter(timeLocale);
             formatsForParsing.add(parseFormat);
         }
 
         // Get any common extra parsing formats for the specified locale, and append them to
         // the list of parsingFormatters.
-        ArrayList<DateTimeFormatter> extraFormatters
-                = ExtraTimeStrings.getExtraTimeParsingFormatsForLocale(timeLocale);
+        ArrayList<DateTimeFormatter> extraFormatters = ExtraTimeStrings.getExtraTimeParsingFormatsForLocale(timeLocale);
         formatsForParsing.addAll(extraFormatters);
 
-        // Set the default popup border. This can be overridden by the user if they desire. 
+        // Set the default popup border. This can be overridden by the user if they desire.
         borderTimePopup = new EmptyBorder(0, 0, 0, 0);
 
         // Generate the default fonts and text colors.
@@ -401,7 +402,7 @@ public class TimePickerSettings {
      * entries. ThirtyMinutes has 48 entries. OneHour has 24 entries.
      */
     public void generatePotentialMenuTimes(TimeIncrement timeIncrement,
-            LocalTime optionalStartTime, LocalTime optionalEndTime) {
+        LocalTime optionalStartTime, LocalTime optionalEndTime) {
         // If either bounding time does does not already exist, then set it to the maximum range.
         LocalTime startTime = (optionalStartTime == null) ? LocalTime.MIN : optionalStartTime;
         LocalTime endTime = (optionalEndTime == null) ? LocalTime.MAX : optionalEndTime;
@@ -464,12 +465,12 @@ public class TimePickerSettings {
     public boolean getAllowKeyboardEditing() {
         return allowKeyboardEditing;
     }
-    
+
     /**
      * getClock, Returns the currently set clock
      */
     public Clock getClock() {
-    	return clock;
+        return clock;
     }
 
     /**
@@ -632,14 +633,16 @@ public class TimePickerSettings {
             zApplyAllowKeyboardEditing();
         }
     }
-    
+
     /**
      * setClock, This sets the clock to use for determining the current
      * date. By default the system clock is used.
-     * @param clock A clock to use
+     *
+     * @param clock
+     *            A clock to use
      */
     public void setClock(Clock clock) {
-    	this.clock = clock;
+        this.clock = clock;
     }
 
     /**
@@ -656,8 +659,7 @@ public class TimePickerSettings {
 
         // Call any "updating functions" that are appropriate for the specified area.
         if (parent != null) {
-            if (area == TimeArea.TimePickerTextDisabled)
-            {
+            if (area == TimeArea.TimePickerTextDisabled) {
                 zApplyDisabledTextColor();
             } else {
                 parent.zDrawTextFieldIndicators();
@@ -714,8 +716,7 @@ public class TimePickerSettings {
      * immediate validation of the text field text.
      */
     public void setFormatForDisplayTime(String patternString) {
-        DateTimeFormatter formatter
-                = PickerUtilities.createFormatterFromPatternString(patternString, locale);
+        DateTimeFormatter formatter = PickerUtilities.createFormatterFromPatternString(patternString, locale);
         setFormatForDisplayTime(formatter);
     }
 
@@ -750,8 +751,7 @@ public class TimePickerSettings {
      * immediate validation of the text field text.
      */
     public void setFormatForMenuTimes(String patternString) {
-        DateTimeFormatter formatter
-                = PickerUtilities.createFormatterFromPatternString(patternString, locale);
+        DateTimeFormatter formatter = PickerUtilities.createFormatterFromPatternString(patternString, locale);
         setFormatForMenuTimes(formatter);
     }
 
@@ -863,7 +863,7 @@ public class TimePickerSettings {
     public boolean setVetoPolicy(TimeVetoPolicy vetoPolicy) {
         if (parent == null) {
             throw new RuntimeException("TimePickerSettings.setVetoPolicy(), "
-                    + "A veto policy can only be set after constructing the TimePicker.");
+                + "A veto policy can only be set after constructing the TimePicker.");
         }
         this.vetoPolicy = vetoPolicy;
         return isTimeAllowed(parent.getTime());
@@ -922,9 +922,9 @@ public class TimePickerSettings {
             LocalTime defaultTime = LocalTime.of(7, 0);
             if (InternalUtilities.isTimeVetoed(vetoPolicy, defaultTime)) {
                 throw new RuntimeException("Exception in TimePickerSettings.zApplyAllowEmptyTimes(), "
-                        + "Could not initialize a null time to 7am, because 7am is vetoed by "
-                        + "the veto policy. To prevent this exception, always call "
-                        + "setAllowEmptyTimes() -before- setting a veto policy.");
+                    + "Could not initialize a null time to 7am, because 7am is vetoed by "
+                    + "the veto policy. To prevent this exception, always call "
+                    + "setAllowEmptyTimes() -before- setting a veto policy.");
             }
             // Initialize the current time.
             parent.setTime(defaultTime);
@@ -939,10 +939,10 @@ public class TimePickerSettings {
         parent.getComponentTimeTextField().setEditable(allowKeyboardEditing);
         // Set the text field border color based on whether the text field is editable.
         Color textFieldBorderColor = (allowKeyboardEditing)
-                ? InternalConstants.colorEditableTextFieldBorder
-                : InternalConstants.colorNotEditableTextFieldBorder;
+            ? InternalConstants.colorEditableTextFieldBorder
+            : InternalConstants.colorNotEditableTextFieldBorder;
         parent.getComponentTimeTextField().setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
+            new MatteBorder(1, 1, 1, 1, textFieldBorderColor), new EmptyBorder(1, 3, 2, 2)));
     }
 
     /**
@@ -1043,10 +1043,9 @@ public class TimePickerSettings {
         parent.getComponentToggleTimeMenuButton().setPreferredSize(newSize);
     }
 
-    void zApplyDisabledTextColor()
-    {
+    void zApplyDisabledTextColor() {
         parent.getComponentTimeTextField().setDisabledTextColor(getColor(
-                TimeArea.TimePickerTextDisabled));
+            TimeArea.TimePickerTextDisabled));
     }
 
     /**
@@ -1054,7 +1053,12 @@ public class TimePickerSettings {
      * function.
      */
     public enum TimeIncrement {
-        FiveMinutes(5), TenMinutes(10), FifteenMinutes(15), TwentyMinutes(20), ThirtyMinutes(30),
+
+        FiveMinutes(5),
+        TenMinutes(10),
+        FifteenMinutes(15),
+        TwentyMinutes(20),
+        ThirtyMinutes(30),
         OneHour(60);
 
         /**
@@ -1069,7 +1073,7 @@ public class TimePickerSettings {
             this.minutes = minutes;
             if ((60 % minutes) != 0) {
                 throw new RuntimeException("TimePickerSettings.TimeIncrement Constructor, "
-                        + "All time increments must divide evenly into 60.");
+                    + "All time increments must divide evenly into 60.");
             }
         }
     }

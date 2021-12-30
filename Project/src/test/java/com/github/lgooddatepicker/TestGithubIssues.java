@@ -22,6 +22,8 @@
  */
 package com.github.lgooddatepicker;
 
+import static org.junit.Assert.*;
+
 import com.github.lgooddatepicker.TestHelpers.ExceptionInfo;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -42,15 +44,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.MenuElement;
 import javax.swing.WindowConstants;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class TestGithubIssues {
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestIssue82() throws InterruptedException
-    {
-        if (!TestHelpers.isUiAvailable())
-        {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestIssue82() throws InterruptedException {
+        if (!TestHelpers.isUiAvailable()) {
             // don't run under CI
             System.out.println("TestIssue82 requires UI to run and was skipped");
         }
@@ -65,8 +64,9 @@ public class TestGithubIssues {
         final ExceptionInfo exInfo = new ExceptionInfo();
         try {
             TestHelpers.registerUncaughtExceptionHandlerToAllThreads(new Thread.UncaughtExceptionHandler() {
+
                 @Override
-                public void uncaughtException( Thread t, Throwable e ) {
+                public void uncaughtException(Thread t, Throwable e) {
                     exInfo.set(t.getName(), e);
                 }
             });
@@ -85,19 +85,17 @@ public class TestGithubIssues {
                 testWin.dispatchEvent(new WindowEvent(testWin, WindowEvent.WINDOW_CLOSING));
                 Thread.sleep(100);
                 assertFalse("Exception in antother Thread triggered:\n"
-                        +"ThreadName: "+exInfo.getThreadName()+"\n"
-                        +"Exception: "+exInfo.getExceptionMessage()
-                        +"\nStacktrace:\n"+exInfo.getStackTrace()
-                        , exInfo.wasSet());
+                    + "ThreadName: " + exInfo.getThreadName() + "\n"
+                    + "Exception: " + exInfo.getExceptionMessage()
+                    + "\nStacktrace:\n" + exInfo.getStackTrace(), exInfo.wasSet());
             }
         } finally {
             TestHelpers.registerUncaughtExceptionHandlerToAllThreads(null);
         }
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestIssue76()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestIssue76() {
         DatePickerSettings dateSettingsPgmDate = new DatePickerSettings(Locale.ENGLISH);
         dateSettingsPgmDate.setAllowEmptyDates(true);
         dateSettingsPgmDate.getFormatsForParsing().clear();
@@ -121,9 +119,8 @@ public class TestGithubIssues {
         AssertDateTextValidity(date_picker, "Wed, 31 Apr 2019", false);
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestIssue74()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestIssue74() {
         DateTimeFormatter era_date = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
         date_picker.getSettings().getFormatsForParsing().clear();
@@ -134,9 +131,8 @@ public class TestGithubIssues {
         AssertDateTextValidity(date_picker, "30/04/2019", true);
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestIssue60()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestIssue60() {
         DateTimeFormatter era_date = DateTimeFormatter.ofPattern("ddMMyyyy");
         DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
         date_picker.getSettings().getFormatsForParsing().clear();
@@ -147,21 +143,19 @@ public class TestGithubIssues {
         AssertDateTextValidity(date_picker, " 30042019 ", true);
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestIssue110() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, AWTException
-    {
-        if (!TestHelpers.isUiAvailable())
-        {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestIssue110() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
+        InvocationTargetException, AWTException {
+        if (!TestHelpers.isUiAvailable()) {
             // don't run under CI
             System.out.println("TestIssue110 requires UI to run and was skipped");
         }
         org.junit.Assume.assumeTrue(TestHelpers.isUiAvailable());
 
-
         DatePickerSettings dateSettings = new DatePickerSettings(Locale.ENGLISH);
         CalendarPanel testPanel = new CalendarPanel(dateSettings);
 
-        try ( AutoDisposeFrame testWin = new AutoDisposeFrame() ) {
+        try (AutoDisposeFrame testWin = new AutoDisposeFrame()) {
             testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             testWin.add(testPanel);
             testWin.pack();
@@ -173,73 +167,72 @@ public class TestGithubIssues {
 
             JLabel labelMonth = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelMonth");
             final java.awt.Point monthScreenLoc = labelMonth.getLocationOnScreen();
-            bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
+            bot.mouseMove(monthScreenLoc.x + 10, monthScreenLoc.y + 5);
 
             boolean popupVisible = false;
 
-            JPopupMenu popupMonth = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupMonth");
+            JPopupMenu popupMonth = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel,
+                "popupMonth");
             assertTrue(popupMonth.isVisible() == popupVisible);
             // Verify that clicking on labalMonth opens and closes its popup in an alternating fashion
-            for( int i = 0; i < 8; ++i)
-            {
-                bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
+            for (int i = 0; i < 8; ++i) {
+                bot.mouseMove(monthScreenLoc.x + 10, monthScreenLoc.y + 5);
                 bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                 bot.waitForIdle();
                 bot.delay(50);
                 popupVisible = !popupVisible;
-                assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
-                        popupMonth.isVisible() == popupVisible);
+                assertTrue(
+                    "Iteration " + String.valueOf(i) + " popup visiblity must be " + String.valueOf(popupVisible),
+                    popupMonth.isVisible() == popupVisible);
                 bot.delay(80);
             }
 
             JLabel labelYear = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelYear");
             final java.awt.Point yearScreenLoc = labelYear.getLocationOnScreen();
-            bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+            bot.mouseMove(yearScreenLoc.x + 10, yearScreenLoc.y + 5);
 
             popupVisible = false;
 
-            JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupYear");
+            JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel,
+                "popupYear");
             assertTrue(popupYear.isVisible() == popupVisible);
             // Verify that clicking on labelYear opens and closes its popup in an alternating fashion
-            for( int i = 0; i < 8; ++i)
-            {
-                bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+            for (int i = 0; i < 8; ++i) {
+                bot.mouseMove(yearScreenLoc.x + 10, yearScreenLoc.y + 5);
                 bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                 bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                 bot.waitForIdle();
                 bot.delay(50);
                 popupVisible = !popupVisible;
-                assertTrue("Iteration "+String.valueOf(i)+" popup visiblity must be "+String.valueOf(popupVisible),
-                        popupYear.isVisible() == popupVisible);
+                assertTrue(
+                    "Iteration " + String.valueOf(i) + " popup visiblity must be " + String.valueOf(popupVisible),
+                    popupYear.isVisible() == popupVisible);
                 bot.delay(80);
             }
 
             boolean yearPopupSelected = true;
 
-            // Verify that if clicking is alternated between labelYear and labelMonth their popup menus open everytime
-            for( int i = 0; i < 8; ++i)
-            {
-                if (yearPopupSelected)
-                {
-                    bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+            // Verify that if clicking is alternated between labelYear and labelMonth their popup menus open
+            // everytime
+            for (int i = 0; i < 8; ++i) {
+                if (yearPopupSelected) {
+                    bot.mouseMove(yearScreenLoc.x + 10, yearScreenLoc.y + 5);
                     bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                     bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                     bot.waitForIdle();
                     bot.delay(50);
-                    assertTrue("YearPopup is not visible, iteration "+i, popupYear.isVisible() == true);
-                    assertTrue("MonthPopup is not invisible, iteration "+i, popupMonth.isVisible() == false);
+                    assertTrue("YearPopup is not visible, iteration " + i, popupYear.isVisible() == true);
+                    assertTrue("MonthPopup is not invisible, iteration " + i, popupMonth.isVisible() == false);
                     bot.delay(51);
-                }
-                else
-                {
-                    bot.mouseMove(monthScreenLoc.x+10, monthScreenLoc.y+5);
+                } else {
+                    bot.mouseMove(monthScreenLoc.x + 10, monthScreenLoc.y + 5);
                     bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
                     bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                     bot.waitForIdle();
                     bot.delay(50);
-                    assertTrue("YearPopup is not invisible, iteration "+i, popupYear.isVisible() == false);
-                    assertTrue("MonthPopup is not visible, iteration "+i, popupMonth.isVisible() == true);
+                    assertTrue("YearPopup is not invisible, iteration " + i, popupYear.isVisible() == false);
+                    assertTrue("MonthPopup is not visible, iteration " + i, popupMonth.isVisible() == true);
                     bot.keyPress(KeyEvent.VK_ESCAPE);
                     bot.delay(51);
                 }
@@ -250,44 +243,44 @@ public class TestGithubIssues {
 
     // helper functions
 
-    private void AssertDateTextValidity(DatePicker date_picker, String dateString, boolean isDateTexValid)
-    {
+    private void AssertDateTextValidity(DatePicker date_picker, String dateString, boolean isDateTexValid) {
         final boolean dateValid = date_picker.isTextValid(dateString);
         if (isDateTexValid) {
-            assertTrue("False negative in isTextValid! Text should be accepted: "+dateString, dateValid);
-        }
-        else {
-            assertFalse("False positive in isTextValid! Text should not be accepted: "+dateString, dateValid);
+            assertTrue("False negative in isTextValid! Text should be accepted: " + dateString, dateValid);
+        } else {
+            assertFalse("False positive in isTextValid! Text should not be accepted: " + dateString, dateValid);
         }
 
         date_picker.setText(dateString);
         assertTrue("Date text field value was not successfully set", date_picker.getText().equals(dateString));
         if (date_picker.isTextFieldValid()) {
-            assertTrue("False negative in isTextFieldValid! Text should be accepted: "+dateString, dateValid);
-        }
-        else {
-            assertFalse("False positive in isTextFieldValid! Text should not be accepted: "+dateString, dateValid);
+            assertTrue("False negative in isTextFieldValid! Text should be accepted: " + dateString, dateValid);
+        } else {
+            assertFalse("False positive in isTextFieldValid! Text should not be accepted: " + dateString, dateValid);
         }
 
-        final Color invalidDate = date_picker.getSettings().getColor(DatePickerSettings.DateArea.DatePickerTextInvalidDate);
+        final Color invalidDate = date_picker.getSettings()
+            .getColor(DatePickerSettings.DateArea.DatePickerTextInvalidDate);
         final Color validDate = date_picker.getSettings().getColor(DatePickerSettings.DateArea.DatePickerTextValidDate);
         assertTrue("Foreground colors must be different for this test to work", invalidDate != validDate);
         final Color textfieldcolor = date_picker.getComponentDateTextField().getForeground();
         if (isDateTexValid) {
-            assertTrue("False negative! Text should have valid color: "+date_picker.getText(), textfieldcolor == validDate);
-            assertTrue("False negative! Text should not have invalid color: "+date_picker.getText(), textfieldcolor != invalidDate);
-        }
-        else {
-            assertTrue("False positive! Text should have invalid color: "+date_picker.getText(), textfieldcolor == invalidDate);
-            assertTrue("False positive! Text should not have valid color: "+date_picker.getText(), textfieldcolor != validDate);
+            assertTrue("False negative! Text should have valid color: " + date_picker.getText(),
+                textfieldcolor == validDate);
+            assertTrue("False negative! Text should not have invalid color: " + date_picker.getText(),
+                textfieldcolor != invalidDate);
+        } else {
+            assertTrue("False positive! Text should have invalid color: " + date_picker.getText(),
+                textfieldcolor == invalidDate);
+            assertTrue("False positive! Text should not have valid color: " + date_picker.getText(),
+                textfieldcolor != validDate);
         }
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestIssue113() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, AWTException
-    {
-        if (!TestHelpers.isUiAvailable())
-        {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestIssue113() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
+        InvocationTargetException, AWTException {
+        if (!TestHelpers.isUiAvailable()) {
             // don't run under CI
             System.out.println("TestIssue113 requires UI to run and was skipped");
         }
@@ -298,7 +291,7 @@ public class TestGithubIssues {
         DatePickerSettings dateSettings = new DatePickerSettings(Locale.ENGLISH);
         CalendarPanel testPanel = new CalendarPanel(dateSettings);
 
-        try ( AutoDisposeFrame testWin = new AutoDisposeFrame() ) {
+        try (AutoDisposeFrame testWin = new AutoDisposeFrame()) {
             testWin.add(testPanel);
             testWin.pack();
             testWin.setVisible(true);
@@ -307,21 +300,24 @@ public class TestGithubIssues {
             bot.waitForIdle();
             bot.delay(100);
 
-            JPanel monthAndYearInnerPanel = (JPanel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "monthAndYearInnerPanel");
-            JPanel yearEditorPanel = (JPanel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "yearEditorPanel");
+            JPanel monthAndYearInnerPanel = (JPanel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel,
+                "monthAndYearInnerPanel");
+            JPanel yearEditorPanel = (JPanel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel,
+                "yearEditorPanel");
 
             // monthAndYearInnerPanel invisible as default
             assertTrue(!monthAndYearInnerPanel.isAncestorOf(yearEditorPanel));
 
             JLabel labelYear = (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "labelYear");
             final java.awt.Point yearScreenLoc = labelYear.getLocationOnScreen();
-            bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+            bot.mouseMove(yearScreenLoc.x + 10, yearScreenLoc.y + 5);
 
-            JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel, "popupYear");
+            JPopupMenu popupYear = (JPopupMenu) TestHelpers.readPrivateField(CalendarPanel.class, testPanel,
+                "popupYear");
             assertTrue(popupYear.isVisible() == false);
 
             // Open year popup
-            bot.mouseMove(yearScreenLoc.x+10, yearScreenLoc.y+5);
+            bot.mouseMove(yearScreenLoc.x + 10, yearScreenLoc.y + 5);
             bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
             bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
             bot.waitForIdle();
@@ -332,13 +328,11 @@ public class TestGithubIssues {
 
             assertTrue(popupYear.isVisible() == true);
             boolean found = false;
-            for (MenuElement elem : popupYear.getSubElements())
-            {
-                JMenuItem menuItem = (JMenuItem)elem.getComponent();
-                if (menuItem.getText().equals("( . . . )"))
-                {
+            for (MenuElement elem : popupYear.getSubElements()) {
+                JMenuItem menuItem = (JMenuItem) elem.getComponent();
+                if (menuItem.getText().equals("( . . . )")) {
                     final java.awt.Point dotLabelPos = menuItem.getLocationOnScreen();
-                    bot.mouseMove(dotLabelPos.x+10, dotLabelPos.y+5);
+                    bot.mouseMove(dotLabelPos.x + 10, dotLabelPos.y + 5);
                     found = true;
                     break;
                 }
@@ -381,8 +375,9 @@ public class TestGithubIssues {
 
             // monthAndYearInnerPanel now invisible
             assertTrue(!monthAndYearInnerPanel.isAncestorOf(yearEditorPanel));
-            assertTrue("labelYear has wrong text: "+labelYear.getText(), labelYear.getText().equals("2005"));
-            assertTrue("labelYear has wrong text: "+labelYear.getText(), !labelYear.getText().equals(String.valueOf(LocalDate.now().getYear())));
+            assertTrue("labelYear has wrong text: " + labelYear.getText(), labelYear.getText().equals("2005"));
+            assertTrue("labelYear has wrong text: " + labelYear.getText(),
+                !labelYear.getText().equals(String.valueOf(LocalDate.now().getYear())));
         }
     }
 

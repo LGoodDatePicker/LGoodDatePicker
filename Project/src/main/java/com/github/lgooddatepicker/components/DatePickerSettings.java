@@ -23,31 +23,22 @@
 package com.github.lgooddatepicker.components;
 
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
+import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.DateInterval;
+import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
+import com.github.lgooddatepicker.zinternaltools.DateVetoPolicyMinimumMaximumDate;
+import com.github.lgooddatepicker.zinternaltools.ExtraDateStrings;
+import com.github.lgooddatepicker.zinternaltools.InternalConstants;
+import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
+import com.github.lgooddatepicker.zinternaltools.TranslationSource;
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.ConstantSize;
 import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.font.TextAttribute;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Map;
-import javax.swing.JTextField;
-import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
-import com.github.lgooddatepicker.zinternaltools.ExtraDateStrings;
-import com.github.lgooddatepicker.zinternaltools.TranslationSource;
-import javax.swing.border.Border;
-import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
-import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
-import com.github.lgooddatepicker.optionalusertools.DateInterval;
-import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
-import com.github.lgooddatepicker.zinternaltools.DateVetoPolicyMinimumMaximumDate;
-import com.github.lgooddatepicker.zinternaltools.InternalConstants;
 import java.awt.Point;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-
+import java.awt.font.TextAttribute;
 import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -56,10 +47,18 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 
 /**
  * DatePickerSettings, This holds all the settings that can be customized for a DatePicker (or an
@@ -86,6 +85,7 @@ public class DatePickerSettings {
      * be modified). This seems to be enforced by the swing setEnabled() function.
      */
     public enum DateArea {
+
         BackgroundClearLabel(new Color(240, 240, 240)),
         BackgroundMonthAndYearMenuLabels(new Color(240, 240, 240)),
         BackgroundMonthAndYearNavigationButtons(new JButton().getBackground()),
@@ -121,6 +121,7 @@ public class DatePickerSettings {
         DateArea(Color defaultColor) {
             this.defaultColor = defaultColor;
         }
+
         public Color defaultColor;
     }
 
@@ -715,8 +716,7 @@ public class DatePickerSettings {
         if (this.borderPropertiesList == null) {
             result.borderPropertiesList = null;
         } else {
-            result.borderPropertiesList
-                = new ArrayList<>(this.borderPropertiesList.size());
+            result.borderPropertiesList = new ArrayList<>(this.borderPropertiesList.size());
             for (CalendarBorderProperties borderProperty : this.borderPropertiesList) {
                 result.borderPropertiesList.add(borderProperty.clone());
             }
@@ -746,7 +746,8 @@ public class DatePickerSettings {
         result.formatForDatesCommonEra = this.formatForDatesCommonEra;
         result.formatForTodayButton = this.formatForTodayButton;
         result.formatsForParsing = (this.formatsForParsing == null)
-            ? null : new ArrayList<>(this.formatsForParsing);
+            ? null
+            : new ArrayList<>(this.formatsForParsing);
         result.gapBeforeButtonPixels = this.gapBeforeButtonPixels;
         // "result.highlightPolicy" is left at its default value.
         result.isVisibleClearButton = this.isVisibleClearButton;
@@ -766,10 +767,8 @@ public class DatePickerSettings {
         result.sizeTextFieldMinimumWidth = this.sizeTextFieldMinimumWidth;
         result.sizeTextFieldMinimumWidthDefaultOverride = this.sizeTextFieldMinimumWidthDefaultOverride;
         // The translation arrays will never be null, and the String class is an immutable type.
-        result.translationArrayStandaloneLongMonthNames
-            = this.translationArrayStandaloneLongMonthNames.clone();
-        result.translationArrayStandaloneShortMonthNames
-            = this.translationArrayStandaloneShortMonthNames.clone();
+        result.translationArrayStandaloneLongMonthNames = this.translationArrayStandaloneLongMonthNames.clone();
+        result.translationArrayStandaloneShortMonthNames = this.translationArrayStandaloneShortMonthNames.clone();
         result.translationClear = this.translationClear;
         result.translationToday = this.translationToday;
         // "result.vetoPolicy" is left at its default value.
@@ -817,7 +816,7 @@ public class DatePickerSettings {
      * getClock, Returns the currently set clock
      */
     public Clock getClock() {
-    	return clock;
+        return clock;
     }
 
     /**
@@ -1344,10 +1343,12 @@ public class DatePickerSettings {
     /**
      * setClock, This sets the clock to use for determining the current
      * date. By default the system clock is used.
-     * @param clock A clock to use
+     *
+     * @param clock
+     *            A clock to use
      */
     public void setClock(Clock clock) {
-    	this.clock = clock;
+        this.clock = clock;
     }
 
     /**
@@ -1363,23 +1364,23 @@ public class DatePickerSettings {
         colors.put(area, color);
         // Call any "updating functions" that are appropriate for the specified area.
         switch (area) {
-            case BackgroundMonthAndYearMenuLabels:
-            case BackgroundTodayLabel:
-            case BackgroundClearLabel:
-                if (parentCalendarPanel != null) {
-                    parentCalendarPanel.zSetAllLabelIndicatorColorsToDefaultState();
-                }
-                break;
-            case DatePickerTextDisabled:
-                if (parentDatePicker != null) {
-                    zApplyDisabledTextColor();
-                }
-                break;
-            default:
-                if (parentDatePicker != null) {
-                    parentDatePicker.zDrawTextFieldIndicators();
-                }
-                zDrawIndependentCalendarPanelIfNeeded();
+        case BackgroundMonthAndYearMenuLabels:
+        case BackgroundTodayLabel:
+        case BackgroundClearLabel:
+            if (parentCalendarPanel != null) {
+                parentCalendarPanel.zSetAllLabelIndicatorColorsToDefaultState();
+            }
+            break;
+        case DatePickerTextDisabled:
+            if (parentDatePicker != null) {
+                zApplyDisabledTextColor();
+            }
+            break;
+        default:
+            if (parentDatePicker != null) {
+                parentDatePicker.zDrawTextFieldIndicators();
+            }
+            zDrawIndependentCalendarPanelIfNeeded();
         }
     }
 
@@ -1387,13 +1388,18 @@ public class DatePickerSettings {
      * setColorBackgroundWeekNumberLabels, This sets the calendar background color for the week
      * number labels. The default color is a medium sky blue.
      *
-     * @param applyMatchingDefaultBorders This determines if this function will update the border
-     * label properties to show the appropriate default borders. The default border label settings
-     * are different, depending on the "colorBackgroundWeekNumberLabels". If you have not customized
-     * the border label properties, then it is recommended that you always set the
-     * "applyMatchingDefaultBorders" parameter to true. This will ensure that the calendar borders
-     * will always use the correct default settings. If you set this parameter to false, than the
-     * current border settings will not be changed by this function.
+     * @param applyMatchingDefaultBorders
+     *            This determines if this function will update the border
+     *            label properties to show the appropriate default borders. The default border label
+     *            settings
+     *            are different, depending on the "colorBackgroundWeekNumberLabels". If you have not
+     *            customized
+     *            the border label properties, then it is recommended that you always set the
+     *            "applyMatchingDefaultBorders" parameter to true. This will ensure that the calendar
+     *            borders
+     *            will always use the correct default settings. If you set this parameter to false, than
+     *            the
+     *            current border settings will not be changed by this function.
      */
     public void setColorBackgroundWeekNumberLabels(Color colorBackgroundWeekNumberLabels,
         boolean applyMatchingDefaultBorders) {
@@ -1408,13 +1414,18 @@ public class DatePickerSettings {
      * setColorBackgroundWeekdayLabels, This sets the calendar background color for the weekday
      * labels. The default color is a medium sky blue.
      *
-     * @param applyMatchingDefaultBorders This determines if this function will update the border
-     * label properties to show the appropriate default borders. The default border label settings
-     * are different, depending on the "colorBackgroundWeekdayLabels". If you have not customized
-     * the border label properties, then it is recommended that you always set the
-     * "applyMatchingDefaultBorders" parameter to true. This will ensure that the calendar borders
-     * will always use the correct default settings. If you set this parameter to false, than the
-     * current border settings will not be changed by this function.
+     * @param applyMatchingDefaultBorders
+     *            This determines if this function will update the border
+     *            label properties to show the appropriate default borders. The default border label
+     *            settings
+     *            are different, depending on the "colorBackgroundWeekdayLabels". If you have not
+     *            customized
+     *            the border label properties, then it is recommended that you always set the
+     *            "applyMatchingDefaultBorders" parameter to true. This will ensure that the calendar
+     *            borders
+     *            will always use the correct default settings. If you set this parameter to false, than
+     *            the
+     *            current border settings will not be changed by this function.
      */
     public void setColorBackgroundWeekdayLabels(Color colorBackgroundWeekdayLabels,
         boolean applyMatchingDefaultBorders) {
@@ -1664,8 +1675,7 @@ public class DatePickerSettings {
      * immediate validation of the text field text.
      */
     public void setFormatForDatesBeforeCommonEra(String patternString) {
-        DateTimeFormatter formatter
-            = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
+        DateTimeFormatter formatter = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
         setFormatForDatesBeforeCommonEra(formatter);
     }
 
@@ -1714,8 +1724,7 @@ public class DatePickerSettings {
      * picker text field.
      */
     public void setFormatForDatesCommonEra(String patternString) {
-        DateTimeFormatter formatter
-            = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
+        DateTimeFormatter formatter = PickerUtilities.createFormatterFromPatternString(patternString, getLocale());
         setFormatForDatesCommonEra(formatter);
     }
 
@@ -1811,17 +1820,14 @@ public class DatePickerSettings {
         setTranslationClear(clearTranslation);
 
         // Set the default standalone month names for the locale.
-        String[] standaloneLongMonthNames
-            = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
+        String[] standaloneLongMonthNames = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
         setTranslationArrayStandaloneLongMonthNames(standaloneLongMonthNames);
-        String[] standaloneShortMonthNames
-            = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
+        String[] standaloneShortMonthNames = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
         setTranslationArrayStandaloneShortMonthNames(standaloneShortMonthNames);
 
         // Create default formatters for displaying the today button, and AD and BC dates, in
         // the specified locale.
-        DateTimeFormatter formatForToday
-            = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
+        DateTimeFormatter formatForToday = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale);
         setFormatForTodayButton(formatForToday);
         DateTimeFormatter formatForDatesCE = InternalUtilities.generateDefaultFormatterCE(locale);
         setFormatForDatesCommonEra(formatForDatesCE);
@@ -1829,22 +1835,21 @@ public class DatePickerSettings {
         setFormatForDatesBeforeCommonEra(formatForDatesBCE);
 
         // Create an array of all the FormatStyle enum values, from short to long.
-        FormatStyle[] allFormatStyles = new FormatStyle[]{
-            FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL};
+        FormatStyle[] allFormatStyles = new FormatStyle[] {
+            FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL };
 
         // Create a set of default parsing formatters for the specified locale.
         ArrayList<DateTimeFormatter> parsingFormats = new ArrayList<>();
         DateTimeFormatter parseFormat;
         for (int i = 0; i < allFormatStyles.length; ++i) {
-            parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                appendLocalized(allFormatStyles[i], null).toFormatter(locale);
+            parseFormat = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive()
+                .appendLocalized(allFormatStyles[i], null).toFormatter(locale);
             parsingFormats.add(parseFormat);
         }
 
         // Get any common extra parsing formats for the specified locale, and append them to
         // the list of parsingFormatters.
-        ArrayList<DateTimeFormatter> extraFormatters
-            = ExtraDateStrings.getExtraParsingFormatsForLocale(locale);
+        ArrayList<DateTimeFormatter> extraFormatters = ExtraDateStrings.getExtraParsingFormatsForLocale(locale);
         parsingFormats.addAll(extraFormatters);
 
         // Save the parsing formats.
@@ -1941,8 +1946,7 @@ public class DatePickerSettings {
      */
     public void setTranslationArrayStandaloneLongMonthNames(String[] newTranslationArray) {
         if (newTranslationArray == null) {
-            String[] defaultLongMonthNames
-                = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
+            String[] defaultLongMonthNames = ExtraDateStrings.getDefaultStandaloneLongMonthNamesForLocale(locale);
             this.translationArrayStandaloneLongMonthNames = defaultLongMonthNames;
         } else {
             this.translationArrayStandaloneLongMonthNames = newTranslationArray;
@@ -1964,8 +1968,7 @@ public class DatePickerSettings {
      */
     public void setTranslationArrayStandaloneShortMonthNames(String[] newTranslationArray) {
         if (newTranslationArray == null) {
-            String[] defaultShortMonthNames
-                = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
+            String[] defaultShortMonthNames = ExtraDateStrings.getDefaultStandaloneShortMonthNamesForLocale(locale);
             this.translationArrayStandaloneShortMonthNames = defaultShortMonthNames;
         } else {
             this.translationArrayStandaloneShortMonthNames = newTranslationArray;
@@ -2152,16 +2155,23 @@ public class DatePickerSettings {
      * calendar will always match the weekNumberRules definition for first day of the week. This
      * behavior can be changed by modifying the setting "weekNumbersForceFirstDayOfWeekToMatch".
      *
-     * @param weekNumbersDisplayed This determines whether the week numbers should be displayed on
-     * the calendar. They will be shown if this is true, or not shown that this is false
+     * @param weekNumbersDisplayed
+     *            This determines whether the week numbers should be displayed on
+     *            the calendar. They will be shown if this is true, or not shown that this is false
      *
-     * @param applyMatchingDefaultBorders This determines if this function will update the border
-     * label properties to show the appropriate default borders. The default border label settings
-     * are different, depending on "showWeekNumbers". If you have not customized the border label
-     * properties, then it is recommended that you always set the "applyMatchingDefaultBorders"
-     * parameter to true. This will ensure that the calendar borders will always use the correct
-     * default settings. If you set this parameter to false, than the current border settings will
-     * not be changed by this function.
+     * @param applyMatchingDefaultBorders
+     *            This determines if this function will update the border
+     *            label properties to show the appropriate default borders. The default border label
+     *            settings
+     *            are different, depending on "showWeekNumbers". If you have not customized the border
+     *            label
+     *            properties, then it is recommended that you always set the
+     *            "applyMatchingDefaultBorders"
+     *            parameter to true. This will ensure that the calendar borders will always use the
+     *            correct
+     *            default settings. If you set this parameter to false, than the current border settings
+     *            will
+     *            not be changed by this function.
      */
     public void setWeekNumbersDisplayed(boolean weekNumbersDisplayed,
         boolean applyMatchingDefaultBorders) {
@@ -2279,10 +2289,9 @@ public class DatePickerSettings {
         }
     }
 
-    void zApplyDisabledTextColor()
-    {
+    void zApplyDisabledTextColor() {
         parentDatePicker.getComponentDateTextField().setDisabledTextColor(
-                getColor(DateArea.DatePickerTextDisabled));
+            getColor(DateArea.DatePickerTextDisabled));
     }
 
     /**

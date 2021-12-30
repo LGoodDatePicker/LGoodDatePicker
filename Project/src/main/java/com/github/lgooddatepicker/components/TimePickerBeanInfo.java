@@ -22,6 +22,13 @@
  */
 package com.github.lgooddatepicker.components;
 
+import static java.beans.BeanInfo.ICON_COLOR_16x16;
+import static java.beans.BeanInfo.ICON_COLOR_32x32;
+import static java.beans.BeanInfo.ICON_MONO_16x16;
+import static java.beans.BeanInfo.ICON_MONO_32x32;
+
+import com.github.lgooddatepicker.zinternaltools.Pair;
+import java.awt.Image;
 import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
 import java.beans.EventSetDescriptor;
@@ -30,15 +37,9 @@ import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
-import java.awt.Image;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import static java.beans.BeanInfo.ICON_COLOR_16x16;
-import static java.beans.BeanInfo.ICON_COLOR_32x32;
-import static java.beans.BeanInfo.ICON_MONO_16x16;
-import static java.beans.BeanInfo.ICON_MONO_32x32;
-import com.github.lgooddatepicker.zinternaltools.Pair;
 
 /**
  * TimePickerBeanInfo, This class returns JavaBean information for the matching bean class.
@@ -57,8 +58,8 @@ public class TimePickerBeanInfo extends SimpleBeanInfo {
      * will hold the matching icon image, if it has been loaded. (The image will be null until the
      * first time it is loaded.)
      */
-    private static HashMap<Integer, Pair<String, Image>> iconInformation
-            = new HashMap<Integer, Pair<String, Image>>() {
+    private static HashMap<Integer, Pair<String, Image>> iconInformation = new HashMap<Integer, Pair<String, Image>>() {
+
         {
             put(ICON_MONO_16x16, new Pair<>("/images/TimePickerIcon 16x16.png", null));
             put(ICON_COLOR_16x16, new Pair<>("/images/TimePickerIcon 16x16.png", null));
@@ -79,6 +80,7 @@ public class TimePickerBeanInfo extends SimpleBeanInfo {
      * property name in all lowercase. The value is the property description.
      */
     private static HashMap<String, String> propertyDescriptions = new HashMap<String, String>() {
+
         {
             put("time", "The last valid time.");
             put("text", "The time picker text.");

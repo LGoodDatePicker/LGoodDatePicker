@@ -141,27 +141,26 @@ public class CalendarPanelAssortmentTest {
         // Create a CalendarPanel: With crazy border properties.
         dateSettings = new DatePickerSettings();
         // Create a list to hold the border properties.
-        ArrayList<CalendarBorderProperties> customPropertiesList
-                = new ArrayList<>();
+        ArrayList<CalendarBorderProperties> customPropertiesList = new ArrayList<>();
         // Set the borders properties for everything to Blue.
         CalendarBorderProperties weekdayLabelBorderProperties = new CalendarBorderProperties(
-                new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);
+            new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);
         customPropertiesList.add(weekdayLabelBorderProperties);
         // Make the top border extra thick.
-        // Notice that all borders in the same row or column will be displayed with the same 
-        // thickness as the thickest individual border that is in the same line. 
+        // Notice that all borders in the same row or column will be displayed with the same
+        // thickness as the thickest individual border that is in the same line.
         CalendarBorderProperties topBorderProperties = new CalendarBorderProperties(
-                new Point(4, 1), new Point(4, 1), Color.YELLOW, 15);
+            new Point(4, 1), new Point(4, 1), Color.YELLOW, 15);
         customPropertiesList.add(topBorderProperties);
         // Set the borders properties for the date box.
         CalendarBorderProperties dateBoxBorderProperties = new CalendarBorderProperties(
-                new Point(3, 3), new Point(5, 5), Color.GREEN, 10);
+            new Point(3, 3), new Point(5, 5), Color.GREEN, 10);
         customPropertiesList.add(dateBoxBorderProperties);
         // Set borders properties for the week number labels.
         // Note: Week number borders are always hidden unless the the week numbers are displayed.
         // ("Week number borders" are any borders located in columns 1 and 2.)
         CalendarBorderProperties weekNumberBorderProperties = new CalendarBorderProperties(
-                new Point(1, 1), new Point(2, 5), Color.ORANGE, 10);
+            new Point(1, 1), new Point(2, 5), Color.ORANGE, 10);
         customPropertiesList.add(weekNumberBorderProperties);
         // Set the corner borders of the date box individually.
         CalendarBorderProperties cornerProp;
@@ -269,27 +268,26 @@ public class CalendarPanelAssortmentTest {
         dateSettings.setWeekNumbersDisplayed(true, true);
         calendarPanel = new CalendarPanel(dateSettings);
         // Create a list to hold the border properties.
-        ArrayList<CalendarBorderProperties> customPropertiesList2
-                = new ArrayList<>();
+        ArrayList<CalendarBorderProperties> customPropertiesList2 = new ArrayList<>();
         // Set the borders properties for everything to Blue.
         CalendarBorderProperties weekdayLabelBorderProperties2 = new CalendarBorderProperties(
-                new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);
+            new Point(3, 1), new Point(5, 5), Color.YELLOW, 5);
         customPropertiesList2.add(weekdayLabelBorderProperties2);
         // Make the top border extra thick.
-        // Notice that all borders in the same row or column will be displayed with the same 
-        // thickness as the thickest individual border that is in the same line. 
+        // Notice that all borders in the same row or column will be displayed with the same
+        // thickness as the thickest individual border that is in the same line.
         CalendarBorderProperties topBorderProperties2 = new CalendarBorderProperties(
-                new Point(4, 1), new Point(4, 1), Color.YELLOW, 15);
+            new Point(4, 1), new Point(4, 1), Color.YELLOW, 15);
         customPropertiesList2.add(topBorderProperties2);
         // Set the borders properties for the date box.
         CalendarBorderProperties dateBoxBorderProperties2 = new CalendarBorderProperties(
-                new Point(3, 3), new Point(5, 5), Color.GREEN, 10);
+            new Point(3, 3), new Point(5, 5), Color.GREEN, 10);
         customPropertiesList2.add(dateBoxBorderProperties2);
         // Set borders properties for the week number labels.
         // Note: Week number borders are always hidden unless the the week numbers are displayed.
         // ("Week number borders" are any borders located in columns 1 and 2.)
         CalendarBorderProperties weekNumberBorderProperties2 = new CalendarBorderProperties(
-                new Point(1, 1), new Point(2, 5), Color.ORANGE, 10);
+            new Point(1, 1), new Point(2, 5), Color.ORANGE, 10);
         customPropertiesList2.add(weekNumberBorderProperties2);
         // Set the corner borders of the date box individually.
         CalendarBorderProperties cornerProp2;

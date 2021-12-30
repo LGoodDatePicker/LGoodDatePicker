@@ -23,61 +23,61 @@
 package com.github.lgooddatepicker.demo;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
-import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.components.DatePicker;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import java.awt.event.ActionEvent;
-import java.util.Locale;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
-import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
-import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
-import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
-import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
-import com.github.lgooddatepicker.zinternaltools.WrapLayout;
-import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
-import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
-import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
-import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
-import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
-import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
-import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.components.DateTimePicker;
-import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
-import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
-import com.privatejgoodies.forms.factories.CC;
-import javax.swing.border.LineBorder;
+import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
+import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
+import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
+import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
+import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
+import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
+import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
+import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
+import com.github.lgooddatepicker.zinternaltools.DemoPanel;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
+import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import com.github.lgooddatepicker.zinternaltools.WrapLayout;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
+import com.privatejgoodies.forms.factories.CC;
+import java.awt.Checkbox;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 import javax.swing.ImageIcon;
-import com.github.lgooddatepicker.optionalusertools.CalendarListener;
-import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
-import java.awt.Checkbox;
-import java.time.YearMonth;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.LineBorder;
 
 /**
  * FullDemo, This class contains a demonstration of various features of the DatePicker library
@@ -122,19 +122,19 @@ public class FullDemo {
         // If desired, set a swing look and feel here.
         try {
             /*
-            // Set a specific look and feel.
-            for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-
-            // Set a random look and feel.
-            LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
-            int lookIndex = (int) (Math.random() * installedLooks.length);
-            UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
-            System.out.println(installedLooks[lookIndex].getClassName().toString());
+             * // Set a specific look and feel.
+             * for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+             * if ("Nimbus".equals(info.getName())) {
+             * UIManager.setLookAndFeel(info.getClassName());
+             * break;
+             * }
+             * }
+             *
+             * // Set a random look and feel.
+             * LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
+             * int lookIndex = (int) (Math.random() * installedLooks.length);
+             * UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
+             * System.out.println(installedLooks[lookIndex].getClassName().toString());
              */
         } catch (Exception e) {
         }
@@ -146,8 +146,8 @@ public class FullDemo {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new DemoPanel();
         frame.getContentPane().add(new JScrollPane(panel,
-                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+            ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
         createDemoButtons();
 
         ///////////////////////////////////////////////////////////////////////////////////////////
@@ -386,8 +386,7 @@ public class FullDemo {
         // These border properties will be used for the next two date picker examples.
         // Create a list to hold our border properties. Borders properties will be applied to the
         // calendar in the order that they appear this list.
-        ArrayList<CalendarBorderProperties> borderProperties
-            = new ArrayList<>();
+        ArrayList<CalendarBorderProperties> borderProperties = new ArrayList<>();
         // Set all borders to be yellow, and 10 pixels thick.
         // (Parts of the yellow border will be overwritten by other border settings.)
         borderProperties.add(new CalendarBorderProperties(
@@ -446,7 +445,7 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         Checkbox enabledCheckbox = new Checkbox("enabled", true);
         panel.panel1.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
-                GridBagConstraints.EAST));
+            GridBagConstraints.EAST));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
             "<html>Date " + (++pickerNumber) + ", Set Default YearMonth with Range<br>"
                 + "(July Next Year + 10 days.):</html>");
@@ -461,7 +460,7 @@ public class FullDemo {
         panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
         enabledCheckbox = new Checkbox("enabled", true);
         panel.panel1.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
-                GridBagConstraints.EAST));
+            GridBagConstraints.EAST));
         panel.addLabel(panel.panel1, 1, (row++ * rowMultiplier),
             "Date " + (++pickerNumber) + ", Change the text field background color:");
         registerEnabledCheckbox(enabledCheckbox, datePicker);
@@ -643,12 +642,12 @@ public class FullDemo {
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         enabledCheckbox = new Checkbox("enabled", true);
         panel.panel2.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
-                GridBagConstraints.EAST));
+            GridBagConstraints.EAST));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier),
             "<html>Time 15, Nanosecond precision:<br/>(ISO format. Use \".\" to type nanoseconds.)</html>");
         registerEnabledCheckbox(enabledCheckbox, timePicker);
 
-        //create a time picker with custom background
+        // create a time picker with custom background
         timeSettings = new TimePickerSettings();
         timeSettings.setColor(TimeArea.TextFieldBackgroundValidTime, Color.cyan);
         timeSettings.setColor(TimeArea.TextFieldBackgroundDisabled, Color.blue);
@@ -657,7 +656,7 @@ public class FullDemo {
         panel.panel2.add(timePicker, getConstraints(1, (row * rowMultiplier), 1));
         enabledCheckbox = new Checkbox("enabled", true);
         panel.panel2.add(enabledCheckbox, getConstraints(1, (row * rowMultiplier), 1,
-                GridBagConstraints.EAST));
+            GridBagConstraints.EAST));
         panel.addLabel(panel.panel2, 1, (row++ * rowMultiplier), "Time 16, custom backgroud color:");
         registerEnabledCheckbox(enabledCheckbox, timePicker);
 
@@ -723,7 +722,6 @@ public class FullDemo {
     private static void registerEnabledCheckbox(Checkbox cb, java.awt.Component managedComp) {
         cb.addItemListener(e -> managedComp.setEnabled(e.getStateChange() == java.awt.event.ItemEvent.SELECTED));
     }
-
 
     /**
      * getConstraints, This returns a grid bag constraints object that can be used for placing a
@@ -883,6 +881,7 @@ public class FullDemo {
         buttonPanel.add(clearOneAndTwo);
         JButton toggleButton = new JButton("Toggle DatePicker One");
         toggleButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mousePressed(MouseEvent e) {
                 toggleDateOneButtonClicked();
@@ -894,6 +893,7 @@ public class FullDemo {
         buttonPanel.add(setTimeOneWithTwo);
         JButton timeToggleButton = new JButton("Toggle TimePicker One");
         timeToggleButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mousePressed(MouseEvent e) {
                 toggleTimeOneButtonClicked();
@@ -904,6 +904,7 @@ public class FullDemo {
         // Add a button for showing the table editors demo.
         JButton tableEditorsDemoButton = new JButton("Show TableEditorsDemo");
         tableEditorsDemoButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mousePressed(MouseEvent e) {
                 showTableEditorsDemoButtonClicked();
@@ -914,6 +915,7 @@ public class FullDemo {
         // Add a button for showing system information.
         JButton showSystemInformationButton = new JButton("JDK Versions");
         showSystemInformationButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mousePressed(MouseEvent e) {
                 showSystemInformationButtonClicked();
@@ -1068,7 +1070,8 @@ public class FullDemo {
         public void dateOrTimeChanged(DateTimeChangeEvent event) {
             // Report on the overall DateTimeChangeEvent.
             String messageStart = "\n\nThe LocalDateTime in " + dateTimePickerName + " has changed from: (";
-            String fullMessage = messageStart + event.getOldDateTimeStrict() + ") to (" + event.getNewDateTimeStrict() + ").";
+            String fullMessage = messageStart + event.getOldDateTimeStrict() + ") to (" + event.getNewDateTimeStrict()
+                + ").";
             if (!panel.messageTextArea.getText().startsWith(messageStart)) {
                 panel.messageTextArea.setText("");
             }

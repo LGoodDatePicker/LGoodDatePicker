@@ -29,21 +29,21 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
-import javax.swing.JPanel;
-import javax.swing.JWindow;
-import javax.swing.Popup;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JWindow;
 import javax.swing.KeyStroke;
+import javax.swing.Popup;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
@@ -61,7 +61,7 @@ import javax.swing.border.LineBorder;
  * its own registration and de-registration of the listener with the top window component.
  */
 public class CustomPopup extends Popup
-        implements WindowFocusListener, ComponentListener {
+    implements WindowFocusListener, ComponentListener {
 
     /**
      * displayWindow, This is the visible window that is used with this popup. The "Popup" class
@@ -96,23 +96,31 @@ public class CustomPopup extends Popup
     /**
      * Constructor, This creates and initializes instances of this class.
      *
-     * @param contentsComponent This is the component that you wish to display inside this popup.
+     * @param contentsComponent
+     *            This is the component that you wish to display inside this popup.
      *
-     * @param topWindow When the window that surrounds a popup is moved, the popup will be
-     * automatically closed. The topWindow is the window that should be watched for movement. The
-     * window that is needed is usually the top window of the component hierarchy, of the component
-     * that initiated the popup. The function SwingUtilities.getWindowAncestor() can be useful for
-     * getting the topWindow.
+     * @param topWindow
+     *            When the window that surrounds a popup is moved, the popup will be
+     *            automatically closed. The topWindow is the window that should be watched for movement.
+     *            The
+     *            window that is needed is usually the top window of the component hierarchy, of the
+     *            component
+     *            that initiated the popup. The function SwingUtilities.getWindowAncestor() can be
+     *            useful for
+     *            getting the topWindow.
      *
-     * @param optionalCustomPopupCloseListener If this is supplied, it will be notified when the
-     * hide() function is called on this popup. This will occur regardless of whether the hide()
-     * function was called internally or externally.
+     * @param optionalCustomPopupCloseListener
+     *            If this is supplied, it will be notified when the
+     *            hide() function is called on this popup. This will occur regardless of whether the
+     *            hide()
+     *            function was called internally or externally.
      *
-     * @param optionalBorder If this is supplied, it will be used as the border for the popup
-     * window. If no border is supplied, then a default border will be used.
+     * @param optionalBorder
+     *            If this is supplied, it will be used as the border for the popup
+     *            window. If no border is supplied, then a default border will be used.
      */
     public CustomPopup(Component contentsComponent, Window topWindow,
-            CustomPopupCloseListener optionalCustomPopupCloseListener, Border optionalBorder) {
+        CustomPopupCloseListener optionalCustomPopupCloseListener, Border optionalBorder) {
         // Call the constructor of the ancestor Popup class.
         super();
         // Save the initialization variables for future use.
@@ -139,6 +147,7 @@ public class CustomPopup extends Popup
         displayWindow = new JWindow(topWindow);
         // This is part of the bug fix for blank popup windows in linux.
         displayWindow.addWindowListener(new WindowAdapter() {
+
             @Override
             public void windowOpened(WindowEvent e) {
                 enableHideWhenFocusIsLost = true;
@@ -147,11 +156,11 @@ public class CustomPopup extends Popup
 
         displayWindow.getContentPane().add(mainPanel);
         displayWindow.setFocusable(true);
-        
+
         // Bug Fix for Github Issue #49
         // "Date selection and navigation not working on Mac OS X 10.12.4 under Java 8 update 121."
         displayWindow.setAlwaysOnTop(true);
-        
+
         displayWindow.pack();
         displayWindow.validate();
         // Add the action that is needed to close the popup when the escape key is pressed.
@@ -160,6 +169,7 @@ public class CustomPopup extends Popup
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), cancelName);
         ActionMap actionMap = mainPanel.getActionMap();
         actionMap.put(cancelName, new AbstractAction() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 hide();

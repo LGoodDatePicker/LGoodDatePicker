@@ -48,10 +48,10 @@ public class PickerUtilities {
      * the same year as "2 BC", and so forth.)
      */
     public static DateTimeFormatter createFormatterFromPatternString(
-            String formatPattern, Locale locale) {
+        String formatPattern, Locale locale) {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder().parseLenient()
-                .parseCaseInsensitive().appendPattern(formatPattern)
-                .toFormatter(locale);
+            .parseCaseInsensitive().appendPattern(formatPattern)
+            .toFormatter(locale);
         return formatter;
     }
 
@@ -67,7 +67,7 @@ public class PickerUtilities {
      * true. Otherwise, values that equal the minimum or maximum will return false.
      */
     public static boolean isLocalTimeInRange(LocalTime value,
-            LocalTime optionalMinimum, LocalTime optionalMaximum, boolean inclusiveOfEndpoints) {
+        LocalTime optionalMinimum, LocalTime optionalMaximum, boolean inclusiveOfEndpoints) {
         // If either bounding time does does not already exist, then set it to the maximum range.
         LocalTime minimum = (optionalMinimum == null) ? LocalTime.MIN : optionalMinimum;
         LocalTime maximum = (optionalMaximum == null) ? LocalTime.MAX : optionalMaximum;
@@ -81,7 +81,7 @@ public class PickerUtilities {
         }
         if (inclusiveOfEndpoints) {
             return ((value.isAfter(minimum) || value.equals(minimum))
-                    && (value.isBefore(maximum) || value.equals(maximum)));
+                && (value.isBefore(maximum) || value.equals(maximum)));
         } else {
             return (value.isAfter(minimum) && value.isBefore(maximum));
         }
@@ -125,7 +125,7 @@ public class PickerUtilities {
         if (first == null || second == null) {
             return false;
         }
-        // Both values contain a YearMonth. 
+        // Both values contain a YearMonth.
         // Return true if the YearMonth are equal, otherwise return false.
         return first.equals(second);
     }

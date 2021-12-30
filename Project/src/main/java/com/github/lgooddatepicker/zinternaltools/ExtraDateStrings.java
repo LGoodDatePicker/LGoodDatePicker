@@ -41,16 +41,16 @@ public class ExtraDateStrings {
      * extraParsingFormatsForLanguage_en, This is a constant list of extra parsing formats, which
      * are used for parsing dates in an English locale.
      */
-    private static final String[] extraParsingFormatsForLanguage_en = new String[]{
+    private static final String[] extraParsingFormatsForLanguage_en = new String[] {
         "M/d/u", "dMMMuu", "dMMMuuuu", "d MMM uu", "d MMM uuuu", "MMM d, u", "MMM d u",
-        "MMM d, yyyy G"};
+        "MMM d, yyyy G" };
 
     /**
      * extraParsingFormatsForLanguage_ru, This is a constant list of extra parsing formats, which
      * are used for parsing dates in a Russian locale.
      */
-    private static final String[] extraParsingFormatsForLanguage_ru = new String[]{
-        "d MMM uuuu"};
+    private static final String[] extraParsingFormatsForLanguage_ru = new String[] {
+        "d MMM uuuu" };
 
     /**
      * monthsNamesForLanguage_ru, This is a constant list of "standalone" month names, for the
@@ -59,8 +59,8 @@ public class ExtraDateStrings {
      * this array should only be used for visual reference. This can be used for comparison to
      * ensure that the general solution is functioning correctly.
      */
-    public static final String[] monthsNamesForLanguage_ru = new String[]{"январь", "февраль",
-        "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"};
+    public static final String[] monthsNamesForLanguage_ru = new String[] { "январь", "февраль",
+        "март", "апрель", "май", "июнь", "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь" };
 
     /**
      * getExtraParsingFormatsForLocale, This will return a list of extra parsing formatters for the
@@ -89,8 +89,8 @@ public class ExtraDateStrings {
         // Create the parsing formatters from the defined formats, and add them to the results list.
         DateTimeFormatter formatter;
         for (String formatString : definedFormats) {
-            formatter = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                    appendPattern(formatString).toFormatter(locale);
+            formatter = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().appendPattern(formatString)
+                .toFormatter(locale);
             extraParsingFormatters.add(formatter);
         }
 
@@ -135,7 +135,7 @@ public class ExtraDateStrings {
      * return the formatting version of the month name.
      */
     private static String getStandaloneMonthName(Month month, Locale locale, boolean capitalize,
-            boolean shortVersion) {
+        boolean shortVersion) {
         // Attempt to get the standalone version of the month name.
         TextStyle style = (shortVersion) ? TextStyle.SHORT_STANDALONE : TextStyle.FULL_STANDALONE;
         String monthName = month.getDisplayName(style, locale);
@@ -161,14 +161,14 @@ public class ExtraDateStrings {
      * full month names.
      */
     private static String[] getStandaloneMonthNamesArray(Locale locale, boolean capitalize,
-            boolean shortVersion) {
+        boolean shortVersion) {
         Month[] monthEnums = Month.values();
         ArrayList<String> monthNamesArrayList = new ArrayList<>();
         for (Month monthEnum : monthEnums) {
             monthNamesArrayList.add(getStandaloneMonthName(monthEnum, locale, capitalize, shortVersion));
         }
         // Convert the arraylist to a string array, and return the array.
-        String[] monthNames = monthNamesArrayList.toArray(new String[]{});
+        String[] monthNames = monthNamesArrayList.toArray(new String[] {});
         return monthNames;
     }
 
@@ -179,7 +179,7 @@ public class ExtraDateStrings {
      * would use as part of a full date. (Is different from the formatting version).
      */
     private static String getFormattingMonthName(Month month, Locale locale, boolean capitalize,
-            boolean shortVersion) {
+        boolean shortVersion) {
         // Get the "formatting version" of the month name.
         DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
         String monthName;
@@ -207,15 +207,15 @@ public class ExtraDateStrings {
      * the formatting month names.
      */
     public static String[] getFormattingMonthNamesArray(Locale locale, boolean capitalize,
-            boolean shortVersion) {
+        boolean shortVersion) {
         Month[] monthEnums = Month.values();
         ArrayList<String> monthNamesArrayList = new ArrayList<>();
         for (Month monthEnum : monthEnums) {
             monthNamesArrayList.add(getFormattingMonthName(
-                    monthEnum, locale, capitalize, shortVersion));
+                monthEnum, locale, capitalize, shortVersion));
         }
         // Convert the arraylist to a string array, and return the array.
-        String[] monthNames = monthNamesArrayList.toArray(new String[]{});
+        String[] monthNames = monthNamesArrayList.toArray(new String[] {});
         return monthNames;
     }
 }

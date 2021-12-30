@@ -42,7 +42,7 @@ public class TranslationSource {
     /**
      * propertiesFileName, This holds the name of the properties file.
      */
-    //leading / since it is at the root of the jar
+    // leading / since it is at the root of the jar
     private static final String propertiesFileName = "/TranslationResources.properties";
 
     /**
@@ -72,13 +72,13 @@ public class TranslationSource {
         try {
             translationResources = new Properties();
             translationResources.load(TranslationSource.class.getResourceAsStream(
-                    propertiesFileName));
+                propertiesFileName));
         } catch (IOException exception) {
-            //this should probably be logged instead of thrown if it is
-            //non-fatal
+            // this should probably be logged instead of thrown if it is
+            // non-fatal
             throw new RuntimeException("TranslationSource."
-                    + "initializePropertiesIfNeeded(): Could not load "
-                    + "TranslationResources.properties file.", exception);
+                + "initializePropertiesIfNeeded(): Could not load "
+                + "TranslationResources.properties file.", exception);
         }
     }
 

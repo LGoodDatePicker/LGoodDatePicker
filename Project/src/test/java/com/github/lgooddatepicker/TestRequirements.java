@@ -22,6 +22,8 @@
  */
 package com.github.lgooddatepicker;
 
+import static org.junit.Assert.assertTrue;
+
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -30,17 +32,14 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Color;
 import java.util.Locale;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 // the tests in this class test basic requirements that always have to be fulfilled
 // these are not complete, feel free to extend them
-public class TestRequirements
-{
+public class TestRequirements {
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void CalendarPanelConstructors()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void CalendarPanelConstructors() {
         CalendarPanel panel;
         panel = new CalendarPanel();
         assertTrue(panel.getDisplayedYearMonth() != null);
@@ -50,9 +49,8 @@ public class TestRequirements
         assertTrue(panel.getDisplayedYearMonth() != null);
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void DatePickerSettingsConstructors()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void DatePickerSettingsConstructors() {
         DatePickerSettings settings;
         settings = new DatePickerSettings();
         assertTrue(settings.getLocale().equals(Locale.getDefault()));
@@ -60,9 +58,8 @@ public class TestRequirements
         assertTrue(settings.getLocale().equals(Locale.ENGLISH));
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void DatePickerConstructors()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void DatePickerConstructors() {
         DatePicker picker;
         picker = new DatePicker();
         assertTrue(picker.getSettings().getLocale().equals(Locale.getDefault()));
@@ -70,9 +67,8 @@ public class TestRequirements
         assertTrue(picker.getSettings().getLocale().equals(Locale.ENGLISH));
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TimePickerSettingsConstructors()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TimePickerSettingsConstructors() {
         TimePickerSettings settings;
         settings = new TimePickerSettings();
         assertTrue(settings.getLocale().equals(Locale.getDefault()));
@@ -80,9 +76,8 @@ public class TestRequirements
         assertTrue(settings.getLocale().equals(Locale.ENGLISH));
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TimePickerConstructors()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TimePickerConstructors() {
         TimePicker picker;
         picker = new TimePicker();
         assertTrue(picker.getSettings().getLocale().equals(Locale.getDefault()));
@@ -90,9 +85,8 @@ public class TestRequirements
         assertTrue(picker.getSettings().getLocale().equals(Locale.ENGLISH));
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void HighlightInformationConstructors()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void HighlightInformationConstructors() {
         HighlightInformation info;
         info = new HighlightInformation();
         assertTrue(info.tooltipText == null);

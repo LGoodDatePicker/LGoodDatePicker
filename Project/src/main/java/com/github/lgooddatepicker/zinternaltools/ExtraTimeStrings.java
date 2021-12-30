@@ -38,8 +38,8 @@ public class ExtraTimeStrings {
      * extraParsingFormatsForLanguage_en, This is a constant list of extra parsing formats, which
      * are used for parsing times in an English locale.
      */
-    private static final String[] extraParsingFormatsForLanguage_en = new String[]{
-        "h:ma", "h.ma", "ha"};
+    private static final String[] extraParsingFormatsForLanguage_en = new String[] {
+        "h:ma", "h.ma", "ha" };
 
     /**
      * getExtraTimeParsingFormatsForLocale, This will return a list of extra parsing formatters for
@@ -65,8 +65,8 @@ public class ExtraTimeStrings {
         // Create the parsing formatters from the defined formats, and add them to the results list.
         DateTimeFormatter formatter;
         for (String formatString : definedFormats) {
-            formatter = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                    appendPattern(formatString).toFormatter(locale);
+            formatter = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().appendPattern(formatString)
+                .toFormatter(locale);
             extraParsingFormatters.add(formatter);
         }
 
@@ -75,12 +75,13 @@ public class ExtraTimeStrings {
     }
 
     public static DateTimeFormatter getDefaultFormatForDisplayTime(Locale locale) {
-        DateTimeFormatter format = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                appendLocalized(null, FormatStyle.SHORT).toFormatter(locale);
+        DateTimeFormatter format = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive()
+            .appendLocalized(null, FormatStyle.SHORT)
+            .toFormatter(locale);
         String language = locale.getLanguage();
         if ("en".equals(language)) {
-            format = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().
-                    appendPattern("h:mma").toFormatter(locale);
+            format = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive().appendPattern("h:mma")
+                .toFormatter(locale);
         }
         return format;
     }

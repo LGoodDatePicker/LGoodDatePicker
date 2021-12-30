@@ -22,28 +22,28 @@
  */
 package com.github.lgooddatepicker.components;
 
-import java.time.*;
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.factories.CC;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.text.DateFormatSymbols;
-import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
 import com.github.lgooddatepicker.zinternaltools.MouseLiberalAdapter;
-import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
-import com.privatejgoodies.forms.layout.CellConstraints;
-import java.time.temporal.WeekFields;
-import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
+import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.CellConstraints;
+import com.privatejgoodies.forms.layout.FormLayout;
+import java.awt.*;
+import java.awt.event.*;
+import java.text.DateFormatSymbols;
+import java.time.*;
+import java.time.temporal.WeekFields;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -195,25 +195,27 @@ public class CalendarPanel extends JPanel {
      */
     private DatePickerSettings settings;
 
-    private class PopupCancelWatcher implements PopupMenuListener
-    {
+    private class PopupCancelWatcher implements PopupMenuListener {
+
         private long cancelTime = 0;
 
         public boolean wasJustCanceled() {
-            return (System.currentTimeMillis()-cancelTime) < 100;
+            return (System.currentTimeMillis() - cancelTime) < 100;
         }
         @Override
-        public void popupMenuWillBecomeVisible( PopupMenuEvent e ) {}
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        }
         @Override
-        public void popupMenuWillBecomeInvisible( PopupMenuEvent e ) {}
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+        }
         @Override
-        public void popupMenuCanceled( PopupMenuEvent e ) {
-             cancelTime = System.currentTimeMillis();
+        public void popupMenuCanceled(PopupMenuEvent e) {
+            cancelTime = System.currentTimeMillis();
         }
     }
 
     private final PopupCancelWatcher yearPopupCancelWatcher = new PopupCancelWatcher();
-    private final PopupCancelWatcher monthPopupCancelWatcher= new PopupCancelWatcher();
+    private final PopupCancelWatcher monthPopupCancelWatcher = new PopupCancelWatcher();
 
     /**
      * yearTextField, The year text field is displayed any time that the user clicks the ellipsis
@@ -227,7 +229,7 @@ public class CalendarPanel extends JPanel {
      * This section should not be modified by hand, but only modified from within the JFormDesigner
      * program.
      */
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
     private JPanel headerControlsPanel;
     private JButton buttonPreviousYear;
     private JButton buttonPreviousMonth;
@@ -243,7 +245,7 @@ public class CalendarPanel extends JPanel {
     private JLabel labelClearDate;
     private JPanel yearEditorPanel;
     private JButton doneEditingYearButton;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    // JFormDesigner - End of variables declaration //GEN-END:variables
 
     private final JPopupMenu popupMonth = new JPopupMenu();
     private final JPopupMenu popupYear = new JPopupMenu();
@@ -364,20 +366,20 @@ public class CalendarPanel extends JPanel {
         // These two arrays represent the cell location of every border label.
         // Note that some coordinate combinations from these arrays are not used.
         // The array index is based on the border label index (not the cell location).
-        int[] labelLocations_X_forColumn = new int[]{0, 1, 2, 3, 4, 11};
-        int[] labelLocations_Y_forRow = new int[]{0, 1, 2, 5, 6, 12};
+        int[] labelLocations_X_forColumn = new int[] { 0, 1, 2, 3, 4, 11 };
+        int[] labelLocations_Y_forRow = new int[] { 0, 1, 2, 5, 6, 12 };
         // These integers represent the dimensions of every border label.
         // Note that some dimension combinations from these arrays are not used.
         // The array index is based on the border label index (not the cell location).
-        int[] labelWidthsInCells_forColumn = new int[]{0, 1, 1, 1, 7, 1};
-        int[] labelHeightsInCells_forRow = new int[]{0, 1, 3, 1, 6, 1};
+        int[] labelWidthsInCells_forColumn = new int[] { 0, 1, 1, 1, 7, 1 };
+        int[] labelHeightsInCells_forRow = new int[] { 0, 1, 3, 1, 6, 1 };
         // These points represent border label indexes that should be created and used.
-        Point[] allBorderLabelIndexes = new Point[]{
+        Point[] allBorderLabelIndexes = new Point[] {
             new Point(1, 1), new Point(2, 1), new Point(3, 1), new Point(4, 1), new Point(5, 1),
             new Point(1, 2), new Point(3, 2), new Point(5, 2),
             new Point(1, 3), new Point(2, 3), new Point(3, 3), new Point(4, 3), new Point(5, 3),
             new Point(1, 4), new Point(3, 4), new Point(5, 4),
-            new Point(1, 5), new Point(2, 5), new Point(3, 5), new Point(4, 5), new Point(5, 5)};
+            new Point(1, 5), new Point(2, 5), new Point(3, 5), new Point(4, 5), new Point(5, 5) };
         // Create all the border labels.
         for (Point index : allBorderLabelIndexes) {
             Point labelLocationCell = new Point(labelLocations_X_forColumn[index.x],
@@ -421,6 +423,7 @@ public class CalendarPanel extends JPanel {
             dateLabels.add(dateLabel);
             // Add a mouse click listener for every date label, even the blank ones.
             dateLabel.addMouseListener(new MouseLiberalAdapter() {
+
                 @Override
                 public void mouseLiberalClick(MouseEvent e) {
                     dateLabelMousePressed(e);
@@ -613,7 +616,8 @@ public class CalendarPanel extends JPanel {
         }
         // Determine and save the old YearMonth, for later notifying any calendar listeners.
         YearMonth oldYearMonth = (oldYearMonthOrNull == null)
-            ? this.displayedYearMonth : oldYearMonthOrNull;
+            ? this.displayedYearMonth
+            : oldYearMonthOrNull;
         // Save the (new) displayed yearMonth.
         this.displayedYearMonth = newYearMonth;
 
@@ -655,8 +659,7 @@ public class CalendarPanel extends JPanel {
         monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
         footerPanel.setBackground(calendarPanelBackgroundColor);
         // Set the background of the navigation buttons.
-        Color navigationButtonsColor
-            = settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
+        Color navigationButtonsColor = settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
         buttonPreviousYear.setBackground(navigationButtonsColor);
         buttonNextYear.setBackground(navigationButtonsColor);
         buttonPreviousMonth.setBackground(navigationButtonsColor);
@@ -826,8 +829,7 @@ public class CalendarPanel extends JPanel {
         int usedRowCount = firstDateInEachUsedRow.size();
         WeekFields weekNumberRules = settings.getWeekNumberRules();
         topLeftLabel.setVisible(showWeekNumbers);
-        for (int weekNumberLabelIndex = 0; weekNumberLabelIndex < weekNumberLabels.size();
-            ++weekNumberLabelIndex) {
+        for (int weekNumberLabelIndex = 0; weekNumberLabelIndex < weekNumberLabels.size(); ++weekNumberLabelIndex) {
             JLabel currentLabel = weekNumberLabels.get(weekNumberLabelIndex);
             currentLabel.setVisible(showWeekNumbers);
             currentLabel.setText("");
@@ -1053,6 +1055,7 @@ public class CalendarPanel extends JPanel {
             final int localMonthZeroBasedIndexTemp = i;
             if (!localMonth.isEmpty()) {
                 popupMonth.add(new JMenuItem(new AbstractAction(localMonth) {
+
                     int localMonthZeroBasedIndex = localMonthZeroBasedIndexTemp;
 
                     @Override
@@ -1079,13 +1082,11 @@ public class CalendarPanel extends JPanel {
      * populateYearPopupMenu, Create entries of year PopUpMenu matching the currently selected year,
      * entries have to be updated every time the selected year changes
      */
-    private void populateYearPopupMenu()
-    {
+    private void populateYearPopupMenu() {
         final int firstYearDifference = -11;
         final int lastYearDifference = +11;
         popupYear.removeAll();
-        for (int yearDifference = firstYearDifference; yearDifference <= lastYearDifference;
-            ++yearDifference) {
+        for (int yearDifference = firstYearDifference; yearDifference <= lastYearDifference; ++yearDifference) {
             // No special processing is required for the BC to AD transition in the
             // ISO 8601 calendar system. Year zero does exist in this system.
             // This try block handles exceptions that can occur at LocalDate.MAX.
@@ -1093,6 +1094,7 @@ public class CalendarPanel extends JPanel {
                 YearMonth choiceYearMonth = displayedYearMonth.plusYears(yearDifference);
                 String choiceYearMonthString = "" + choiceYearMonth.getYear();
                 popupYear.add(new JMenuItem(new AbstractAction(choiceYearMonthString) {
+
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String chosenMenuText = ((JMenuItem) e.getSource()).getText();
@@ -1105,6 +1107,7 @@ public class CalendarPanel extends JPanel {
         }
         final String choiceOtherYearString = "( . . . )";
         popupYear.add(new JMenuItem(new AbstractAction(choiceOtherYearString) {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 otherYearMenuItemClicked();
@@ -1161,8 +1164,8 @@ public class CalendarPanel extends JPanel {
      */
     public void setSelectedDate(LocalDate selectedDate) {
         setSelectedDateWithoutShowing(selectedDate);
-        YearMonth yearMonthToShow
-            = (selectedDate == null) ? YearMonth.now(getClockForToday()) : YearMonth.from(selectedDate);
+        YearMonth yearMonthToShow = (selectedDate == null) ? YearMonth.now(getClockForToday())
+            : YearMonth.from(selectedDate);
         setDisplayedYearMonth(yearMonthToShow);
     }
 
@@ -1349,6 +1352,7 @@ public class CalendarPanel extends JPanel {
      */
     private void zAddMouseListenersToTodayAndClearButtons() {
         labelSetDateToToday.addMouseListener(new MouseLiberalAdapter() {
+
             @Override
             public void mouseLiberalClick(MouseEvent e) {
                 labelSetDateToTodayMousePressed(e);
@@ -1365,6 +1369,7 @@ public class CalendarPanel extends JPanel {
             }
         });
         labelClearDate.addMouseListener(new MouseLiberalAdapter() {
+
             @Override
             public void mouseLiberalClick(MouseEvent e) {
                 labelClearDateMousePressed(e);
@@ -1428,7 +1433,7 @@ public class CalendarPanel extends JPanel {
      * should only be modified from within JFormDesigner.
      */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
         headerControlsPanel = new JPanel();
         buttonPreviousYear = new JButton();
         buttonPreviousMonth = new JButton();
@@ -1445,21 +1450,21 @@ public class CalendarPanel extends JPanel {
         yearEditorPanel = new JPanel();
         doneEditingYearButton = new JButton();
 
-        //======== this ========
+        // ======== this ========
         setLayout(new GridBagLayout());
-        ((GridBagLayout) getLayout()).columnWidths = new int[]{5, 0, 5, 0};
-        ((GridBagLayout) getLayout()).rowHeights = new int[]{6, 0, 5, 80, 5, 0, 5, 0};
-        ((GridBagLayout) getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 1.0E-4};
-        ((GridBagLayout) getLayout()).rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4};
+        ((GridBagLayout) getLayout()).columnWidths = new int[] { 5, 0, 5, 0 };
+        ((GridBagLayout) getLayout()).rowHeights = new int[] { 6, 0, 5, 80, 5, 0, 5, 0 };
+        ((GridBagLayout) getLayout()).columnWeights = new double[] { 0.0, 0.0, 0.0, 1.0E-4 };
+        ((GridBagLayout) getLayout()).rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0E-4 };
 
-        //======== headerControlsPanel ========
+        // ======== headerControlsPanel ========
         {
             headerControlsPanel.setLayout(new FormLayout(
                 "3*(pref), pref:grow, 3*(pref)",
                 "fill:pref:grow"));
-            ((FormLayout) headerControlsPanel.getLayout()).setColumnGroups(new int[][]{{1, 2, 6, 7}});
+            ((FormLayout) headerControlsPanel.getLayout()).setColumnGroups(new int[][] { { 1, 2, 6, 7 } });
 
-            //---- buttonPreviousYear ----
+            // ---- buttonPreviousYear ----
             buttonPreviousYear.setText("<<");
             buttonPreviousYear.setFocusable(false);
             buttonPreviousYear.setFocusPainted(false);
@@ -1469,7 +1474,7 @@ public class CalendarPanel extends JPanel {
             buttonPreviousYear.addActionListener(e -> buttonPreviousYearActionPerformed(e));
             headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
-            //---- buttonPreviousMonth ----
+            // ---- buttonPreviousMonth ----
             buttonPreviousMonth.setText(" < ");
             buttonPreviousMonth.setFocusable(false);
             buttonPreviousMonth.setFocusPainted(false);
@@ -1479,23 +1484,24 @@ public class CalendarPanel extends JPanel {
             buttonPreviousMonth.addActionListener(e -> buttonPreviousMonthActionPerformed(e));
             headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
-            //======== monthAndYearOuterPanel ========
+            // ======== monthAndYearOuterPanel ========
             {
                 monthAndYearOuterPanel.setLayout(new FormLayout(
                     "pref:grow, pref, pref:grow",
                     "fill:pref:grow"));
 
-                //======== monthAndYearInnerPanel ========
+                // ======== monthAndYearInnerPanel ========
                 {
                     monthAndYearInnerPanel.setLayout(new FormLayout(
                         "pref, [1px,pref], pref",
                         "fill:pref:grow"));
 
-                    //---- labelMonth ----
+                    // ---- labelMonth ----
                     labelMonth.setText("September");
                     labelMonth.setHorizontalAlignment(SwingConstants.RIGHT);
                     labelMonth.setOpaque(true);
                     labelMonth.addMouseListener(new MouseAdapter() {
+
                         @Override
                         public void mouseEntered(MouseEvent e) {
                             labelIndicatorMouseEntered(e);
@@ -1513,10 +1519,11 @@ public class CalendarPanel extends JPanel {
                     });
                     monthAndYearInnerPanel.add(labelMonth, CC.xy(1, 1));
 
-                    //---- labelYear ----
+                    // ---- labelYear ----
                     labelYear.setText("2100");
                     labelYear.setOpaque(true);
                     labelYear.addMouseListener(new MouseAdapter() {
+
                         @Override
                         public void mouseEntered(MouseEvent e) {
                             labelIndicatorMouseEntered(e);
@@ -1538,7 +1545,7 @@ public class CalendarPanel extends JPanel {
             }
             headerControlsPanel.add(monthAndYearOuterPanel, CC.xy(4, 1));
 
-            //---- buttonNextMonth ----
+            // ---- buttonNextMonth ----
             buttonNextMonth.setText(" > ");
             buttonNextMonth.setFocusable(false);
             buttonNextMonth.setFocusPainted(false);
@@ -1548,7 +1555,7 @@ public class CalendarPanel extends JPanel {
             buttonNextMonth.addActionListener(e -> buttonNextMonthActionPerformed(e));
             headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
 
-            //---- buttonNextYear ----
+            // ---- buttonNextYear ----
             buttonNextYear.setText(">>");
             buttonNextYear.setFocusable(false);
             buttonNextYear.setFocusPainted(false);
@@ -1562,28 +1569,28 @@ public class CalendarPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        //======== centerPanel ========
+        // ======== centerPanel ========
         {
             centerPanel.setBackground(new Color(210, 210, 210));
             centerPanel.setLayout(new FormLayout(
                 "3*(min), 7*(default:grow), min",
                 "fill:min, fill:2px, fill:default:grow, fill:1px, fill:min, 6*(fill:default:grow), fill:min"));
-            ((FormLayout) centerPanel.getLayout()).setColumnGroups(new int[][]{{4, 5, 6, 7, 8, 9, 10}});
-            ((FormLayout) centerPanel.getLayout()).setRowGroups(new int[][]{{3, 6, 7, 8, 9, 10, 11}});
+            ((FormLayout) centerPanel.getLayout()).setColumnGroups(new int[][] { { 4, 5, 6, 7, 8, 9, 10 } });
+            ((FormLayout) centerPanel.getLayout()).setRowGroups(new int[][] { { 3, 6, 7, 8, 9, 10, 11 } });
         }
         add(centerPanel, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        //======== footerPanel ========
+        // ======== footerPanel ========
         {
             footerPanel.setLayout(new GridBagLayout());
-            ((GridBagLayout) footerPanel.getLayout()).columnWidths = new int[]{6, 0, 0, 0, 6, 0};
-            ((GridBagLayout) footerPanel.getLayout()).rowHeights = new int[]{0, 0};
-            ((GridBagLayout) footerPanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4};
-            ((GridBagLayout) footerPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+            ((GridBagLayout) footerPanel.getLayout()).columnWidths = new int[] { 6, 0, 0, 0, 6, 0 };
+            ((GridBagLayout) footerPanel.getLayout()).rowHeights = new int[] { 0, 0 };
+            ((GridBagLayout) footerPanel.getLayout()).columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, 1.0E-4 };
+            ((GridBagLayout) footerPanel.getLayout()).rowWeights = new double[] { 1.0, 1.0E-4 };
 
-            //---- labelSetDateToToday ----
+            // ---- labelSetDateToToday ----
             labelSetDateToToday.setText("Today: Feb 12, 2016");
             labelSetDateToToday.setHorizontalAlignment(SwingConstants.CENTER);
             labelSetDateToToday.setOpaque(true);
@@ -1591,7 +1598,7 @@ public class CalendarPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
 
-            //---- labelClearDate ----
+            // ---- labelClearDate ----
             labelClearDate.setText("Clear");
             labelClearDate.setOpaque(true);
             footerPanel.add(labelClearDate, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0,
@@ -1602,15 +1609,15 @@ public class CalendarPanel extends JPanel {
             GridBagConstraints.CENTER, GridBagConstraints.BOTH,
             new Insets(0, 0, 0, 0), 0, 0));
 
-        //======== yearEditorPanel ========
+        // ======== yearEditorPanel ========
         {
             yearEditorPanel.setLayout(new GridBagLayout());
-            ((GridBagLayout) yearEditorPanel.getLayout()).columnWidths = new int[]{40, 1, 26, 0};
-            ((GridBagLayout) yearEditorPanel.getLayout()).rowHeights = new int[]{0, 0};
-            ((GridBagLayout) yearEditorPanel.getLayout()).columnWeights = new double[]{1.0, 0.0, 0.0, 1.0E-4};
-            ((GridBagLayout) yearEditorPanel.getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
+            ((GridBagLayout) yearEditorPanel.getLayout()).columnWidths = new int[] { 40, 1, 26, 0 };
+            ((GridBagLayout) yearEditorPanel.getLayout()).rowHeights = new int[] { 0, 0 };
+            ((GridBagLayout) yearEditorPanel.getLayout()).columnWeights = new double[] { 1.0, 0.0, 0.0, 1.0E-4 };
+            ((GridBagLayout) yearEditorPanel.getLayout()).rowWeights = new double[] { 1.0, 1.0E-4 };
 
-            //---- doneEditingYearButton ----
+            // ---- doneEditingYearButton ----
             doneEditingYearButton.setFocusPainted(false);
             doneEditingYearButton.setFocusable(false);
             doneEditingYearButton.addActionListener(e -> doneEditingYearButtonActionPerformed(e));
@@ -1618,7 +1625,7 @@ public class CalendarPanel extends JPanel {
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(0, 0, 0, 0), 0, 0));
         }
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
+        // JFormDesigner - End of component initialization //GEN-END:initComponents
     }
 
     /**
@@ -1657,7 +1664,8 @@ public class CalendarPanel extends JPanel {
                     boolean isVisible = (thickness > 0);
                     borderLabel.setVisible(isVisible);
                     Dimension minimumSize = (isVisible)
-                        ? new Dimension(thickness, thickness) : new Dimension(1, 1);
+                        ? new Dimension(thickness, thickness)
+                        : new Dimension(1, 1);
                     borderLabel.setMinimumSize(minimumSize);
                 }
             }
@@ -1865,11 +1873,10 @@ public class CalendarPanel extends JPanel {
         return buttonNextYear;
     }
 
-    private java.time.Clock getClockForToday()
-    {
-      if (settings != null) {
-        return settings.getClock();
-      }
-      return java.time.Clock.systemDefaultZone();
+    private java.time.Clock getClockForToday() {
+        if (settings != null) {
+            return settings.getClock();
+        }
+        return java.time.Clock.systemDefaultZone();
     }
 }

@@ -22,12 +22,11 @@
  */
 package com.github.lgooddatepicker.zinternaltools;
 
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.factories.CC;
-import javax.swing.*;
-import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
+import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -38,6 +37,7 @@ import java.awt.event.MouseEvent;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.*;
 
 public class TimeMenuPanel extends JPanel {
 
@@ -82,6 +82,7 @@ public class TimeMenuPanel extends JPanel {
         timeList.setModel(timeListModel);
 
         timeList.addMouseMotionListener(new MouseAdapter() {
+
             @Override
             public void mouseMoved(MouseEvent event) {
                 Point mousePositionRelativeToComponent = new Point(event.getX(), event.getY());
@@ -92,12 +93,14 @@ public class TimeMenuPanel extends JPanel {
             }
         });
         timeList.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseReleased(MouseEvent event) {
                 mouseReleasedWhileTimeListIsOpen();
             }
         });
         timeList.addKeyListener(new KeyAdapter() {
+
             @Override
             public void keyReleased(KeyEvent event) {
                 if (event.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -118,7 +121,7 @@ public class TimeMenuPanel extends JPanel {
         // Calculate and save the minimum system time, at which to enable the mouse release from
         // toggle button event.
         minimumTimeToEnableMouseReleaseFromToggleButton = System.currentTimeMillis()
-                + minimumMouseReleaseFromToggleButtonMilliseconds;
+            + minimumMouseReleaseFromToggleButtonMilliseconds;
     }
 
     public void mouseDraggedFromToggleButton() {
@@ -137,21 +140,21 @@ public class TimeMenuPanel extends JPanel {
 
     public void mouseReleasedFromToggleButtonOutsideButton() {
         // Make sure that the window has been open long enough for the user to read (or see) the
-        // time menu, before allowing the popup to be closed from a mouse release event that 
+        // time menu, before allowing the popup to be closed from a mouse release event that
         // originates from the toggle button.
-        boolean enableMouseReleaseEventsFromToggleButton
-                = (System.currentTimeMillis() > minimumTimeToEnableMouseReleaseFromToggleButton);
+        boolean enableMouseReleaseEventsFromToggleButton = (System
+            .currentTimeMillis() > minimumTimeToEnableMouseReleaseFromToggleButton);
 
         // Check to see if mouse release events from the toggle button are enabled.
         if (!enableMouseReleaseEventsFromToggleButton) {
             return;
         }
-        // Call the mouse release event funtion. 
+        // Call the mouse release event funtion.
         mouseReleasedWhileTimeListIsOpen();
     }
 
     private void mouseReleasedWhileTimeListIsOpen() {
-        // Get the mouse position and time list bounds. 
+        // Get the mouse position and time list bounds.
         Point mousePositionRelativeToScreen = MouseInfo.getPointerInfo().getLocation();
         Rectangle timeListBounds = timeList.getBounds();
         timeListBounds.setLocation(timeList.getLocationOnScreen());
@@ -174,8 +177,8 @@ public class TimeMenuPanel extends JPanel {
             }
         } catch (Exception e) {
             throw new RuntimeException("TimeMenuPanel.mouseReleasedWhileTimeListIsOpen() "
-                    + "Time menu list index is out of bounds. This should not happen. "
-                    + e.getMessage());
+                + "Time menu list index is out of bounds. This should not happen. "
+                + e.getMessage());
         }
     }
 
@@ -200,14 +203,14 @@ public class TimeMenuPanel extends JPanel {
     }
 
     private void userSelectedATime(String selectedTimeString) {
-        // Try to parse the selected time string. 
+        // Try to parse the selected time string.
         LocalTime selectedTime = InternalUtilities.getParsedTimeOrNull(selectedTimeString,
-                settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
-                settings.formatsForParsing, settings.getLocale());
+            settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
+            settings.formatsForParsing, settings.getLocale());
         // Check to see if the time was parsed. The time should always parse successfully.
         if (selectedTime == null) {
             throw new RuntimeException("TimeMenuPanel, "
-                    + "Could not parse menu time. This should not happen.");
+                + "Could not parse menu time. This should not happen.");
         }
 
         // If the selected time is vetoed, do nothing.
@@ -223,33 +226,33 @@ public class TimeMenuPanel extends JPanel {
     }
 
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
         timeScrollPane = new JScrollPane();
         timeList = new JList<>();
 
-        //======== this ========
+        // ======== this ========
         setBorder(null);
         setLayout(new FormLayout(
-                "default:grow",
-                "fill:default:grow"));
+            "default:grow",
+            "fill:default:grow"));
 
-        //======== timeScrollPane ========
+        // ======== timeScrollPane ========
         {
             timeScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-            //---- timeList ----
+            // ---- timeList ----
             timeList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
             timeList.setVisibleRowCount(10);
             timeScrollPane.setViewportView(timeList);
         }
         add(timeScrollPane, CC.xy(1, 1));
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
+        // JFormDesigner - End of component initialization //GEN-END:initComponents
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
     private JScrollPane timeScrollPane;
     private JList<String> timeList;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    // JFormDesigner - End of variables declaration //GEN-END:variables
 
     private void tryClosePopup() {
         if (parentTimePicker != null) {

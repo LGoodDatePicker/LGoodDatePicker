@@ -22,16 +22,13 @@
  */
 package com.github.lgooddatepicker.zinternaltools;
 
-import java.awt.GridBagConstraints;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Properties;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import java.awt.Component;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -49,10 +46,13 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
@@ -74,8 +74,10 @@ public class InternalUtilities {
      * false} is returned. Otherwise, equality is determined by using the
      * {@link Object#equals equals} method of the first argument.
      *
-     * @param a an object
-     * @param b an object to be compared with {@code a} for equality
+     * @param a
+     *            an object
+     * @param b
+     *            an object to be compared with {@code a} for equality
      * @return {@code true} if the arguments are equal to each other and {@code false} otherwise
      * @see Object#equals(Object)
      */
@@ -83,17 +85,17 @@ public class InternalUtilities {
         return (a == b) || (a != null && a.equals(b));
     }
 
-/**
+    /**
      * doesParsedDateMatchText, This compares the numbers in a parsed date, to the original text
      * from which the date was parsed. Specifically this compares the day of the month and the year
-     * of the parsed date to the text. 
+     * of the parsed date to the text.
      *
      * Testing note: Invalid dates this function should detect are any of the following: The 31st
      * day of February, April, June, September, or November. The 30th day of February. Or the 29th
      * day of February on any year that is not a leap year.
      */
-public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
-            DateTimeFormatter usedFormatter) {
+    public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
+        DateTimeFormatter usedFormatter) {
         if (parsedDate == null || text == null) {
             return false;
         }
@@ -121,7 +123,7 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
             }
         }
 
-      return true;
+        return true;
     }
 
     /**
@@ -173,9 +175,9 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
             int newCount = (countOrNull == null) ? 1 : (countOrNull + 1);
             hashMap.put(element, newCount);
         }
-        // Find the largest entry. 
-        // In the event of a tie, the first entry (the first entry in the hash map, not in the list) 
-        // with the maximum count will be returned. 
+        // Find the largest entry.
+        // In the event of a tie, the first entry (the first entry in the hash map, not in the list)
+        // with the maximum count will be returned.
         Entry<T, Integer> largestEntry = null;
         for (Entry<T, Integer> currentEntry : hashMap.entrySet()) {
             if (largestEntry == null || currentEntry.getValue() > largestEntry.getValue()) {
@@ -269,9 +271,9 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
      * FormatStyle.LONG formatter in the specified locale.
      */
     public static DateTimeFormatter generateDefaultFormatterCE(Locale pickerLocale) {
-        DateTimeFormatter formatCE = new DateTimeFormatterBuilder().parseLenient().
-            parseCaseInsensitive().appendLocalized(FormatStyle.LONG, null).
-            toFormatter(pickerLocale);
+        DateTimeFormatter formatCE = new DateTimeFormatterBuilder().parseLenient().parseCaseInsensitive()
+            .appendLocalized(FormatStyle.LONG, null)
+            .toFormatter(pickerLocale);
         // Get the local language as a string.
         String language = pickerLocale.getLanguage();
         // Override the format for the turkish locale to remove the name of the weekday.
@@ -324,7 +326,7 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
      * parsed date, then this function will return null.
      */
     public static LocalDate getParsedDateOrNull(String text,
-        DateTimeFormatter displayFormatterAD, DateTimeFormatter displayFormatterBC, 
+        DateTimeFormatter displayFormatterAD, DateTimeFormatter displayFormatterBC,
         ArrayList<DateTimeFormatter> parsingFormatters) {
         if (text == null || text.trim().isEmpty()) {
             return null;
@@ -357,7 +359,7 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
         // Check for any "successfully" parsed but nonexistent dates like Feb 31.
         // Note, this function has been thoroughly tested. See the function docs for details.
         if ((parsedDate != null) && (!InternalUtilities.doesParsedDateMatchText(
-                parsedDate, text, usedFormatter))) {
+            parsedDate, text, usedFormatter))) {
             return null;
         }
         return parsedDate;
@@ -517,20 +519,20 @@ public static boolean doesParsedDateMatchText(LocalDate parsedDate, String text,
         InputStream classByteStream) throws Exception {
         int majorVersion = getCompiledJavaVersionFromJavaClassFile(classByteStream, true);
         switch (majorVersion) {
-            case 50:
-                return "Java 6";
-            case 51:
-                return "Java 7";
-            case 52:
-                return "Java 8";
-            case 53:
-                return "Java 9";
-            case 54:
-                return "Java 10";
-            case 55:
-                return "Java 11";
-            default:
-                return "Could not find version string for major version: " + majorVersion;
+        case 50:
+            return "Java 6";
+        case 51:
+            return "Java 7";
+        case 52:
+            return "Java 8";
+        case 53:
+            return "Java 9";
+        case 54:
+            return "Java 10";
+        case 55:
+            return "Java 11";
+        default:
+            return "Could not find version string for major version: " + majorVersion;
         }
     }
 

@@ -66,13 +66,13 @@ public class DurationDemo extends JFrame {
      * initializeComponents, This creates the user interface for the basic demo.
      */
     private void initializeComponents() {
-        // Set up the form which holds the date picker components. 
+        // Set up the form which holds the date picker components.
         setTitle("LGoodDatePicker Basic Demo " + InternalUtilities.getProjectVersionString());
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new FlowLayout());
         setSize(new Dimension(640, 480));
         setLocationRelativeTo(null);
-        
+
         // Create a duration picker, and add it to the form.
         DurationPicker durationPicker1 = new DurationPicker();
         add(durationPicker1);
@@ -88,7 +88,7 @@ public class DurationDemo extends JFrame {
         // To display this picker, uncomment this line.
         // add(dateTimePicker1);
 
-        // Create a date picker with some custom settings. 
+        // Create a date picker with some custom settings.
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setFirstDayOfWeek(DayOfWeek.MONDAY);
         DatePicker datePicker2 = new DatePicker(dateSettings);

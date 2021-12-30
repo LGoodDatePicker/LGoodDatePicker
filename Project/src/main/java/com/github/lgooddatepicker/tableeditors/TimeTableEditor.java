@@ -67,7 +67,7 @@ import javax.swing.table.TableCellRenderer;
  *
  */
 public class TimeTableEditor extends AbstractCellEditor
-        implements TableCellEditor, TableCellRenderer {
+    implements TableCellEditor, TableCellRenderer {
 
     /**
      * autoAdjustMinimumTableRowHeight, This indicates whether the minimum table row height (for all
@@ -126,20 +126,22 @@ public class TimeTableEditor extends AbstractCellEditor
     /**
      * Constructor, with options.
      *
-     * @param autoAdjustMinimumTableRowHeight Set this to true to have this class automatically
-     * adjust the the minimum row height of all rows in the table, the first time that a
-     * TimeTableEditor is displayed. Set this to false to turn off any row height adjustments. The
-     * default value is true.
+     * @param autoAdjustMinimumTableRowHeight
+     *            Set this to true to have this class automatically
+     *            adjust the the minimum row height of all rows in the table, the first time that a
+     *            TimeTableEditor is displayed. Set this to false to turn off any row height
+     *            adjustments. The
+     *            default value is true.
      */
     public TimeTableEditor(boolean autoAdjustMinimumTableRowHeight,
-            boolean matchTableBackgroundColor, boolean matchTableSelectionBackgroundColor) {
+        boolean matchTableBackgroundColor, boolean matchTableSelectionBackgroundColor) {
         // Save the constructor parameters.
         this.autoAdjustMinimumTableRowHeight = autoAdjustMinimumTableRowHeight;
         this.matchTableBackgroundColor = matchTableBackgroundColor;
         this.matchTableSelectionBackgroundColor = matchTableSelectionBackgroundColor;
         // Create the borders that should be used for focused and unfocused cells.
-        JLabel exampleDefaultRenderer = (JLabel) new DefaultTableCellRenderer().
-                getTableCellRendererComponent(new JTable(), "", true, true, 0, 0);
+        JLabel exampleDefaultRenderer = (JLabel) new DefaultTableCellRenderer()
+            .getTableCellRendererComponent(new JTable(), "", true, true, 0, 0);
         borderFocusedCell = exampleDefaultRenderer.getBorder();
         borderUnfocusedCell = new EmptyBorder(1, 1, 1, 1);
         // Create and set up the time picker.
@@ -189,7 +191,7 @@ public class TimeTableEditor extends AbstractCellEditor
      */
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value,
-            boolean isSelected, int row, int column) {
+        boolean isSelected, int row, int column) {
         // Save the supplied value to the time picker.
         setCellEditorValue(value);
         // If needed, adjust the minimum row height for the table.
@@ -209,7 +211,7 @@ public class TimeTableEditor extends AbstractCellEditor
      */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value,
-            boolean isSelected, boolean hasFocus, int row, int column) {
+        boolean isSelected, boolean hasFocus, int row, int column) {
         // Save the supplied value to the time picker.
         setCellEditorValue(value);
         // Draw the appropriate background colors to indicate a selected or unselected state.

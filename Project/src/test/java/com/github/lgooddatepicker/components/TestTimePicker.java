@@ -22,56 +22,56 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.github.lgooddatepicker.TestHelpers;
-import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.time.Clock;
-import java.time.Month;
-import java.time.ZoneId;
-import java.util.Locale;
-
-import org.junit.Test;
-
+import com.github.lgooddatepicker.TestHelpers;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import java.awt.Color;
+import java.time.Clock;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
+import org.junit.Test;
 
 /**
  * Tests for the TimePicker component features
  */
 public class TestTimePicker {
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockTimeSettings() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestCustomClockTimeSettings()
+        throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         TimePickerSettings settings = new TimePickerSettings();
         assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
+        assertTrue("Default clock must be in system default time zone",
+            settings.getClock().getZone().equals(ZoneId.systemDefault()));
         settings = new TimePickerSettings(Locale.ENGLISH);
         assertTrue("Default clock must be available", settings.getClock() != null);
-        assertTrue("Default clock must be in system default time zone", settings.getClock().getZone().equals(ZoneId.systemDefault()));
+        assertTrue("Default clock must be in system default time zone",
+            settings.getClock().getZone().equals(ZoneId.systemDefault()));
         Clock myClock = Clock.systemUTC();
         settings.setClock(myClock);
         assertTrue("Set clock must be returned", settings.getClock() == myClock);
-        LocalTime initialTime = (LocalTime) TestHelpers.readPrivateField(TimePickerSettings.class, settings, "initialTime");
+        LocalTime initialTime = (LocalTime) TestHelpers.readPrivateField(TimePickerSettings.class, settings,
+            "initialTime");
         assertTrue("intialtime is null as long as setInitialTimeToNow() has not been called", initialTime == null);
-        settings.setClock(TestHelpers.getClockFixedToInstant(2000, Month.JANUARY, 1, 15,55));
+        settings.setClock(TestHelpers.getClockFixedToInstant(2000, Month.JANUARY, 1, 15, 55));
         settings.setInitialTimeToNow();
         initialTime = (LocalTime) TestHelpers.readPrivateField(TimePickerSettings.class, settings, "initialTime");
         assertTrue("intialtime is not null after call to as long as setInitialTimeToNow()", initialTime != null);
         assertTrue("intialtime must be 15:55 / 3:55pm", initialTime.equals(LocalTime.of(15, 55)));
     }
 
-    @Test( expected = Test.None.class /* no exception expected */ )
-    public void TestCustomClockTimePicker()
-    {
+    @Test(expected = Test.None.class /* no exception expected */ )
+    public void TestCustomClockTimePicker() {
         TimePicker picker = new TimePicker();
         assertTrue(picker.getTime() == null);
         TimePickerSettings settings = new TimePickerSettings(Locale.ENGLISH);
@@ -85,8 +85,7 @@ public class TestTimePicker {
      * Basic test of the time picker functions
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimePickerBasics()
-    {
+    public void verifyTimePickerBasics() {
         TimePicker picker = new TimePicker();
 
         // Test the range of Local times
@@ -96,7 +95,7 @@ public class TestTimePicker {
         assertEquals("noon local time could not be used", LocalTime.NOON, picker.getTime());
         picker.setTime(LocalTime.MAX);
         assertEquals("maximum local time could not be used", LocalTime.MAX.truncatedTo(ChronoUnit.MINUTES),
-                picker.getTime());
+            picker.getTime());
 
         // test clearing the component by setting the time to null
         picker.setTime(null);
@@ -119,8 +118,7 @@ public class TestTimePicker {
      * and disabled as expected
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimePickerEnabled()
-    {
+    public void verifyTimePickerEnabled() {
         TimePicker picker = new TimePicker();
         picker.setEnableArrowKeys(true);
         assertTrue("Arrow keys not enabled", picker.getEnableArrowKeys());
@@ -146,8 +144,7 @@ public class TestTimePicker {
      * consistent when run on systems in other Locales.
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimePickerParsingAndStrings()
-    {
+    public void verifyTimePickerParsingAndStrings() {
         TimePickerSettings settings = new TimePickerSettings(Locale.ENGLISH);
         settings.useLowercaseForDisplayTime = true;
         TimePicker picker = new TimePicker(settings);
@@ -171,7 +168,7 @@ public class TestTimePicker {
         picker.setTime(null);
         assertEquals("Expected empty string for null time", "", picker.getTimeStringOrEmptyString());
         assertEquals("Expected supplied string for null time", "supply",
-                picker.getTimeStringOrSuppliedString("supply"));
+            picker.getTimeStringOrSuppliedString("supply"));
 
         // null text
         assertFalse("null text was considered valid", picker.isTextValid(null));
@@ -198,8 +195,7 @@ public class TestTimePicker {
      * as expected.
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyTimeChangeListeners()
-    {
+    public void verifyTimeChangeListeners() {
         TimePicker picker = new TimePicker();
         TestableTimeChangeListener listener = new TestableTimeChangeListener();
         picker.addTimeChangeListener(listener);
@@ -232,12 +228,11 @@ public class TestTimePicker {
      * Test to ensure that the custom colors for the disabled time picker work as excepcted
      */
     @Test(expected = Test.None.class /* no exception expected */ )
-    public void verifyCustomDisabledColors()
-    {
-        final Color defaultDisabledText =  new TimePickerSettings().getColor(
-                TimeArea.TimePickerTextDisabled);
+    public void verifyCustomDisabledColors() {
+        final Color defaultDisabledText = new TimePickerSettings().getColor(
+            TimeArea.TimePickerTextDisabled);
         final Color defaultDisabledBackground = new TimePickerSettings().getColor(
-                TimeArea.TextFieldBackgroundDisabled);
+            TimeArea.TextFieldBackgroundDisabled);
 
         TimePickerSettings settings = new TimePickerSettings(Locale.ENGLISH);
         settings.setColor(TimeArea.TimePickerTextDisabled, Color.yellow);
@@ -262,12 +257,11 @@ public class TestTimePicker {
         validateTimePickerDisabledColor(picker, Color.yellow, Color.blue);
     }
 
-    void validateTimePickerDisabledColor(TimePicker picker, Color disabledTextColor, Color disabledBackground)
-    {
+    void validateTimePickerDisabledColor(TimePicker picker, Color disabledTextColor, Color disabledBackground) {
         final Color validText = new TimePickerSettings().getColor(
-                TimeArea.TimePickerTextValidTime);
+            TimeArea.TimePickerTextValidTime);
         final Color enabledBackground = new TimePickerSettings().getColor(
-                TimeArea.TextFieldBackgroundValidTime);
+            TimeArea.TextFieldBackgroundValidTime);
 
         assertTrue(picker.getComponentTimeTextField().getForeground().equals(validText));
         assertFalse(picker.getComponentTimeTextField().getForeground().equals(disabledTextColor));
@@ -283,8 +277,8 @@ public class TestTimePicker {
     }
 
     // helper class
-    private class TestableTimeChangeListener implements TimeChangeListener
-    {
+    private class TestableTimeChangeListener implements TimeChangeListener {
+
         TimeChangeEvent lastEvent;
 
         @Override

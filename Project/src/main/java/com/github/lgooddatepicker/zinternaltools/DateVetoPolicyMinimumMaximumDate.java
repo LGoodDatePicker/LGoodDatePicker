@@ -36,7 +36,7 @@ import java.time.LocalDate;
  * than or equal to the firstAllowedDate.
  */
 public class DateVetoPolicyMinimumMaximumDate
-        implements DateVetoPolicy {
+    implements DateVetoPolicy {
 
     /**
      * firstAllowedDate, This is the first date that will be allowed. If this is null, then there
@@ -89,15 +89,15 @@ public class DateVetoPolicyMinimumMaximumDate
     public void setDateRangeLimits(LocalDate firstAllowedDate, LocalDate lastAllowedDate) {
         if (firstAllowedDate == null && lastAllowedDate == null) {
             throw new RuntimeException("DateVetoPolicyMinimumMaximumDate.setDateRangeLimits(),"
-                    + "The variable firstAllowedDate can be null, or lastAllowedDate can be null, "
-                    + "but both values cannot be null at the same time. "
-                    + "If you wish to clear the veto policy, then call the function: "
-                    + "'DatePickerSettings.setVetoPolicy(null)'.");
+                + "The variable firstAllowedDate can be null, or lastAllowedDate can be null, "
+                + "but both values cannot be null at the same time. "
+                + "If you wish to clear the veto policy, then call the function: "
+                + "'DatePickerSettings.setVetoPolicy(null)'.");
         }
         if (firstAllowedDate != null && lastAllowedDate != null
-                && lastAllowedDate.isBefore(firstAllowedDate)) {
+            && lastAllowedDate.isBefore(firstAllowedDate)) {
             throw new RuntimeException("\"DateVetoPolicyMinimumMaximumDate.setDateRangeLimits(),"
-                    + "The lastAllowedDate must be greater than or equal to the firstAllowedDate.");
+                + "The lastAllowedDate must be greater than or equal to the firstAllowedDate.");
         }
         this.firstAllowedDate = firstAllowedDate;
         this.lastAllowedDate = lastAllowedDate;

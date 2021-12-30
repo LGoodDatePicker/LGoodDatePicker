@@ -23,7 +23,6 @@
 package com.github.lgooddatepicker.zinternaltools;
 
 import com.github.lgooddatepicker.components.TimePicker;
-
 import javax.swing.Timer;
 
 /**
@@ -64,8 +63,8 @@ public class TimeSpinnerTimer {
      * millisForDivisorList, This indicates how long each value in the divisorList should be used,
      * before moving onto the next value in the divisorList.
      */
-    private final int[] millisForDivisorList = new int[]{
-        1800, 900, 400, 400, 400, 400, 400, 0};
+    private final int[] millisForDivisorList = new int[] {
+        1800, 900, 400, 400, 400, 400, 400, 0 };
     /**
      * divisorList, For as long as any particular index in this array remains in effect, the
      * currently used number indicates how many tick calls should pass before the time picker value
@@ -73,7 +72,7 @@ public class TimeSpinnerTimer {
      * changed only once for every 3 calls to the tick function. Higher numbers make the spinner
      * change slower, lower numbers make the spinner change faster.
      */
-    private final int[] divisorList = new int[]{12, 10, 8, 6, 4, 3, 2, 1};
+    private final int[] divisorList = new int[] { 12, 10, 8, 6, 4, 3, 2, 1 };
     /**
      * startedIndexTimeStamp, This indicates the time that the currently used index in the
      * divisorList started to be used.
@@ -124,7 +123,7 @@ public class TimeSpinnerTimer {
             // System.out.println("Divisor: " + divisor);
             // System.out.println("Value: " + timePicker.getTime());
             if ((currentIndex < maximumIndex)
-                    && (timeElapsedSinceIndexStartMilliseconds > millisForDivisorList[currentIndex])) {
+                && (timeElapsedSinceIndexStartMilliseconds > millisForDivisorList[currentIndex])) {
                 ticksSinceIndexChange = 0;
                 ++currentIndex;
                 startedIndexTimeStamp = System.currentTimeMillis();

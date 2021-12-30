@@ -25,6 +25,7 @@ package com.github.lgooddatepicker.durationpicker_underconstruction;
 import java.time.temporal.ChronoUnit;
 
 public enum DurationUnit {
+
     Second(1),
     Minute(60),
     Hour(60 * 60),

@@ -22,14 +22,18 @@
  */
 package com.github.lgooddatepicker.ysandbox;
 
-import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.CalendarPanel;
+import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagLayout;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,10 +41,6 @@ import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import java.time.LocalDate;
-import com.github.lgooddatepicker.optionalusertools.CalendarListener;
-import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
-import java.time.YearMonth;
 
 /**
  * CalendarPanelTest,
@@ -102,11 +102,11 @@ public class CalendarPanelTest {
     private static void initializeComponents() {
         // Set up our main frame.
         frame.setTitle("LGoodDatePicker Independent Calendar Panel Demo "
-                + InternalUtilities.getProjectVersionString());
+            + InternalUtilities.getProjectVersionString());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridBagLayout());
 
-        // Set up our panels and layouts. 
+        // Set up our panels and layouts.
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         frame.getContentPane().add(mainPanel);
@@ -120,7 +120,7 @@ public class CalendarPanelTest {
         informationLabel.setOpaque(true);
         informationLabel.setBackground(Color.white);
         informationLabel.setBorder(new CompoundBorder(
-                new LineBorder(Color.black), new EmptyBorder(2, 4, 2, 4)));
+            new LineBorder(Color.black), new EmptyBorder(2, 4, 2, 4)));
         informationLabel.setText("The selected date will be displayed here.");
         informationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -162,9 +162,9 @@ public class CalendarPanelTest {
             String newYearMonthString = newYearMonth.toString();
             String messageStart = "The displayed YearMonth has changed from: '";
             String fullMessage = messageStart
-                    + oldYearMonthString + "' to '" + newYearMonthString + "'. ";
+                + oldYearMonthString + "' to '" + newYearMonthString + "'. ";
             fullMessage += (event.isDuplicate()) ? "(Event marked as duplicate.)" : "";
-            // This is commented out so you can see all "dateSelectionChanged" events in the label. 
+            // This is commented out so you can see all "dateSelectionChanged" events in the label.
             // informationLabel.setText(fullMessage);
         }
     }

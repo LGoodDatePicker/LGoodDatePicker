@@ -61,25 +61,25 @@ public class TestStart {
         datePicker.setBorder(LineBorder.createBlackLineBorder());
         panel.add(datePicker);
         /*
-        datePicker = new DatePicker(dateSettings);
-        panel.add(datePicker);
-        
-        datePicker.setDateToToday();
-        datePicker.setLocale(Locale.CANADA_FRENCH);
-        
-        
-        DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
-        datePicker.setSettings(dateSettings2);
-        
-        CalendarPanel calendarPanel;
-        calendarPanel = new CalendarPanel(dateSettings);
-        panel.add(calendarPanel);
-
-        calendarPanel.setSelectedDate(LocalDate.now());
-        dateSettings.setLocale(Locale.CANADA_FRENCH);
-
-        DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
-        calendarPanel.setSettings(dateSettings2);
+         * datePicker = new DatePicker(dateSettings);
+         * panel.add(datePicker);
+         *
+         * datePicker.setDateToToday();
+         * datePicker.setLocale(Locale.CANADA_FRENCH);
+         *
+         *
+         * DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
+         * datePicker.setSettings(dateSettings2);
+         *
+         * CalendarPanel calendarPanel;
+         * calendarPanel = new CalendarPanel(dateSettings);
+         * panel.add(calendarPanel);
+         *
+         * calendarPanel.setSelectedDate(LocalDate.now());
+         * dateSettings.setLocale(Locale.CANADA_FRENCH);
+         *
+         * DatePickerSettings dateSettings2 = new DatePickerSettings(Locale.CHINESE);
+         * calendarPanel.setSettings(dateSettings2);
          */
 
         // Display the frame.

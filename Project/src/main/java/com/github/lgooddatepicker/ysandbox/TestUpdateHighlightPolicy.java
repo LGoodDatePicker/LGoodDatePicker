@@ -24,10 +24,12 @@ package com.github.lgooddatepicker.ysandbox;
 
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.time.LocalDate;
@@ -36,8 +38,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import com.github.lgooddatepicker.optionalusertools.CalendarListener;
-import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 
 /**
  * TestUpdateHighlightPolicy, This class tests the library to see if a highlight policy can be
@@ -110,7 +110,7 @@ public class TestUpdateHighlightPolicy {
                 }
 
                 if ((someDate.isAfter(LocalDate.now()) || someDate.isEqual(LocalDate.now()))
-                        && (someDate.isBefore(selectedDate) || someDate.isEqual(selectedDate))) {
+                    && (someDate.isBefore(selectedDate) || someDate.isEqual(selectedDate))) {
                     return new HighlightInformation(Color.GREEN, Color.BLACK, "selected period");
                 }
                 return null;

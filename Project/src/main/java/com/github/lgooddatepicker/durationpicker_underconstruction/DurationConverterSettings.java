@@ -64,35 +64,35 @@ public class DurationConverterSettings {
 
         translationsUnitsSingular = new HashMap<>();
         translationsUnitsSingular.put(DurationUnit.Second,
-                TranslationSource.getTranslation(locale, "singular.Second", "sec"));
+            TranslationSource.getTranslation(locale, "singular.Second", "sec"));
         translationsUnitsSingular.put(DurationUnit.Minute,
-                TranslationSource.getTranslation(locale, "singular.Minute", "min"));
+            TranslationSource.getTranslation(locale, "singular.Minute", "min"));
         translationsUnitsSingular.put(DurationUnit.Hour,
-                TranslationSource.getTranslation(locale, "singular.Hour", "hour"));
+            TranslationSource.getTranslation(locale, "singular.Hour", "hour"));
         translationsUnitsSingular.put(DurationUnit.Day,
-                TranslationSource.getTranslation(locale, "singular.Day", "day"));
+            TranslationSource.getTranslation(locale, "singular.Day", "day"));
         translationsUnitsSingular.put(DurationUnit.Week,
-                TranslationSource.getTranslation(locale, "singular.Week", "week"));
+            TranslationSource.getTranslation(locale, "singular.Week", "week"));
         translationsUnitsSingular.put(DurationUnit.Month,
-                TranslationSource.getTranslation(locale, "singular.Month", "month"));
+            TranslationSource.getTranslation(locale, "singular.Month", "month"));
         translationsUnitsSingular.put(DurationUnit.Year,
-                TranslationSource.getTranslation(locale, "singular.Year", "year"));
+            TranslationSource.getTranslation(locale, "singular.Year", "year"));
 
         translationsUnitsPlural = new HashMap<>();
         translationsUnitsPlural.put(DurationUnit.Second,
-                TranslationSource.getTranslation(locale, "plural.Second", "secs"));
+            TranslationSource.getTranslation(locale, "plural.Second", "secs"));
         translationsUnitsPlural.put(DurationUnit.Minute,
-                TranslationSource.getTranslation(locale, "plural.Minute", "mins"));
+            TranslationSource.getTranslation(locale, "plural.Minute", "mins"));
         translationsUnitsPlural.put(DurationUnit.Hour,
-                TranslationSource.getTranslation(locale, "plural.Hour", "hours"));
+            TranslationSource.getTranslation(locale, "plural.Hour", "hours"));
         translationsUnitsPlural.put(DurationUnit.Day,
-                TranslationSource.getTranslation(locale, "plural.Day", "days"));
+            TranslationSource.getTranslation(locale, "plural.Day", "days"));
         translationsUnitsPlural.put(DurationUnit.Week,
-                TranslationSource.getTranslation(locale, "plural.Week", "weeks"));
+            TranslationSource.getTranslation(locale, "plural.Week", "weeks"));
         translationsUnitsPlural.put(DurationUnit.Month,
-                TranslationSource.getTranslation(locale, "plural.Month", "months"));
+            TranslationSource.getTranslation(locale, "plural.Month", "months"));
         translationsUnitsPlural.put(DurationUnit.Year,
-                TranslationSource.getTranslation(locale, "plural.Year", "years"));
+            TranslationSource.getTranslation(locale, "plural.Year", "years"));
 
         translationsParsingPrefixes = new HashMap<>();
         for (DurationUnit unit : DurationUnit.values()) {

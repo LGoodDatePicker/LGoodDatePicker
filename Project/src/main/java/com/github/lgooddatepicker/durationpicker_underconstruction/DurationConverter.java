@@ -51,7 +51,7 @@ public class DurationConverter {
                 char currentChar = text.charAt(i);
                 if (!((Character.isDigit(currentChar)) || (currentChar == '.'))) {
                     text = InternalUtilities.safeSubstring(text, 0, i) + " "
-                            + InternalUtilities.safeSubstring(text, i, text.length());
+                        + InternalUtilities.safeSubstring(text, i, text.length());
                     break;
                 }
             }
@@ -68,8 +68,7 @@ public class DurationConverter {
         } catch (Exception e) {
             return null;
         }
-        HashMap<DurationUnit, ArrayList<String>> parsingPrefixes
-                = settings.translationsParsingPrefixes;
+        HashMap<DurationUnit, ArrayList<String>> parsingPrefixes = settings.translationsParsingPrefixes;
 
         for (String prefix : parsingPrefixes.get(DurationUnit.Year)) {
             if (unitsText.startsWith(prefix)) {
@@ -127,17 +126,16 @@ public class DurationConverter {
      * function will never return null.
      */
     public static String convertStringFromDuration(
-            Duration duration, DurationConverterSettings settings) {
+        Duration duration, DurationConverterSettings settings) {
         if ((duration == null) || (duration.isNegative())) {
             return "";
         }
         long seconds = duration.getSeconds();
 
-        HashSet<DurationUnit> usedUnits
-                = getUsedDurationUnitSet(settings.smallestUsedUnit, settings.largestUsedUnit);
+        HashSet<DurationUnit> usedUnits = getUsedDurationUnitSet(settings.smallestUsedUnit, settings.largestUsedUnit);
         if (usedUnits.isEmpty()) {
             throw new RuntimeException("convertStringFromDuration(), The \"used duration unit\" "
-                    + "variables do not allow any units to be used.");
+                + "variables do not allow any units to be used.");
         }
         boolean hasNoNanos = (duration.getNano() == 0);
 
@@ -156,74 +154,81 @@ public class DurationConverter {
         String result = "";
         long value;
         boolean yearIsBestChoice = usedUnits.contains(DurationUnit.Year) && hasNoNanos
-                && (seconds >= oneYear) && (seconds % oneYear == 0);
+            && (seconds >= oneYear) && (seconds % oneYear == 0);
         if (yearIsBestChoice || (DurationUnit.Year == smallestUnit)) {
             value = seconds / oneYear;
             result += value + " ";
             result += ((pluralRules.get(DurationUnit.Year) && (value != 1))
-                    ? unitsPlural.get(DurationUnit.Year) : unitsSingular.get(DurationUnit.Year));
+                ? unitsPlural.get(DurationUnit.Year)
+                : unitsSingular.get(DurationUnit.Year));
             return result;
         }
         boolean monthIsBestChoice = usedUnits.contains(DurationUnit.Month) && hasNoNanos
-                && (seconds >= oneMonth) && (seconds % oneMonth == 0);
+            && (seconds >= oneMonth) && (seconds % oneMonth == 0);
         if (monthIsBestChoice || (DurationUnit.Month == smallestUnit)) {
             value = seconds / oneMonth;
             result += value + " ";
             result += ((pluralRules.get(DurationUnit.Month) && (value != 1))
-                    ? unitsPlural.get(DurationUnit.Month) : unitsSingular.get(DurationUnit.Month));
+                ? unitsPlural.get(DurationUnit.Month)
+                : unitsSingular.get(DurationUnit.Month));
             return result;
         }
         boolean weekIsBestChoice = usedUnits.contains(DurationUnit.Week) && hasNoNanos
-                && (seconds >= oneWeek) && (seconds % oneWeek == 0);
+            && (seconds >= oneWeek) && (seconds % oneWeek == 0);
         if (weekIsBestChoice || (DurationUnit.Week == smallestUnit)) {
             value = seconds / oneWeek;
             result += value + " ";
             result += ((pluralRules.get(DurationUnit.Week) && (value != 1))
-                    ? unitsPlural.get(DurationUnit.Week) : unitsSingular.get(DurationUnit.Week));
+                ? unitsPlural.get(DurationUnit.Week)
+                : unitsSingular.get(DurationUnit.Week));
             return result;
         }
         boolean dayIsBestChoice = usedUnits.contains(DurationUnit.Day) && hasNoNanos
-                && (seconds >= oneDay) && (seconds % oneDay == 0);
+            && (seconds >= oneDay) && (seconds % oneDay == 0);
         if (dayIsBestChoice || (DurationUnit.Day == smallestUnit)) {
             value = seconds / oneDay;
             result += value + " ";
             result += ((pluralRules.get(DurationUnit.Day) && (value != 1))
-                    ? unitsPlural.get(DurationUnit.Day) : unitsSingular.get(DurationUnit.Day));
+                ? unitsPlural.get(DurationUnit.Day)
+                : unitsSingular.get(DurationUnit.Day));
             return result;
         }
 
         boolean hourDecimalIsBestChoice = settings.hoursCanUseThirtyMinuteDecimals
-                && usedUnits.contains(DurationUnit.Hour) && hasNoNanos
-                && (seconds >= oneHour) && (seconds <= settings.hoursMaximumValueForDecimalsInSeconds)
-                && (seconds % thirtyMinutes == 0) && (seconds % oneHour != 0);
+            && usedUnits.contains(DurationUnit.Hour) && hasNoNanos
+            && (seconds >= oneHour) && (seconds <= settings.hoursMaximumValueForDecimalsInSeconds)
+            && (seconds % thirtyMinutes == 0) && (seconds % oneHour != 0);
         // Note, hourDecimal is never forced to be used as the "smallest used unit".
         if (hourDecimalIsBestChoice) {
             value = seconds / oneHour;
-            // The full value is always "X.5" hour(s), due to the hourDecimalIsBestChoice criteria. 
+            // The full value is always "X.5" hour(s), due to the hourDecimalIsBestChoice criteria.
             String decimalString = ".5";
             result += value + decimalString + " ";
             result += ((pluralRules.get(DurationUnit.Hour))
-                    ? unitsPlural.get(DurationUnit.Hour) : unitsSingular.get(DurationUnit.Hour));
+                ? unitsPlural.get(DurationUnit.Hour)
+                : unitsSingular.get(DurationUnit.Hour));
             return result;
         }
 
         boolean hourIntegerIsBestChoice = usedUnits.contains(DurationUnit.Hour) && hasNoNanos
-                && (seconds >= oneHour) && (seconds % oneHour == 0);
+            && (seconds >= oneHour) && (seconds % oneHour == 0);
         if (hourIntegerIsBestChoice || (DurationUnit.Hour == smallestUnit)) {
             value = seconds / oneHour;
             result += value + " ";
             result += ((pluralRules.get(DurationUnit.Hour) && (value != 1))
-                    ? unitsPlural.get(DurationUnit.Hour) : unitsSingular.get(DurationUnit.Hour));
+                ? unitsPlural.get(DurationUnit.Hour)
+                : unitsSingular.get(DurationUnit.Hour));
             return result;
         }
 
         boolean minuteIsBestChoice = usedUnits.contains(DurationUnit.Minute) && hasNoNanos
-                && (seconds >= oneMinute) && (seconds % oneMinute == 0);
+            && (seconds >= oneMinute) && (seconds % oneMinute == 0);
         if (minuteIsBestChoice || (DurationUnit.Minute == smallestUnit)) {
             value = seconds / oneMinute;
             result += value + " ";
             result += ((pluralRules.get(DurationUnit.Minute) && (value != 1))
-                    ? unitsPlural.get(DurationUnit.Minute) : unitsSingular.get(DurationUnit.Minute));
+                ? unitsPlural.get(DurationUnit.Minute)
+                : unitsSingular.get(DurationUnit.Minute));
             return result;
         }
 
@@ -238,15 +243,16 @@ public class DurationConverter {
             result += ((includeNanoseconds) ? secondsWithNanosAdded.toPlainString() : value);
             result += " ";
             result += (pluralRules.get(DurationUnit.Second) && ((value != 1) || (includeNanoseconds)))
-                    ? unitsPlural.get(DurationUnit.Second) : unitsSingular.get(DurationUnit.Second);
+                ? unitsPlural.get(DurationUnit.Second)
+                : unitsSingular.get(DurationUnit.Second);
             return result;
         }
         throw new RuntimeException("convertStringFromDuration(), "
-                + "The duration unit could not be chosen. (This should not happen.)");
+            + "The duration unit could not be chosen. (This should not happen.)");
     }
 
     private static HashSet<DurationUnit> getUsedDurationUnitSet(
-            DurationUnit smallestUnit, DurationUnit largestUnit) {
+        DurationUnit smallestUnit, DurationUnit largestUnit) {
         HashSet<DurationUnit> result = new HashSet<>();
         for (DurationUnit unit : DurationUnit.values()) {
             if (unit.compareTo(smallestUnit) >= 0 && unit.compareTo(largestUnit) <= 0) {
@@ -277,13 +283,12 @@ public class DurationConverter {
         String ss7 = convertStringFromDuration(m7, settings);
         Duration m8 = convertStringToDuration("5.5d", settings);
         Duration m9 = convertStringToDuration("5.5w", settings);
-        for (Duration duration = Duration.ofSeconds(0).plusNanos(0);
-                duration.compareTo(Duration.ofDays(1000)) <= 0;
-                duration = duration.plusHours(1)) {
+        for (Duration duration = Duration.ofSeconds(0).plusNanos(0); duration
+            .compareTo(Duration.ofDays(1000)) <= 0; duration = duration.plusHours(1)) {
             String textDuration = convertStringFromDuration(duration, settings);
             Duration durationParsed = convertStringToDuration(textDuration, settings);
             System.out.println("Duration: " + duration.toString() + ", Text: " + textDuration
-                    + ", DurationParsed: " + ((durationParsed == null) ? "null" : durationParsed.toString()));
+                + ", DurationParsed: " + ((durationParsed == null) ? "null" : durationParsed.toString()));
             if (durationParsed == null || (!durationParsed.equals(duration))) {
                 throw new RuntimeException("");
             }

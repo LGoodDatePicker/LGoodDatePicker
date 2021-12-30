@@ -22,12 +22,7 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.factories.CC;
-import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
-import java.awt.*;
-import javax.swing.border.*;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
@@ -35,7 +30,11 @@ import com.github.lgooddatepicker.zinternaltools.CalculateMinimumTimeFieldSize;
 import com.github.lgooddatepicker.zinternaltools.CustomPopup;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
 import com.github.lgooddatepicker.zinternaltools.TimeSpinnerTimer;
+import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.FormLayout;
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -52,6 +51,7 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -85,7 +85,7 @@ import javax.swing.event.DocumentListener;
  * </code>
  */
 public class TimePicker
-        extends JPanel implements CustomPopup.CustomPopupCloseListener {
+    extends JPanel implements CustomPopup.CustomPopupCloseListener {
 
     /**
      * enableArrowKeys, This determines if the arrow keys will be handled by this time picker. If
@@ -154,13 +154,13 @@ public class TimePicker
      * This section should not be modified by hand, but only modified from within the JFormDesigner
      * program.
      */
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    // JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
     private JTextField timeTextField;
     private JButton toggleTimeMenuButton;
     private JPanel spinnerPanel;
     private JButton increaseButton;
     private JButton decreaseButton;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    // JFormDesigner - End of variables declaration //GEN-END:variables
 
     /**
      * Constructor with Default Values, Create a time picker instance using the default operating
@@ -205,6 +205,7 @@ public class TimePicker
         // because they do not require the timeMenuPanel to exist. These listeners are never
         // deregistered. They will continue to exist for as long as the time picker exists.
         toggleTimeMenuButton.addMouseMotionListener(new MouseAdapter() {
+
             @Override
             public void mouseDragged(MouseEvent event) {
                 if (timeMenuPanel != null) {
@@ -215,6 +216,7 @@ public class TimePicker
 
         // Create a toggleTimeMenuButton listener for mouse release events.
         toggleTimeMenuButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mouseReleased(MouseEvent event) {
                 // Do nothing if the mouse was released inside the toggle button.
@@ -509,8 +511,9 @@ public class TimePicker
             return settings.getAllowEmptyTimes();
         }
         // Try to get a parsed time.
-        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(text, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
-                settings.formatsForParsing, settings.getLocale());
+        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(text, settings.getFormatForDisplayTime(),
+            settings.getFormatForMenuTimes(),
+            settings.formatsForParsing, settings.getLocale());
 
         // If the time could not be parsed, return false.
         if (parsedTime == null) {
@@ -566,9 +569,9 @@ public class TimePicker
 
         // Create a new custom popup.
         popup = new CustomPopup(timeMenuPanel, SwingUtilities.getWindowAncestor(this),
-                this, settings.borderTimePopup);
+            this, settings.borderTimePopup);
         popup.setMinimumSize(new Dimension(
-                this.getSize().width + 1, timeMenuPanel.getSize().height));
+            this.getSize().width + 1, timeMenuPanel.getSize().height));
         // Calculate the default origin for the popup.
         int defaultX = timeTextField.getLocationOnScreen().x;
         int defaultY = timeTextField.getLocationOnScreen().y + timeTextField.getSize().height - 1;
@@ -743,6 +746,7 @@ public class TimePicker
      */
     private void zAddKeyListenersToTextField() {
         timeTextField.addKeyListener(new KeyAdapter() {
+
             /**
              * upPressed, This indicates whether or not the up arrow has already been pressed. This
              * is used to make sure that we do not "react" to the up arrow multiple times when the
@@ -824,6 +828,7 @@ public class TimePicker
      */
     private void zAddTextChangeListener() {
         timeTextField.getDocument().addDocumentListener(new DocumentListener() {
+
             @Override
             public void insertUpdate(DocumentEvent e) {
                 zEventTextFieldChanged();
@@ -891,8 +896,9 @@ public class TimePicker
             return;
         }
         // The text is not empty.
-        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(timeText, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
-                settings.formatsForParsing, settings.getLocale());
+        LocalTime parsedTime = InternalUtilities.getParsedTimeOrNull(timeText, settings.getFormatForDisplayTime(),
+            settings.getFormatForMenuTimes(),
+            settings.formatsForParsing, settings.getLocale());
         if (parsedTime == null) {
             // (Possibility: UnparsableValue)
             timeTextField.setBackground(settings.getColor(TimeArea.TextFieldBackgroundInvalidTime));
@@ -952,6 +958,7 @@ public class TimePicker
      */
     private void zInstallSpinnerButtonListener(Component spinnerButton) {
         spinnerButton.addMouseListener(new MouseAdapter() {
+
             /**
              * mouseReleased, This will be called when the spinner button is pressed down. This is
              * only called once before release no matter how long the mouse button is held down.
@@ -1051,7 +1058,7 @@ public class TimePicker
         Integer programmerSuppliedWidth = settings.getSizeTextFieldMinimumWidth();
         // Determine the appropriate minimum width for the text field.
         int minimumWidthPixels = CalculateMinimumTimeFieldSize.getFormattedTimeWidthInPixels(
-                settings.getFormatForDisplayTime(), settings.fontValidTime, 0);
+            settings.getFormatForDisplayTime(), settings.fontValidTime, 0);
         if (programmerSuppliedWidth != null) {
             if (settings.getSizeTextFieldMinimumWidthDefaultOverride()) {
                 minimumWidthPixels = Math.max(programmerSuppliedWidth, minimumWidthPixels);
@@ -1094,8 +1101,9 @@ public class TimePicker
         // If the text is not empty, then try to parse the time.
         LocalTime parsedTime = null;
         if (!textIsEmpty) {
-            parsedTime = InternalUtilities.getParsedTimeOrNull(timeText, settings.getFormatForDisplayTime(), settings.getFormatForMenuTimes(),
-                    settings.formatsForParsing, settings.getLocale());
+            parsedTime = InternalUtilities.getParsedTimeOrNull(timeText, settings.getFormatForDisplayTime(),
+                settings.getFormatForMenuTimes(),
+                settings.formatsForParsing, settings.getLocale());
         }
         // If the time was parsed successfully, then check it against the veto policy.
         boolean timeIsVetoed = false;
@@ -1133,24 +1141,25 @@ public class TimePicker
      * modified by hand. This function can be modified, if needed, by using JFormDesigner.
      */
     private void initComponents() {
-        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+        // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
         timeTextField = new JTextField();
         toggleTimeMenuButton = new JButton();
         spinnerPanel = new JPanel();
         increaseButton = new JButton();
         decreaseButton = new JButton();
 
-        //======== this ========
+        // ======== this ========
         setLayout(new FormLayout(
-                "pref:grow, 3*(pref)",
-                "fill:pref:grow"));
+            "pref:grow, 3*(pref)",
+            "fill:pref:grow"));
 
-        //---- timeTextField ----
+        // ---- timeTextField ----
         timeTextField.setMargin(new Insets(1, 3, 2, 2));
         timeTextField.setBorder(new CompoundBorder(
-                new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
-                new EmptyBorder(1, 3, 2, 2)));
+            new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)),
+            new EmptyBorder(1, 3, 2, 2)));
         timeTextField.addFocusListener(new FocusAdapter() {
+
             @Override
             public void focusLost(FocusEvent e) {
                 setTextFieldToValidStateIfNeeded();
@@ -1158,12 +1167,13 @@ public class TimePicker
         });
         add(timeTextField, CC.xy(1, 1));
 
-        //---- toggleTimeMenuButton ----
+        // ---- toggleTimeMenuButton ----
         toggleTimeMenuButton.setText("v");
         toggleTimeMenuButton.setFocusPainted(false);
         toggleTimeMenuButton.setFocusable(false);
         toggleTimeMenuButton.setFont(new Font("Segoe UI", Font.PLAIN, 8));
         toggleTimeMenuButton.addMouseListener(new MouseAdapter() {
+
             @Override
             public void mousePressed(MouseEvent e) {
                 zEventToggleTimeMenuButtonMousePressed(e);
@@ -1171,21 +1181,21 @@ public class TimePicker
         });
         add(toggleTimeMenuButton, CC.xy(3, 1));
 
-        //======== spinnerPanel ========
+        // ======== spinnerPanel ========
         {
             spinnerPanel.setLayout(new FormLayout(
-                    "default",
-                    "fill:pref:grow, fill:default:grow"));
-            ((FormLayout) spinnerPanel.getLayout()).setRowGroups(new int[][]{{1, 2}});
+                "default",
+                "fill:pref:grow, fill:default:grow"));
+            ((FormLayout) spinnerPanel.getLayout()).setRowGroups(new int[][] { { 1, 2 } });
 
-            //---- increaseButton ----
+            // ---- increaseButton ----
             increaseButton.setFocusPainted(false);
             increaseButton.setFocusable(false);
             increaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
             increaseButton.setText("+");
             spinnerPanel.add(increaseButton, CC.xy(1, 1));
 
-            //---- decreaseButton ----
+            // ---- decreaseButton ----
             decreaseButton.setFocusPainted(false);
             decreaseButton.setFocusable(false);
             decreaseButton.setFont(new Font("Arial", Font.PLAIN, 8));
@@ -1193,7 +1203,7 @@ public class TimePicker
             spinnerPanel.add(decreaseButton, CC.xy(1, 2));
         }
         add(spinnerPanel, CC.xy(4, 1));
-        // JFormDesigner - End of component initialization  //GEN-END:initComponents
+        // JFormDesigner - End of component initialization //GEN-END:initComponents
     }
 
 }
