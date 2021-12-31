@@ -32,92 +32,90 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
-public class TestHelpers
-{
+public class TestHelpers {
 
-    static boolean isClassAvailable(String className)
-    {
-        try {
-            Class.forName(className);
-        } catch (ClassNotFoundException ex) {
-            return false;
-        }
-        return true;
+  static boolean isClassAvailable(String className) {
+    try {
+      Class.forName(className);
+    } catch (ClassNotFoundException ex) {
+      return false;
+    }
+    return true;
+  }
+
+  public static Object readPrivateField(Class<?> clazz, Object instance, String field)
+      throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+    java.lang.reflect.Field private_field = clazz.getDeclaredField(field);
+    private_field.setAccessible(true);
+    return private_field.get(instance);
+  }
+
+  public static java.lang.reflect.Method accessPrivateMethod(
+      Class<?> clazz, String method, Class<?>... argclasses)
+      throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    java.lang.reflect.Method private_method = clazz.getDeclaredMethod(method, argclasses);
+    private_method.setAccessible(true);
+    return private_method;
+  }
+
+  public static Clock getClockFixedToInstant(
+      int year, Month month, int day, int hours, int minutes) {
+    LocalDateTime fixedInstant =
+        LocalDateTime.of(LocalDate.of(year, month, day), LocalTime.of(hours, minutes));
+    return Clock.fixed(fixedInstant.toInstant(ZoneOffset.UTC), ZoneId.of("Z"));
+  }
+
+  // detect funcionality of UI, which is not available on most CI systems
+  public static boolean isUiAvailable() {
+    return !java.awt.GraphicsEnvironment.isHeadless();
+  }
+
+  public static void registerUncaughtExceptionHandlerToAllThreads(
+      Thread.UncaughtExceptionHandler handler) {
+    Thread.setDefaultUncaughtExceptionHandler(handler);
+    // activeCount is only an estimation
+    int activeCountOversize = 1;
+    Thread[] threads;
+    do {
+      threads = new Thread[Thread.activeCount() + activeCountOversize];
+      Thread.enumerate(threads);
+      activeCountOversize++;
+    } while (threads[threads.length - 1] != null);
+    for (Thread thread : threads) {
+      if (thread != null) {
+        thread.setUncaughtExceptionHandler(handler);
+      }
+    }
+  }
+
+  public static class ExceptionInfo {
+    Pair<String, Throwable> info = new Pair<>("", null);
+
+    synchronized boolean wasSet() {
+      return !info.first.isEmpty() || info.second != null;
     }
 
-    public static Object readPrivateField(Class<?> clazz, Object instance, String field)
-            throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException
-    {
-        java.lang.reflect.Field private_field = clazz.getDeclaredField(field);
-        private_field.setAccessible(true);
-        return private_field.get(instance);
+    synchronized void set(String threadname, Throwable ex) {
+      info.first = threadname;
+      info.second = ex;
     }
 
-    public static java.lang.reflect.Method accessPrivateMethod(Class<?> clazz, String method, Class<?>... argclasses)
-            throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
-    {
-        java.lang.reflect.Method private_method = clazz.getDeclaredMethod(method, argclasses);
-        private_method.setAccessible(true);
-        return private_method;
+    synchronized String getThreadName() {
+      return info.first;
     }
 
-    public static Clock getClockFixedToInstant(int year, Month month, int day, int hours, int minutes)
-    {
-        LocalDateTime fixedInstant = LocalDateTime.of(LocalDate.of(year, month, day), LocalTime.of(hours,minutes));
-        return Clock.fixed(fixedInstant.toInstant(ZoneOffset.UTC), ZoneId.of("Z"));
+    synchronized String getExceptionMessage() {
+      return info.second != null ? info.second.getMessage() : "";
     }
 
-    // detect funcionality of UI, which is not available on most CI systems
-    public static boolean isUiAvailable()
-    {
-        return !java.awt.GraphicsEnvironment.isHeadless();
+    synchronized String getStackTrace() {
+      String result = "";
+      if (info.second != null) {
+        for (StackTraceElement elem : info.second.getStackTrace()) {
+          result += elem.toString() + "\n";
+        }
+      }
+      return result;
     }
-
-    public static void registerUncaughtExceptionHandlerToAllThreads(Thread.UncaughtExceptionHandler handler)
-    {
-        Thread.setDefaultUncaughtExceptionHandler(handler);
-        //activeCount is only an estimation
-        int activeCountOversize = 1;
-        Thread[] threads;
-        do {
-            threads = new Thread[Thread.activeCount() + activeCountOversize];
-            Thread.enumerate(threads);
-            activeCountOversize++;
-        } while (threads[threads.length-1] != null);
-        for (Thread thread : threads) {
-            if (thread != null) {
-                thread.setUncaughtExceptionHandler(handler);
-            }
-        }
-    }
-
-    public static class ExceptionInfo
-    {
-        Pair<String, Throwable> info = new Pair<>("", null);
-
-        synchronized boolean wasSet() {
-            return !info.first.isEmpty() || info.second != null;
-        }
-        synchronized void set(String threadname, Throwable ex) {
-            info.first = threadname;
-            info.second = ex;
-        }
-        synchronized String getThreadName() {
-            return info.first;
-        }
-        synchronized String getExceptionMessage() {
-            return info.second != null ? info.second.getMessage() : "";
-        }
-        synchronized String getStackTrace()
-        {
-            String result = "";
-            if (info.second != null) {
-                for (StackTraceElement elem : info.second.getStackTrace()) {
-                    result += elem.toString()+"\n";
-                }
-            }
-            return result;
-        }
-    }
-
+  }
 }

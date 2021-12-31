@@ -30,28 +30,28 @@
 package com.privatejgoodies.common.internal;
 
 /**
- * Provides standardized messages for use with the Preconditions class and in exception messages.<p>
+ * Provides standardized messages for use with the Preconditions class and in exception messages.
  *
- * <strong>Note:</strong> This class is not part of the public JGoodies Common API. It is intended
- * for implementation purposes only. The class's API may change at any time.
+ * <p><strong>Note:</strong> This class is not part of the public JGoodies Common API. It is
+ * intended for implementation purposes only. The class's API may change at any time.
  *
  * @author Karsten Lentzsch
- *
  * @since 1.4
  */
 public final class Messages {
 
-    private Messages() {
-        // Overrides default constructor; prevents instantiation.
-    }
+  private Messages() {
+    // Overrides default constructor; prevents instantiation.
+  }
 
-    public static final String MUST_NOT_BE_NULL = "The %1$s must not be null.";
+  public static final String MUST_NOT_BE_NULL = "The %1$s must not be null.";
 
-    public static final String MUST_NOT_BE_BLANK = "The %1$s must not be null, empty, or whitespace.";
+  public static final String MUST_NOT_BE_BLANK = "The %1$s must not be null, empty, or whitespace.";
 
-    public static final String MUST_BE_TRIMMED = "The %1$s must not contain leading or trailing whitespace.";
+  public static final String MUST_BE_TRIMMED =
+      "The %1$s must not contain leading or trailing whitespace.";
 
-    public static final String USE_ELLIPSIS_NOT_THREE_DOTS
-            = "The @Action annotation text ends with three dots \"...\"; use the single ellipsis character '\u2026' (\\u2026) instead.";
-
+  public static final String USE_ELLIPSIS_NOT_THREE_DOTS =
+      "The @Action annotation text ends with three dots \"...\"; use the single ellipsis character"
+          + " '\u2026' (\\u2026) instead.";
 }

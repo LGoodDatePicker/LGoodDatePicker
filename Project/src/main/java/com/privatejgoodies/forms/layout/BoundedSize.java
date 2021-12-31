@@ -40,226 +40,206 @@ import java.util.List;
  *
  * @author Karsten Lentzsch
  * @version $Revision: 1.21 $
- *
- * @see	Sizes
- * @see	ConstantSize
+ * @see Sizes
+ * @see ConstantSize
  */
 public final class BoundedSize implements Size, Serializable {
 
-    /**
-     * Holds the base size.
-     */
-    private final Size basis;
+  /** Holds the base size. */
+  private final Size basis;
 
-    /**
-     * Holds an optional lower bound.
-     */
-    private final Size lowerBound;
+  /** Holds an optional lower bound. */
+  private final Size lowerBound;
 
-    /**
-     * Holds an optional upper bound.
-     */
-    private final Size upperBound;
+  /** Holds an optional upper bound. */
+  private final Size upperBound;
 
-    // Instance Creation ****************************************************
-    /**
-     * Constructs a BoundedSize for the given basis using the specified lower and upper bounds.
-     *
-     * @param basis the base size
-     * @param lowerBound the lower bound size
-     * @param upperBound the upper bound size
-     *
-     * @throws NullPointerException if {@code basis}, {@code lowerBound}, or {@code upperBound} is
-     * {@code null}
-     *
-     * @since 1.1
-     */
-    public BoundedSize(Size basis, Size lowerBound, Size upperBound) {
-        this.basis = checkNotNull(basis, "The basis must not be null.");
-        this.lowerBound = lowerBound;
-        this.upperBound = upperBound;
-        if (lowerBound == null && upperBound == null) {
-            throw new IllegalArgumentException(
-                    "A bounded size must have a non-null lower or upper bound.");
-        }
+  // Instance Creation ****************************************************
+  /**
+   * Constructs a BoundedSize for the given basis using the specified lower and upper bounds.
+   *
+   * @param basis the base size
+   * @param lowerBound the lower bound size
+   * @param upperBound the upper bound size
+   * @throws NullPointerException if {@code basis}, {@code lowerBound}, or {@code upperBound} is
+   *     {@code null}
+   * @since 1.1
+   */
+  public BoundedSize(Size basis, Size lowerBound, Size upperBound) {
+    this.basis = checkNotNull(basis, "The basis must not be null.");
+    this.lowerBound = lowerBound;
+    this.upperBound = upperBound;
+    if (lowerBound == null && upperBound == null) {
+      throw new IllegalArgumentException(
+          "A bounded size must have a non-null lower or upper bound.");
     }
+  }
 
-    // Accessors ************************************************************
-    /**
-     * Returns the base size, which is not-{@code null}.
-     *
-     * @return the base size
-     *
-     * @since 1.1
-     */
-    public Size getBasis() {
-        return basis;
+  // Accessors ************************************************************
+  /**
+   * Returns the base size, which is not-{@code null}.
+   *
+   * @return the base size
+   * @since 1.1
+   */
+  public Size getBasis() {
+    return basis;
+  }
+
+  /**
+   * Returns the optional lower bound.
+   *
+   * @return the optional lower bound
+   * @since 1.1
+   */
+  public Size getLowerBound() {
+    return lowerBound;
+  }
+
+  /**
+   * Returns the optional upper bound.
+   *
+   * @return the optional upper bound
+   * @since 1.1
+   */
+  public Size getUpperBound() {
+    return upperBound;
+  }
+
+  // Implementation of the Size Interface *********************************
+  /**
+   * Returns this size as pixel size. Neither requires the component list nor the specified
+   * measures. Honors the lower and upper bound.
+   *
+   * <p>Invoked by {@code FormSpec} to determine the size of a column or row.
+   *
+   * @param container the layout container
+   * @param components the list of components to measure
+   * @param minMeasure the measure used to determine the minimum size
+   * @param prefMeasure the measure used to determine the preferred size
+   * @param defaultMeasure the measure used to determine the default size
+   * @return the maximum size in pixels
+   * @see FormSpec#maximumSize(Container, List, FormLayout.Measure, FormLayout.Measure,
+   *     FormLayout.Measure)
+   */
+  @Override
+  public int maximumSize(
+      Container container,
+      List components,
+      FormLayout.Measure minMeasure,
+      FormLayout.Measure prefMeasure,
+      FormLayout.Measure defaultMeasure) {
+    int size = basis.maximumSize(container, components, minMeasure, prefMeasure, defaultMeasure);
+    if (lowerBound != null) {
+      size =
+          Math.max(
+              size,
+              lowerBound.maximumSize(
+                  container, components, minMeasure, prefMeasure, defaultMeasure));
     }
-
-    /**
-     * Returns the optional lower bound.
-     *
-     * @return the optional lower bound
-     *
-     * @since 1.1
-     */
-    public Size getLowerBound() {
-        return lowerBound;
+    if (upperBound != null) {
+      size =
+          Math.min(
+              size,
+              upperBound.maximumSize(
+                  container, components, minMeasure, prefMeasure, defaultMeasure));
     }
+    return size;
+  }
 
-    /**
-     * Returns the optional upper bound.
-     *
-     * @return the optional upper bound
-     *
-     * @since 1.1
-     */
-    public Size getUpperBound() {
-        return upperBound;
+  /**
+   * Describes if this Size can be compressed, if container space gets scarce. Used by the
+   * FormLayout size computations in {@code #compressedSizes} to check whether a column or row can
+   * be compressed or not.
+   *
+   * <p>BoundedSizes are compressible if the base Size is compressible.
+   *
+   * @return {@code true} if and only if the basis is compressible
+   * @since 1.1
+   */
+  @Override
+  public boolean compressible() {
+    return getBasis().compressible();
+  }
+
+  // Overriding Object Behavior *******************************************
+  /**
+   * Indicates whether some other BoundedSize is "equal to" this one.
+   *
+   * @param object the object with which to compare
+   * @return {@code true} if this object is the same as the object argument, {@code false}
+   *     otherwise.
+   * @see Object#hashCode()
+   * @see java.util.Hashtable
+   */
+  @Override
+  public boolean equals(Object object) {
+    if (this == object) {
+      return true;
     }
-
-    // Implementation of the Size Interface *********************************
-    /**
-     * Returns this size as pixel size. Neither requires the component list nor the specified
-     * measures. Honors the lower and upper bound.<p>
-     *
-     * Invoked by {@code FormSpec} to determine the size of a column or row.
-     *
-     * @param container the layout container
-     * @param components the list of components to measure
-     * @param minMeasure the measure used to determine the minimum size
-     * @param prefMeasure the measure used to determine the preferred size
-     * @param defaultMeasure the measure used to determine the default size
-     * @return the maximum size in pixels
-     * @see FormSpec#maximumSize(Container, List, FormLayout.Measure, FormLayout.Measure,
-     * FormLayout.Measure)
-     */
-    @Override
-    public int maximumSize(Container container,
-            List components,
-            FormLayout.Measure minMeasure,
-            FormLayout.Measure prefMeasure,
-            FormLayout.Measure defaultMeasure) {
-        int size = basis.maximumSize(container,
-                components,
-                minMeasure,
-                prefMeasure,
-                defaultMeasure);
-        if (lowerBound != null) {
-            size = Math.max(size, lowerBound.maximumSize(
-                    container,
-                    components,
-                    minMeasure,
-                    prefMeasure,
-                    defaultMeasure));
-        }
-        if (upperBound != null) {
-            size = Math.min(size, upperBound.maximumSize(
-                    container,
-                    components,
-                    minMeasure,
-                    prefMeasure,
-                    defaultMeasure));
-        }
-        return size;
+    if (!(object instanceof BoundedSize)) {
+      return false;
     }
+    BoundedSize size = (BoundedSize) object;
+    return basis.equals(size.basis)
+        && (lowerBound == null && size.lowerBound == null
+            || lowerBound != null && lowerBound.equals(size.lowerBound))
+        && (upperBound == null && size.upperBound == null
+            || upperBound != null && upperBound.equals(size.upperBound));
+  }
 
-    /**
-     * Describes if this Size can be compressed, if container space gets scarce. Used by the
-     * FormLayout size computations in {@code #compressedSizes} to check whether a column or row can
-     * be compressed or not.<p>
-     *
-     * BoundedSizes are compressible if the base Size is compressible.
-     *
-     * @return {@code true} if and only if the basis is compressible
-     *
-     * @since 1.1
-     */
-    @Override
-    public boolean compressible() {
-        return getBasis().compressible();
+  /**
+   * Returns a hash code value for the object. This method is supported for the benefit of
+   * hashtables such as those provided by {@code java.util.Hashtable}.
+   *
+   * @return a hash code value for this object.
+   * @see Object#equals(Object)
+   * @see java.util.Hashtable
+   */
+  @Override
+  public int hashCode() {
+    int hashValue = basis.hashCode();
+    if (lowerBound != null) {
+      hashValue = hashValue * 37 + lowerBound.hashCode();
     }
-
-    // Overriding Object Behavior *******************************************
-    /**
-     * Indicates whether some other BoundedSize is "equal to" this one.
-     *
-     * @param object the object with which to compare
-     * @return {@code true} if this object is the same as the object argument, {@code false}
-     * otherwise.
-     * @see Object#hashCode()
-     * @see java.util.Hashtable
-     */
-    @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (!(object instanceof BoundedSize)) {
-            return false;
-        }
-        BoundedSize size = (BoundedSize) object;
-        return basis.equals(size.basis)
-                && (lowerBound == null && size.lowerBound == null
-                || lowerBound != null && lowerBound.equals(size.lowerBound))
-                && (upperBound == null && size.upperBound == null
-                || upperBound != null && upperBound.equals(size.upperBound));
+    if (upperBound != null) {
+      hashValue = hashValue * 37 + upperBound.hashCode();
     }
+    return hashValue;
+  }
 
-    /**
-     * Returns a hash code value for the object. This method is supported for the benefit of
-     * hashtables such as those provided by {@code java.util.Hashtable}.
-     *
-     * @return a hash code value for this object.
-     * @see Object#equals(Object)
-     * @see java.util.Hashtable
-     */
-    @Override
-    public int hashCode() {
-        int hashValue = basis.hashCode();
-        if (lowerBound != null) {
-            hashValue = hashValue * 37 + lowerBound.hashCode();
-        }
-        if (upperBound != null) {
-            hashValue = hashValue * 37 + upperBound.hashCode();
-        }
-        return hashValue;
+  /**
+   * Returns a string representation of this size object.
+   *
+   * <p><strong>Note:</strong> This string representation may change at any time. It is intended for
+   * debugging purposes. For parsing, use {@link #encode()} instead.
+   *
+   * @return a string representation of this bounded size
+   */
+  @Override
+  public String toString() {
+    return encode();
+  }
+
+  /**
+   * Returns a parseable string representation of this bounded size.
+   *
+   * @return a String that can be parsed by the Forms parser
+   * @since 1.2
+   */
+  @Override
+  public String encode() {
+    StringBuffer buffer = new StringBuffer("[");
+    if (lowerBound != null) {
+      buffer.append(lowerBound.encode());
+      buffer.append(',');
     }
-
-    /**
-     * Returns a string representation of this size object.<p>
-     *
-     * <strong>Note:</strong> This string representation may change at any time. It is intended for
-     * debugging purposes. For parsing, use {@link #encode()} instead.
-     *
-     * @return a string representation of this bounded size
-     */
-    @Override
-    public String toString() {
-        return encode();
+    buffer.append(basis.encode());
+    if (upperBound != null) {
+      buffer.append(',');
+      buffer.append(upperBound.encode());
     }
-
-    /**
-     * Returns a parseable string representation of this bounded size.
-     *
-     * @return a String that can be parsed by the Forms parser
-     *
-     * @since 1.2
-     */
-    @Override
-    public String encode() {
-        StringBuffer buffer = new StringBuffer("[");
-        if (lowerBound != null) {
-            buffer.append(lowerBound.encode());
-            buffer.append(',');
-        }
-        buffer.append(basis.encode());
-        if (upperBound != null) {
-            buffer.append(',');
-            buffer.append(upperBound.encode());
-        }
-        buffer.append(']');
-        return buffer.toString();
-    }
-
+    buffer.append(']');
+    return buffer.toString();
+  }
 }

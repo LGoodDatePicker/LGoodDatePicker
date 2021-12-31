@@ -26,17 +26,14 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-public class AutoDisposeFrame extends JFrame implements AutoCloseable
-{
-    public AutoDisposeFrame()
-    {
-        super();
-        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    }
+public class AutoDisposeFrame extends JFrame implements AutoCloseable {
+  public AutoDisposeFrame() {
+    super();
+    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+  }
 
-    @Override
-    public void close()
-    {
-        dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-    }
+  @Override
+  public void close() {
+    dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+  }
 }

@@ -38,39 +38,37 @@ import java.util.ResourceBundle;
 /**
  * Turns a ResourceBundle into a {@link StringLocalizer}.
  *
- * <strong>Note:</strong> This class is not part of the public JGoodies Common API. It's intended
+ * <p><strong>Note:</strong> This class is not part of the public JGoodies Common API. It's intended
  * for implementation purposes only. The class's API may change at any time.
  *
  * @author Karsten Lentzsch
- *
  * @since 1.5.1
  */
 public final class ResourceBundleLocalizer implements StringLocalizer {
 
-    private final ResourceBundle bundle;
+  private final ResourceBundle bundle;
 
-    // Instance Creation ******************************************************
-    public ResourceBundleLocalizer(ResourceBundle bundle) {
-        this.bundle = checkNotNull(bundle, MUST_NOT_BE_NULL, "resource bundle");
+  // Instance Creation ******************************************************
+  public ResourceBundleLocalizer(ResourceBundle bundle) {
+    this.bundle = checkNotNull(bundle, MUST_NOT_BE_NULL, "resource bundle");
+  }
+
+  // StringLocalizer Implementation *****************************************
+  /**
+   * Looks up and returns the internationalized (i15d) string for the given resource key from the
+   * ResourceBundle that has been provided during the builder construction.
+   *
+   * @param resourceKey the key to look for in the resource bundle
+   * @return the associated internationalized string, or the resource key itself in case of a
+   *     missing resource
+   * @throws IllegalStateException if no ResourceBundle has been set
+   */
+  @Override
+  public String getString(String resourceKey) {
+    try {
+      return bundle.getString(resourceKey);
+    } catch (MissingResourceException mre) {
+      return resourceKey;
     }
-
-    // StringLocalizer Implementation *****************************************
-    /**
-     * Looks up and returns the internationalized (i15d) string for the given resource key from the
-     * ResourceBundle that has been provided during the builder construction.
-     *
-     * @param resourceKey the key to look for in the resource bundle
-     * @return the associated internationalized string, or the resource key itself in case of a
-     * missing resource
-     * @throws IllegalStateException if no ResourceBundle has been set
-     */
-    @Override
-    public String getString(String resourceKey) {
-        try {
-            return bundle.getString(resourceKey);
-        } catch (MissingResourceException mre) {
-            return resourceKey;
-        }
-    }
-
+  }
 }

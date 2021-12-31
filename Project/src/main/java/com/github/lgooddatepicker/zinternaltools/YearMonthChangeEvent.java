@@ -34,58 +34,43 @@ import java.time.YearMonth;
  */
 public class YearMonthChangeEvent {
 
-    /**
-     * Constructor.
-     */
-    public YearMonthChangeEvent(CalendarPanel source,
-            YearMonth newYearMonth, YearMonth oldYearMonth) {
-        this.source = source;
-        this.newYearMonth = newYearMonth;
-        this.oldYearMonth = oldYearMonth;
-    }
+  /** Constructor. */
+  public YearMonthChangeEvent(
+      CalendarPanel source, YearMonth newYearMonth, YearMonth oldYearMonth) {
+    this.source = source;
+    this.newYearMonth = newYearMonth;
+    this.oldYearMonth = oldYearMonth;
+  }
 
-    /**
-     * source, This is the calendar panel that generated the event.
-     */
-    private CalendarPanel source;
+  /** source, This is the calendar panel that generated the event. */
+  private CalendarPanel source;
 
-    /**
-     * newYearMonth, This holds the value of the new YearMonth.
-     */
-    private YearMonth newYearMonth;
+  /** newYearMonth, This holds the value of the new YearMonth. */
+  private YearMonth newYearMonth;
 
-    /**
-     * oldYearMonth, This holds the value of the old YearMonth.
-     */
-    private YearMonth oldYearMonth;
+  /** oldYearMonth, This holds the value of the old YearMonth. */
+  private YearMonth oldYearMonth;
 
-    /**
-     * getSource, Returns the calendar panel that generated the event.
-     */
-    public CalendarPanel getSource() {
-        return source;
-    }
+  /** getSource, Returns the calendar panel that generated the event. */
+  public CalendarPanel getSource() {
+    return source;
+  }
 
-    /**
-     * getNewYearMonth, Returns the new YearMonth. This will never return null.
-     */
-    public YearMonth getNewYearMonth() {
-        return newYearMonth;
-    }
+  /** getNewYearMonth, Returns the new YearMonth. This will never return null. */
+  public YearMonth getNewYearMonth() {
+    return newYearMonth;
+  }
 
-    /**
-     * getOldYearMonth, Returns the old YearMonth. This will never return null.
-     */
-    public YearMonth getOldYearMonth() {
-        return oldYearMonth;
-    }
+  /** getOldYearMonth, Returns the old YearMonth. This will never return null. */
+  public YearMonth getOldYearMonth() {
+    return oldYearMonth;
+  }
 
-    /**
-     * isDuplicate, Returns true if the new YearMonth is the same as the old YearMonth. Otherwise
-     * returns false.
-     */
-    public boolean isDuplicate() {
-        return (PickerUtilities.isSameYearMonth(newYearMonth, oldYearMonth));
-    }
-
+  /**
+   * isDuplicate, Returns true if the new YearMonth is the same as the old YearMonth. Otherwise
+   * returns false.
+   */
+  public boolean isDuplicate() {
+    return (PickerUtilities.isSameYearMonth(newYearMonth, oldYearMonth));
+  }
 }
