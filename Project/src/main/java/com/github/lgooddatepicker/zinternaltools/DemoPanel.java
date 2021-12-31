@@ -24,9 +24,20 @@ package com.github.lgooddatepicker.zinternaltools;
 
 import com.privatejgoodies.forms.factories.CC;
 import com.privatejgoodies.forms.layout.FormLayout;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 public class DemoPanel extends JPanel {
 

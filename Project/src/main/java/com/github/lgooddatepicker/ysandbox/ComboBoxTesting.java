@@ -26,7 +26,11 @@ import com.privatejgoodies.forms.factories.CC;
 import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Font;
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
 
 public class ComboBoxTesting extends JPanel {
 

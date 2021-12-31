@@ -22,7 +22,7 @@
  */
 package com.github.lgooddatepicker.optionalusertools;
 
-import java.time.*;
+import java.time.LocalTime;
 
 /**
  * TimeVetoPolicy,
