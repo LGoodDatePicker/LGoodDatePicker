@@ -32,14 +32,13 @@ package com.privatejgoodies.forms.layout;
 import static com.privatejgoodies.common.base.Preconditions.checkArgument;
 import static com.privatejgoodies.common.base.Preconditions.checkNotNull;
 
+import com.privatejgoodies.forms.factories.CC;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.StringTokenizer;
-
-import com.privatejgoodies.forms.factories.CC;
 
 /**
  * Defines constraints for components that are laid out with the FormLayout. Defines the components

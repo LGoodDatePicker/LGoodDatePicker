@@ -31,12 +31,11 @@ package com.privatejgoodies.forms.layout;
 
 import static com.privatejgoodies.common.base.Preconditions.checkNotNull;
 
+import com.privatejgoodies.forms.util.LayoutStyle;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.privatejgoodies.forms.util.LayoutStyle;
 
 /**
  * Provides a hierarchical variable expansion useful to improve layout consistency, style guide

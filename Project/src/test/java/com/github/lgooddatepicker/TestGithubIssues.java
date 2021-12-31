@@ -22,6 +22,8 @@
  */
 package com.github.lgooddatepicker;
 
+import static org.junit.Assert.*;
+
 import com.github.lgooddatepicker.TestHelpers.ExceptionInfo;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
@@ -42,7 +44,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.MenuElement;
 import javax.swing.WindowConstants;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class TestGithubIssues {
 

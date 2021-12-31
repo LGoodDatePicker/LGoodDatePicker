@@ -22,6 +22,9 @@
  */
 package com.github.lgooddatepicker.components;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import com.github.lgooddatepicker.TestHelpers;
 import java.awt.Color;
 import java.lang.reflect.InvocationTargetException;
@@ -31,8 +34,6 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Locale;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class TestDatePicker {

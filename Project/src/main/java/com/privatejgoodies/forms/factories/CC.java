@@ -29,11 +29,10 @@
  */
 package com.privatejgoodies.forms.factories;
 
-import java.io.Serializable;
-
 import com.privatejgoodies.forms.layout.CellConstraints;
 import com.privatejgoodies.forms.layout.CellConstraints.Alignment;
 import com.privatejgoodies.forms.layout.FormLayout;
+import java.io.Serializable;
 
 /**
  * A factory for CellConstraints objects.

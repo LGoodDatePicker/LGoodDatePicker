@@ -22,14 +22,14 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.ColumnSpec;
-import com.privatejgoodies.forms.layout.ConstantSize;
-import com.privatejgoodies.forms.layout.FormLayout;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.ExtraTimeStrings;
 import com.github.lgooddatepicker.zinternaltools.InternalConstants;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.ConstantSize;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;

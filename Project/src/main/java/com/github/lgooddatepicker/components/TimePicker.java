@@ -22,12 +22,7 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.privatejgoodies.forms.layout.FormLayout;
-import com.privatejgoodies.forms.factories.CC;
-import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
 import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
-import java.awt.*;
-import javax.swing.border.*;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
@@ -35,7 +30,11 @@ import com.github.lgooddatepicker.zinternaltools.CalculateMinimumTimeFieldSize;
 import com.github.lgooddatepicker.zinternaltools.CustomPopup;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
+import com.github.lgooddatepicker.zinternaltools.TimeMenuPanel;
 import com.github.lgooddatepicker.zinternaltools.TimeSpinnerTimer;
+import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.FormLayout;
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -52,6 +51,7 @@ import java.time.Instant;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 

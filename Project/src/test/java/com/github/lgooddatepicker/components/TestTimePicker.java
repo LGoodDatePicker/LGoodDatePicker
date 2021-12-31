@@ -22,26 +22,24 @@
  */
 package com.github.lgooddatepicker.components;
 
-import com.github.lgooddatepicker.TestHelpers;
-import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
-import java.time.Clock;
-import java.time.Month;
-import java.time.ZoneId;
-import java.util.Locale;
-
-import org.junit.Test;
-
+import com.github.lgooddatepicker.TestHelpers;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeArea;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
 import java.awt.Color;
+import java.time.Clock;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
+import org.junit.Test;
 
 /** Tests for the TimePicker component features */
 public class TestTimePicker {

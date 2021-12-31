@@ -32,6 +32,7 @@ package com.privatejgoodies.forms.layout;
 import static com.privatejgoodies.common.base.Preconditions.checkNotNull;
 import static com.privatejgoodies.common.base.Preconditions.checkState;
 
+import com.privatejgoodies.common.base.Objects;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -47,10 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.swing.JComponent;
-
-import com.privatejgoodies.common.base.Objects;
 
 /**
  * FormLayout is a powerful, flexible and precise general purpose layout manager. It aligns

@@ -22,8 +22,8 @@
  */
 package com.github.lgooddatepicker.zinternaltools;
 
-import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.factories.CC;
+import com.privatejgoodies.forms.layout.FormLayout;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;

@@ -37,7 +37,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UIManager;

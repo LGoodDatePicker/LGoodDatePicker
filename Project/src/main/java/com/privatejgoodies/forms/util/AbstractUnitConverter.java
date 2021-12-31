@@ -29,11 +29,10 @@
  */
 package com.privatejgoodies.forms.util;
 
+import com.privatejgoodies.common.bean.Bean;
 import java.awt.Component;
 import java.awt.FontMetrics;
 import java.awt.Toolkit;
-
-import com.privatejgoodies.common.bean.Bean;
 
 /**
  * An abstract implementation of the {@link UnitConverter} interface that minimizes the effort

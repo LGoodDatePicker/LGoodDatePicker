@@ -22,6 +22,8 @@
  */
 package com.github.lgooddatepicker;
 
+import static org.junit.Assert.assertTrue;
+
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -30,7 +32,6 @@ import com.github.lgooddatepicker.components.TimePickerSettings;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Color;
 import java.util.Locale;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 // the tests in this class test basic requirements that always have to be fulfilled

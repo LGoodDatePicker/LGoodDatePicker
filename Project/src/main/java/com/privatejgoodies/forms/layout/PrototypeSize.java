@@ -29,13 +29,12 @@
  */
 package com.privatejgoodies.forms.layout;
 
+import com.privatejgoodies.forms.util.DefaultUnitConverter;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.io.Serializable;
 import java.util.List;
-
-import com.privatejgoodies.forms.util.DefaultUnitConverter;
 
 /**
  * A {@link Size} implementation that computes its width and height by a prototype String.

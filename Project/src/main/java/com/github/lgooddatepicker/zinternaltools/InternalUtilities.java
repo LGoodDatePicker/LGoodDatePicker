@@ -22,16 +22,13 @@
  */
 package com.github.lgooddatepicker.zinternaltools;
 
-import java.awt.GridBagConstraints;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Properties;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
 import java.awt.Component;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -49,10 +46,13 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAccessor;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;

@@ -22,7 +22,6 @@
  */
 package com.github.lgooddatepicker.zinternaltools;
 
-import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
@@ -30,6 +29,7 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
+import org.junit.Test;
 
 /**
  * testParsingMatchFunction, This class was written to thoroughly test the effectiveness of the

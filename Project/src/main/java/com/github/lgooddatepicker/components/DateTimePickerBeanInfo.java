@@ -22,6 +22,13 @@
  */
 package com.github.lgooddatepicker.components;
 
+import static java.beans.BeanInfo.ICON_COLOR_16x16;
+import static java.beans.BeanInfo.ICON_COLOR_32x32;
+import static java.beans.BeanInfo.ICON_MONO_16x16;
+import static java.beans.BeanInfo.ICON_MONO_32x32;
+
+import com.github.lgooddatepicker.zinternaltools.Pair;
+import java.awt.Image;
 import java.beans.BeanDescriptor;
 import java.beans.BeanInfo;
 import java.beans.EventSetDescriptor;
@@ -30,15 +37,9 @@ import java.beans.Introspector;
 import java.beans.MethodDescriptor;
 import java.beans.PropertyDescriptor;
 import java.beans.SimpleBeanInfo;
-import java.awt.Image;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import static java.beans.BeanInfo.ICON_COLOR_16x16;
-import static java.beans.BeanInfo.ICON_COLOR_32x32;
-import static java.beans.BeanInfo.ICON_MONO_16x16;
-import static java.beans.BeanInfo.ICON_MONO_32x32;
-import com.github.lgooddatepicker.zinternaltools.Pair;
 
 /**
  * DateTimePickerBeanInfo, This class returns JavaBean information for the matching bean class.

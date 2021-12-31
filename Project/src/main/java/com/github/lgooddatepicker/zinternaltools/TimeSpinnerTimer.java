@@ -23,7 +23,6 @@
 package com.github.lgooddatepicker.zinternaltools;
 
 import com.github.lgooddatepicker.components.TimePicker;
-
 import javax.swing.Timer;
 
 /**

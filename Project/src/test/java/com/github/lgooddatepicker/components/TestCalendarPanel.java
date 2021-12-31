@@ -22,6 +22,8 @@
  */
 package com.github.lgooddatepicker.components;
 
+import static org.junit.Assert.assertTrue;
+
 import com.github.lgooddatepicker.TestHelpers;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
@@ -43,7 +45,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.MenuElement;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 public class TestCalendarPanel {
