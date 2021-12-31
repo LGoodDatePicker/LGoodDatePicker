@@ -9,9 +9,13 @@ jobs:
   formatting:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF_NAME})"
+        id: extract_branch
       - uses: actions/checkout@v2 # v2 minimum required
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ steps.extract_branch.outputs.branch }}
       - uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--replace"
