@@ -228,8 +228,8 @@ public class TestCalendarPanel {
         });
     CalendarPanel panel = new CalendarPanel(settings);
     settings.setVetoPolicy(
-        date -> {
-          final int day = date.get(ChronoField.DAY_OF_MONTH);
+        dateToVeto -> {
+          final int day = dateToVeto.get(ChronoField.DAY_OF_MONTH);
           return (day % 5 != 0);
         });
     panel.setDisplayedYearMonth(YearMonth.of(2021, Month.MARCH));
