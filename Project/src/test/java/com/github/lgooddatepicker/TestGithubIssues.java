@@ -65,7 +65,7 @@ public class TestGithubIssues {
     final ExceptionInfo exInfo = new ExceptionInfo();
     try {
       TestHelpers.registerUncaughtExceptionHandlerToAllThreads(
-          (t, e) -> exInfo.set(t.getName(), e));
+          (thread, throwable) -> exInfo.set(thread.getName(), throwable));
       try (AutoDisposeFrame testWin = new AutoDisposeFrame()) {
         DatePicker date_picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
         testWin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
