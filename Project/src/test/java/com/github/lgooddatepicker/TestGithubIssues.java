@@ -22,7 +22,8 @@
  */
 package com.github.lgooddatepicker;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import com.github.lgooddatepicker.TestHelpers.ExceptionInfo;
 import com.github.lgooddatepicker.components.CalendarPanel;

@@ -22,11 +22,6 @@
  */
 package com.github.lgooddatepicker.components;
 
-import static java.beans.BeanInfo.ICON_COLOR_16x16;
-import static java.beans.BeanInfo.ICON_COLOR_32x32;
-import static java.beans.BeanInfo.ICON_MONO_16x16;
-import static java.beans.BeanInfo.ICON_MONO_32x32;
-
 import com.github.lgooddatepicker.zinternaltools.Pair;
 import java.awt.Image;
 import java.beans.BeanDescriptor;
