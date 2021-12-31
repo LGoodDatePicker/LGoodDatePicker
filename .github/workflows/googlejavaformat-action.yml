@@ -1,9 +1,8 @@
-# Example workflow
-name: Format
+name: Code formatting
 
 on:
   push:
-    branches:
+    branches-ignore:
       - master
 
 jobs:
@@ -15,5 +14,3 @@ jobs:
       - uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--replace"
-          # Recommended if you use MacOS:
-          # githubToken: ${{ secrets.GITHUB_TOKEN }}
