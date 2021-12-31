@@ -14,11 +14,11 @@ jobs:
         run: echo ${GITHUB_HEAD_REF}
       - name: Extract branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_HEAD_REF#+refs/heads/})"
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_HEAD_REF})"
         id: extract_branch
       - uses: actions/checkout@v2 # v2 minimum required
         with:
-          ref: ${{ steps.extract_branch.outputs.branch }}
+          ref: ${GITHUB_HEAD_REF}
       - uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--replace"
