@@ -9,6 +9,9 @@ jobs:
   formatting:
     runs-on: ubuntu-latest
     steps:
+      - name: Print branch name
+        shell: bash
+        run: echo ${GITHUB_HEAD_REF}
       - name: Extract branch name
         shell: bash
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_HEAD_REF#+refs/heads/})"
