@@ -26,8 +26,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.github.lgooddatepicker.TestHelpers;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
-import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
-import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -222,23 +220,17 @@ public class TestCalendarPanel {
           NoSuchMethodException, InvocationTargetException {
     DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
     settings.setHighlightPolicy(
-        new DateHighlightPolicy() {
-          @Override
-          public HighlightInformation getHighlightInformationOrNull(LocalDate date) {
-            if (date.get(ChronoField.DAY_OF_MONTH) % 2 == 0) {
-              return new HighlightInformation(Color.green, Color.blue, "highlighted");
-            }
-            return null;
+        date -> {
+          if (date.get(ChronoField.DAY_OF_MONTH) % 2 == 0) {
+            return new HighlightInformation(Color.green, Color.blue, "highlighted");
           }
+          return null;
         });
     CalendarPanel panel = new CalendarPanel(settings);
     settings.setVetoPolicy(
-        new DateVetoPolicy() {
-          @Override
-          public boolean isDateAllowed(LocalDate date) {
-            final int day = date.get(ChronoField.DAY_OF_MONTH);
-            return (day % 5 != 0);
-          }
+        date -> {
+          final int day = date.get(ChronoField.DAY_OF_MONTH);
+          return (day % 5 != 0);
         });
     panel.setDisplayedYearMonth(YearMonth.of(2021, Month.MARCH));
 
