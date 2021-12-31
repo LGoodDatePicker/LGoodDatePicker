@@ -1,9 +1,6 @@
 name: Format
 
-on:
-  push:
-    branches-ignore:
-      - master
+on: [push, pull_request]
 
 jobs:
 
@@ -11,6 +8,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 # v2 minimum required
-      - uses: axel-op/googlejavaformat-action@v3
+      - uses: LGoodDatePicker/googlejavaformat-action@v3
         with:
           args: "--replace"
+          
+##### Notes #####
+
+### Used action repository:
+# The original action repository is here. (The master version.):
+#       - uses: axel-op/googlejavaformat-action@v3
+# However, we are using our own fork of this action. 
+# Our fork is located at:
+#       - uses: LGoodDatePicker/googlejavaformat-action@v3
+
+### Reason for using a fork:
+# The advantage of having our own fork of this action is that if the "axel-op" repository is
+# ever broken, then that break will not automaticatically break our own code. 
+# (Because we are not directly using the "axel-op" repository in our workflow.)
+
+### How to update our forked action repository:
+# Our fork of the action repository will only be updated when we manually click the update 
+# button in the LGoodDatePicker/googlejavaformat-action repository. 
+# The update button is named "Fetch Upstream". Clicking this button will update the fork to
+# the latest version of the action. 
