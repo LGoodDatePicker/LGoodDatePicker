@@ -1,8 +1,9 @@
 name: Code formatting
 
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches-ignore:
+      - master
 
 jobs:
 
@@ -10,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 # v2 minimum required
-        with:
-          ref: ${{ github.head_ref }}
       - uses: axel-op/googlejavaformat-action@v3
         with:
           args: "--replace"
