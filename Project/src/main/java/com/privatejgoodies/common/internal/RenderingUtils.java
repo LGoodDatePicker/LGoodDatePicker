@@ -93,11 +93,7 @@ public final class RenderingUtils {
       try {
         drawStringMethod.invoke(null, c, g, text, x, y);
         return;
-      } catch (IllegalArgumentException e) {
-        // Use the BasicGraphicsUtils as fallback
-      } catch (IllegalAccessException e) {
-        // Use the BasicGraphicsUtils as fallback
-      } catch (InvocationTargetException e) {
+      } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
         // Use the BasicGraphicsUtils as fallback
       }
     }
@@ -126,11 +122,7 @@ public final class RenderingUtils {
         drawStringUnderlineCharAtMethod.invoke(
             null, new Object[] {c, g, text, underlinedIndex, x, y});
         return;
-      } catch (IllegalArgumentException e) {
-        // Use the BasicGraphicsUtils as fallback
-      } catch (IllegalAccessException e) {
-        // Use the BasicGraphicsUtils as fallback
-      } catch (InvocationTargetException e) {
+      } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
         // Use the BasicGraphicsUtils as fallback
       }
     }
@@ -160,11 +152,7 @@ public final class RenderingUtils {
     if (getFontMetricsMethod != null) {
       try {
         return (FontMetrics) getFontMetricsMethod.invoke(null, new Object[] {c, g});
-      } catch (IllegalArgumentException e) {
-        // Use the fallback
-      } catch (IllegalAccessException e) {
-        // Use the fallback
-      } catch (InvocationTargetException e) {
+      } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
         // Use the fallback
       }
     }
@@ -178,11 +166,7 @@ public final class RenderingUtils {
       return clazz.getMethod(
           "drawString",
           new Class[] {JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE});
-    } catch (ClassNotFoundException e) {
-      // returns null
-    } catch (SecurityException e) {
-      // returns null
-    } catch (NoSuchMethodException e) {
+    } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
     return null;
@@ -196,11 +180,7 @@ public final class RenderingUtils {
           new Class[] {
             JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE
           });
-    } catch (ClassNotFoundException e) {
-      // returns null
-    } catch (SecurityException e) {
-      // returns null
-    } catch (NoSuchMethodException e) {
+    } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
     return null;
@@ -210,11 +190,7 @@ public final class RenderingUtils {
     try {
       Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
       return clazz.getMethod("getFontMetrics", new Class[] {JComponent.class, Graphics.class});
-    } catch (ClassNotFoundException e) {
-      // returns null
-    } catch (SecurityException e) {
-      // returns null
-    } catch (NoSuchMethodException e) {
+    } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
     return null;
