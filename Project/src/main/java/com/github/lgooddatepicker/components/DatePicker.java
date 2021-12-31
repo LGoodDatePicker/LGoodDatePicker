@@ -758,17 +758,14 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
    * DatePickerSettings.setSizeTextFieldMinimumWidthDefaultOverride().
    */
   void zSetAppropriateTextFieldMinimumWidth() {
-    if (settings == null) {
+    if (settings == null)
+    {
       return;
     }
     Integer programmerSuppliedWidth = settings.getSizeTextFieldMinimumWidth();
     // Determine the appropriate minimum width for the text field.
     int minimumWidthPixels =
-        CalculateMinimumDateFieldSize.getFormattedDateWidthInPixels(
-            settings.getFormatForDatesCommonEra(),
-            settings.getLocale(),
-            settings.getFontValidDate(),
-            0);
+        CalculateMinimumDateFieldSize.getFormattedDateWidthInPixels( settings.getFormatForDatesCommonEra(), settings.getLocale(), settings.getFontValidDate(), 0);
     if (programmerSuppliedWidth != null) {
       if (settings.getSizeTextFieldMinimumWidthDefaultOverride()) {
         minimumWidthPixels = Math.max(programmerSuppliedWidth, minimumWidthPixels);
