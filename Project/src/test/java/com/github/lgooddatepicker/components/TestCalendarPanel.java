@@ -220,8 +220,8 @@ public class TestCalendarPanel {
           NoSuchMethodException, InvocationTargetException {
     DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
     settings.setHighlightPolicy(
-        dateToHilight -> {
-          if (dateToHilight.get(ChronoField.DAY_OF_MONTH) % 2 == 0) {
+        dateToHighlight -> {
+          if (dateToHighlight.get(ChronoField.DAY_OF_MONTH) % 2 == 0) {
             return new HighlightInformation(Color.green, Color.blue, "highlighted");
           }
           return null;
