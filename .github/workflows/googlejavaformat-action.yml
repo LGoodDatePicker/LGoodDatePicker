@@ -1,6 +1,6 @@
 name: Format
 
-on: [pull_request] // had to remove push temporarily as it already applied formatting before the PR was even opened
+on: [pull_request] #had to remove push temporarily as it already applied formatting before the PR was even opened
 
 jobs:
 
