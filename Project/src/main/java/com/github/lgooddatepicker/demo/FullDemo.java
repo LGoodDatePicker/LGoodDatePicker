@@ -788,7 +788,9 @@ public class FullDemo {
 
   private static void registerEnabledCheckbox(Checkbox cb, java.awt.Component managedComp) {
     cb.addItemListener(
-        itemEvent -> managedComp.setEnabled(itemEvent.getStateChange() == java.awt.event.ItemEvent.SELECTED));
+        itemEvent ->
+            managedComp.setEnabled(
+                itemEvent.getStateChange() == java.awt.event.ItemEvent.SELECTED));
   }
 
   /**
@@ -955,7 +957,8 @@ public class FullDemo {
         });
     buttonPanel.add(toggleButton);
     JButton setTimeOneWithTwo = new JButton("TimePickers: Set TimePicker One with the time in Two");
-    setTimeOneWithTwo.addActionListener(actionEvent -> setTimeOneWithTimeTwoButtonClicked(actionEvent));
+    setTimeOneWithTwo.addActionListener(
+        actionEvent -> setTimeOneWithTimeTwoButtonClicked(actionEvent));
     buttonPanel.add(setTimeOneWithTwo);
     JButton timeToggleButton = new JButton("Toggle TimePicker One");
     timeToggleButton.addMouseListener(
