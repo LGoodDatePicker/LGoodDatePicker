@@ -40,13 +40,13 @@ import org.junit.Test;
 public class TestParsingMatchFunction {
 
   /** main, This only exists to run test functions. */
-  public static void main(String[] args) {
-    try {
-      new TestParsingMatchFunction().testDoesParsedDateMatchTextFunction();
-      // Indicate that we are finished.
-      System.out.println("done.");
-    } catch (java.lang.AssertionError ex) {
-      System.out.println("Test failed:");
+public static void main(String[] args) {
+try {
+new TestParsingMatchFunction().testDoesParsedDateMatchTextFunction();
+// Indicate that we are finished.
+System.out.println("done.");
+} catch (java.lang.AssertionError ex) {
+System.out.println("Test failed:");
       System.out.println("Reason: " + ex.getMessage());
     }
   }
