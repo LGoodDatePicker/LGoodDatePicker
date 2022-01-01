@@ -31,3 +31,10 @@ jobs:
 # button in the LGoodDatePicker/googlejavaformat-action repository. 
 # The update button is named "Fetch Upstream". Clicking this button will update the fork to
 # the latest version of the action. 
+
+### Run conditions:
+# This format action will run for all pull requests and all pushes, on all branches. 
+# (Including on pull request branches.)
+# In some cases this will result in the action being run twice. However, the action only 
+# commits files when the a source file is changed by the format process. 
+# So any redundant runs are harmless. (They do not create any "extra" commits.)
