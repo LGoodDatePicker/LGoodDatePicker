@@ -1,6 +1,6 @@
 name: Format
 
-on: [push, pull_request]
+on: push
 
 jobs:
 
@@ -16,10 +16,11 @@ jobs:
 
 ### Used action repository:
 # The original action repository is here. (The master version.):
-#       - uses: axel-op/googlejavaformat-action@v3
+# Link: https://github.com/axel-op/googlejavaformat-action
+# Original action line:  - uses: axel-op/googlejavaformat-action@v3
+#
 # However, we are using our own fork of this action. 
-# Our fork is located at:
-#       - uses: LGoodDatePicker/googlejavaformat-action@v3
+# Action line for our fork:  - uses: LGoodDatePicker/googlejavaformat-action@v3
 
 ### Reason for using a fork:
 # The advantage of having our own fork of this action is that if the "axel-op" repository is
@@ -31,10 +32,3 @@ jobs:
 # button in the LGoodDatePicker/googlejavaformat-action repository. 
 # The update button is named "Fetch Upstream". Clicking this button will update the fork to
 # the latest version of the action. 
-
-### Run conditions:
-# This format action will run for all pull requests and all pushes, on all branches. 
-# (Including on pull request branches.)
-# In some cases this will result in the action being run twice. However, the action only 
-# commits files when the a source file is changed by the format process. 
-# So any redundant runs are harmless. (They do not create any "extra" commits.)
