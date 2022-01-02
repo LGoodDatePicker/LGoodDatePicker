@@ -1564,8 +1564,8 @@ public final class FormLayout implements LayoutManager2, Serializable {
     // Compute the total weight.
     int count = formSpecs.size();
     double totalWeight = 0.0;
-    for (int i = 0; i < count; i++) {
-      FormSpec formSpec = (FormSpec) formSpecs.get(i);
+    for (Object spec : formSpecs) {
+      FormSpec formSpec = (FormSpec) spec;
       totalWeight += formSpec.getResizeWeight();
     }
 

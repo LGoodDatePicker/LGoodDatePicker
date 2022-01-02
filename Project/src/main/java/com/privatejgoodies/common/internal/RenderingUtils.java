@@ -202,8 +202,8 @@ public final class RenderingUtils {
     if (desktopHints != null && !desktopHints.isEmpty()) {
       oldRenderingHints = new HashMap<>(desktopHints.size());
       RenderingHints.Key key;
-      for (Iterator i = desktopHints.keySet().iterator(); i.hasNext(); ) {
-        key = (RenderingHints.Key) i.next();
+      for (Object o : desktopHints.keySet()) {
+        key = (RenderingHints.Key) o;
         oldRenderingHints.put(key, g2.getRenderingHint(key));
       }
       g2.addRenderingHints(desktopHints);

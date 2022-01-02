@@ -367,8 +367,8 @@ public final class Sizes {
       FormLayout.Measure measure =
           this == MINIMUM ? minMeasure : (this == PREFERRED ? prefMeasure : defaultMeasure);
       int maximum = 0;
-      for (Iterator i = components.iterator(); i.hasNext(); ) {
-        Component c = (Component) i.next();
+      for (Object component : components) {
+        Component c = (Component) component;
         maximum = Math.max(maximum, measure.sizeOf(c));
       }
       return maximum;

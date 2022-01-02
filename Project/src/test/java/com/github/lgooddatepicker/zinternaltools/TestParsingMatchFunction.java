@@ -86,14 +86,14 @@ public class TestParsingMatchFunction {
         new Month[] {Month.FEBRUARY, Month.APRIL, Month.JUNE, Month.SEPTEMBER, Month.NOVEMBER};
     // Make sure that none of short month dates match when given a nonexistent 31st date.
     for (int year = -10000; year < 10001; ++year) {
-      for (int monthIndex = 0; monthIndex < shortMonths.length; ++monthIndex) {
-        String nonExistantDateString = shortMonths[monthIndex].getValue() + " 31, " + year;
+      for (Month shortMonth : shortMonths) {
+        String nonExistantDateString = shortMonth.getValue() + " 31, " + year;
         LocalDate nonExistantDate = LocalDate.parse(nonExistantDateString, parseFormat);
         assertFalse(
             "invalid match at " + nonExistantDateString,
             InternalUtilities.doesParsedDateMatchText(
                 nonExistantDate, nonExistantDateString, parseFormat));
-        String nonExistantDateString2 = shortMonths[monthIndex].name() + " 31, " + year;
+        String nonExistantDateString2 = shortMonth.name() + " 31, " + year;
         LocalDate nonExistantDate2 = LocalDate.parse(nonExistantDateString2, parseFormat2);
         assertFalse(
             "invalid match at " + nonExistantDateString2,
