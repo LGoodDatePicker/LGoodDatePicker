@@ -387,8 +387,9 @@ public class CalendarPanel extends JPanel {
    * addBorderLabels, This adds the border labels to the calendar panel and to the two dimensional
    * border labels array.
    *
-   * Below is a visual representation of the location of the border labels inside this array. The
+   * <p>Below is a visual representation of the location of the border labels inside this array. The
    * character 'X' represents a border label, and 'o' represents null.
+   *
    * <pre>
    * ~012345
    * 0oooooo
@@ -397,6 +398,7 @@ public class CalendarPanel extends JPanel {
    * 3oXXXXX
    * 4oXoXoX
    * 5oXXXXX
+   * </pre>
    *
    * This function should not depend on any settings variables.
    */

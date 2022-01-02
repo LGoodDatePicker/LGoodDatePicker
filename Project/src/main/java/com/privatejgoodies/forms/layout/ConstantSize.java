@@ -45,7 +45,7 @@ import java.util.List;
  *
  * <p>This class supports different size units:
  *
- * <table>
+ * <table summary="Units of size">
  * <tr><td><b>Unit</b>&nbsp;
  * </td><td>&nbsp;<b>Abbreviation</b>&nbsp;</td><td>&nbsp;
  * <b>Size</b></td></tr>

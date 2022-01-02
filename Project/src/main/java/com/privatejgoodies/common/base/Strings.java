@@ -221,8 +221,6 @@ public class Strings {
    * part with an ellipsis ('&hellip;'). If the string is {@code null} or shorter than the limit, it
    * is returned as is.
    *
-   * <p>
-   *
    * <pre>
    * Strings.abbreviateCenter(null,      3) == null
    * Strings.abbreviateCenter("",        3) == ""
