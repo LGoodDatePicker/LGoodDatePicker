@@ -50,7 +50,6 @@ public class TestCalendarPanel {
   public void TestCustomClockCalenderPanel() {
     CalendarPanel panel = new CalendarPanel();
     java.time.YearMonth defaultDateNeverNull = panel.getDisplayedYearMonth();
-    System.out.print("");
     assertTrue("displayedYearMonth may never be null", defaultDateNeverNull != null);
     assertTrue(
         "Year must be the year of today",
