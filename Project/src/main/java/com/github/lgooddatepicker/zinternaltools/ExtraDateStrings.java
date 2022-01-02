@@ -162,7 +162,7 @@ public class ExtraDateStrings {
     // Attempt to get the standalone version of the month name.
     TextStyle style = (shortVersion) ? TextStyle.SHORT_STANDALONE : TextStyle.FULL_STANDALONE;
     String monthName = month.getDisplayName(style, locale);
-    String monthNumber = "" + month.getValue();
+    String monthNumber = String.valueOf(month.getValue());
     // If no mapping was found, then get the "formatting version" of the month name.
     if (monthName.equals(monthNumber)) {
       DateFormatSymbols dateSymbols = DateFormatSymbols.getInstance(locale);
