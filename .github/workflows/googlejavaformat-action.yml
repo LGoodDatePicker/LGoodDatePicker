@@ -24,7 +24,7 @@ jobs:
 
 ### Reason for using a fork:
 # The advantage of having our own fork of this action is that if the "axel-op" repository is
-# ever broken, then that break will not automaticatically break our own code. 
+# ever broken, then that break will not automatically break our own code. 
 # (Because we are not directly using the "axel-op" repository in our workflow.)
 
 ### How to update our forked action repository:
@@ -32,3 +32,9 @@ jobs:
 # button in the LGoodDatePicker/googlejavaformat-action repository. 
 # The update button is named "Fetch Upstream". Clicking this button will update the fork to
 # the latest version of the action. 
+
+### We only use a 'push' trigger, and not a 'pull_request' trigger. 
+# Reason: From testing, it appears that when a 'pull_request' trigger is used, it causes the 
+# format action to fail during any pull request that originates from any forked repository. 
+# This change fixes issues discussed in the pull requests listed below.
+# Pull requests, #152, #156, #158, #159, #160, #161, #163, #164.
