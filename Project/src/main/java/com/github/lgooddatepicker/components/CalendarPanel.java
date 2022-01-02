@@ -481,7 +481,7 @@ public class CalendarPanel extends JPanel {
       dateLabel.setForeground(Color.black);
       dateLabel.setBorder(null);
       dateLabel.setOpaque(true);
-      dateLabel.setText("" + i);
+      dateLabel.setText(String.valueOf(i));
       CellConstraints constraints = CC.xy(dateLabelColumnX, dateLabelRowY);
       centerPanel.add(dateLabel, constraints);
       dateLabels.add(dateLabel);
@@ -765,7 +765,7 @@ public class CalendarPanel extends JPanel {
     } else {
       labelMonth.setText(localizedFullMonth);
     }
-    final String displayedYearString = "" + displayedYear;
+    final String displayedYearString = String.valueOf(displayedYear);
     labelYear.setText(displayedYearString);
     if (!displayedYearString.equals(yearTextField.getText())) {
       // This invokeLater call fixes a bug where an exception was being thrown if you typed
@@ -891,7 +891,7 @@ public class CalendarPanel extends JPanel {
           selectedDateLabel = dateLabel;
         }
         // Set the text for the current date.
-        dateLabel.setText("" + dayOfMonth);
+        dateLabel.setText(String.valueOf(dayOfMonth));
         ++dayOfMonth;
       } else {
         // We are not inside the valid range, so set this label to an empty string.
@@ -920,7 +920,7 @@ public class CalendarPanel extends JPanel {
       if ((showWeekNumbers) && (weekNumberRules != null) && (weekNumberLabelIndex < usedRowCount)) {
         LocalDate firstDateInRow = firstDateInEachUsedRow.get(weekNumberLabelIndex);
         int weekNumber = zGetWeekNumberForASevenDayRange(firstDateInRow, weekNumberRules, false);
-        currentLabel.setText("" + weekNumber);
+        currentLabel.setText(String.valueOf(weekNumber));
       }
     }
 
@@ -1175,7 +1175,7 @@ public class CalendarPanel extends JPanel {
       // This try block handles exceptions that can occur at LocalDate.MAX.
       try {
         YearMonth choiceYearMonth = displayedYearMonth.plusYears(yearDifference);
-        String choiceYearMonthString = "" + choiceYearMonth.getYear();
+        String choiceYearMonthString = String.valueOf(choiceYearMonth.getYear());
         popupYear.add(
             new JMenuItem(
                 new AbstractAction(choiceYearMonthString) {

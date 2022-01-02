@@ -72,7 +72,7 @@ public class JIntegerTextField extends JTextField {
 
   public JIntegerTextField(int preferredWidthFromColumnCount) {
     super(preferredWidthFromColumnCount);
-    setText("" + getDefaultValue());
+    setText(String.valueOf(getDefaultValue()));
     selectAll();
     AbstractDocument document = (AbstractDocument) this.getDocument();
     document.setDocumentFilter(new IntegerFilter(this));
@@ -150,7 +150,7 @@ public class JIntegerTextField extends JTextField {
   public void setValue(int value) {
     value = (value < minimumValue) ? minimumValue : value;
     value = (value > maximumValue) ? maximumValue : value;
-    setText("" + value);
+    setText(String.valueOf(value));
   }
 
   private boolean isValidInteger(String text) {
@@ -279,7 +279,7 @@ public class JIntegerTextField extends JTextField {
 
     private void setFieldToDefaultValue() {
       skipFiltersWhileTrue = true;
-      String defaultValue = "" + parentField.getDefaultValue();
+      String defaultValue = String.valueOf(parentField.getDefaultValue());
       parentField.setText(defaultValue);
       parentField.selectAll();
       skipFiltersWhileTrue = false;
