@@ -48,9 +48,9 @@ import org.junit.Test;
 public class TestCalendarPanel {
   @Test(expected = Test.None.class /* no exception expected */)
   public void TestCustomClockCalenderPanel() {
-CalendarPanel panel = new CalendarPanel();
-java.time.YearMonth defaultDateNeverNull = panel.getDisplayedYearMonth();
-System.out.print("");
+    CalendarPanel panel = new CalendarPanel();
+    java.time.YearMonth defaultDateNeverNull = panel.getDisplayedYearMonth();
+    System.out.print("");
     assertTrue("displayedYearMonth may never be null", defaultDateNeverNull != null);
     assertTrue(
         "Year must be the year of today",
