@@ -359,7 +359,8 @@ public class CalendarPanel extends JPanel {
           drawCalendar(newYearMonth);
         };
     // Issue #113: Pressing enter does the same as pressing the doneEditingYearButton.
-    yearTextField.addActionListener(e -> doneEditingYearButtonActionPerformed(e));
+    yearTextField.addActionListener(
+        actionEvent -> doneEditingYearButtonActionPerformed(actionEvent));
     // Initialize the doneEditingYearButton.
     doneEditingYearButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
     doneEditingYearButton.setText("\u2713");
@@ -1556,7 +1557,8 @@ public class CalendarPanel extends JPanel {
       buttonPreviousYear.setHorizontalTextPosition(SwingConstants.CENTER);
       buttonPreviousYear.setMargin(new Insets(5, 6, 5, 6));
       buttonPreviousYear.setFont(new Font("Monospaced", Font.BOLD, 12));
-      buttonPreviousYear.addActionListener(e -> buttonPreviousYearActionPerformed(e));
+      buttonPreviousYear.addActionListener(
+          actionEvent -> buttonPreviousYearActionPerformed(actionEvent));
       headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
 
       // ---- buttonPreviousMonth ----
@@ -1566,7 +1568,8 @@ public class CalendarPanel extends JPanel {
       buttonPreviousMonth.setHorizontalTextPosition(SwingConstants.CENTER);
       buttonPreviousMonth.setMargin(new Insets(5, 6, 5, 6));
       buttonPreviousMonth.setFont(new Font("Monospaced", Font.BOLD, 12));
-      buttonPreviousMonth.addActionListener(e -> buttonPreviousMonthActionPerformed(e));
+      buttonPreviousMonth.addActionListener(
+          actionEvent -> buttonPreviousMonthActionPerformed(actionEvent));
       headerControlsPanel.add(buttonPreviousMonth, CC.xy(2, 1));
 
       // ======== monthAndYearOuterPanel ========
@@ -1635,7 +1638,7 @@ public class CalendarPanel extends JPanel {
       buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
       buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
       buttonNextMonth.setFont(new Font("Monospaced", Font.BOLD, 12));
-      buttonNextMonth.addActionListener(e -> buttonNextMonthActionPerformed(e));
+      buttonNextMonth.addActionListener(actionEvent -> buttonNextMonthActionPerformed(actionEvent));
       headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
 
       // ---- buttonNextYear ----
@@ -1645,7 +1648,7 @@ public class CalendarPanel extends JPanel {
       buttonNextYear.setHorizontalTextPosition(SwingConstants.CENTER);
       buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
       buttonNextYear.setFont(new Font("Monospaced", Font.BOLD, 12));
-      buttonNextYear.addActionListener(e -> buttonNextYearActionPerformed(e));
+      buttonNextYear.addActionListener(actionEvent -> buttonNextYearActionPerformed(actionEvent));
       headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
     }
     add(
@@ -1762,7 +1765,8 @@ public class CalendarPanel extends JPanel {
       // ---- doneEditingYearButton ----
       doneEditingYearButton.setFocusPainted(false);
       doneEditingYearButton.setFocusable(false);
-      doneEditingYearButton.addActionListener(e -> doneEditingYearButtonActionPerformed(e));
+      doneEditingYearButton.addActionListener(
+          actionEvent -> doneEditingYearButtonActionPerformed(actionEvent));
       yearEditorPanel.add(
           doneEditingYearButton,
           new GridBagConstraints(
