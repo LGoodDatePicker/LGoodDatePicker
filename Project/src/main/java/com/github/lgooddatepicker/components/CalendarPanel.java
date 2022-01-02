@@ -397,6 +397,7 @@ public class CalendarPanel extends JPanel {
    * 3oXXXXX
    * 4oXoXoX
    * 5oXXXXX
+   * </pre>
    *
    * This function should not depend on any settings variables.
    */

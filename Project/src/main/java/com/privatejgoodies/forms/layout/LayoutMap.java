@@ -55,7 +55,7 @@ import java.util.Map.Entry;
  *
  * <p>By default the root LayoutMap provides the following associations:
  *
- * <table border="1">
+ * <table border="1" summary="LayoutMap associations">
  * <tr><td><b>Variable
  * Name</b><td><b>Abbreviations</b></td><td><b>Orientation</b></td><td><b>Description</b></td></tr>
  * <tr><td>label-component-gap</td><td>lcg, lcgap</td><td>both</td><td>gap between a label and the

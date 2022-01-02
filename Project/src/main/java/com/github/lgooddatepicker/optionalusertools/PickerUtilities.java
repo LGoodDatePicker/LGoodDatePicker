@@ -233,7 +233,7 @@ public class PickerUtilities {
    * "HH:mm:ss.SSS", "HH:mm:ss.SSSSSS", "HH:mm:ss.SSSSSSSSS".
    *
    * <p>The format used will be the shortest that outputs the full value of the time where the
-   * omitted parts are implied to be zero. </code>
+   * omitted parts are implied to be zero.
    */
   public static String localTimeToString(LocalTime time) {
     return (time == null) ? "" : time.toString();
@@ -247,7 +247,7 @@ public class PickerUtilities {
    * "HH:mm:ss.SSS", "HH:mm:ss.SSSSSS", "HH:mm:ss.SSSSSSSSS".
    *
    * <p>The format used will be the shortest that outputs the full value of the time where the
-   * omitted parts are implied to be zero. </code>
+   * omitted parts are implied to be zero.
    */
   public static String localTimeToString(LocalTime time, String emptyTimeString) {
     return (time == null) ? emptyTimeString : time.toString();
