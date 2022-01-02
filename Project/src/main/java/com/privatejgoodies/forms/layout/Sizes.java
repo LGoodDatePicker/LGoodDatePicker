@@ -35,7 +35,6 @@ import com.privatejgoodies.forms.util.UnitConverter;
 import java.awt.Component;
 import java.awt.Container;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
