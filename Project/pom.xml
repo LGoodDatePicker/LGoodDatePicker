@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- -->
+<!-- A simplified pom file exists for releases:
+This during the packaging process, this pom is replaced by a simpler pom file, located here.
+(https://github.com/LGoodDatePicker/LGoodDatePicker/blob/master/Project/src/main/resources/pom-for-users.txt)
+As of this writing, the pom for users has no external dependencies. (JUnit is not a release dependency.)
+ -->
 <!-- To build for Maven Central:
 (Note: Only the primary developers should ever need to build for Maven Central.
 All other people and programmers can ignore this paragraph.)
@@ -63,7 +67,11 @@ plugins in this file operate inside the "package" and "install" phases.
             <version>1.2.1</version>
         </dependency> -->
 
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <!-- JUnit, https://mvnrepository.com/artifact/junit/junit 
+         Note: In the release packages, JUnit is not included and is not a dependency. 
+         During the packaging process, this pom file is replaced by "pom-for-users.txt", 
+         which does not include any JUnit dependency. 
+         -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
