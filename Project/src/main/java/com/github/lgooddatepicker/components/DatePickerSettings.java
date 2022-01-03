@@ -1789,12 +1789,12 @@ public class DatePickerSettings {
     // Create a set of default parsing formatters for the specified locale.
     ArrayList<DateTimeFormatter> parsingFormats = new ArrayList<>();
     DateTimeFormatter parseFormat;
-    for (int i = 0; i < allFormatStyles.length; ++i) {
+    for (FormatStyle allFormatStyle : allFormatStyles) {
       parseFormat =
           new DateTimeFormatterBuilder()
               .parseLenient()
               .parseCaseInsensitive()
-              .appendLocalized(allFormatStyles[i], null)
+              .appendLocalized(allFormatStyle, null)
               .toFormatter(locale);
       parsingFormats.add(parseFormat);
     }

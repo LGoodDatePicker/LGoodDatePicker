@@ -35,7 +35,6 @@ import com.privatejgoodies.forms.util.UnitConverter;
 import java.awt.Component;
 import java.awt.Container;
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -367,8 +366,8 @@ public final class Sizes {
       FormLayout.Measure measure =
           this == MINIMUM ? minMeasure : (this == PREFERRED ? prefMeasure : defaultMeasure);
       int maximum = 0;
-      for (Iterator i = components.iterator(); i.hasNext(); ) {
-        Component c = (Component) i.next();
+      for (Object component : components) {
+        Component c = (Component) component;
         maximum = Math.max(maximum, measure.sizeOf(c));
       }
       return maximum;

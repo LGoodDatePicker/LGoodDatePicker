@@ -40,7 +40,6 @@ import java.awt.print.PrinterGraphics;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
@@ -202,8 +201,8 @@ public final class RenderingUtils {
     if (desktopHints != null && !desktopHints.isEmpty()) {
       oldRenderingHints = new HashMap<>(desktopHints.size());
       RenderingHints.Key key;
-      for (Iterator i = desktopHints.keySet().iterator(); i.hasNext(); ) {
-        key = (RenderingHints.Key) i.next();
+      for (Object o : desktopHints.keySet()) {
+        key = (RenderingHints.Key) o;
         oldRenderingHints.put(key, g2.getRenderingHint(key));
       }
       g2.addRenderingHints(desktopHints);
