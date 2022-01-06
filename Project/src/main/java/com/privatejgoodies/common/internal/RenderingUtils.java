@@ -119,7 +119,7 @@ public final class RenderingUtils {
     if (drawStringUnderlineCharAtMethod != null) {
       try {
         drawStringUnderlineCharAtMethod.invoke(
-            null, new Object[] {c, g, text, underlinedIndex, x, y});
+            null, c, g, text, underlinedIndex, x, y);
         return;
       } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
         // Use the BasicGraphicsUtils as fallback
@@ -164,7 +164,7 @@ public final class RenderingUtils {
       Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
       return clazz.getMethod(
           "drawString",
-          new Class[] {JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE});
+          JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE);
     } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
@@ -176,9 +176,7 @@ public final class RenderingUtils {
       Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
       return clazz.getMethod(
           "drawStringUnderlineCharAt",
-          new Class[] {
-            JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE
-          });
+          JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
     } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
@@ -188,7 +186,7 @@ public final class RenderingUtils {
   private static Method getMethodGetFontMetrics() {
     try {
       Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
-      return clazz.getMethod("getFontMetrics", new Class[] {JComponent.class, Graphics.class});
+      return clazz.getMethod("getFontMetrics", JComponent.class, Graphics.class);
     } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
