@@ -186,13 +186,13 @@ public class TimePicker extends JPanel implements CustomPopup.CustomPopupCloseLi
     // Set the down arrow on the toggle menu button.
     toggleTimeMenuButton.setText("\u25BC");
     // Shrink the toggle menu button to a reasonable size.
-    toggleTimeMenuButton.setMargin(new java.awt.Insets(4, 4, 4, 4));
+    toggleTimeMenuButton.setMargin(new Insets(4, 4, 4, 4));
 
     // Set up the spinner buttons.
     decreaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
     increaseButton.setBorder(new MatteBorder(1, 1, 1, 1, new Color(122, 138, 153)));
-    decreaseButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
-    increaseButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+    decreaseButton.setMargin(new Insets(0, 0, 0, 0));
+    increaseButton.setMargin(new Insets(0, 0, 0, 0));
     zInstallSpinnerButtonListener(decreaseButton);
     zInstallSpinnerButtonListener(increaseButton);
 

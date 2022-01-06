@@ -177,7 +177,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     setOpaque(false);
     this.convert = new Convert(this);
     // Shrink the toggle calendar button to a reasonable size.
-    toggleCalendarButton.setMargin(new java.awt.Insets(1, 2, 1, 2));
+    toggleCalendarButton.setMargin(new Insets(1, 2, 1, 2));
     // Add a change listener to the text field.
     zAddTextChangeListener();
     // Save and apply the supplied settings.
