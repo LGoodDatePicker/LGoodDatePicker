@@ -362,15 +362,15 @@ public class CalendarPanel extends JPanel {
     yearTextField.addActionListener(
         actionEvent -> doneEditingYearButtonActionPerformed(actionEvent));
     // Initialize the doneEditingYearButton.
-    doneEditingYearButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+    doneEditingYearButton.setMargin(new Insets(0, 0, 0, 0));
     doneEditingYearButton.setText("\u2713");
     // Set the calendar panel to be opaque.
     setOpaque(true);
     // Shrink the buttons for previous and next year and month.
-    buttonPreviousYear.setMargin(new java.awt.Insets(1, 2, 1, 2));
-    buttonNextYear.setMargin(new java.awt.Insets(1, 2, 1, 2));
-    buttonPreviousMonth.setMargin(new java.awt.Insets(1, 2, 1, 2));
-    buttonNextMonth.setMargin(new java.awt.Insets(1, 2, 1, 2));
+    buttonPreviousYear.setMargin(new Insets(1, 2, 1, 2));
+    buttonNextYear.setMargin(new Insets(1, 2, 1, 2));
+    buttonPreviousMonth.setMargin(new Insets(1, 2, 1, 2));
+    buttonNextMonth.setMargin(new Insets(1, 2, 1, 2));
 
     // Generate and add the various calendar panel labels.
     // These are only generated once.
