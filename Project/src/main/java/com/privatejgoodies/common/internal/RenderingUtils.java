@@ -118,8 +118,7 @@ public final class RenderingUtils {
       JComponent c, Graphics g, String text, int underlinedIndex, int x, int y) {
     if (drawStringUnderlineCharAtMethod != null) {
       try {
-        drawStringUnderlineCharAtMethod.invoke(
-            null, c, g, text, underlinedIndex, x, y);
+        drawStringUnderlineCharAtMethod.invoke(null, c, g, text, underlinedIndex, x, y);
         return;
       } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
         // Use the BasicGraphicsUtils as fallback
@@ -163,8 +162,7 @@ public final class RenderingUtils {
     try {
       Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
       return clazz.getMethod(
-          "drawString",
-          JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE);
+          "drawString", JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE);
     } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
@@ -176,7 +174,12 @@ public final class RenderingUtils {
       Class<?> clazz = Class.forName(SWING_UTILITIES2_NAME);
       return clazz.getMethod(
           "drawStringUnderlineCharAt",
-          JComponent.class, Graphics.class, String.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
+          JComponent.class,
+          Graphics.class,
+          String.class,
+          Integer.TYPE,
+          Integer.TYPE,
+          Integer.TYPE);
     } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
       // returns null
     }
