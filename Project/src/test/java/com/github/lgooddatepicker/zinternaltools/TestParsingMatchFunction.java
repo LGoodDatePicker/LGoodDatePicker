@@ -83,7 +83,7 @@ public class TestParsingMatchFunction {
             .appendPattern("MMMM d, yyyy G")
             .toFormatter(Locale.getDefault());
     Month[] shortMonths =
-        new Month[] {Month.FEBRUARY, Month.APRIL, Month.JUNE, Month.SEPTEMBER, Month.NOVEMBER};
+        {Month.FEBRUARY, Month.APRIL, Month.JUNE, Month.SEPTEMBER, Month.NOVEMBER};
     // Make sure that none of short month dates match when given a nonexistent 31st date.
     for (int year = -10000; year < 10001; ++year) {
       for (Month shortMonth : shortMonths) {

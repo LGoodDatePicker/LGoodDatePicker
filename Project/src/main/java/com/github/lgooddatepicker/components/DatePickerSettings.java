@@ -1782,7 +1782,7 @@ public class DatePickerSettings {
 
     // Create an array of all the FormatStyle enum values, from short to long.
     FormatStyle[] allFormatStyles =
-        new FormatStyle[] {
+        {
           FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL
         };
 

@@ -42,7 +42,7 @@ public class ExtraDateStrings {
    * used for parsing dates in an English locale.
    */
   private static final String[] extraParsingFormatsForLanguage_en =
-      new String[] {
+      {
         "M/d/u",
         "dMMMuu",
         "dMMMuuuu",
@@ -57,7 +57,7 @@ public class ExtraDateStrings {
    * extraParsingFormatsForLanguage_ru, This is a constant list of extra parsing formats, which are
    * used for parsing dates in a Russian locale.
    */
-  private static final String[] extraParsingFormatsForLanguage_ru = new String[] {"d MMM uuuu"};
+  private static final String[] extraParsingFormatsForLanguage_ru = {"d MMM uuuu"};
 
   /**
    * monthsNamesForLanguage_ru, This is a constant list of "standalone" month names, for the Russian
@@ -67,7 +67,7 @@ public class ExtraDateStrings {
    * general solution is functioning correctly.
    */
   public static final String[] monthsNamesForLanguage_ru =
-      new String[] {
+      {
         "январь",
         "февраль",
         "март",

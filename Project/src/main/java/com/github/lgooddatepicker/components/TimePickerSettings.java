@@ -355,7 +355,7 @@ public class TimePickerSettings {
 
     // Generate default parsing formats.
     FormatStyle[] allFormatStyles =
-        new FormatStyle[] {
+        {
           FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL
         };
     formatsForParsing = new ArrayList<>();

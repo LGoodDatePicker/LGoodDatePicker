@@ -407,16 +407,16 @@ public class CalendarPanel extends JPanel {
     // These two arrays represent the cell location of every border label.
     // Note that some coordinate combinations from these arrays are not used.
     // The array index is based on the border label index (not the cell location).
-    int[] labelLocations_X_forColumn = new int[] {0, 1, 2, 3, 4, 11};
-    int[] labelLocations_Y_forRow = new int[] {0, 1, 2, 5, 6, 12};
+    int[] labelLocations_X_forColumn = {0, 1, 2, 3, 4, 11};
+    int[] labelLocations_Y_forRow = {0, 1, 2, 5, 6, 12};
     // These integers represent the dimensions of every border label.
     // Note that some dimension combinations from these arrays are not used.
     // The array index is based on the border label index (not the cell location).
-    int[] labelWidthsInCells_forColumn = new int[] {0, 1, 1, 1, 7, 1};
-    int[] labelHeightsInCells_forRow = new int[] {0, 1, 3, 1, 6, 1};
+    int[] labelWidthsInCells_forColumn = {0, 1, 1, 1, 7, 1};
+    int[] labelHeightsInCells_forRow = {0, 1, 3, 1, 6, 1};
     // These points represent border label indexes that should be created and used.
     Point[] allBorderLabelIndexes =
-        new Point[] {
+        {
           new Point(1, 1),
           new Point(2, 1),
           new Point(3, 1),
