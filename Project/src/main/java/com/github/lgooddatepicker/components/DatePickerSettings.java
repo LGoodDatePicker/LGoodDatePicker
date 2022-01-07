@@ -1781,10 +1781,9 @@ public class DatePickerSettings {
     setFormatForDatesBeforeCommonEra(formatForDatesBCE);
 
     // Create an array of all the FormatStyle enum values, from short to long.
-    FormatStyle[] allFormatStyles =
-        new FormatStyle[] {
-          FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL
-        };
+    FormatStyle[] allFormatStyles = {
+      FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL
+    };
 
     // Create a set of default parsing formatters for the specified locale.
     ArrayList<DateTimeFormatter> parsingFormats = new ArrayList<>();
