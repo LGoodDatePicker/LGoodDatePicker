@@ -354,10 +354,9 @@ public class TimePickerSettings {
     formatForMenuTimes = ExtraTimeStrings.getDefaultFormatForMenuTimes(timeLocale);
 
     // Generate default parsing formats.
-    FormatStyle[] allFormatStyles =
-        {
-          FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL
-        };
+    FormatStyle[] allFormatStyles = {
+      FormatStyle.SHORT, FormatStyle.MEDIUM, FormatStyle.LONG, FormatStyle.FULL
+    };
     formatsForParsing = new ArrayList<>();
     formatsForParsing.add(DateTimeFormatter.ISO_LOCAL_TIME);
     for (FormatStyle formatStyle : allFormatStyles) {

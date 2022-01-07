@@ -41,17 +41,9 @@ public class ExtraDateStrings {
    * extraParsingFormatsForLanguage_en, This is a constant list of extra parsing formats, which are
    * used for parsing dates in an English locale.
    */
-  private static final String[] extraParsingFormatsForLanguage_en =
-      {
-        "M/d/u",
-        "dMMMuu",
-        "dMMMuuuu",
-        "d MMM uu",
-        "d MMM uuuu",
-        "MMM d, u",
-        "MMM d u",
-        "MMM d, yyyy G"
-      };
+  private static final String[] extraParsingFormatsForLanguage_en = {
+    "M/d/u", "dMMMuu", "dMMMuuuu", "d MMM uu", "d MMM uuuu", "MMM d, u", "MMM d u", "MMM d, yyyy G"
+  };
 
   /**
    * extraParsingFormatsForLanguage_ru, This is a constant list of extra parsing formats, which are
@@ -66,21 +58,20 @@ public class ExtraDateStrings {
    * should only be used for visual reference. This can be used for comparison to ensure that the
    * general solution is functioning correctly.
    */
-  public static final String[] monthsNamesForLanguage_ru =
-      {
-        "январь",
-        "февраль",
-        "март",
-        "апрель",
-        "май",
-        "июнь",
-        "июль",
-        "август",
-        "сентябрь",
-        "октябрь",
-        "ноябрь",
-        "декабрь"
-      };
+  public static final String[] monthsNamesForLanguage_ru = {
+    "январь",
+    "февраль",
+    "март",
+    "апрель",
+    "май",
+    "июнь",
+    "июль",
+    "август",
+    "сентябрь",
+    "октябрь",
+    "ноябрь",
+    "декабрь"
+  };
 
   /**
    * getExtraParsingFormatsForLocale, This will return a list of extra parsing formatters for the

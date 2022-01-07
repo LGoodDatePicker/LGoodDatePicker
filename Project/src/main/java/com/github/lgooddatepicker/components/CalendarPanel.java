@@ -415,30 +415,29 @@ public class CalendarPanel extends JPanel {
     int[] labelWidthsInCells_forColumn = {0, 1, 1, 1, 7, 1};
     int[] labelHeightsInCells_forRow = {0, 1, 3, 1, 6, 1};
     // These points represent border label indexes that should be created and used.
-    Point[] allBorderLabelIndexes =
-        {
-          new Point(1, 1),
-          new Point(2, 1),
-          new Point(3, 1),
-          new Point(4, 1),
-          new Point(5, 1),
-          new Point(1, 2),
-          new Point(3, 2),
-          new Point(5, 2),
-          new Point(1, 3),
-          new Point(2, 3),
-          new Point(3, 3),
-          new Point(4, 3),
-          new Point(5, 3),
-          new Point(1, 4),
-          new Point(3, 4),
-          new Point(5, 4),
-          new Point(1, 5),
-          new Point(2, 5),
-          new Point(3, 5),
-          new Point(4, 5),
-          new Point(5, 5)
-        };
+    Point[] allBorderLabelIndexes = {
+      new Point(1, 1),
+      new Point(2, 1),
+      new Point(3, 1),
+      new Point(4, 1),
+      new Point(5, 1),
+      new Point(1, 2),
+      new Point(3, 2),
+      new Point(5, 2),
+      new Point(1, 3),
+      new Point(2, 3),
+      new Point(3, 3),
+      new Point(4, 3),
+      new Point(5, 3),
+      new Point(1, 4),
+      new Point(3, 4),
+      new Point(5, 4),
+      new Point(1, 5),
+      new Point(2, 5),
+      new Point(3, 5),
+      new Point(4, 5),
+      new Point(5, 5)
+    };
     // Create all the border labels.
     for (Point index : allBorderLabelIndexes) {
       Point labelLocationCell =
