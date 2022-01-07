@@ -706,7 +706,7 @@ public class CalendarPanel extends JPanel {
     // Get an instance of the calendar symbols for the current locale.
     DateFormatSymbols symbols = DateFormatSymbols.getInstance(settings.getLocale());
     // Get the days of the week in the local language.
-    String localShortDaysOfWeek[] = symbols.getShortWeekdays();
+    String[] localShortDaysOfWeek = symbols.getShortWeekdays();
     // Get the full month names in the current locale.
     int zeroBasedMonthIndex = (displayedMonth.getValue() - 1);
     String localizedFullMonth =
