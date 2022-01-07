@@ -448,9 +448,7 @@ public class TimePickerSettings {
         timeSet.add(desiredTime);
       }
     }
-    for (LocalTime timeSetEntry : timeSet) {
-      potentialMenuTimes.add(timeSetEntry);
-    }
+    potentialMenuTimes.addAll(timeSet);
   }
 
   /**
