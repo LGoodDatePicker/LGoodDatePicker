@@ -352,11 +352,6 @@ public class CalendarPanel extends JPanel {
     doneEditingYearButton.setText("\u2713");
     // Set the calendar panel to be opaque.
     setOpaque(true);
-    // Shrink the buttons for previous and next year and month.
-   // buttonPreviousYear.setMargin(new Insets(1, 2, 1, 2));
-   // buttonNextYear.setMargin(new Insets(1, 2, 1, 2));
-   // buttonPreviousMonth.setMargin(new Insets(1, 2, 1, 2));
-   // buttonNextMonth.setMargin(new Insets(1, 2, 1, 2));
 
     // Generate and add the various calendar panel labels.
     // These are only generated once.
@@ -710,40 +705,6 @@ public class CalendarPanel extends JPanel {
             && (displayedSelectedDate.getYear() == displayedYear)
             && (displayedSelectedDate.getMonth() == displayedMonth);
 
-    // Set the component colors and fonts.
-    //Color calendarPanelBackgroundColor = settings.getColor(DateArea.BackgroundOverallCalendarPanel);
-    //setBackground(calendarPanelBackgroundColor);
-    //headerControlsPanel.setBackground(calendarPanelBackgroundColor);
-    //monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
-    //footerPanel.setBackground(calendarPanelBackgroundColor);
-    // Set the background of the navigation buttons.
-//    Color navigationButtonsColor =
-//        settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
-//    buttonPreviousYear.setBackground(navigationButtonsColor);
-//    buttonNextYear.setBackground(navigationButtonsColor);
-//    buttonPreviousMonth.setBackground(navigationButtonsColor);
-//    buttonNextMonth.setBackground(navigationButtonsColor);
-    // Set the fonts of all buttons.
-//    buttonPreviousYear.setFont(settings.getFontMonthAndYearNavigationButtons());
-//    buttonNextYear.setFont(settings.getFontMonthAndYearNavigationButtons());
-//    buttonPreviousMonth.setFont(settings.getFontMonthAndYearNavigationButtons());
-//    buttonNextMonth.setFont(settings.getFontMonthAndYearNavigationButtons());
-    // Set the font-colors of all buttons.
-//    buttonPreviousYear.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
-//    buttonNextYear.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
-//    buttonPreviousMonth.setForeground(
-//        settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
-//    buttonNextMonth.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
-    // Set the fonts of all labels.
-//    labelMonth.setFont(settings.getFontMonthAndYearMenuLabels());
-//    labelYear.setFont(settings.getFontMonthAndYearMenuLabels());
-//    labelSetDateToToday.setFont(settings.getFontTodayLabel());
-//    labelClearDate.setFont(settings.getFontClearLabel());
-    // Set the font-colors of all labels.
-//    labelMonth.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
-//    labelYear.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
-//    labelSetDateToToday.setForeground(settings.getColor(DateArea.TextTodayLabel));
-//    labelClearDate.setForeground(settings.getColor(DateArea.TextClearLabel));
     // Set the month and the year label text values.
     // Use the short month if the user is currently using the keyboard editor for the year.
     if (monthAndYearInnerPanel.isAncestorOf(yearEditorPanel)) {
@@ -864,7 +825,7 @@ public class CalendarPanel extends JPanel {
           // Set the highlight and background colors for the label.
           dateLabel.setBackground(colorBackground);
           dateLabel.setForeground(colorText);
-          dateLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,UIManager.getDefaults().getColor("List.selectionBackground")));
+          dateLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,UIManager.getDefaults().getColor("List.background")));
           // If needed, set the highlight tooltip text.
           if (highlightInfo.tooltipText != null && (!(highlightInfo.tooltipText.isEmpty()))) {
             dateLabel.setToolTipText(highlightInfo.tooltipText);
@@ -910,8 +871,6 @@ public class CalendarPanel extends JPanel {
       }
     }
 
-    // Set the background color for the topLeftLabel.
-    //topLeftLabel.setBackground(settings.getColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers));
     // Set the colors and fonts for the weekday labels.
     for (JLabel weekdayLabel : weekdayLabels) {
 //      weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
