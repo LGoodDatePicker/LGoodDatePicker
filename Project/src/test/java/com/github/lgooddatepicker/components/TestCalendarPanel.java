@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.github.lgooddatepicker.TestHelpers;
 import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
+import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
@@ -43,6 +44,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.MenuElement;
+
+import com.github.lgooddatepicker.zinternaltools.MarkedInformation;
 import org.junit.Test;
 
 public class TestCalendarPanel {
@@ -219,13 +222,20 @@ public class TestCalendarPanel {
       throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
           NoSuchMethodException, InvocationTargetException {
     DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
-    settings.setHighlightPolicy(
-        dateToHighlight -> {
-          if (dateToHighlight.get(ChronoField.DAY_OF_MONTH) % 2 == 0) {
-            return new HighlightInformation(Color.green, Color.blue, "highlighted");
-          }
-          return null;
-        });
+    settings.setHighlightPolicy(new DateHighlightPolicy() {
+                                  @Override
+                                  public HighlightInformation getHighlightInformationOrNull(LocalDate dateToHighlight) {
+                                    if (dateToHighlight.get(ChronoField.DAY_OF_MONTH) % 2 == 0) {
+                                      return new HighlightInformation(Color.green, Color.blue, "highlighted");
+                                    }
+                                    return null;
+                                  }
+
+                                  @Override
+                                  public MarkedInformation getMarkedInformationOrNull(LocalDate date) {
+                                    return null;
+                                  }
+                                });
     CalendarPanel panel = new CalendarPanel(settings);
     settings.setVetoPolicy(
         dateToVeto -> {

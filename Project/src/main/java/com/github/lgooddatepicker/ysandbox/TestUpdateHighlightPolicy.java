@@ -29,6 +29,7 @@ import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import com.github.lgooddatepicker.zinternaltools.MarkedInformation;
 import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -112,6 +113,11 @@ public class TestUpdateHighlightPolicy {
             && (someDate.isBefore(selectedDate) || someDate.isEqual(selectedDate))) {
           return new HighlightInformation(Color.GREEN, Color.BLACK, "selected period");
         }
+        return null;
+      }
+
+      @Override
+      public MarkedInformation getMarkedInformationOrNull(LocalDate date) {
         return null;
       }
     }

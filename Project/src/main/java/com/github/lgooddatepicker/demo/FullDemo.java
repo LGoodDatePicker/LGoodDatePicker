@@ -40,15 +40,7 @@ import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.optionalusertools.PickerUtilities;
 import com.github.lgooddatepicker.optionalusertools.TimeChangeListener;
 import com.github.lgooddatepicker.optionalusertools.TimeVetoPolicy;
-import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
-import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
-import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
-import com.github.lgooddatepicker.zinternaltools.DemoPanel;
-import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
-import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
-import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
-import com.github.lgooddatepicker.zinternaltools.WrapLayout;
-import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
+import com.github.lgooddatepicker.zinternaltools.*;
 import com.privatejgoodies.forms.factories.CC;
 import java.awt.Checkbox;
 import java.awt.Color;
@@ -1220,6 +1212,11 @@ public class FullDemo {
         return new HighlightInformation(null, null, "It's Sunday!");
       }
       // All other days should not be highlighted.
+      return null;
+    }
+
+    @Override
+    public MarkedInformation getMarkedInformationOrNull(LocalDate date) {
       return null;
     }
   }

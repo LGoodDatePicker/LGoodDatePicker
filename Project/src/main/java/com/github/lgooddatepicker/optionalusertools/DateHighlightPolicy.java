@@ -23,6 +23,8 @@
 package com.github.lgooddatepicker.optionalusertools;
 
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import com.github.lgooddatepicker.zinternaltools.MarkedInformation;
+
 import java.time.LocalDate;
 
 /**
@@ -52,4 +54,5 @@ public interface DateHighlightPolicy {
    * <p>Dates that are passed to this function will never be null.
    */
   public abstract HighlightInformation getHighlightInformationOrNull(LocalDate date);
+  public abstract MarkedInformation getMarkedInformationOrNull(LocalDate date);
 }

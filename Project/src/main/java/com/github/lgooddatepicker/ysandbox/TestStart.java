@@ -27,6 +27,8 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
+import com.github.lgooddatepicker.zinternaltools.MarkedInformation;
+
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.time.DayOfWeek;
@@ -152,6 +154,11 @@ public class TestStart {
         return new HighlightInformation(null, null, "It's Sunday!");
       }
       // All other days should not be highlighted.
+      return null;
+    }
+
+    @Override
+    public MarkedInformation getMarkedInformationOrNull(LocalDate date) {
       return null;
     }
   }
