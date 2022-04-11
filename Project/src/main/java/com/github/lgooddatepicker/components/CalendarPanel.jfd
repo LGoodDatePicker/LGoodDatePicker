@@ -120,7 +120,6 @@ new FormModel {
 				"$rowGroupIds": "0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0"
 			} ) {
 				name: "centerPanel"
-				"background": new java.awt.Color( 210, 210, 210, 255 )
 			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
 				"gridx": 1
 				"gridy": 3

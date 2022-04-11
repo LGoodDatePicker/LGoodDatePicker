@@ -36,16 +36,8 @@ import com.github.lgooddatepicker.zinternaltools.YearMonthChangeEvent;
 import com.privatejgoodies.forms.factories.CC;
 import com.privatejgoodies.forms.layout.CellConstraints;
 import com.privatejgoodies.forms.layout.FormLayout;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -58,14 +50,8 @@ import java.time.YearMonth;
 import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Locale;
-import javax.swing.AbstractAction;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -367,10 +353,10 @@ public class CalendarPanel extends JPanel {
     // Set the calendar panel to be opaque.
     setOpaque(true);
     // Shrink the buttons for previous and next year and month.
-    buttonPreviousYear.setMargin(new Insets(1, 2, 1, 2));
-    buttonNextYear.setMargin(new Insets(1, 2, 1, 2));
-    buttonPreviousMonth.setMargin(new Insets(1, 2, 1, 2));
-    buttonNextMonth.setMargin(new Insets(1, 2, 1, 2));
+   // buttonPreviousYear.setMargin(new Insets(1, 2, 1, 2));
+   // buttonNextYear.setMargin(new Insets(1, 2, 1, 2));
+   // buttonPreviousMonth.setMargin(new Insets(1, 2, 1, 2));
+   // buttonNextMonth.setMargin(new Insets(1, 2, 1, 2));
 
     // Generate and add the various calendar panel labels.
     // These are only generated once.
@@ -476,8 +462,8 @@ public class CalendarPanel extends JPanel {
       JLabel dateLabel = new JLabel();
       dateLabel.setHorizontalAlignment(SwingConstants.CENTER);
       dateLabel.setVerticalAlignment(SwingConstants.CENTER);
-      dateLabel.setBackground(Color.white);
-      dateLabel.setForeground(Color.black);
+      dateLabel.setBackground(UIManager.getDefaults().getColor("List.background"));
+      dateLabel.setForeground(UIManager.getDefaults().getColor("List.foreground"));
       dateLabel.setBorder(null);
       dateLabel.setOpaque(true);
       dateLabel.setText(String.valueOf(i));
@@ -723,46 +709,47 @@ public class CalendarPanel extends JPanel {
         (displayedSelectedDate != null)
             && (displayedSelectedDate.getYear() == displayedYear)
             && (displayedSelectedDate.getMonth() == displayedMonth);
+
     // Set the component colors and fonts.
-    Color calendarPanelBackgroundColor = settings.getColor(DateArea.BackgroundOverallCalendarPanel);
-    setBackground(calendarPanelBackgroundColor);
-    headerControlsPanel.setBackground(calendarPanelBackgroundColor);
-    monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
-    footerPanel.setBackground(calendarPanelBackgroundColor);
+    //Color calendarPanelBackgroundColor = settings.getColor(DateArea.BackgroundOverallCalendarPanel);
+    //setBackground(calendarPanelBackgroundColor);
+    //headerControlsPanel.setBackground(calendarPanelBackgroundColor);
+    //monthAndYearOuterPanel.setBackground(calendarPanelBackgroundColor);
+    //footerPanel.setBackground(calendarPanelBackgroundColor);
     // Set the background of the navigation buttons.
-    Color navigationButtonsColor =
-        settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
-    buttonPreviousYear.setBackground(navigationButtonsColor);
-    buttonNextYear.setBackground(navigationButtonsColor);
-    buttonPreviousMonth.setBackground(navigationButtonsColor);
-    buttonNextMonth.setBackground(navigationButtonsColor);
+//    Color navigationButtonsColor =
+//        settings.getColor(DateArea.BackgroundMonthAndYearNavigationButtons);
+//    buttonPreviousYear.setBackground(navigationButtonsColor);
+//    buttonNextYear.setBackground(navigationButtonsColor);
+//    buttonPreviousMonth.setBackground(navigationButtonsColor);
+//    buttonNextMonth.setBackground(navigationButtonsColor);
     // Set the fonts of all buttons.
-    buttonPreviousYear.setFont(settings.getFontMonthAndYearNavigationButtons());
-    buttonNextYear.setFont(settings.getFontMonthAndYearNavigationButtons());
-    buttonPreviousMonth.setFont(settings.getFontMonthAndYearNavigationButtons());
-    buttonNextMonth.setFont(settings.getFontMonthAndYearNavigationButtons());
+//    buttonPreviousYear.setFont(settings.getFontMonthAndYearNavigationButtons());
+//    buttonNextYear.setFont(settings.getFontMonthAndYearNavigationButtons());
+//    buttonPreviousMonth.setFont(settings.getFontMonthAndYearNavigationButtons());
+//    buttonNextMonth.setFont(settings.getFontMonthAndYearNavigationButtons());
     // Set the font-colors of all buttons.
-    buttonPreviousYear.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
-    buttonNextYear.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
-    buttonPreviousMonth.setForeground(
-        settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
-    buttonNextMonth.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
+//    buttonPreviousYear.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
+//    buttonNextYear.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
+//    buttonPreviousMonth.setForeground(
+//        settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
+//    buttonNextMonth.setForeground(settings.getColor(DateArea.TextMonthAndYearNavigationButtons));
     // Set the fonts of all labels.
-    labelMonth.setFont(settings.getFontMonthAndYearMenuLabels());
-    labelYear.setFont(settings.getFontMonthAndYearMenuLabels());
-    labelSetDateToToday.setFont(settings.getFontTodayLabel());
-    labelClearDate.setFont(settings.getFontClearLabel());
+//    labelMonth.setFont(settings.getFontMonthAndYearMenuLabels());
+//    labelYear.setFont(settings.getFontMonthAndYearMenuLabels());
+//    labelSetDateToToday.setFont(settings.getFontTodayLabel());
+//    labelClearDate.setFont(settings.getFontClearLabel());
     // Set the font-colors of all labels.
-    labelMonth.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
-    labelYear.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
-    labelSetDateToToday.setForeground(settings.getColor(DateArea.TextTodayLabel));
-    labelClearDate.setForeground(settings.getColor(DateArea.TextClearLabel));
+//    labelMonth.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
+//    labelYear.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
+//    labelSetDateToToday.setForeground(settings.getColor(DateArea.TextTodayLabel));
+//    labelClearDate.setForeground(settings.getColor(DateArea.TextClearLabel));
     // Set the month and the year label text values.
     // Use the short month if the user is currently using the keyboard editor for the year.
     if (monthAndYearInnerPanel.isAncestorOf(yearEditorPanel)) {
-      labelMonth.setText(localizedShortMonth);
+      labelMonth.setText(localizedShortMonth+" ");
     } else {
-      labelMonth.setText(localizedFullMonth);
+      labelMonth.setText(localizedFullMonth+" ");
     }
     final String displayedYearString = String.valueOf(displayedYear);
     labelYear.setText(displayedYearString);
@@ -809,9 +796,9 @@ public class CalendarPanel extends JPanel {
       // Get the current date label.
       JLabel dateLabel = dateLabels.get(dateLabelArrayIndex);
       // Reset the state of every label to a default state.
-      dateLabel.setBackground(settings.getColor(DateArea.CalendarBackgroundNormalDates));
-      dateLabel.setForeground(settings.getColor(DateArea.CalendarTextNormalDates));
-      dateLabel.setFont(settings.getFontCalendarDateLabels());
+      dateLabel.setBackground(UIManager.getDefaults().getColor("List.background"));
+      dateLabel.setForeground(UIManager.getDefaults().getColor("List.foreground"));
+//      dateLabel.setFont(settings.getFontCalendarDateLabels());
       dateLabel.setBorder(new EmptyBorder(1, 1, 1, 1));
       dateLabel.setEnabled(true);
       dateLabel.setToolTipText(null);
@@ -858,15 +845,14 @@ public class CalendarPanel extends JPanel {
         }
         if (dateIsVetoed) {
           dateLabel.setEnabled(false);
-          dateLabel.setBackground(settings.getColor(DateArea.CalendarBackgroundVetoedDates));
+          dateLabel.setBackground(UIManager.getDefaults().getColor("Label.setDisabledForeground"));
           // Note, the foreground color of a disabled date label will always be grey.
           // So it is not easily possible let the programmer customize that color.
         }
         if ((!dateIsVetoed) && (highlightInfo != null)) {
           // Get the "modifiable default" highlight and background colors from settings.
-          Color colorBackground =
-              settings.getColor(DateArea.CalendarDefaultBackgroundHighlightedDates);
-          Color colorText = settings.getColor(DateArea.CalendarDefaultTextHighlightedDates);
+          Color colorBackground =   UIManager.getDefaults().getColor("List.background");
+          Color colorText = UIManager.getDefaults().getColor("List.foreground");
           // If needed, modify the highlight and background colors as requested in the
           // highlight information.
           if (highlightInfo.colorBackground != null) {
@@ -878,6 +864,7 @@ public class CalendarPanel extends JPanel {
           // Set the highlight and background colors for the label.
           dateLabel.setBackground(colorBackground);
           dateLabel.setForeground(colorText);
+          dateLabel.setBorder(BorderFactory.createMatteBorder(1,1,1,1,UIManager.getDefaults().getColor("List.selectionBackground")));
           // If needed, set the highlight tooltip text.
           if (highlightInfo.tooltipText != null && (!(highlightInfo.tooltipText.isEmpty()))) {
             dateLabel.setToolTipText(highlightInfo.tooltipText);
@@ -899,9 +886,9 @@ public class CalendarPanel extends JPanel {
     }
     // If needed, change the color of the selected date.
     if (selectedDateLabel != null) {
-      selectedDateLabel.setBackground(settings.getColor(DateArea.CalendarBackgroundSelectedDate));
-      selectedDateLabel.setBorder(
-          new LineBorder(settings.getColor(DateArea.CalendarBorderSelectedDate)));
+      selectedDateLabel.setBackground(UIManager.getDefaults().getColor("List.selectionBackground"));
+      selectedDateLabel.setForeground(UIManager.getDefaults().getColor("List.selectionForeground"));
+     // selectedDateLabel.setBorder(  new LineBorder(settings.getColor(DateArea.CalendarBorderSelectedDate)));
     }
 
     // If needed, draw the week numbers.
@@ -924,30 +911,28 @@ public class CalendarPanel extends JPanel {
     }
 
     // Set the background color for the topLeftLabel.
-    topLeftLabel.setBackground(settings.getColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers));
+    //topLeftLabel.setBackground(settings.getColor(DateArea.BackgroundTopLeftLabelAboveWeekNumbers));
     // Set the colors and fonts for the weekday labels.
     for (JLabel weekdayLabel : weekdayLabels) {
-      weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
-      weekdayLabel.setForeground(settings.getColor(DateArea.CalendarTextWeekdays));
-      weekdayLabel.setFont(settings.getFontCalendarWeekdayLabels());
+//      weekdayLabel.setBackground(settings.getColorBackgroundWeekdayLabels());
+//      weekdayLabel.setForeground(settings.getColor(DateArea.CalendarTextWeekdays));
+//      weekdayLabel.setFont(settings.getFontCalendarWeekdayLabels());
     }
     // Set the colors and fonts for the week number labels.
     for (JLabel weekNumberLabel : weekNumberLabels) {
-      weekNumberLabel.setBackground(settings.getColorBackgroundWeekNumberLabels());
-      weekNumberLabel.setForeground(settings.getColor(DateArea.CalendarTextWeekNumbers));
-      weekNumberLabel.setFont(settings.getFontCalendarWeekNumberLabels());
+//      weekNumberLabel.setBackground(settings.getColorBackgroundWeekNumberLabels());
+//      weekNumberLabel.setForeground(settings.getColor(DateArea.CalendarTextWeekNumbers));
+//      weekNumberLabel.setFont(settings.getFontCalendarWeekNumberLabels());
     }
     // Set the size of the week number labels.
     setSizeOfWeekNumberLabels();
 
     // Set the label for the today button.
-    String todayDateString =
-        settings.getFormatForTodayButton().format(LocalDate.now(settings.getClock()));
+    String todayDateString = settings.getFormatForTodayButton().format(LocalDate.now(settings.getClock()));
     String todayLabel = settings.getTranslationToday() + ":  " + todayDateString;
     labelSetDateToToday.setText(todayLabel);
     // If today is vetoed, disable the today button.
-    boolean todayIsVetoed =
-        InternalUtilities.isDateVetoed(vetoPolicy, LocalDate.now(settings.getClock()));
+    boolean todayIsVetoed = InternalUtilities.isDateVetoed(vetoPolicy, LocalDate.now(settings.getClock()));
     labelSetDateToToday.setEnabled(!todayIsVetoed);
 
     // Set the visibility of all the calendar control buttons (and button labels).
@@ -1070,9 +1055,12 @@ public class CalendarPanel extends JPanel {
       return;
     }
     // Highlight the label.
-    label.setBackground(settings.getColor(DateArea.BackgroundCalendarPanelLabelsOnHover));
-    label.setForeground(settings.getColor(DateArea.TextCalendarPanelLabelsOnHover));
-    label.setBorder(new CompoundBorder(new LineBorder(Color.GRAY), labelIndicatorEmptyBorder));
+    //label.setBackground(settings.getColor(DateArea.BackgroundCalendarPanelLabelsOnHover));
+    //label.setForeground(settings.getColor(DateArea.TextCalendarPanelLabelsOnHover));
+    label.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(0,0,1,0,UIManager.getDefaults().getColor("List.selectionBackground")),
+            new EmptyBorder(4, 3, 3, 3)
+            ));
   }
 
   /**
@@ -1093,18 +1081,17 @@ public class CalendarPanel extends JPanel {
       return;
     }
     if (label == labelMonth || label == labelYear) {
-      label.setBackground(settings.getColor(DateArea.BackgroundMonthAndYearMenuLabels));
-      label.setForeground(settings.getColor(DateArea.TextMonthAndYearMenuLabels));
-      monthAndYearInnerPanel.setBackground(
-          settings.getColor(DateArea.BackgroundMonthAndYearMenuLabels));
+      label.setBackground(UIManager.getDefaults().getColor("Panel.background"));
+      label.setForeground(UIManager.getDefaults().getColor("Panel.foreground"));
+      monthAndYearInnerPanel.setBackground(UIManager.getDefaults().getColor("Panel.background"));
     }
     if (label == labelSetDateToToday) {
-      label.setBackground(settings.getColor(DateArea.BackgroundTodayLabel));
-      label.setForeground(settings.getColor(DateArea.TextTodayLabel));
+      label.setBackground(UIManager.getDefaults().getColor("Panel.background"));
+      label.setForeground(UIManager.getDefaults().getColor("Panel.foreground"));
     }
     if (label == labelClearDate) {
-      label.setBackground(settings.getColor(DateArea.BackgroundClearLabel));
-      label.setForeground(settings.getColor(DateArea.TextClearLabel));
+      label.setBackground(UIManager.getDefaults().getColor("Panel.background"));
+      label.setForeground(UIManager.getDefaults().getColor("Panel.foreground"));
     }
     label.setBorder(new CompoundBorder(new EmptyBorder(1, 1, 1, 1), labelIndicatorEmptyBorder));
   }
@@ -1560,7 +1547,13 @@ public class CalendarPanel extends JPanel {
       buttonPreviousYear.setFont(new Font("Monospaced", Font.BOLD, 12));
       buttonPreviousYear.addActionListener(
           actionEvent -> buttonPreviousYearActionPerformed(actionEvent));
-      headerControlsPanel.add(buttonPreviousYear, CC.xy(1, 1));
+
+      JPanel pl = new JPanel();
+      pl.setLayout(new BorderLayout());
+      pl.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+    //  pl.setPreferredSize(new Dimension(buttonPreviousYear.getPreferredSize().width+5,buttonPreviousYear.getHeight()));
+      pl.add(buttonPreviousYear,BorderLayout.CENTER);
+      headerControlsPanel.add(pl, CC.xy(1, 1));
 
       // ---- buttonPreviousMonth ----
       buttonPreviousMonth.setText(" < ");
@@ -1638,6 +1631,8 @@ public class CalendarPanel extends JPanel {
       buttonNextMonth.setFocusPainted(false);
       buttonNextMonth.setHorizontalTextPosition(SwingConstants.CENTER);
       buttonNextMonth.setMargin(new Insets(5, 6, 5, 6));
+
+
       buttonNextMonth.setFont(new Font("Monospaced", Font.BOLD, 12));
       buttonNextMonth.addActionListener(actionEvent -> buttonNextMonthActionPerformed(actionEvent));
       headerControlsPanel.add(buttonNextMonth, CC.xy(6, 1));
@@ -1650,7 +1645,13 @@ public class CalendarPanel extends JPanel {
       buttonNextYear.setMargin(new Insets(5, 6, 5, 6));
       buttonNextYear.setFont(new Font("Monospaced", Font.BOLD, 12));
       buttonNextYear.addActionListener(actionEvent -> buttonNextYearActionPerformed(actionEvent));
-      headerControlsPanel.add(buttonNextYear, CC.xy(7, 1));
+
+      JPanel pr = new JPanel();
+      pr.setLayout(new BorderLayout());
+      pr.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+      //  pl.setPreferredSize(new Dimension(buttonPreviousYear.getPreferredSize().width+5,buttonPreviousYear.getHeight()));
+      pr.add(buttonNextYear,BorderLayout.CENTER);
+      headerControlsPanel.add(pr, CC.xy(7, 1));
     }
     add(
         headerControlsPanel,
@@ -1669,7 +1670,7 @@ public class CalendarPanel extends JPanel {
 
     // ======== centerPanel ========
     {
-      centerPanel.setBackground(new Color(210, 210, 210));
+      centerPanel.setBackground(UIManager.getDefaults().getColor("List.background"));
       centerPanel.setLayout(
           new FormLayout(
               "3*(min), 7*(default:grow), min",
@@ -1826,7 +1827,7 @@ public class CalendarPanel extends JPanel {
           continue;
         }
         if (color != null) {
-          borderLabel.setBackground(color);
+          borderLabel.setBackground(UIManager.getDefaults().getColor("controlShadow"));
         }
         if (thickness != null) {
           boolean isVisible = (thickness > 0);
@@ -1857,7 +1858,7 @@ public class CalendarPanel extends JPanel {
     }
     // Clear the current borders. (Set them to be invisible and black.)
     CalendarBorderProperties clearBordersProperties =
-        new CalendarBorderProperties(new Point(1, 1), new Point(5, 5), Color.black, 0);
+        new CalendarBorderProperties(new Point(1, 1), new Point(5, 5), UIManager.getDefaults().getColor("Panel.background"), 0);
     zApplyBorderPropertiesInstance(clearBordersProperties);
     // Apply the current borderPropertiesList settings.
     for (CalendarBorderProperties borderProperties : settings.getBorderPropertiesList()) {
@@ -1865,7 +1866,7 @@ public class CalendarPanel extends JPanel {
     }
     if (!(settings.getWeekNumbersDisplayed())) {
       CalendarBorderProperties hideWeekNumberBorders =
-          new CalendarBorderProperties(new Point(1, 1), new Point(2, 5), Color.black, 0);
+          new CalendarBorderProperties(new Point(1, 1), new Point(2, 5), UIManager.getDefaults().getColor("Panel.background"), 0);
       zApplyBorderPropertiesInstance(hideWeekNumberBorders);
     }
     drawCalendar();
