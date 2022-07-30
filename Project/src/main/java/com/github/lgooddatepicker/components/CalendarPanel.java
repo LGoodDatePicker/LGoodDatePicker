@@ -861,6 +861,13 @@ public class CalendarPanel extends JPanel {
           dateLabel.setBackground(settings.getColor(DateArea.CalendarBackgroundVetoedDates));
           // Note, the foreground color of a disabled date label will always be grey.
           // So it is not easily possible let the programmer customize that color.
+          
+          //  Added by Gautam Satpathy for #181. Date: 20220730
+          if ( highlightInfo != null &&
+               highlightInfo.tooltipText != null && (!(highlightInfo.tooltipText.isEmpty())) ) {
+            dateLabel.setToolTipText( highlightInfo.tooltipText ) ;
+          }
+          //  End addition for Issue #181.
         }
         if ((!dateIsVetoed) && (highlightInfo != null)) {
           // Get the "modifiable default" highlight and background colors from settings.
