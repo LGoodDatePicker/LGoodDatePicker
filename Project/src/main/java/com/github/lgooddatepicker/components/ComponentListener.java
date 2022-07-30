@@ -22,7 +22,9 @@
  */
 package com.github.lgooddatepicker.components;
 
-/** @author mcwolfy */
+/**
+ * @author mcwolfy
+ */
 public interface ComponentListener {
   public void componentCreated(ComponentEvent e);
 }
