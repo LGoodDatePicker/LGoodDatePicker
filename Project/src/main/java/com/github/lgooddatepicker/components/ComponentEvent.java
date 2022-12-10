@@ -24,7 +24,9 @@ package com.github.lgooddatepicker.components;
 
 import javax.swing.JComponent;
 
-/** @author mcwolfy */
+/**
+ * @author mcwolfy
+ */
 public class ComponentEvent {
   public static final int PREVIOUS_YEAR = 1;
   public static final int PREVIOUS_MONTH = 2;

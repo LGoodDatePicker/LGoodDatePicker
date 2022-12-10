@@ -74,14 +74,20 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
 
   public static final String PROPERTY_DEFAULT_DIALOG_FONT = "defaultDialogFont";
 
-  /** @since 1.6 */
+  /**
+   * @since 1.6
+   */
   public static final String OLD_AVERAGE_CHARACTER_TEST_STRING = "X";
 
-  /** @since 1.4 */
+  /**
+   * @since 1.4
+   */
   public static final String MODERN_AVERAGE_CHARACTER_TEST_STRING =
       "abcdefghijklmnopqrstuvwxyz0123456789";
 
-  /** @since 1.4 */
+  /**
+   * @since 1.4
+   */
   public static final String BALANCED_AVERAGE_CHARACTER_TEST_STRING =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
