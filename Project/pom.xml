@@ -3,7 +3,7 @@
 This during the packaging process, this pom is replaced by a simpler pom file, located here.
 (https://github.com/LGoodDatePicker/LGoodDatePicker/blob/master/Project/src/main/resources/pom-for-users.txt)
 As of this writing, the pom for users has no external dependencies. (JUnit is not a release dependency.)
- -->
+-->
 <!-- To build for Maven Central:
 (Note: Only the primary developers should ever need to build for Maven Central.
 All other people and programmers can ignore this paragraph.)
@@ -24,7 +24,7 @@ plugins in this file operate inside the "package" and "install" phases.
     <groupId>com.github.lgooddatepicker</groupId>
     <artifactId>LGoodDatePicker</artifactId>
     <version>11.3.0</version>
-    <packaging>jar</packaging>
+    <packaging>bundle</packaging>
     <name>LGoodDatePicker</name>
     <description>Java Swing Date Picker. Easy to use, good looking, nice features, and
         localized. Uses the JSR-310 standard.</description>
@@ -68,10 +68,10 @@ plugins in this file operate inside the "package" and "install" phases.
         </dependency> -->
 
         <!-- JUnit, https://mvnrepository.com/artifact/junit/junit 
-         Note: In the release packages, JUnit is not included and is not a dependency. 
-         During the packaging process, this pom file is replaced by "pom-for-users.txt", 
-         which does not include any JUnit dependency. 
-         -->
+        Note: In the release packages, JUnit is not included and is not a dependency. 
+        During the packaging process, this pom file is replaced by "pom-for-users.txt", 
+        which does not include any JUnit dependency. 
+        -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -194,13 +194,43 @@ plugins in this file operate inside the "package" and "install" phases.
                     </compilerArgs>
                 </configuration>
             </plugin>
+            
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>5.1.1</version>
+                <extensions>true</extensions>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>manifest</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <instructions>
+                        <Private-Package></Private-Package>
+                        <Export-Package>
+                            com.github.lgooddatepicker.components,
+                            com.github.lgooddatepicker.tableeditors,
+                            com.github.lgooddatepicker.zinternaltools,
+                            com.github.lgooddatepicker.optionalusertools,
+                            com.privatejgoodies.common.bean,
+                            com.privatejgoodies.forms.layout,
+                            com.privatejgoodies.forms.util
+                        </Export-Package>
+                        <Import-Package>
+                        </Import-Package>
+                    </instructions>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                     <argLine>${testrunparams} -Dfile.encoding=${project.build.sourceEncoding}</argLine>
+                    <argLine>${testrunparams} -Dfile.encoding=${project.build.sourceEncoding}</argLine>
                 </configuration>
             </plugin>
 
@@ -223,9 +253,9 @@ plugins in this file operate inside the "package" and "install" phases.
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                  <archive>
-                    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-                  </archive>
+                    <archive>
+                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
                 </configuration>
             </plugin>
 
