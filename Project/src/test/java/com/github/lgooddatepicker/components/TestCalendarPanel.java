@@ -79,8 +79,11 @@ public class TestCalendarPanel {
 
   @Test(expected = Test.None.class /* no exception expected */)
   public void TestMouseHoverCalendarPanel()
-      throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
-          NoSuchMethodException, InvocationTargetException {
+      throws NoSuchFieldException,
+          IllegalArgumentException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException {
     DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
     CalendarPanel panel = new CalendarPanel(settings);
 
@@ -121,8 +124,11 @@ public class TestCalendarPanel {
 
   @Test(expected = Test.None.class /* no exception expected */)
   public void TestCustomMouseHoverColorCalendarPanel()
-      throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
-          NoSuchMethodException, InvocationTargetException {
+      throws NoSuchFieldException,
+          IllegalArgumentException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException {
     DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
     settings.setColor(DatePickerSettings.DateArea.BackgroundCalendarPanelLabelsOnHover, Color.red);
     settings.setColor(DatePickerSettings.DateArea.TextCalendarPanelLabelsOnHover, Color.yellow);
@@ -180,8 +186,11 @@ public class TestCalendarPanel {
       Color defaultText,
       Color highlightBackground,
       Color highlightText)
-      throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
-          NoSuchMethodException, InvocationTargetException {
+      throws NoSuchFieldException,
+          IllegalArgumentException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException {
     JLabel labeltoverify =
         (JLabel) TestHelpers.readPrivateField(CalendarPanel.class, panel, labelname);
 
@@ -216,8 +225,11 @@ public class TestCalendarPanel {
 
   @Test(expected = Test.None.class /* no exception expected */)
   public void TestDateHighlightAndVetoPolicy()
-      throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
-          NoSuchMethodException, InvocationTargetException {
+      throws NoSuchFieldException,
+          IllegalArgumentException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException {
     DatePickerSettings settings = new DatePickerSettings(Locale.ENGLISH);
     settings.setHighlightPolicy(
         dateToHighlight -> {
@@ -258,8 +270,11 @@ public class TestCalendarPanel {
 
   void verifyDateLabelColorAndToolTip(
       CalendarPanel panel, int labelIdx, Color bgColor, Color textColor, String tooltip)
-      throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException,
-          NoSuchMethodException, InvocationTargetException {
+      throws NoSuchFieldException,
+          IllegalArgumentException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException {
     ArrayList<?> labelList =
         (ArrayList<?>) TestHelpers.readPrivateField(CalendarPanel.class, panel, "dateLabels");
     JLabel labeltoverify = (JLabel) labelList.get(labelIdx);
@@ -278,7 +293,9 @@ public class TestCalendarPanel {
 
   @Test(expected = Test.None.class /* no exception expected */)
   public void TestYearEditor()
-      throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
+      throws NoSuchFieldException,
+          IllegalAccessException,
+          NoSuchMethodException,
           InvocationTargetException {
     verifyYearEditor(YearEditorFinalizer.doneEditingButton);
     verifyYearEditor(YearEditorFinalizer.yearTextField);
@@ -290,7 +307,9 @@ public class TestCalendarPanel {
   }
 
   void verifyYearEditor(YearEditorFinalizer editorFinalizer)
-      throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
+      throws NoSuchFieldException,
+          IllegalAccessException,
+          NoSuchMethodException,
           InvocationTargetException {
     DatePickerSettings dateSettings = new DatePickerSettings(Locale.ENGLISH);
     CalendarPanel testPanel = new CalendarPanel(dateSettings);

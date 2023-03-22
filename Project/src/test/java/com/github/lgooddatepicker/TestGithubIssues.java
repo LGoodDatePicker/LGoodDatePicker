@@ -156,8 +156,11 @@ public class TestGithubIssues {
 
   @Test(expected = Test.None.class /* no exception expected */)
   public void TestIssue110()
-      throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
-          InvocationTargetException, AWTException {
+      throws NoSuchFieldException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException,
+          AWTException {
     if (!TestHelpers.isUiAvailable()) {
       // don't run under CI
       System.out.println("TestIssue110 requires UI to run and was skipped");
@@ -313,8 +316,11 @@ public class TestGithubIssues {
 
   @Test(expected = Test.None.class /* no exception expected */)
   public void TestIssue113()
-      throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException,
-          InvocationTargetException, AWTException {
+      throws NoSuchFieldException,
+          IllegalAccessException,
+          NoSuchMethodException,
+          InvocationTargetException,
+          AWTException {
     if (!TestHelpers.isUiAvailable()) {
       // don't run under CI
       System.out.println("TestIssue113 requires UI to run and was skipped");

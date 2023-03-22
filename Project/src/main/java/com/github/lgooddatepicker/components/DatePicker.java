@@ -511,8 +511,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     DatePicker thisDatePicker = this;
     if (settings.getCalendarPanelFactory() == null) {
       calendarPanel = new CalendarPanel(thisDatePicker);
-    }
-    else {
+    } else {
       calendarPanel = settings.getCalendarPanelFactory().apply(thisDatePicker);
     }
 

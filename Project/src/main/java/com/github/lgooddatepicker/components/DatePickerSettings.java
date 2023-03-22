@@ -800,9 +800,7 @@ public class DatePickerSettings {
     return borderPropertiesList;
   }
 
-  /**
-   * getCalendarPanelFactory, This returns the calendarPanelFactory or null.
-   */
+  /** getCalendarPanelFactory, This returns the calendarPanelFactory or null. */
   public Function<DatePicker, CalendarPanel> getCalendarPanelFactory() {
     return calendarPanelFactory;
   }
@@ -1309,13 +1307,14 @@ public class DatePickerSettings {
   }
 
   /**
-   * setCalendarPanelFactory, This sets the factory used to construct instances of CalendarPanel. If it is null
-   * the standard CalendarPanel is instantiated.
+   * setCalendarPanelFactory, This sets the factory used to construct instances of CalendarPanel. If
+   * it is null the standard CalendarPanel is instantiated.
+   *
    * @param calendarPanelFactory
    */
   public void setCalendarPanelFactory(Function<DatePicker, CalendarPanel> calendarPanelFactory) {
     this.calendarPanelFactory = calendarPanelFactory;
-}
+  }
 
   /**
    * setClock, This sets the clock to use for determining the current date. By default the system
