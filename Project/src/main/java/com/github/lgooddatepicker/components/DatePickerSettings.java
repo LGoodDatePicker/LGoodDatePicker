@@ -711,6 +711,7 @@ public class DatePickerSettings {
         result.borderPropertiesList.add(borderProperty.clone());
       }
     }
+    result.calendarPanelFactory = this.calendarPanelFactory;
     result.colorBackgroundWeekNumberLabels = this.colorBackgroundWeekNumberLabels;
     result.colorBackgroundWeekdayLabels = this.colorBackgroundWeekdayLabels;
     if (this.colors == null) {
@@ -767,6 +768,7 @@ public class DatePickerSettings {
     result.weekNumberRules = this.weekNumberRules;
     result.weekNumbersDisplayed = this.weekNumbersDisplayed;
     result.weekNumbersWillOverrideFirstDayOfWeek = this.weekNumbersWillOverrideFirstDayOfWeek;
+    result.yearSelectScroll = this.yearSelectScroll;
     result.zSkipDrawIndependentCalendarPanelIfNeeded = false;
     return result;
   }
