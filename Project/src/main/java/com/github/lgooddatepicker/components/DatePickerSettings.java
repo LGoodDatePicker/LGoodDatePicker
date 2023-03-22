@@ -52,6 +52,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -186,6 +187,12 @@ public class DatePickerSettings {
    * <p>This variable will never be null.
    */
   private ArrayList<CalendarBorderProperties> borderPropertiesList;
+
+  /**
+   * calendarPanelFactory, This allows to construct custom instances of CalendarPanel. If it is null
+   * the standard CalendarPanel is instantiated.
+   */
+  private Function<DatePicker, CalendarPanel> calendarPanelFactory = null;
 
   /**
    * clock, A clock used to determine current date and time The default is to use the System Clock
@@ -793,6 +800,13 @@ public class DatePickerSettings {
     return borderPropertiesList;
   }
 
+  /**
+   * getCalendarPanelFactory, This returns the calendarPanelFactory or null.
+   */
+  public Function<DatePicker, CalendarPanel> getCalendarPanelFactory() {
+    return calendarPanelFactory;
+  }
+
   /** getClock, Returns the currently set clock */
   public Clock getClock() {
     return clock;
@@ -1293,6 +1307,15 @@ public class DatePickerSettings {
       parentCalendarPanel.zApplyBorderPropertiesList();
     }
   }
+
+  /**
+   * setCalendarPanelFactory, This sets the factory used to construct instances of CalendarPanel. If it is null
+   * the standard CalendarPanel is instantiated.
+   * @param calendarPanelFactory
+   */
+  public void setCalendarPanelFactory(Function<DatePicker, CalendarPanel> calendarPanelFactory) {
+    this.calendarPanelFactory = calendarPanelFactory;
+}
 
   /**
    * setClock, This sets the clock to use for determining the current date. By default the system

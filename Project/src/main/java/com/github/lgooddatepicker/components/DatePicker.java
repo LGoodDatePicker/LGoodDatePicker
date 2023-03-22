@@ -509,7 +509,12 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
     // Create a new calendar panel.
     // Use the CalendarPanel constructor that is made for the DatePicker class.
     DatePicker thisDatePicker = this;
-    calendarPanel = new CalendarPanel(thisDatePicker);
+    if (settings.getCalendarPanelFactory() == null) {
+      calendarPanel = new CalendarPanel(thisDatePicker);
+    }
+    else {
+      calendarPanel = settings.getCalendarPanelFactory().apply(thisDatePicker);
+    }
 
     fireComponentEvent(
         new ComponentEvent(ComponentEvent.PREVIOUS_YEAR, calendarPanel.getPreviousYearButton()));
