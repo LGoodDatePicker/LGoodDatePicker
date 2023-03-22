@@ -28,6 +28,7 @@ import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
+import com.github.lgooddatepicker.zinternaltools.DateVetoPolicyMinimumMaximumDate;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
 import com.github.lgooddatepicker.zinternaltools.InternalUtilities;
 import com.github.lgooddatepicker.zinternaltools.JIntegerTextField;
@@ -1171,9 +1172,43 @@ public class CalendarPanel extends JPanel {
    * entries have to be updated every time the selected year changes
    */
   private void populateYearPopupMenu() {
+    populateYearPopupMenu(displayedYearMonth.getYear());
+  }
+  
+  /**
+   * populateYearPopupMenu, Create entries of year PopUpMenu matching the passed year,
+   * entries have to be updated every time the selected year changes
+   */
+  private void populateYearPopupMenu(int middleYear) {
     final int firstYearDifference = -11;
     final int lastYearDifference = +11;
+    Integer firstLegalYear = null;
+    Integer lastLegalYear = null;
+    //check DateVetoPolicyMinimumMaximumDate to not show years that are not in range anyway
+    if (settings.getVetoPolicy() instanceof DateVetoPolicyMinimumMaximumDate) {
+      DateVetoPolicyMinimumMaximumDate minMax = (DateVetoPolicyMinimumMaximumDate) settings.getVetoPolicy();
+      if (minMax.getDateRangeLimits().firstDate != null) {
+        firstLegalYear = minMax.getDateRangeLimits().firstDate.getYear();
+      }
+      if (minMax.getDateRangeLimits().lastDate != null) {
+        lastLegalYear = minMax.getDateRangeLimits().lastDate.getYear();
+      }
+    }
     popupYear.removeAll();
+    //optional up arrow to show earlier years
+    if (settings.getYearSelectScroll() && (firstLegalYear == null || middleYear + firstYearDifference > firstLegalYear)) {
+      popupYear.add(
+        new JMenuItem(
+          //black up-pointing triangle
+          new AbstractAction("\u25b2") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              populateYearPopupMenu(middleYear + firstYearDifference - lastYearDifference - 1);
+              Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+              popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+            }
+      }));
+    }
     for (int yearDifference = firstYearDifference;
         yearDifference <= lastYearDifference;
         ++yearDifference) {
@@ -1181,8 +1216,13 @@ public class CalendarPanel extends JPanel {
       // ISO 8601 calendar system. Year zero does exist in this system.
       // This try block handles exceptions that can occur at LocalDate.MAX.
       try {
-        YearMonth choiceYearMonth = displayedYearMonth.plusYears(yearDifference);
-        String choiceYearMonthString = String.valueOf(choiceYearMonth.getYear());
+        int choiceYear = middleYear + yearDifference;
+        //do not show years that are not valid anyway
+        if ((firstLegalYear != null && choiceYear < firstLegalYear)
+          || (lastLegalYear != null && choiceYear > lastLegalYear)) {
+          continue;
+        }
+        String choiceYearMonthString = String.valueOf(choiceYear);
         popupYear.add(
             new JMenuItem(
                 new AbstractAction(choiceYearMonthString) {
@@ -1195,6 +1235,20 @@ public class CalendarPanel extends JPanel {
                 }));
       } catch (Exception ex) {
       }
+    }
+  //optional down arrow to show earlier years
+    if (settings.getYearSelectScroll() && (lastLegalYear == null || middleYear + lastYearDifference < lastLegalYear)) {
+      popupYear.add(
+        new JMenuItem(
+          //black down-pointing triangle
+          new AbstractAction("\u25bc") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              populateYearPopupMenu(middleYear - firstYearDifference + lastYearDifference + 1);
+              Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+              popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+            }
+      }));
     }
     final String choiceOtherYearString = "( . . . )";
     popupYear.add(

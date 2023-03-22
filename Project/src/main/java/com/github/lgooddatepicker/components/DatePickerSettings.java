@@ -621,6 +621,9 @@ public class DatePickerSettings {
    * not exactly match the week number rules.
    */
   private boolean weekNumbersWillOverrideFirstDayOfWeek = true;
+  
+  /** yearSelectScroll, if to show up/down arrow on year select pop up */
+  private boolean yearSelectScroll = false;
 
   /**
    * zSkipDrawIndependentCalendarPanelIfNeeded, This is used to temporarily skip the named function,
@@ -800,7 +803,9 @@ public class DatePickerSettings {
     return borderPropertiesList;
   }
 
-  /** getCalendarPanelFactory, This returns the calendarPanelFactory or null. */
+  /**
+   * getCalendarPanelFactory, This returns the calendarPanelFactory or null.
+   */
   public Function<DatePicker, CalendarPanel> getCalendarPanelFactory() {
     return calendarPanelFactory;
   }
@@ -1182,6 +1187,11 @@ public class DatePickerSettings {
   public boolean getWeekNumbersWillOverrideFirstDayOfWeek() {
     return weekNumbersWillOverrideFirstDayOfWeek;
   }
+  
+  /** getYearSelectScroll, Returns the value of this setting (if to show up/down arrow on year select pop up) */
+  public boolean getYearSelectScroll() {
+    return yearSelectScroll;
+  }
 
   /**
    * hasParent, This returns true if this settings instance has a parent, otherwise returns false. A
@@ -1307,14 +1317,13 @@ public class DatePickerSettings {
   }
 
   /**
-   * setCalendarPanelFactory, This sets the factory used to construct instances of CalendarPanel. If
-   * it is null the standard CalendarPanel is instantiated.
-   *
+   * setCalendarPanelFactory, This sets the factory used to construct instances of CalendarPanel. If it is null
+   * the standard CalendarPanel is instantiated.
    * @param calendarPanelFactory
    */
   public void setCalendarPanelFactory(Function<DatePicker, CalendarPanel> calendarPanelFactory) {
     this.calendarPanelFactory = calendarPanelFactory;
-  }
+}
 
   /**
    * setClock, This sets the clock to use for determining the current date. By default the system
@@ -2169,6 +2178,11 @@ public class DatePickerSettings {
       boolean weekNumbersWillOverrideFirstDayOfWeek) {
     this.weekNumbersWillOverrideFirstDayOfWeek = weekNumbersWillOverrideFirstDayOfWeek;
     zDrawIndependentCalendarPanelIfNeeded();
+  }
+  
+  /** setYearSelectScroll, if to show up/down arrow on year select pop up */
+  public void setYearSelectScroll(boolean b) {
+    yearSelectScroll = b;
   }
 
   /**
