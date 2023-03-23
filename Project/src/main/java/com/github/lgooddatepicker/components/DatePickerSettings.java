@@ -708,6 +708,7 @@ public class DatePickerSettings {
         result.borderPropertiesList.add(borderProperty.clone());
       }
     }
+    result.calendarPanelFactory = this.calendarPanelFactory;
     result.colorBackgroundWeekNumberLabels = this.colorBackgroundWeekNumberLabels;
     result.colorBackgroundWeekdayLabels = this.colorBackgroundWeekdayLabels;
     if (this.colors == null) {
