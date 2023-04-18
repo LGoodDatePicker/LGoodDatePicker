@@ -24,7 +24,6 @@ package com.github.lgooddatepicker.durationpicker_underconstruction;
 
 import java.time.Duration;
 import java.util.ArrayList;
-
 import javax.swing.JComboBox;
 
 /**
@@ -55,50 +54,50 @@ import javax.swing.JComboBox;
  */
 public class DurationPicker extends JComboBox {
 
-    private DurationConverterSettings converterSettings;
-    // Red border when text is in disallowed state.
-    private boolean allowEmptyDuration = true;
-    private boolean allowZeroDuration = false;
-    private Duration allowMinimumDuration = Duration.ofSeconds(0);
-    // 4,000,000 days is a little over 10,000 years.
-    private Duration allowMaximumDuration = Duration.ofDays(4000000);
+  private DurationConverterSettings converterSettings;
+  // Red border when text is in disallowed state.
+  private boolean allowEmptyDuration = true;
+  private boolean allowZeroDuration = false;
+  private Duration allowMinimumDuration = Duration.ofSeconds(0);
+  // 4,000,000 days is a little over 10,000 years.
+  private Duration allowMaximumDuration = Duration.ofDays(4000000);
 
-    public DurationPicker() {
-        this(null);
-        converterSettings = new DurationConverterSettings();
-    }
+  public DurationPicker() {
+    this(null);
+    converterSettings = new DurationConverterSettings();
+  }
 
-    public DurationPicker(DurationConverterSettings converterSettings) {
-        if (converterSettings == null) {
-            converterSettings = new DurationConverterSettings();
-        }
-        this.converterSettings = converterSettings;
+  public DurationPicker(DurationConverterSettings converterSettings) {
+    if (converterSettings == null) {
+      converterSettings = new DurationConverterSettings();
     }
+    this.converterSettings = converterSettings;
+  }
 
-    public void setDuration(Duration duration) {
-        // Todo: implement setDuration().
-    }
+  public void setDuration(Duration duration) {
+    // Todo: implement setDuration().
+  }
 
-    public Duration getDuration() {
-        return null;
-        // Todo: implement getDuration().
-    }
+  public Duration getDuration() {
+    return null;
+    // Todo: implement getDuration().
+  }
 
-    public void setText(String text) {
-        // Todo: implement setText().
-    }
+  public void setText(String text) {
+    // Todo: implement setText().
+  }
 
-    public String getText() {
-        return null;
-        // Todo: implement getText().
-    }
+  public String getText() {
+    return null;
+    // Todo: implement getText().
+  }
 
-    public void setMenuItems(ArrayList<Duration> menuItemDurations) {
-        // Todo: implement setMenuItems().
-    }
+  public void setMenuItems(ArrayList<Duration> menuItemDurations) {
+    // Todo: implement setMenuItems().
+  }
 
-    public ArrayList<Duration> getMenuItems() {
-        return null;
-        // Todo: implement getMenuItems().
-    }
+  public ArrayList<Duration> getMenuItems() {
+    return null;
+    // Todo: implement getMenuItems().
+  }
 }

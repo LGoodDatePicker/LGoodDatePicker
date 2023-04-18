@@ -34,23 +34,22 @@ import java.util.TreeSet;
  */
 public class GetAllLanguages {
 
-    public static void main(String[] args) {
-        TreeSet<String> languageCodes = new TreeSet<>();
-        for (Locale locale : Locale.getAvailableLocales()) {
-            languageCodes.add(locale.getLanguage());
-        }
-
-        LocalTime localTime = LocalTime.of(17, 30, 20);
-
-        for (String languageCode : languageCodes) {
-
-            Locale localeForLanguage = new Locale(languageCode);
-            // Locale localeForLanguage = Locale.forLanguageTag(languageCode);
-            DateTimeFormatter format =
-                    DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-                            .withLocale(localeForLanguage);
-            System.out.print(localeForLanguage.getDisplayLanguage() + ": ");
-            System.out.print(format.format(localTime) + "\n");
-        }
+  public static void main(String[] args) {
+    TreeSet<String> languageCodes = new TreeSet<>();
+    for (Locale locale : Locale.getAvailableLocales()) {
+      languageCodes.add(locale.getLanguage());
     }
+
+    LocalTime localTime = LocalTime.of(17, 30, 20);
+
+    for (String languageCode : languageCodes) {
+
+      Locale localeForLanguage = new Locale(languageCode);
+      // Locale localeForLanguage = Locale.forLanguageTag(languageCode);
+      DateTimeFormatter format =
+          DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(localeForLanguage);
+      System.out.print(localeForLanguage.getDisplayLanguage() + ": ");
+      System.out.print(format.format(localTime) + "\n");
+    }
+  }
 }

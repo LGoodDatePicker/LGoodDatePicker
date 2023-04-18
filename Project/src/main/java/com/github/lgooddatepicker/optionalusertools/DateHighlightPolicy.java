@@ -23,7 +23,6 @@
 package com.github.lgooddatepicker.optionalusertools;
 
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
-
 import java.time.LocalDate;
 
 /**
@@ -38,19 +37,19 @@ import java.time.LocalDate;
  */
 public interface DateHighlightPolicy {
 
-    /**
-     * getHighlightInformationOrNull, Implement this function to indicate if a date should be
-     * highlighted, and what highlighting details should be used for the highlighted date.
-     *
-     * <p>If a date should be highlighted, then return an instance of HighlightInformation. If the
-     * date should not be highlighted, then return null.
-     *
-     * <p>You may (optionally) fill out the fields in the HighlightInformation class to give any
-     * particular highlighted day a unique background color, foreground color, or tooltip text. If
-     * the color fields are null, then the default highlighting colors will be used. If the tooltip
-     * field is null (or empty), then no tooltip will be displayed.
-     *
-     * <p>Dates that are passed to this function will never be null.
-     */
-    public abstract HighlightInformation getHighlightInformationOrNull(LocalDate date);
+  /**
+   * getHighlightInformationOrNull, Implement this function to indicate if a date should be
+   * highlighted, and what highlighting details should be used for the highlighted date.
+   *
+   * <p>If a date should be highlighted, then return an instance of HighlightInformation. If the
+   * date should not be highlighted, then return null.
+   *
+   * <p>You may (optionally) fill out the fields in the HighlightInformation class to give any
+   * particular highlighted day a unique background color, foreground color, or tooltip text. If the
+   * color fields are null, then the default highlighting colors will be used. If the tooltip field
+   * is null (or empty), then no tooltip will be displayed.
+   *
+   * <p>Dates that are passed to this function will never be null.
+   */
+  public abstract HighlightInformation getHighlightInformationOrNull(LocalDate date);
 }

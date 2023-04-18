@@ -40,19 +40,18 @@ package com.privatejgoodies.common.internal;
  */
 public final class Messages {
 
-    private Messages() {
-        // Overrides default constructor; prevents instantiation.
-    }
+  private Messages() {
+    // Overrides default constructor; prevents instantiation.
+  }
 
-    public static final String MUST_NOT_BE_NULL = "The %1$s must not be null.";
+  public static final String MUST_NOT_BE_NULL = "The %1$s must not be null.";
 
-    public static final String MUST_NOT_BE_BLANK =
-            "The %1$s must not be null, empty, or whitespace.";
+  public static final String MUST_NOT_BE_BLANK = "The %1$s must not be null, empty, or whitespace.";
 
-    public static final String MUST_BE_TRIMMED =
-            "The %1$s must not contain leading or trailing whitespace.";
+  public static final String MUST_BE_TRIMMED =
+      "The %1$s must not contain leading or trailing whitespace.";
 
-    public static final String USE_ELLIPSIS_NOT_THREE_DOTS =
-            "The @Action annotation text ends with three dots \"...\"; use the single ellipsis"
-                + " character '\u2026' (\\u2026) instead.";
+  public static final String USE_ELLIPSIS_NOT_THREE_DOTS =
+      "The @Action annotation text ends with three dots \"...\"; use the single ellipsis"
+          + " character '\u2026' (\\u2026) instead.";
 }

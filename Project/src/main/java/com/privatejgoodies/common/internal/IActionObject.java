@@ -42,12 +42,12 @@ import javax.swing.Action;
  */
 public interface IActionObject {
 
-    /**
-     * Looks up and returns an Action for the given action name.
-     *
-     * @param actionName the string used to look up the Action
-     * @return the Action with the given action name - if any
-     * @throws NullPointerException if {@code actionName} is {@code null}
-     */
-    Action getAction(String actionName);
+  /**
+   * Looks up and returns an Action for the given action name.
+   *
+   * @param actionName the string used to look up the Action
+   * @return the Action with the given action name - if any
+   * @throws NullPointerException if {@code actionName} is {@code null}
+   */
+  Action getAction(String actionName);
 }

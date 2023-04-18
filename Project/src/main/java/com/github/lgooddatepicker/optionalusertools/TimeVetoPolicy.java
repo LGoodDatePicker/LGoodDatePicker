@@ -63,16 +63,15 @@ import java.time.LocalTime;
  */
 public interface TimeVetoPolicy {
 
-    /**
-     * isTimeAllowed, Implement this function to indicate which times are allowed, and which ones
-     * are vetoed. A vetoed time cannot be selected by typing in the time manually, and cannot be
-     * selected by using the mouse. Also, vetoed times will not be added to the time drop down menu.
-     * Return true to indicate that a time is allowed, or return false to indicate that a time is
-     * vetoed.
-     *
-     * <p>To disallow empty times, set "TimePickerSettings.allowEmptyTimes" to false.
-     *
-     * <p>The value of null will never be passed to this function, under any case.
-     */
-    public boolean isTimeAllowed(LocalTime time);
+  /**
+   * isTimeAllowed, Implement this function to indicate which times are allowed, and which ones are
+   * vetoed. A vetoed time cannot be selected by typing in the time manually, and cannot be selected
+   * by using the mouse. Also, vetoed times will not be added to the time drop down menu. Return
+   * true to indicate that a time is allowed, or return false to indicate that a time is vetoed.
+   *
+   * <p>To disallow empty times, set "TimePickerSettings.allowEmptyTimes" to false.
+   *
+   * <p>The value of null will never be passed to this function, under any case.
+   */
+  public boolean isTimeAllowed(LocalTime time);
 }

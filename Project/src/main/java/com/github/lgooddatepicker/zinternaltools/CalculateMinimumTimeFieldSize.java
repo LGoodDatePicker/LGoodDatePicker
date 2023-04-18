@@ -26,7 +26,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-
 import javax.swing.JTextField;
 
 /**
@@ -41,36 +40,34 @@ import javax.swing.JTextField;
  */
 public class CalculateMinimumTimeFieldSize {
 
-    /**
-     * getFormattedDateWidthInPixels, This returns the width (in pixels) of the longest formatted
-     * time, using the supplied DateTimeFormatter instance and font. Note that the locale
-     * information is built into the display format.
-     *
-     * <p>You may optionally add extra characters to the longestTimeString that is used in the
-     * calculation, by supplying a nonzero value for the parameter numberOfExtraCharacters. This
-     * parameter can also be used with a negative value to reduce the size that is returned.
-     */
-    public static int getFormattedTimeWidthInPixels(
-            DateTimeFormatter formatForDisplayTime,
-            Font fontValidTime,
-            int numberOfExtraCharacters) {
-        // Create the font metrics that will be used in the calculation.
-        JTextField textField = new JTextField();
-        FontMetrics fontMetrics = textField.getFontMetrics(fontValidTime);
-        // Create the longest possible time.
-        LocalTime longestTime = LocalTime.of(22, 59, 59, 999999999);
-        // Generate the longest time string. Note, The locale is built into the formatter instance.
-        String longestTimeString = longestTime.format(formatForDisplayTime);
-        // Get the width of the longest time string (in pixels), using the supplied font metrics.
-        int longestTimeWidth = fontMetrics.stringWidth(longestTimeString);
-        // Add space for two characters.
-        int singleNumericCharacterWidth = fontMetrics.stringWidth("8");
-        longestTimeWidth += (2 * singleNumericCharacterWidth);
-        // Don't return return anything less than 50 pixels by default.
-        longestTimeWidth = (longestTimeWidth < 50) ? 50 : longestTimeWidth;
-        // If requested, pad the result with space for any (programmer specified) extra characters.
-        longestTimeWidth += (numberOfExtraCharacters * singleNumericCharacterWidth);
-        // Return the width of the longest formatted time, in pixels.
-        return longestTimeWidth;
-    }
+  /**
+   * getFormattedDateWidthInPixels, This returns the width (in pixels) of the longest formatted
+   * time, using the supplied DateTimeFormatter instance and font. Note that the locale information
+   * is built into the display format.
+   *
+   * <p>You may optionally add extra characters to the longestTimeString that is used in the
+   * calculation, by supplying a nonzero value for the parameter numberOfExtraCharacters. This
+   * parameter can also be used with a negative value to reduce the size that is returned.
+   */
+  public static int getFormattedTimeWidthInPixels(
+      DateTimeFormatter formatForDisplayTime, Font fontValidTime, int numberOfExtraCharacters) {
+    // Create the font metrics that will be used in the calculation.
+    JTextField textField = new JTextField();
+    FontMetrics fontMetrics = textField.getFontMetrics(fontValidTime);
+    // Create the longest possible time.
+    LocalTime longestTime = LocalTime.of(22, 59, 59, 999999999);
+    // Generate the longest time string. Note, The locale is built into the formatter instance.
+    String longestTimeString = longestTime.format(formatForDisplayTime);
+    // Get the width of the longest time string (in pixels), using the supplied font metrics.
+    int longestTimeWidth = fontMetrics.stringWidth(longestTimeString);
+    // Add space for two characters.
+    int singleNumericCharacterWidth = fontMetrics.stringWidth("8");
+    longestTimeWidth += (2 * singleNumericCharacterWidth);
+    // Don't return return anything less than 50 pixels by default.
+    longestTimeWidth = (longestTimeWidth < 50) ? 50 : longestTimeWidth;
+    // If requested, pad the result with space for any (programmer specified) extra characters.
+    longestTimeWidth += (numberOfExtraCharacters * singleNumericCharacterWidth);
+    // Return the width of the longest formatted time, in pixels.
+    return longestTimeWidth;
+  }
 }
