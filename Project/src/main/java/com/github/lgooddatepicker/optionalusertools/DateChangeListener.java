@@ -32,10 +32,10 @@ import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
  */
 public interface DateChangeListener {
 
-    /**
-     * dateChanged, This function will be called each time that the date in the applicable date
-     * picker has changed. Both the old date, and the new date, are supplied in the event object.
-     * Note that either parameter may contain null, which represents a cleared or empty date.
-     */
-    public void dateChanged(DateChangeEvent event);
+  /**
+   * dateChanged, This function will be called each time that the date in the applicable date picker
+   * has changed. Both the old date, and the new date, are supplied in the event object. Note that
+   * either parameter may contain null, which represents a cleared or empty date.
+   */
+  public void dateChanged(DateChangeEvent event);
 }

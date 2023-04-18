@@ -43,22 +43,21 @@ import java.beans.PropertyChangeListener;
  */
 public interface ObservableBean {
 
-    /**
-     * Adds the given PropertyChangeListener to the listener list. The listener is registered for
-     * all bound properties of this class.
-     *
-     * @param listener the PropertyChangeListener to be added
-     * @see #removePropertyChangeListener(PropertyChangeListener)
-     */
-    void addPropertyChangeListener(PropertyChangeListener listener);
+  /**
+   * Adds the given PropertyChangeListener to the listener list. The listener is registered for all
+   * bound properties of this class.
+   *
+   * @param listener the PropertyChangeListener to be added
+   * @see #removePropertyChangeListener(PropertyChangeListener)
+   */
+  void addPropertyChangeListener(PropertyChangeListener listener);
 
-    /**
-     * Removes the given PropertyChangeListener from the listener list. This method should be used
-     * to remove PropertyChangeListeners that were registered for all bound properties of this
-     * class.
-     *
-     * @param listener the PropertyChangeListener to be removed
-     * @see #addPropertyChangeListener(PropertyChangeListener)
-     */
-    void removePropertyChangeListener(PropertyChangeListener listener);
+  /**
+   * Removes the given PropertyChangeListener from the listener list. This method should be used to
+   * remove PropertyChangeListeners that were registered for all bound properties of this class.
+   *
+   * @param listener the PropertyChangeListener to be removed
+   * @see #addPropertyChangeListener(PropertyChangeListener)
+   */
+  void removePropertyChangeListener(PropertyChangeListener listener);
 }

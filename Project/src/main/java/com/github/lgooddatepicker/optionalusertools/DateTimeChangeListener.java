@@ -34,9 +34,9 @@ import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
  */
 public interface DateTimeChangeListener {
 
-    /**
-     * dateOrTimeChanged, This function will be called each time that there is a change in the
-     * DateTimePicker date value, the time value, or both values.
-     */
-    public void dateOrTimeChanged(DateTimeChangeEvent event);
+  /**
+   * dateOrTimeChanged, This function will be called each time that there is a change in the
+   * DateTimePicker date value, the time value, or both values.
+   */
+  public void dateOrTimeChanged(DateTimeChangeEvent event);
 }

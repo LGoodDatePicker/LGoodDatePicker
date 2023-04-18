@@ -38,71 +38,71 @@ import org.junit.Test;
 // these are not complete, feel free to extend them
 public class TestRequirements {
 
-    @Test(expected = Test.None.class /* no exception expected */)
-    public void CalendarPanelConstructors() {
-        CalendarPanel panel;
-        panel = new CalendarPanel();
-        assertTrue(panel.getDisplayedYearMonth() != null);
-        panel = new CalendarPanel(new DatePickerSettings());
-        assertTrue(panel.getDisplayedYearMonth() != null);
-        panel = new CalendarPanel(new DatePicker());
-        assertTrue(panel.getDisplayedYearMonth() != null);
-    }
+  @Test(expected = Test.None.class /* no exception expected */)
+  public void CalendarPanelConstructors() {
+    CalendarPanel panel;
+    panel = new CalendarPanel();
+    assertTrue(panel.getDisplayedYearMonth() != null);
+    panel = new CalendarPanel(new DatePickerSettings());
+    assertTrue(panel.getDisplayedYearMonth() != null);
+    panel = new CalendarPanel(new DatePicker());
+    assertTrue(panel.getDisplayedYearMonth() != null);
+  }
 
-    @Test(expected = Test.None.class /* no exception expected */)
-    public void DatePickerSettingsConstructors() {
-        DatePickerSettings settings;
-        settings = new DatePickerSettings();
-        assertTrue(settings.getLocale().equals(Locale.getDefault()));
-        settings = new DatePickerSettings(Locale.ENGLISH);
-        assertTrue(settings.getLocale().equals(Locale.ENGLISH));
-    }
+  @Test(expected = Test.None.class /* no exception expected */)
+  public void DatePickerSettingsConstructors() {
+    DatePickerSettings settings;
+    settings = new DatePickerSettings();
+    assertTrue(settings.getLocale().equals(Locale.getDefault()));
+    settings = new DatePickerSettings(Locale.ENGLISH);
+    assertTrue(settings.getLocale().equals(Locale.ENGLISH));
+  }
 
-    @Test(expected = Test.None.class /* no exception expected */)
-    public void DatePickerConstructors() {
-        DatePicker picker;
-        picker = new DatePicker();
-        assertTrue(picker.getSettings().getLocale().equals(Locale.getDefault()));
-        picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
-        assertTrue(picker.getSettings().getLocale().equals(Locale.ENGLISH));
-    }
+  @Test(expected = Test.None.class /* no exception expected */)
+  public void DatePickerConstructors() {
+    DatePicker picker;
+    picker = new DatePicker();
+    assertTrue(picker.getSettings().getLocale().equals(Locale.getDefault()));
+    picker = new DatePicker(new DatePickerSettings(Locale.ENGLISH));
+    assertTrue(picker.getSettings().getLocale().equals(Locale.ENGLISH));
+  }
 
-    @Test(expected = Test.None.class /* no exception expected */)
-    public void TimePickerSettingsConstructors() {
-        TimePickerSettings settings;
-        settings = new TimePickerSettings();
-        assertTrue(settings.getLocale().equals(Locale.getDefault()));
-        settings = new TimePickerSettings(Locale.ENGLISH);
-        assertTrue(settings.getLocale().equals(Locale.ENGLISH));
-    }
+  @Test(expected = Test.None.class /* no exception expected */)
+  public void TimePickerSettingsConstructors() {
+    TimePickerSettings settings;
+    settings = new TimePickerSettings();
+    assertTrue(settings.getLocale().equals(Locale.getDefault()));
+    settings = new TimePickerSettings(Locale.ENGLISH);
+    assertTrue(settings.getLocale().equals(Locale.ENGLISH));
+  }
 
-    @Test(expected = Test.None.class /* no exception expected */)
-    public void TimePickerConstructors() {
-        TimePicker picker;
-        picker = new TimePicker();
-        assertTrue(picker.getSettings().getLocale().equals(Locale.getDefault()));
-        picker = new TimePicker(new TimePickerSettings(Locale.ENGLISH));
-        assertTrue(picker.getSettings().getLocale().equals(Locale.ENGLISH));
-    }
+  @Test(expected = Test.None.class /* no exception expected */)
+  public void TimePickerConstructors() {
+    TimePicker picker;
+    picker = new TimePicker();
+    assertTrue(picker.getSettings().getLocale().equals(Locale.getDefault()));
+    picker = new TimePicker(new TimePickerSettings(Locale.ENGLISH));
+    assertTrue(picker.getSettings().getLocale().equals(Locale.ENGLISH));
+  }
 
-    @Test(expected = Test.None.class /* no exception expected */)
-    public void HighlightInformationConstructors() {
-        HighlightInformation info;
-        info = new HighlightInformation();
-        assertTrue(info.tooltipText == null);
-        assertTrue(info.colorBackground == null);
-        assertTrue(info.colorText == null);
-        info = new HighlightInformation(Color.darkGray);
-        assertTrue(info.tooltipText == null);
-        assertTrue(info.colorBackground.equals(Color.darkGray));
-        assertTrue(info.colorText == null);
-        info = new HighlightInformation(Color.darkGray, Color.magenta);
-        assertTrue(info.tooltipText == null);
-        assertTrue(info.colorBackground.equals(Color.darkGray));
-        assertTrue(info.colorText.equals(Color.magenta));
-        info = new HighlightInformation(Color.darkGray, Color.magenta, "test");
-        assertTrue(info.tooltipText.equals("test"));
-        assertTrue(info.colorBackground.equals(Color.darkGray));
-        assertTrue(info.colorText.equals(Color.magenta));
-    }
+  @Test(expected = Test.None.class /* no exception expected */)
+  public void HighlightInformationConstructors() {
+    HighlightInformation info;
+    info = new HighlightInformation();
+    assertTrue(info.tooltipText == null);
+    assertTrue(info.colorBackground == null);
+    assertTrue(info.colorText == null);
+    info = new HighlightInformation(Color.darkGray);
+    assertTrue(info.tooltipText == null);
+    assertTrue(info.colorBackground.equals(Color.darkGray));
+    assertTrue(info.colorText == null);
+    info = new HighlightInformation(Color.darkGray, Color.magenta);
+    assertTrue(info.tooltipText == null);
+    assertTrue(info.colorBackground.equals(Color.darkGray));
+    assertTrue(info.colorText.equals(Color.magenta));
+    info = new HighlightInformation(Color.darkGray, Color.magenta, "test");
+    assertTrue(info.tooltipText.equals("test"));
+    assertTrue(info.colorBackground.equals(Color.darkGray));
+    assertTrue(info.colorText.equals(Color.magenta));
+  }
 }

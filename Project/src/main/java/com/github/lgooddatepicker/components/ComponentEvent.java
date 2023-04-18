@@ -29,24 +29,24 @@ import javax.swing.JComponent;
  */
 public class ComponentEvent {
 
-    public static final int PREVIOUS_YEAR = 1;
-    public static final int PREVIOUS_MONTH = 2;
-    public static final int NEXT_MONTH = 3;
-    public static final int NEXT_YEAR = 4;
+  public static final int PREVIOUS_YEAR = 1;
+  public static final int PREVIOUS_MONTH = 2;
+  public static final int NEXT_MONTH = 3;
+  public static final int NEXT_YEAR = 4;
 
-    private int what;
-    private JComponent component;
+  private int what;
+  private JComponent component;
 
-    public ComponentEvent(int what, JComponent component) {
-        this.what = what;
-        this.component = component;
-    }
+  public ComponentEvent(int what, JComponent component) {
+    this.what = what;
+    this.component = component;
+  }
 
-    public int getWhat() {
-        return what;
-    }
+  public int getWhat() {
+    return what;
+  }
 
-    public JComponent getComponent() {
-        return component;
-    }
+  public JComponent getComponent() {
+    return component;
+  }
 }

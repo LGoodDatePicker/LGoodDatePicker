@@ -32,15 +32,13 @@ package com.privatejgoodies.common.internal;
 /**
  * Describes an object that can localize Strings accessible via a key.
  *
- * <p>
- * This interface is used by the JGoodies Forms to localize Strings from ResourceBundles and
+ * <p>This interface is used by the JGoodies Forms to localize Strings from ResourceBundles and
  * ResourceMaps (a class from JGoodies Application). The latter implements this StringLocalizer
  * interface. Since ResourceBundle does not implement this interface, a wrapper can be used that
  * implements this interface and just delegates to the ResourceBundle to look up the localized
  * String.
  *
- * <p>
- * <strong>Note:</strong> This class is not part of the public JGoodies Common API. It's intended
+ * <p><strong>Note:</strong> This class is not part of the public JGoodies Common API. It's intended
  * for implementation purposes only. The class's API may change at any time.
  *
  * @author Karsten Lentzsch
@@ -48,11 +46,11 @@ package com.privatejgoodies.common.internal;
  */
 public interface StringLocalizer {
 
-    /**
-     * Returns a localized String for the given key.
-     *
-     * @param key the key used to look up the localized String
-     * @return the localized String
-     */
-    String getString(String key);
+  /**
+   * Returns a localized String for the given key.
+   *
+   * @param key the key used to look up the localized String
+   * @return the localized String
+   */
+  String getString(String key);
 }

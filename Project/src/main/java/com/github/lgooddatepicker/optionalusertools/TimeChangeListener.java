@@ -33,10 +33,10 @@ import com.github.lgooddatepicker.zinternaltools.TimeChangeEvent;
  */
 public interface TimeChangeListener {
 
-    /**
-     * timeChanged, This function will be called whenever the time in the applicable time picker has
-     * changed. Both the old time, and the new time, are supplied in the event object. Note that
-     * either parameter may contain null, which represents a cleared or empty time.
-     */
-    public void timeChanged(TimeChangeEvent event);
+  /**
+   * timeChanged, This function will be called whenever the time in the applicable time picker has
+   * changed. Both the old time, and the new time, are supplied in the event object. Note that
+   * either parameter may contain null, which represents a cleared or empty time.
+   */
+  public void timeChanged(TimeChangeEvent event);
 }
