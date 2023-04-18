@@ -45,83 +45,85 @@ import javax.swing.UIManager;
  */
 public class TestUpdateHighlightPolicy {
 
-  /** main. */
-  public static void main(String[] args) {
-    SwingUtilities.invokeLater(
-        () -> {
-          try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-          } catch (Exception e) {
-          }
-          createUI();
-        });
-  }
-
-  public static void createUI() {
-    JFrame frame = new JFrame();
-    frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    frame.getContentPane().add(new ProcedureTest());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
-  }
-
-  private static class ProcedureTest extends JPanel implements CalendarListener {
-
-    private CalendarPanel picker;
-    private LocalDate selectedDate;
-
-    public ProcedureTest() {
-      this.setLayout(new BorderLayout(5, 5));
-      picker = createDatePicker();
-      this.add(picker, BorderLayout.CENTER);
+    /**
+     * main.
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(
+            () -> {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                } catch (Exception e) {
+                }
+                createUI();
+            });
     }
 
-    private CalendarPanel createDatePicker() {
-      DatePickerSettings settings = new DatePickerSettings();
-      settings.setWeekNumberRules(WeekFields.ISO);
-      settings.setWeekNumbersDisplayed(true, true);
-      settings.setAllowEmptyDates(false);
-      settings.setHighlightPolicy(new DynamicHighlightPolicy());
-      CalendarPanel customizedPicker = new CalendarPanel(settings);
-      customizedPicker.addCalendarListener(this);
-      settings.setVetoPolicy(new VetoPolicy());
-      return customizedPicker;
+    public static void createUI() {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(new ProcedureTest());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
-    @Override
-    public void selectedDateChanged(CalendarSelectionEvent event) {
-      selectedDate = event.getNewDate();
-      System.out.println(selectedDate);
-    }
+    private static class ProcedureTest extends JPanel implements CalendarListener {
 
-    @Override
-    public void yearMonthChanged(YearMonthChangeEvent event) {
-      // Not needed.
-    }
+        private CalendarPanel picker;
+        private LocalDate selectedDate;
 
-    private class DynamicHighlightPolicy implements DateHighlightPolicy {
-
-      @Override
-      public HighlightInformation getHighlightInformationOrNull(LocalDate someDate) {
-        if (selectedDate == null) {
-          return null;
+        public ProcedureTest() {
+            this.setLayout(new BorderLayout(5, 5));
+            picker = createDatePicker();
+            this.add(picker, BorderLayout.CENTER);
         }
 
-        if ((someDate.isAfter(LocalDate.now()) || someDate.isEqual(LocalDate.now()))
-            && (someDate.isBefore(selectedDate) || someDate.isEqual(selectedDate))) {
-          return new HighlightInformation(Color.GREEN, Color.BLACK, "selected period");
+        private CalendarPanel createDatePicker() {
+            DatePickerSettings settings = new DatePickerSettings();
+            settings.setWeekNumberRules(WeekFields.ISO);
+            settings.setWeekNumbersDisplayed(true, true);
+            settings.setAllowEmptyDates(false);
+            settings.setHighlightPolicy(new DynamicHighlightPolicy());
+            CalendarPanel customizedPicker = new CalendarPanel(settings);
+            customizedPicker.addCalendarListener(this);
+            settings.setVetoPolicy(new VetoPolicy());
+            return customizedPicker;
         }
-        return null;
-      }
-    }
 
-    private class VetoPolicy implements DateVetoPolicy {
+        @Override
+        public void selectedDateChanged(CalendarSelectionEvent event) {
+            selectedDate = event.getNewDate();
+            System.out.println(selectedDate);
+        }
 
-      @Override
-      public boolean isDateAllowed(LocalDate someDate) {
-        return someDate.isAfter(LocalDate.now()) || someDate.isEqual(LocalDate.now());
-      }
+        @Override
+        public void yearMonthChanged(YearMonthChangeEvent event) {
+            // Not needed.
+        }
+
+        private class DynamicHighlightPolicy implements DateHighlightPolicy {
+
+            @Override
+            public HighlightInformation getHighlightInformationOrNull(LocalDate someDate) {
+                if (selectedDate == null) {
+                    return null;
+                }
+
+                if ((someDate.isAfter(LocalDate.now()) || someDate.isEqual(LocalDate.now()))
+                    && (someDate.isBefore(selectedDate) || someDate.isEqual(selectedDate))) {
+                    return new HighlightInformation(Color.GREEN, Color.BLACK, "selected period");
+                }
+                return null;
+            }
+        }
+
+        private class VetoPolicy implements DateVetoPolicy {
+
+            @Override
+            public boolean isDateAllowed(LocalDate someDate) {
+                return someDate.isAfter(LocalDate.now()) || someDate.isEqual(LocalDate.now());
+            }
+        }
     }
-  }
 }

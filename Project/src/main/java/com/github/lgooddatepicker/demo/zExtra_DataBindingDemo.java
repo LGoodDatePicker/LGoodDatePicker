@@ -26,28 +26,32 @@ package com.github.lgooddatepicker.demo;
  * zExtraDemos_DataBindingDemo, This is a demonstration of how JavaBeans data binding can be used
  * with the date and time picker components.
  *
- * <p>Usage notes:
+ * <p>
+ * Usage notes:
  *
- * <p>This demo requires "beansbinding-1.2.1.jar" (org.jdesktop.beansbinding). BeansBinding is open
+ * <p>
+ * This demo requires "beansbinding-1.2.1.jar" (org.jdesktop.beansbinding). BeansBinding is open
  * source and not part of the standard Java distribution. To avoid having to add the beansbinding
  * dependency to the entire LGoodDatePicker library, the body of this demo class is commented out.
  * To run the demo, you would need to uncomment the class first.
  *
- * <p>If you are building the LGoodDatePicker library yourself, you could uncomment the
- * "BeansBinding" dependency section in the pom file, which would automatically include the needed
- * dependency.
+ * <p>
+ * If you are building the LGoodDatePicker library yourself, you could uncomment the "BeansBinding"
+ * dependency section in the pom file, which would automatically include the needed dependency.
  *
- * <p>This demo was created with the NetBeans visual form designer, and should probably be viewed
- * from the visual designer instead of reading the source code.
+ * <p>
+ * This demo was created with the NetBeans visual form designer, and should probably be viewed from
+ * the visual designer instead of reading the source code.
  *
- * <p>If you are using NetBeans, you can open this class in "design mode". If you click on any
+ * <p>
+ * If you are using NetBeans, you can open this class in "design mode". If you click on any
  * component in design mode, and look at its properties, you will see a "binding" tab under the
  * properties. The binding tab allows you to set up or change any automatic data binding between the
  * components.
  */
 public class zExtra_DataBindingDemo extends javax.swing.JFrame {
 
-  /*
+    /*
   // Uncomment the class to run the beansbinding demo.
 
   public zExtra_DataBindingDemo() {
@@ -252,5 +256,5 @@ public class zExtra_DataBindingDemo extends javax.swing.JFrame {
 
 
   // Uncomment the class to run the beansbinding demo.
-   */
+     */
 }

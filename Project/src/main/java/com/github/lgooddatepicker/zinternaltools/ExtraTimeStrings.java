@@ -34,69 +34,69 @@ import java.util.Locale;
  */
 public class ExtraTimeStrings {
 
-  /**
-   * extraParsingFormatsForLanguage_en, This is a constant list of extra parsing formats, which are
-   * used for parsing times in an English locale.
-   */
-  private static final String[] extraParsingFormatsForLanguage_en = {"h:ma", "h.ma", "ha"};
+    /**
+     * extraParsingFormatsForLanguage_en, This is a constant list of extra parsing formats, which
+     * are used for parsing times in an English locale.
+     */
+    private static final String[] extraParsingFormatsForLanguage_en = {"h:ma", "h.ma", "ha"};
 
-  /**
-   * getExtraTimeParsingFormatsForLocale, This will return a list of extra parsing formatters for
-   * the specified locale. If no extra formatters are found, then this will return an empty list.
-   * (This will never return null.)
-   */
-  public static ArrayList<DateTimeFormatter> getExtraTimeParsingFormatsForLocale(Locale locale) {
-    // Create some variables that we will need.
-    String language = locale.getLanguage();
-    String[] definedFormats = null;
+    /**
+     * getExtraTimeParsingFormatsForLocale, This will return a list of extra parsing formatters for
+     * the specified locale. If no extra formatters are found, then this will return an empty list.
+     * (This will never return null.)
+     */
+    public static ArrayList<DateTimeFormatter> getExtraTimeParsingFormatsForLocale(Locale locale) {
+        // Create some variables that we will need.
+        String language = locale.getLanguage();
+        String[] definedFormats = null;
 
-    // Get the list of extra parsing formats for the language of the locale.
-    if ("en".equals(language)) {
-      definedFormats = extraParsingFormatsForLanguage_en;
+        // Get the list of extra parsing formats for the language of the locale.
+        if ("en".equals(language)) {
+            definedFormats = extraParsingFormatsForLanguage_en;
+        }
+
+        // If no extra parsing formats were found, then return an empty list.
+        ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<>();
+        if (definedFormats == null) {
+            return extraParsingFormatters;
+        }
+
+        // Create the parsing formatters from the defined formats, and add them to the results list.
+        DateTimeFormatter formatter;
+        for (String formatString : definedFormats) {
+            formatter
+                = new DateTimeFormatterBuilder()
+                    .parseLenient()
+                    .parseCaseInsensitive()
+                    .appendPattern(formatString)
+                    .toFormatter(locale);
+            extraParsingFormatters.add(formatter);
+        }
+
+        // Return the results.
+        return extraParsingFormatters;
     }
 
-    // If no extra parsing formats were found, then return an empty list.
-    ArrayList<DateTimeFormatter> extraParsingFormatters = new ArrayList<>();
-    if (definedFormats == null) {
-      return extraParsingFormatters;
+    public static DateTimeFormatter getDefaultFormatForDisplayTime(Locale locale) {
+        DateTimeFormatter format
+            = new DateTimeFormatterBuilder()
+                .parseLenient()
+                .parseCaseInsensitive()
+                .appendLocalized(null, FormatStyle.SHORT)
+                .toFormatter(locale);
+        String language = locale.getLanguage();
+        if ("en".equals(language)) {
+            format
+                = new DateTimeFormatterBuilder()
+                    .parseLenient()
+                    .parseCaseInsensitive()
+                    .appendPattern("h:mma")
+                    .toFormatter(locale);
+        }
+        return format;
     }
 
-    // Create the parsing formatters from the defined formats, and add them to the results list.
-    DateTimeFormatter formatter;
-    for (String formatString : definedFormats) {
-      formatter =
-          new DateTimeFormatterBuilder()
-              .parseLenient()
-              .parseCaseInsensitive()
-              .appendPattern(formatString)
-              .toFormatter(locale);
-      extraParsingFormatters.add(formatter);
+    public static DateTimeFormatter getDefaultFormatForMenuTimes(Locale locale) {
+        return getDefaultFormatForDisplayTime(locale);
     }
-
-    // Return the results.
-    return extraParsingFormatters;
-  }
-
-  public static DateTimeFormatter getDefaultFormatForDisplayTime(Locale locale) {
-    DateTimeFormatter format =
-        new DateTimeFormatterBuilder()
-            .parseLenient()
-            .parseCaseInsensitive()
-            .appendLocalized(null, FormatStyle.SHORT)
-            .toFormatter(locale);
-    String language = locale.getLanguage();
-    if ("en".equals(language)) {
-      format =
-          new DateTimeFormatterBuilder()
-              .parseLenient()
-              .parseCaseInsensitive()
-              .appendPattern("h:mma")
-              .toFormatter(locale);
-    }
-    return format;
-  }
-
-  public static DateTimeFormatter getDefaultFormatForMenuTimes(Locale locale) {
-    return getDefaultFormatForDisplayTime(locale);
-  }
 }
