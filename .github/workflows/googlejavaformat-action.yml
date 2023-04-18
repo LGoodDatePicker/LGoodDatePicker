@@ -10,9 +10,12 @@ jobs:
       - uses: actions/checkout@v2 # v2 minimum required
       - uses: LGoodDatePicker/googlejavaformat-action@v3
         with:
-          args: "--aosp --replace"
+          args: "--replace"
           
 ##### Notes #####
+
+### Do not use AOSP to try to get 4 space tabs:
+# Because, AOSP has rediculous 8 space line continuations. 
 
 ### Used action repository:
 # The original action repository is here. (The master version.):
