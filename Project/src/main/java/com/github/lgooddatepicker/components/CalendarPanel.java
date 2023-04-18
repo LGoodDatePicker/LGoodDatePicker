@@ -1181,19 +1181,20 @@ public class CalendarPanel extends JPanel {
   private void populateYearPopupMenu(int middleYear) {
     final int firstYearDifference = -11;
     final int lastYearDifference = +11;
+    final int displayedYearCount = lastYearDifference - firstYearDifference + 1;
     popupYear.removeAll();
     // Add up arrow to show earlier years.
-      popupYear.add(
-        new JMenuItem(
-          //black up-pointing triangle
-          new AbstractAction("\u25b2") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              populateYearPopupMenu(middleYear + firstYearDifference - lastYearDifference - 1);
-              Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
-              popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
-            }
-      }));
+    popupYear.add(
+    new JMenuItem(
+      //black up-pointing triangle
+      new AbstractAction("\u25b2") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          populateYearPopupMenu(middleYear - displayedYearCount);
+          Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+          popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+        }
+    }));
     for (int yearDifference = firstYearDifference;
         yearDifference <= lastYearDifference;
         ++yearDifference) {
@@ -1216,18 +1217,18 @@ public class CalendarPanel extends JPanel {
       } catch (Exception ex) {
       }
     }
-  // Add down arrow to show later years.
-      popupYear.add(
-        new JMenuItem(
-          //black down-pointing triangle
-          new AbstractAction("\u25bc") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-              populateYearPopupMenu(middleYear - firstYearDifference + lastYearDifference + 1);
-              Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
-              popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
-            }
-      }));
+    // Add down arrow to show later years.
+    popupYear.add(
+    new JMenuItem(
+      //black down-pointing triangle
+      new AbstractAction("\u25bc") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          populateYearPopupMenu(middleYear + displayedYearCount);
+          Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+          popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+        }
+    }));
     final String choiceOtherYearString = "( . . . )";
     popupYear.add(
         new JMenuItem(
