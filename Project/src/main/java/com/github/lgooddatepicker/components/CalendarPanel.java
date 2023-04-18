@@ -1182,8 +1182,7 @@ public class CalendarPanel extends JPanel {
     final int firstYearDifference = -11;
     final int lastYearDifference = +11;
     popupYear.removeAll();
-    //optional up arrow to show earlier years
-    if (settings.getYearSelectScroll()) {
+    // Add up arrow to show earlier years.
       popupYear.add(
         new JMenuItem(
           //black up-pointing triangle
@@ -1195,7 +1194,6 @@ public class CalendarPanel extends JPanel {
               popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
             }
       }));
-    }
     for (int yearDifference = firstYearDifference;
         yearDifference <= lastYearDifference;
         ++yearDifference) {
@@ -1218,8 +1216,7 @@ public class CalendarPanel extends JPanel {
       } catch (Exception ex) {
       }
     }
-  //optional down arrow to show earlier years
-    if (settings.getYearSelectScroll()) {
+  // Add down arrow to show later years.
       popupYear.add(
         new JMenuItem(
           //black down-pointing triangle
@@ -1231,7 +1228,6 @@ public class CalendarPanel extends JPanel {
               popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
             }
       }));
-    }
     final String choiceOtherYearString = "( . . . )";
     popupYear.add(
         new JMenuItem(

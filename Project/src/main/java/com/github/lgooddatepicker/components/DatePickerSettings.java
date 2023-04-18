@@ -621,9 +621,6 @@ public class DatePickerSettings {
    * not exactly match the week number rules.
    */
   private boolean weekNumbersWillOverrideFirstDayOfWeek = true;
-  
-  /** yearSelectScroll, if to show up/down arrow on year select pop up */
-  private boolean yearSelectScroll = false;
 
   /**
    * zSkipDrawIndependentCalendarPanelIfNeeded, This is used to temporarily skip the named function,
@@ -768,7 +765,6 @@ public class DatePickerSettings {
     result.weekNumberRules = this.weekNumberRules;
     result.weekNumbersDisplayed = this.weekNumbersDisplayed;
     result.weekNumbersWillOverrideFirstDayOfWeek = this.weekNumbersWillOverrideFirstDayOfWeek;
-    result.yearSelectScroll = this.yearSelectScroll;
     result.zSkipDrawIndependentCalendarPanelIfNeeded = false;
     return result;
   }
@@ -1186,11 +1182,6 @@ public class DatePickerSettings {
    */
   public boolean getWeekNumbersWillOverrideFirstDayOfWeek() {
     return weekNumbersWillOverrideFirstDayOfWeek;
-  }
-  
-  /** getYearSelectScroll, Returns the value of this setting (if to show up/down arrow on year select pop up) */
-  public boolean getYearSelectScroll() {
-    return yearSelectScroll;
   }
 
   /**
@@ -2179,11 +2170,6 @@ public class DatePickerSettings {
       boolean weekNumbersWillOverrideFirstDayOfWeek) {
     this.weekNumbersWillOverrideFirstDayOfWeek = weekNumbersWillOverrideFirstDayOfWeek;
     zDrawIndependentCalendarPanelIfNeeded();
-  }
-  
-  /** setYearSelectScroll, if to show up/down arrow on year select pop up */
-  public void setYearSelectScroll(boolean b) {
-    yearSelectScroll = b;
   }
 
   /**
