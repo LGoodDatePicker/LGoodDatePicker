@@ -15,7 +15,7 @@ jobs:
 ##### Notes #####
 
 ### Do not use AOSP to try to get 4 space tabs:
-# Because, AOSP has rediculous 8 space line continuations. 
+# Because, AOSP has ridiculous 8 space line continuations. 
 
 ### Used action repository:
 # The original action repository is here. (The master version.):
