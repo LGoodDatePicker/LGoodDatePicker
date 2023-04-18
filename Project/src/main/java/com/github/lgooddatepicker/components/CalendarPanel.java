@@ -1171,9 +1171,30 @@ public class CalendarPanel extends JPanel {
    * entries have to be updated every time the selected year changes
    */
   private void populateYearPopupMenu() {
+    populateYearPopupMenu(displayedYearMonth.getYear());
+  }
+  
+  /**
+   * populateYearPopupMenu, Create entries of year PopUpMenu matching the passed year,
+   * entries have to be updated every time the selected year changes
+   */
+  private void populateYearPopupMenu(int middleYear) {
     final int firstYearDifference = -11;
     final int lastYearDifference = +11;
+    final int displayedYearCount = lastYearDifference - firstYearDifference + 1;
     popupYear.removeAll();
+    // Add up arrow to show earlier years.
+    popupYear.add(
+    new JMenuItem(
+      //black up-pointing triangle
+      new AbstractAction("\u25b2") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          populateYearPopupMenu(middleYear - displayedYearCount);
+          Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+          popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+        }
+    }));
     for (int yearDifference = firstYearDifference;
         yearDifference <= lastYearDifference;
         ++yearDifference) {
@@ -1181,8 +1202,8 @@ public class CalendarPanel extends JPanel {
       // ISO 8601 calendar system. Year zero does exist in this system.
       // This try block handles exceptions that can occur at LocalDate.MAX.
       try {
-        YearMonth choiceYearMonth = displayedYearMonth.plusYears(yearDifference);
-        String choiceYearMonthString = String.valueOf(choiceYearMonth.getYear());
+        int choiceYear = middleYear + yearDifference;
+        String choiceYearMonthString = String.valueOf(choiceYear);
         popupYear.add(
             new JMenuItem(
                 new AbstractAction(choiceYearMonthString) {
@@ -1196,6 +1217,18 @@ public class CalendarPanel extends JPanel {
       } catch (Exception ex) {
       }
     }
+    // Add down arrow to show later years.
+    popupYear.add(
+    new JMenuItem(
+      //black down-pointing triangle
+      new AbstractAction("\u25bc") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          populateYearPopupMenu(middleYear + displayedYearCount);
+          Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+          popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+        }
+    }));
     final String choiceOtherYearString = "( . . . )";
     popupYear.add(
         new JMenuItem(
