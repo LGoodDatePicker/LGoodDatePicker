@@ -58,14 +58,14 @@ import java.time.LocalDate;
  */
 public interface DateVetoPolicy {
 
-  /**
-   * isDateAllowed, Implement this function to indicate which dates are allowed, and which ones are
-   * vetoed. Vetoed dates can not be selected with the keyboard or mouse. Return true to indicate
-   * that a date is allowed, or return false to indicate that a date is vetoed.
-   *
-   * <p>To disallow empty dates, set "DatePickerSettings.allowEmptyDates" to false.
-   *
-   * <p>The value of null will never be passed to this function, under any case.
-   */
-  public boolean isDateAllowed(LocalDate date);
+    /**
+     * isDateAllowed, Implement this function to indicate which dates are allowed, and which ones
+     * are vetoed. Vetoed dates can not be selected with the keyboard or mouse. Return true to
+     * indicate that a date is allowed, or return false to indicate that a date is vetoed.
+     *
+     * <p>To disallow empty dates, set "DatePickerSettings.allowEmptyDates" to false.
+     *
+     * <p>The value of null will never be passed to this function, under any case.
+     */
+    public boolean isDateAllowed(LocalDate date);
 }

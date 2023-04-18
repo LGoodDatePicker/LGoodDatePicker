@@ -49,48 +49,48 @@ import java.util.List;
  */
 public interface Size {
 
-  /**
-   * Computes and returns this Size's maximum pixel size applied to the given list of components
-   * using the specified measures.
-   *
-   * <p>Invoked by {@link com.privatejgoodies.forms.layout.FormSpec} to determine the size of a
-   * column or row. This method is not intended to be called by API users, and it uses API invisible
-   * parameter types.
-   *
-   * @param container the layout container
-   * @param components the list of components used to compute the size
-   * @param minMeasure the measure that determines the minimum sizes
-   * @param prefMeasure the measure that determines the preferred sizes
-   * @param defaultMeasure the measure that determines the default sizes
-   * @return the maximum size in pixels for the given list of components
-   */
-  int maximumSize(
-      Container container,
-      List components,
-      FormLayout.Measure minMeasure,
-      FormLayout.Measure prefMeasure,
-      FormLayout.Measure defaultMeasure);
+    /**
+     * Computes and returns this Size's maximum pixel size applied to the given list of components
+     * using the specified measures.
+     *
+     * <p>Invoked by {@link com.privatejgoodies.forms.layout.FormSpec} to determine the size of a
+     * column or row. This method is not intended to be called by API users, and it uses API
+     * invisible parameter types.
+     *
+     * @param container the layout container
+     * @param components the list of components used to compute the size
+     * @param minMeasure the measure that determines the minimum sizes
+     * @param prefMeasure the measure that determines the preferred sizes
+     * @param defaultMeasure the measure that determines the default sizes
+     * @return the maximum size in pixels for the given list of components
+     */
+    int maximumSize(
+            Container container,
+            List components,
+            FormLayout.Measure minMeasure,
+            FormLayout.Measure prefMeasure,
+            FormLayout.Measure defaultMeasure);
 
-  /**
-   * Describes if this Size can be compressed, if container space gets scarce. Used by the
-   * FormLayout size computations in {@code #compressedSizes} to check whether a column or row can
-   * be compressed or not.
-   *
-   * <p>The ComponentSize <em>default</em> is compressible, as well as BoundedSizes that are based
-   * on the <em>default</em> size.
-   *
-   * @return {@code true} for compressible Sizes
-   * @since 1.1
-   */
-  boolean compressible();
+    /**
+     * Describes if this Size can be compressed, if container space gets scarce. Used by the
+     * FormLayout size computations in {@code #compressedSizes} to check whether a column or row can
+     * be compressed or not.
+     *
+     * <p>The ComponentSize <em>default</em> is compressible, as well as BoundedSizes that are based
+     * on the <em>default</em> size.
+     *
+     * @return {@code true} for compressible Sizes
+     * @since 1.1
+     */
+    boolean compressible();
 
-  /**
-   * Returns a String respresentation of this Size object that can be parsed by the Forms parser.
-   *
-   * <p>Implementors should return a non-verbose string.
-   *
-   * @return a parseable String representation of this object.
-   * @since 1.2
-   */
-  String encode();
+    /**
+     * Returns a String respresentation of this Size object that can be parsed by the Forms parser.
+     *
+     * <p>Implementors should return a non-verbose string.
+     *
+     * @return a parseable String representation of this object.
+     * @since 1.2
+     */
+    String encode();
 }

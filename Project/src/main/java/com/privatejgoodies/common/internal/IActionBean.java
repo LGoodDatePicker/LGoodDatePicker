@@ -42,5 +42,5 @@ import com.privatejgoodies.common.bean.ObservableBean2;
  */
 public interface IActionBean extends ObservableBean2, IActionObject {
 
-  // Just a combined interface
+    // Just a combined interface
 }

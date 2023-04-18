@@ -27,5 +27,5 @@ package com.github.lgooddatepicker.components;
  */
 public interface ComponentListener {
 
-  public void componentCreated(ComponentEvent e);
+    public void componentCreated(ComponentEvent e);
 }

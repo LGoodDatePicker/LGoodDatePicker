@@ -46,11 +46,11 @@ package com.privatejgoodies.common.internal;
  */
 public interface StringLocalizer {
 
-  /**
-   * Returns a localized String for the given key.
-   *
-   * @param key the key used to look up the localized String
-   * @return the localized String
-   */
-  String getString(String key);
+    /**
+     * Returns a localized String for the given key.
+     *
+     * @param key the key used to look up the localized String
+     * @return the localized String
+     */
+    String getString(String key);
 }

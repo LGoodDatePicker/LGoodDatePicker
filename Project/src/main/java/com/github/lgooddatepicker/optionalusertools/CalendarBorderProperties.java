@@ -64,62 +64,63 @@ import java.awt.Point;
  */
 public class CalendarBorderProperties {
 
-  /** Constructor, default. */
-  public CalendarBorderProperties() {}
+    /** Constructor, default. */
+    public CalendarBorderProperties() {}
 
-  /** Constructor, with properties. */
-  public CalendarBorderProperties(
-      Point upperLeft, Point lowerRight, Color backgroundColor, Integer thicknessInPixels) {
-    this.upperLeft = upperLeft;
-    this.lowerRight = lowerRight;
-    this.backgroundColor = backgroundColor;
-    this.thicknessInPixels = thicknessInPixels;
-  }
+    /** Constructor, with properties. */
+    public CalendarBorderProperties(
+            Point upperLeft, Point lowerRight, Color backgroundColor, Integer thicknessInPixels) {
+        this.upperLeft = upperLeft;
+        this.lowerRight = lowerRight;
+        this.backgroundColor = backgroundColor;
+        this.thicknessInPixels = thicknessInPixels;
+    }
 
-  /**
-   * upperLeft, This is the upper left point (in the border coordinate system), of the "square" of
-   * border coordinates that you would like to modify.
-   *
-   * <p>This must be between (1,1) and (5,5), and should not be null. In exception will be thrown if
-   * this null or if this is not in the valid range.
-   */
-  public Point upperLeft;
+    /**
+     * upperLeft, This is the upper left point (in the border coordinate system), of the "square" of
+     * border coordinates that you would like to modify.
+     *
+     * <p>This must be between (1,1) and (5,5), and should not be null. In exception will be thrown
+     * if this null or if this is not in the valid range.
+     */
+    public Point upperLeft;
 
-  /**
-   * lowerRight, This is the lower right point (in the border coordinate system), of the "square" of
-   * border coordinates that you would like to modify.
-   *
-   * <p>This must be between (1,1) and (5,5), and should not be null. To specify a single border
-   * coordinate, or to specify a single row or column, the X and Y values can optionally be the same
-   * as the values in the "upperLeft" point. An exception will be thrown if this is null, or if this
-   * is not in the valid range, or if the values in the lowerRight point are smaller than the values
-   * in the upperLeft point.
-   */
-  public Point lowerRight;
+    /**
+     * lowerRight, This is the lower right point (in the border coordinate system), of the "square"
+     * of border coordinates that you would like to modify.
+     *
+     * <p>This must be between (1,1) and (5,5), and should not be null. To specify a single border
+     * coordinate, or to specify a single row or column, the X and Y values can optionally be the
+     * same as the values in the "upperLeft" point. An exception will be thrown if this is null, or
+     * if this is not in the valid range, or if the values in the lowerRight point are smaller than
+     * the values in the upperLeft point.
+     */
+    public Point lowerRight;
 
-  /**
-   * backgroundColor, This can specify a color for the borders, or null if you don't want to change
-   * the color.
-   */
-  public Color backgroundColor;
+    /**
+     * backgroundColor, This can specify a color for the borders, or null if you don't want to
+     * change the color.
+     */
+    public Color backgroundColor;
 
-  /**
-   * thicknessInPixels, This can specify a thickness for the borders (in pixels), or null if you
-   * don't want to change the thickness. Setting the thickness of a border to zero will make it
-   * invisible, and setting a thickness of 1 or higher will make the border visible.
-   */
-  public Integer thicknessInPixels;
+    /**
+     * thicknessInPixels, This can specify a thickness for the borders (in pixels), or null if you
+     * don't want to change the thickness. Setting the thickness of a border to zero will make it
+     * invisible, and setting a thickness of 1 or higher will make the border visible.
+     */
+    public Integer thicknessInPixels;
 
-  /**
-   * clone, This function creates and returns a deep copy of this CalendarBorderProperties instance.
-   */
-  @Override
-  public CalendarBorderProperties clone() {
-    CalendarBorderProperties result = new CalendarBorderProperties();
-    result.backgroundColor = this.backgroundColor;
-    result.lowerRight = (this.lowerRight == null) ? null : new Point(this.lowerRight);
-    result.thicknessInPixels = this.thicknessInPixels;
-    result.upperLeft = (this.upperLeft == null) ? null : new Point(this.upperLeft);
-    return result;
-  }
+    /**
+     * clone, This function creates and returns a deep copy of this CalendarBorderProperties
+     * instance.
+     */
+    @Override
+    public CalendarBorderProperties clone() {
+        CalendarBorderProperties result = new CalendarBorderProperties();
+        result.backgroundColor = this.backgroundColor;
+        result.lowerRight = (this.lowerRight == null) ? null : new Point(this.lowerRight);
+        result.thicknessInPixels = this.thicknessInPixels;
+        result.upperLeft = (this.upperLeft == null) ? null : new Point(this.upperLeft);
+        return result;
+    }
 }
