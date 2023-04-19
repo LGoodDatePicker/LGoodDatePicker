@@ -1183,19 +1183,30 @@ public class CalendarPanel extends JPanel {
     final int firstYearDifference = -11;
     final int lastYearDifference = +11;
     final int displayedYearCount = lastYearDifference - firstYearDifference + 1;
+    Integer firstLegalYear = null;
+    Integer lastLegalYear = null;
+    // Check DateRangeLimits to not show years that are not in range anyway
+    if (settings.getDateRangeLimits().firstDate != null) {
+      firstLegalYear = settings.getDateRangeLimits().firstDate.getYear();
+    }
+    if (settings.getDateRangeLimits().lastDate != null) {
+      lastLegalYear = settings.getDateRangeLimits().lastDate.getYear();
+    }
     popupYear.removeAll();
-    // Add up arrow to show earlier years.
-    popupYear.add(
-        new JMenuItem(
-            // black up-pointing triangle
-            new AbstractAction("\u25b2") {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                populateYearPopupMenu(middleYear - displayedYearCount);
-                Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
-                popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
-              }
-            }));
+    // Add up arrow to show earlier years, if no restriction or earlier year is legal year
+    if (firstLegalYear == null || middleYear + firstYearDifference > firstLegalYear) {
+      popupYear.add(
+          new JMenuItem(
+              // black up-pointing triangle
+              new AbstractAction("\u25b2") {
+                @Override
+                  public void actionPerformed(ActionEvent e) {
+                    populateYearPopupMenu(middleYear - displayedYearCount);
+                    Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+                    popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+                  }
+              }));
+    }
     for (int yearDifference = firstYearDifference;
         yearDifference <= lastYearDifference;
         ++yearDifference) {
@@ -1204,6 +1215,11 @@ public class CalendarPanel extends JPanel {
       // This try block handles exceptions that can occur at LocalDate.MAX.
       try {
         int choiceYear = middleYear + yearDifference;
+        // Do not show years that are not valid anyway
+        if ((firstLegalYear != null && choiceYear < firstLegalYear)
+          || (lastLegalYear != null && choiceYear > lastLegalYear)) {
+          continue;
+        }
         String choiceYearMonthString = String.valueOf(choiceYear);
         popupYear.add(
             new JMenuItem(
@@ -1218,18 +1234,20 @@ public class CalendarPanel extends JPanel {
       } catch (Exception ex) {
       }
     }
-    // Add down arrow to show later years.
-    popupYear.add(
-        new JMenuItem(
-            // black down-pointing triangle
-            new AbstractAction("\u25bc") {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                populateYearPopupMenu(middleYear + displayedYearCount);
-                Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
-                popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
-              }
-            }));
+    // Add down arrow to show later years, if no restriction or later year is legal year
+    if (lastLegalYear == null || middleYear + lastYearDifference < lastLegalYear) {
+      popupYear.add(
+          new JMenuItem(
+              // black down-pointing triangle
+              new AbstractAction("\u25bc") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                  populateYearPopupMenu(middleYear + displayedYearCount);
+                  Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+                  popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+                }
+              }));
+    }
     final String choiceOtherYearString = "( . . . )";
     popupYear.add(
         new JMenuItem(
