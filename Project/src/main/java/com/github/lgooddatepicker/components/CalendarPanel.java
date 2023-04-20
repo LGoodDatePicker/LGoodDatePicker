@@ -1177,10 +1177,10 @@ public class CalendarPanel extends JPanel {
   }
 
   /**
-   * populateYearPopupMenu, Create entries for the year PopUpMenu for the target middle year.
-   * The target middle year may or may not actually be placed in the middle of the year popup menu, 
-   * depending on any existing settings from settings.getDateRangeLimits().
-   * The popup menu entries must be updated every time year popup menu is needed.
+   * populateYearPopupMenu, Create entries for the year PopUpMenu for the target middle year. The
+   * target middle year may or may not actually be placed in the middle of the year popup menu,
+   * depending on any existing settings from settings.getDateRangeLimits(). The popup menu entries
+   * must be updated every time year popup menu is needed.
    */
   private void populateYearPopupMenu(int targetMiddleYear) {
     final int firstYearDifference = -11;
@@ -1188,32 +1188,32 @@ public class CalendarPanel extends JPanel {
     final int maxYearCount = lastYearDifference - firstYearDifference + 1;
     // Calculate the first and last allowed year.
     final DateInterval dateLimits = settings.getDateRangeLimits();
-    final int  firstLegalYear = (dateLimits.firstDate != null) ? 
-        dateLimits.firstDate.getYear() : LocalDate.MIN.getYear();
-    final int  lastLegalYear = (dateLimits.lastDate != null) ? 
-        dateLimits.lastDate.getYear() : LocalDate.MAX.getYear();
+    final int firstLegalYear =
+        (dateLimits.firstDate != null) ? dateLimits.firstDate.getYear() : LocalDate.MIN.getYear();
+    final int lastLegalYear =
+        (dateLimits.lastDate != null) ? dateLimits.lastDate.getYear() : LocalDate.MAX.getYear();
     // Calculate the first and last displayed menu year.
     // If possible, expand the range within the allowed limits to show up to maxYearCount years.
     final int firstMenuYear;
     final int lastMenuYear;
     {
-        int firstYear = targetMiddleYear + firstYearDifference; 
-        int lastYear = targetMiddleYear + lastYearDifference;
+      int firstYear = targetMiddleYear + firstYearDifference;
+      int lastYear = targetMiddleYear + lastYearDifference;
+      firstYear = Math.max(firstYear, firstLegalYear);
+      lastYear = Math.min(lastYear, lastLegalYear);
+      int yearCount = lastYear - firstYear + 1;
+      if (yearCount < maxYearCount) {
+        int missingYears = maxYearCount - yearCount;
+        firstYear -= missingYears;
         firstYear = Math.max(firstYear, firstLegalYear);
+      }
+      if (yearCount < maxYearCount) {
+        int missingYears = maxYearCount - yearCount;
+        lastYear += missingYears;
         lastYear = Math.min(lastYear, lastLegalYear);
-        int yearCount = lastYear - firstYear + 1;
-        if(yearCount < maxYearCount) {
-            int missingYears = maxYearCount - yearCount;
-            firstYear -= missingYears; 
-            firstYear = Math.max(firstYear, firstLegalYear);
-        }
-        if(yearCount < maxYearCount) {
-            int missingYears = maxYearCount - yearCount;
-            lastYear += missingYears; 
-            lastYear = Math.min(lastYear, lastLegalYear);
-        }
-        firstMenuYear = firstYear;
-        lastMenuYear = lastYear;
+      }
+      firstMenuYear = firstYear;
+      lastMenuYear = lastYear;
     }
     // Clear the popup menu.
     popupYear.removeAll();
@@ -1224,11 +1224,11 @@ public class CalendarPanel extends JPanel {
               // This is a black up-pointing triangle.
               new AbstractAction("\u25b2") {
                 @Override
-                  public void actionPerformed(ActionEvent e) {
-                    populateYearPopupMenu(firstMenuYear + firstYearDifference - 1);
-                    Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
-                    popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
-                  }
+                public void actionPerformed(ActionEvent e) {
+                  populateYearPopupMenu(firstMenuYear + firstYearDifference - 1);
+                  Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+                  popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+                }
               }));
     }
     for (int menuYear = firstMenuYear; menuYear <= lastMenuYear; ++menuYear) {
