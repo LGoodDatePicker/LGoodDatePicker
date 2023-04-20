@@ -1212,6 +1212,11 @@ public class CalendarPanel extends JPanel {
         lastYear += missingYears;
         lastYear = Math.min(lastYear, lastLegalYear);
       }
+      // This should not happen, but make sure the years remain in numeric order.
+      if (firstYear > lastYear) {
+        firstYear = lastYear;
+      }
+      // Assign the year range to the final year menu variables.
       firstMenuYear = firstYear;
       lastMenuYear = lastYear;
     }
