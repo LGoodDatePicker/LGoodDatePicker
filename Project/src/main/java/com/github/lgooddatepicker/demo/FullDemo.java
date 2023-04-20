@@ -121,22 +121,22 @@ public class FullDemo {
     // If desired, set a swing look and feel here.
     FlatLightLaf.setup();
     try {
-    /*
-      // Set a specific look and feel.
-      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-          String lafName = info.getName();
-          if ("Nimbus".equals(lafName)) {
-              UIManager.setLookAndFeel(info.getClassName());
-              break;
-          }
-      }
+      /*
+        // Set a specific look and feel.
+        for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            String lafName = info.getName();
+            if ("Nimbus".equals(lafName)) {
+                UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
 
-      // Set a random look and feel.
-      LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
-      int lookIndex = (int) (Math.random() * installedLooks.length);
-      UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
-      System.out.println(installedLooks[lookIndex].getClassName().toString());
-    */
+        // Set a random look and feel.
+        LookAndFeelInfo[] installedLooks = UIManager.getInstalledLookAndFeels();
+        int lookIndex = (int) (Math.random() * installedLooks.length);
+        UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
+        System.out.println(installedLooks[lookIndex].getClassName().toString());
+      */
     } catch (Exception e) {
     }
 

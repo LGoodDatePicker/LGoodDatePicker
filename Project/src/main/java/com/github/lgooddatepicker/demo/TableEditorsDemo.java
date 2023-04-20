@@ -22,7 +22,6 @@
  */
 package com.github.lgooddatepicker.demo;
 
-import com.formdev.flatlaf.FlatLightLaf;
 import com.github.lgooddatepicker.tableeditors.DateTableEditor;
 import com.github.lgooddatepicker.tableeditors.DateTimeTableEditor;
 import com.github.lgooddatepicker.tableeditors.TimeTableEditor;
@@ -146,11 +145,11 @@ public class TableEditorsDemo extends JPanel {
     // If desired, set a swing look and feel here.
     try {
       for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-          String lafName = info.getName();
-          if ("Nimbus".equals(lafName)) {
-              UIManager.setLookAndFeel(info.getClassName());
-              break;
-          }
+        String lafName = info.getName();
+        if ("Nimbus".equals(lafName)) {
+          UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
       }
     } catch (Exception e) {
     }
