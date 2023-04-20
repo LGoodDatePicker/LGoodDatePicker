@@ -59,6 +59,21 @@ plugins in this file operate inside the "package" and "install" phases.
     </properties>
 
     <dependencies>
+        
+        <!-- Flat look and feel.
+        This is used by the demo classes.
+        Maven will automatically override this dependency if the FlatLAF library is used by a 
+        parent project. See also: 
+        https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Transitive_Dependencies
+        Maven FlatLAF link:
+        https://mvnrepository.com/artifact/com.formdev/flatlaf -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+        
         <!-- BeansBinding, This is only used in the data binding demo.
              uncomment this if you want to compile the data binding demo
         <dependency>

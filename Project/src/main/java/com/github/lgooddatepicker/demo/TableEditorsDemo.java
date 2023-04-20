@@ -22,6 +22,7 @@
  */
 package com.github.lgooddatepicker.demo;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.github.lgooddatepicker.tableeditors.DateTableEditor;
 import com.github.lgooddatepicker.tableeditors.DateTimeTableEditor;
 import com.github.lgooddatepicker.tableeditors.TimeTableEditor;
@@ -37,6 +38,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -138,7 +141,20 @@ public class TableEditorsDemo extends JPanel {
    * main, The table demo can be run independently from this main method, or the table demo can be
    * run by pressing the matching button in the "FullDemo" program.
    */
+  @SuppressWarnings("UseSpecificCatch")
   public static void main(String[] args) {
+    // If desired, set a swing look and feel here.
+    try {
+      for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+          String lafName = info.getName();
+          if ("Nimbus".equals(lafName)) {
+              UIManager.setLookAndFeel(info.getClassName());
+              break;
+          }
+      }
+    } catch (Exception e) {
+    }
+    // Start the table demo.
     javax.swing.SwingUtilities.invokeLater(() -> createAndShowTableDemoFrame());
   }
 

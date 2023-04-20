@@ -22,6 +22,7 @@
  */
 package com.github.lgooddatepicker.demo;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
@@ -49,6 +50,8 @@ public class BasicDemo extends JFrame {
 
   /** main, This is the entry point for the basic demo. */
   public static void main(String[] args) {
+    // If desired, set a swing look and feel here.
+    FlatLightLaf.setup();
     // Use the standard swing code to start this demo inside a swing thread.
     SwingUtilities.invokeLater(
         () -> {

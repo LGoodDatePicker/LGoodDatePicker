@@ -22,6 +22,7 @@
  */
 package com.github.lgooddatepicker.demo;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.github.lgooddatepicker.components.CalendarPanel;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -118,11 +119,13 @@ public class FullDemo {
   public static void main(String[] args) {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // If desired, set a swing look and feel here.
+    FlatLightLaf.setup();
     try {
-      /*
+    /*
       // Set a specific look and feel.
       for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-          if ("Nimbus".equals(info.getName())) {
+          String lafName = info.getName();
+          if ("Nimbus".equals(lafName)) {
               UIManager.setLookAndFeel(info.getClassName());
               break;
           }
@@ -133,7 +136,7 @@ public class FullDemo {
       int lookIndex = (int) (Math.random() * installedLooks.length);
       UIManager.setLookAndFeel(installedLooks[lookIndex].getClassName());
       System.out.println(installedLooks[lookIndex].getClassName().toString());
-             */
+    */
     } catch (Exception e) {
     }
 
