@@ -1207,6 +1207,7 @@ public class CalendarPanel extends JPanel {
         firstYear -= missingYears;
         firstYear = Math.max(firstYear, firstLegalYear);
       }
+      yearCount = lastYear - firstYear + 1;
       if (yearCount < maxYearCount) {
         int missingYears = maxYearCount - yearCount;
         lastYear += missingYears;
