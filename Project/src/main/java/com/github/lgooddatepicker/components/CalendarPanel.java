@@ -26,6 +26,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings.DateArea;
 import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.github.lgooddatepicker.optionalusertools.CalendarListener;
 import com.github.lgooddatepicker.optionalusertools.DateHighlightPolicy;
+import com.github.lgooddatepicker.optionalusertools.DateInterval;
 import com.github.lgooddatepicker.optionalusertools.DateVetoPolicy;
 import com.github.lgooddatepicker.zinternaltools.CalendarSelectionEvent;
 import com.github.lgooddatepicker.zinternaltools.HighlightInformation;
@@ -1176,38 +1177,69 @@ public class CalendarPanel extends JPanel {
   }
 
   /**
-   * populateYearPopupMenu, Create entries of year PopUpMenu matching the passed year, entries have
-   * to be updated every time the selected year changes
+   * populateYearPopupMenu, Create entries for the year PopUpMenu for the target middle year.
+   * The target middle year may or may not actually be placed in the middle of the year popup menu, 
+   * depending on any existing settings from settings.getDateRangeLimits().
+   * The popup menu entries must be updated every time year popup menu is needed.
    */
-  private void populateYearPopupMenu(int middleYear) {
+  private void populateYearPopupMenu(int targetMiddleYear) {
     final int firstYearDifference = -11;
     final int lastYearDifference = +11;
-    final int displayedYearCount = lastYearDifference - firstYearDifference + 1;
+    final int maxYearCount = lastYearDifference - firstYearDifference + 1;
+    // Calculate the first and last allowed year.
+    final DateInterval dateLimits = settings.getDateRangeLimits();
+    final int  firstLegalYear = (dateLimits.firstDate != null) ? 
+        dateLimits.firstDate.getYear() : LocalDate.MIN.getYear();
+    final int  lastLegalYear = (dateLimits.lastDate != null) ? 
+        dateLimits.lastDate.getYear() : LocalDate.MAX.getYear();
+    // Calculate the first and last displayed menu year.
+    // If possible, expand the range within the allowed limits to show up to maxYearCount years.
+    final int firstMenuYear;
+    final int lastMenuYear;
+    {
+        int firstYear = targetMiddleYear + firstYearDifference; 
+        int lastYear = targetMiddleYear + lastYearDifference;
+        firstYear = Math.max(firstYear, firstLegalYear);
+        lastYear = Math.min(lastYear, lastLegalYear);
+        int yearCount = lastYear - firstYear + 1;
+        if(yearCount < maxYearCount) {
+            int missingYears = maxYearCount - yearCount;
+            firstYear -= missingYears; 
+            firstYear = Math.max(firstYear, firstLegalYear);
+        }
+        if(yearCount < maxYearCount) {
+            int missingYears = maxYearCount - yearCount;
+            lastYear += missingYears; 
+            lastYear = Math.min(lastYear, lastLegalYear);
+        }
+        firstMenuYear = firstYear;
+        lastMenuYear = lastYear;
+    }
+    // Clear the popup menu.
     popupYear.removeAll();
-    // Add up arrow to show earlier years.
-    popupYear.add(
-        new JMenuItem(
-            // black up-pointing triangle
-            new AbstractAction("\u25b2") {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                populateYearPopupMenu(middleYear - displayedYearCount);
-                Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
-                popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
-              }
-            }));
-    for (int yearDifference = firstYearDifference;
-        yearDifference <= lastYearDifference;
-        ++yearDifference) {
+    // Add an up arrow to show earlier years, if any earlier year is allowed.
+    if (firstMenuYear > firstLegalYear) {
+      popupYear.add(
+          new JMenuItem(
+              // This is a black up-pointing triangle.
+              new AbstractAction("\u25b2") {
+                @Override
+                  public void actionPerformed(ActionEvent e) {
+                    populateYearPopupMenu(firstMenuYear + firstYearDifference - 1);
+                    Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+                    popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+                  }
+              }));
+    }
+    for (int menuYear = firstMenuYear; menuYear <= lastMenuYear; ++menuYear) {
       // No special processing is required for the BC to AD transition in the
       // ISO 8601 calendar system. Year zero does exist in this system.
       // This try block handles exceptions that can occur at LocalDate.MAX.
       try {
-        int choiceYear = middleYear + yearDifference;
-        String choiceYearMonthString = String.valueOf(choiceYear);
+        String choiceYearString = String.valueOf(menuYear);
         popupYear.add(
             new JMenuItem(
-                new AbstractAction(choiceYearMonthString) {
+                new AbstractAction(choiceYearString) {
                   @Override
                   public void actionPerformed(ActionEvent e) {
                     String chosenMenuText = ((JMenuItem) e.getSource()).getText();
@@ -1218,18 +1250,20 @@ public class CalendarPanel extends JPanel {
       } catch (Exception ex) {
       }
     }
-    // Add down arrow to show later years.
-    popupYear.add(
-        new JMenuItem(
-            // black down-pointing triangle
-            new AbstractAction("\u25bc") {
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                populateYearPopupMenu(middleYear + displayedYearCount);
-                Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
-                popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
-              }
-            }));
+    // Add a down arrow to show later years, if any later year is allowed.
+    if (lastMenuYear < lastLegalYear) {
+      popupYear.add(
+          new JMenuItem(
+              // This is a black down-pointing triangle.
+              new AbstractAction("\u25bc") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                  populateYearPopupMenu(lastMenuYear + lastYearDifference + 1);
+                  Point menuLocation = getMonthOrYearMenuLocation(labelYear, popupYear);
+                  popupYear.show(monthAndYearInnerPanel, menuLocation.x, menuLocation.y);
+                }
+              }));
+    }
     final String choiceOtherYearString = "( . . . )";
     popupYear.add(
         new JMenuItem(
