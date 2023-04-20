@@ -228,7 +228,39 @@ public class FullDemo {
         panel.panel1,
         1,
         (row++ * rowMultiplier),
-        "Date " + (++pickerNumber) + ", Limit date range (+/- 20 days):");
+        "Date " + (++pickerNumber) + ", Limit date range (+/- 20 Days):");
+
+    // Create a date picker: With date year limits.
+    // Notes:
+    // * If you only want to limit one side of the date range, you can optionally pass in null
+    // for one of the date limits.
+    // * Date range limits (and other types of veto policies) can only be set after constructing
+    // the date picker.
+    dateSettings = new DatePickerSettings();
+    datePicker = new DatePicker(dateSettings);
+    dateSettings.setDateRangeLimits(today.minusYears(50), today.plusYears(50));
+    panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+    panel.addLabel(
+        panel.panel1,
+        1,
+        (row++ * rowMultiplier),
+        "Date " + (++pickerNumber) + ", Limit date range years (+/- 50 Years):");
+
+    // Create a date picker: For selecting birthdays.
+    // Notes:
+    // * If you only want to limit one side of the date range, you can optionally pass in null
+    // for one of the date limits.
+    // * Date range limits (and other types of veto policies) can only be set after constructing
+    // the date picker.
+    dateSettings = new DatePickerSettings();
+    datePicker = new DatePicker(dateSettings);
+    dateSettings.setDateRangeLimits(today.minusYears(150), today);
+    panel.panel1.add(datePicker, getConstraints(1, (row * rowMultiplier), 1));
+    panel.addLabel(
+        panel.panel1,
+        1,
+        (row++ * rowMultiplier),
+        "Date " + (++pickerNumber) + ", Birthday selector (Past only, 150 years ago to Today):");
 
     // Create a date picker: Custom button icon.
     // You can replace the example image with any image file that is desired.
