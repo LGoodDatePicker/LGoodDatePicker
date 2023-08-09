@@ -501,12 +501,13 @@ public class InternalUtilities {
    */
   public static int getCompiledJavaVersionFromJavaClassFile(
       InputStream classByteStream, boolean majorVersionRequested) throws Exception {
-    DataInputStream dataInputStream = new DataInputStream(classByteStream);
-    // Skip the "magic number".
-    dataInputStream.readInt();
-    int minorVersion = dataInputStream.readUnsignedShort();
-    int majorVersion = dataInputStream.readUnsignedShort();
-    return (majorVersionRequested) ? majorVersion : minorVersion;
+    try (DataInputStream dataInputStream = new DataInputStream(classByteStream)) {
+      // Skip the "magic number".
+      dataInputStream.readInt();
+      int minorVersion = dataInputStream.readUnsignedShort();
+      int majorVersion = dataInputStream.readUnsignedShort();
+      return (majorVersionRequested) ? majorVersion : minorVersion;
+    }
   }
 
   /**
