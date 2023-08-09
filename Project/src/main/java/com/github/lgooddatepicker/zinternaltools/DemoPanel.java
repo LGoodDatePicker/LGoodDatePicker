@@ -565,6 +565,7 @@ public class DemoPanel extends JPanel {
   public JPanel independentCalendarPanel;
   private JScrollPane messageTextAreaScrollPane;
   public JTextArea messageTextArea;
+
   // JFormDesigner - End of variables declaration  //GEN-END:variables
 
   public void addLabel(JPanel panel, int x, int pickerRow, String labelText) {

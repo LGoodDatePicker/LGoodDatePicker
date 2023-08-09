@@ -285,6 +285,7 @@ public class DatePickerSettings {
    * by the JLabel component.
    */
   private Font fontCalendarWeekNumberLabels;
+
   /**
    * fontClearButton, This is the text font for the clear button. The default font is the normal
    * undecorated font, as provided by the JLabel component.
@@ -297,16 +298,19 @@ public class DatePickerSettings {
    * setColor() and "DateArea.DatePickerTextInvalidDate".)
    */
   private Font fontInvalidDate;
+
   /**
    * fontMonthAndYearMenuButtons, This is the text font for the month and year menu buttons. The
    * default font is the normal undecorated font, as provided by the JLabel component.
    */
   private Font fontMonthAndYearMenuLabels;
+
   /**
    * fontMonthAndYearNavigationButtons, This is the text font for the month and year navigation
    * buttons. The default font is the normal undecorated font, as provided by the JLabel component.
    */
   private Font fontMonthAndYearNavigationButtons;
+
   /**
    * fontTodayButton, This is the text font for the today button. The default font is the normal
    * undecorated font, as provided by the JLabel component.

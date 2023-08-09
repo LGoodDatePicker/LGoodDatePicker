@@ -164,6 +164,7 @@ public class TimePicker extends JPanel implements CustomPopup.CustomPopupCloseLi
   private JPanel spinnerPanel;
   private JButton increaseButton;
   private JButton decreaseButton;
+
   // JFormDesigner - End of variables declaration  //GEN-END:variables
 
   /**
@@ -755,6 +756,7 @@ public class TimePicker extends JPanel implements CustomPopup.CustomPopupCloseLi
            * the up arrow is released.
            */
           boolean upPressed = false;
+
           /**
            * downPressed, This indicates whether or not the down arrow has already been pressed.
            * This is used to make sure that we do not "react" to the down arrow multiple times when

@@ -158,6 +158,7 @@ public class DatePicker extends JPanel implements CustomPopupCloseListener {
   private JTextField dateTextField;
 
   private JButton toggleCalendarButton;
+
   // JFormDesigner - End of variables declaration  //GEN-END:variables
 
   /**
