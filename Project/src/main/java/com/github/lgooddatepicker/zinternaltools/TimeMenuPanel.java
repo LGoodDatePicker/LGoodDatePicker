@@ -257,6 +257,7 @@ public class TimeMenuPanel extends JPanel {
   // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
   private JScrollPane timeScrollPane;
   private JList<String> timeList;
+
   // JFormDesigner - End of variables declaration  //GEN-END:variables
 
   private void tryClosePopup() {

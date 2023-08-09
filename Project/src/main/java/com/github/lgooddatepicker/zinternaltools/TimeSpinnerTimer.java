@@ -51,15 +51,18 @@ public class TimeSpinnerTimer {
    * value by only 1 minute.
    */
   private final int startDelayMillis = 700;
+
   /**
    * timerRate, This indicates how often the timer should call the tick function, in milliseconds.
    */
   private final int timerRate = 20;
+
   /**
    * millisForDivisorList, This indicates how long each value in the divisorList should be used,
    * before moving onto the next value in the divisorList.
    */
   private final int[] millisForDivisorList = {1800, 900, 400, 400, 400, 400, 400, 0};
+
   /**
    * divisorList, For as long as any particular index in this array remains in effect, the currently
    * used number indicates how many tick calls should pass before the time picker value should be
@@ -68,16 +71,19 @@ public class TimeSpinnerTimer {
    * lower numbers make the spinner change faster.
    */
   private final int[] divisorList = {12, 10, 8, 6, 4, 3, 2, 1};
+
   /**
    * startedIndexTimeStamp, This indicates the time that the currently used index in the divisorList
    * started to be used.
    */
   private long startedIndexTimeStamp = 0;
+
   /**
    * currentIndex, This indicates the index that is currently in effect for the divisorList and the
    * millisForIndexList.
    */
   private int currentIndex = 0;
+
   /**
    * ticksSinceIndexChange, This keeps track of the number of ticks that has passed since the last
    * time that the current index was changed. This helps us calculate when we need to change the

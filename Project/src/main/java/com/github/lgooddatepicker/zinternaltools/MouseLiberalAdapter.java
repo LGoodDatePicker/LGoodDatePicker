@@ -79,6 +79,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
    * releasing the mouse.
    */
   private boolean isComponentPressedDown = false;
+
   /**
    * lastUnusedLiberalSingleClickTimeStamp, This stores a timestamp for the mouse release of the
    * last unused liberal single click. If a single click is "used" as part of a double click, then
@@ -86,6 +87,7 @@ public abstract class MouseLiberalAdapter extends MouseAdapter {
    * the above description, then this will contain the value zero.
    */
   private long lastUnusedLiberalSingleClickTimeStamp = 0;
+
   /**
    * slowestDoubleClickMilliseconds, This constant indicates the maximum time window in which a
    * liberal double click can occur. More specifically, this indicates the maximum time, in

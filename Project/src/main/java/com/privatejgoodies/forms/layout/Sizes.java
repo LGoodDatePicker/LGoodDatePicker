@@ -66,6 +66,7 @@ public final class Sizes {
   public static final ConstantSize DLUX9 = dluX(9);
   public static final ConstantSize DLUX11 = dluX(11);
   public static final ConstantSize DLUX14 = dluX(14);
+
   /**
    * 21 horizontal dialog units.
    *
@@ -84,6 +85,7 @@ public final class Sizes {
   public static final ConstantSize DLUY9 = dluY(9);
   public static final ConstantSize DLUY11 = dluY(11);
   public static final ConstantSize DLUY14 = dluY(14);
+
   /**
    * 21 vertical dialog units.
    *
