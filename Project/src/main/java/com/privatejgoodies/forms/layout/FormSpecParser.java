@@ -230,7 +230,7 @@ public final class FormSpecParser {
   }
 
   private static String message(String source, int index, String description) {
-    StringBuffer buffer = new StringBuffer('\n');
+    StringBuffer buffer = new StringBuffer("\n");
     buffer.append('\n');
     buffer.append(source);
     buffer.append('\n');
