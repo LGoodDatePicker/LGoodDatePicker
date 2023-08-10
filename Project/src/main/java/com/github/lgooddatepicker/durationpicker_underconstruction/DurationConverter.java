@@ -47,7 +47,7 @@ public class DurationConverter {
         if (!((Character.isDigit(currentChar)) || (currentChar == '.'))) {
           text =
               InternalUtilities.safeSubstring(text, 0, i)
-                  + " "
+                  + ' '
                   + InternalUtilities.safeSubstring(text, i, text.length());
           break;
         }
@@ -222,7 +222,7 @@ public class DurationConverter {
       value = seconds / oneHour;
       // The full value is always "X.5" hour(s), due to the hourDecimalIsBestChoice criteria.
       String decimalString = ".5";
-      result += value + decimalString + " ";
+      result += value + decimalString + ' ';
       result +=
           ((pluralRules.get(DurationUnit.Hour))
               ? unitsPlural.get(DurationUnit.Hour)

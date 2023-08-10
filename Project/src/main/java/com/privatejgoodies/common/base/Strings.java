@@ -252,6 +252,6 @@ public class Strings {
     int tailLength = maxLength - headLength - 1;
     String head = str.substring(0, headLength);
     String tail = str.substring(length - tailLength, length);
-    return head + "\u2026" + tail;
+    return head + '\u2026' + tail;
   }
 }

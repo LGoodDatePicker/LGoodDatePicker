@@ -179,7 +179,7 @@ public class SystemUtils {
       return System.getProperty(key);
     } catch (SecurityException e) {
       Logger.getLogger(SystemUtils.class.getName())
-          .warning("Can't access the System property " + key + ".");
+          .warning("Can't access the System property " + key + '.');
       return "";
     }
   }

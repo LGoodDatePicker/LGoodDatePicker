@@ -187,7 +187,7 @@ public class InternalUtilities {
       Properties properties = new Properties();
       ClassLoader classLoader = ClassLoader.getSystemClassLoader();
       properties.load(classLoader.getResourceAsStream("project.properties"));
-      return "v" + properties.getProperty("projectVersion");
+      return 'v' + properties.getProperty("projectVersion");
     } catch (Exception ex) {
       return "";
     }

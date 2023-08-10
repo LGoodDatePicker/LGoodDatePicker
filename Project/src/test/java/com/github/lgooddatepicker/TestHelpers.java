@@ -113,7 +113,7 @@ public class TestHelpers {
       String result = "";
       if (info.second != null) {
         for (StackTraceElement elem : info.second.getStackTrace()) {
-          result += elem.toString() + "\n";
+          result += elem.toString() + '\n';
         }
       }
       return result;
