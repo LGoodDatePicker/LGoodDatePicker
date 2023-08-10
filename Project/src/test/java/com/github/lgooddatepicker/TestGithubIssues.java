@@ -84,7 +84,7 @@ public class TestGithubIssues {
             "Exception in antother Thread triggered:\n"
                 + "ThreadName: "
                 + exInfo.getThreadName()
-                + "\n"
+                + '\n'
                 + "Exception: "
                 + exInfo.getExceptionMessage()
                 + "\nStacktrace:\n"

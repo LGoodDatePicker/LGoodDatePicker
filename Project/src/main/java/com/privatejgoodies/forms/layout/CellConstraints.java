@@ -860,7 +860,7 @@ public final class CellConstraints implements Cloneable, Serializable {
     }
     if (gridX > colCount) {
       throw new IndexOutOfBoundsException(
-          "The column index " + gridX + " must be less than or equal to " + colCount + ".");
+          "The column index " + gridX + " must be less than or equal to " + colCount + '.');
     }
     if (gridX + gridWidth - 1 > colCount) {
       throw new IndexOutOfBoundsException(
@@ -868,14 +868,14 @@ public final class CellConstraints implements Cloneable, Serializable {
               + gridWidth
               + " must be less than or equal to "
               + (colCount - gridX + 1)
-              + ".");
+              + '.');
     }
     if (gridY <= 0) {
       throw new IndexOutOfBoundsException("The row index " + gridY + " must be positive.");
     }
     if (gridY > rowCount) {
       throw new IndexOutOfBoundsException(
-          "The row index " + gridY + " must be less than or equal to " + rowCount + ".");
+          "The row index " + gridY + " must be less than or equal to " + rowCount + '.');
     }
     if (gridY + gridHeight - 1 > rowCount) {
       throw new IndexOutOfBoundsException(
@@ -883,7 +883,7 @@ public final class CellConstraints implements Cloneable, Serializable {
               + gridHeight
               + " must be less than or equal to "
               + (rowCount - gridY + 1)
-              + ".");
+              + '.');
     }
   }
 
@@ -1146,7 +1146,7 @@ public final class CellConstraints implements Cloneable, Serializable {
       RowSpec rowSpec = gridHeight == 1 ? layout.getRowSpec(gridY) : null;
       buffer.append(concreteAlignment(vAlign, rowSpec).abbreviation());
     }
-    buffer.append("\"");
+    buffer.append('"');
     if (!EMPTY_INSETS.equals(insets)) {
       buffer.append(", ");
       buffer.append(insets);
@@ -1249,6 +1249,6 @@ public final class CellConstraints implements Cloneable, Serializable {
    */
   private static String formatInt(int number) {
     String str = Integer.toString(number);
-    return number < 10 ? " " + str : str;
+    return number < 10 ? ' ' + str : str;
   }
 }

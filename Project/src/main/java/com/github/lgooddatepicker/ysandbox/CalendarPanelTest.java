@@ -142,7 +142,7 @@ public class CalendarPanelTest {
       String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
       String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
       String messageStart = "The selected date has changed from: ";
-      String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
+      String fullMessage = messageStart + oldDateString + " to: " + newDateString + '.';
       fullMessage += (event.isDuplicate()) ? "(Event marked as duplicate.)" : "";
       informationLabel.setText(fullMessage);
     }

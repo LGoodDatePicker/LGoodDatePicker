@@ -49,7 +49,7 @@ public class GetAllLanguages {
       DateTimeFormatter format =
           DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).withLocale(localeForLanguage);
       System.out.print(localeForLanguage.getDisplayLanguage() + ": ");
-      System.out.print(format.format(localTime) + "\n");
+      System.out.print(format.format(localTime) + '\n');
     }
   }
 }

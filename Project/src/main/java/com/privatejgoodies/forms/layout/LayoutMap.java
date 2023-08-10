@@ -458,7 +458,7 @@ public final class LayoutMap {
     if (expansion == null) {
       String orientation = horizontal ? "column" : "row";
       throw new IllegalArgumentException(
-          "Unknown " + orientation + " layout variable \"" + key + "\"");
+          "Unknown " + orientation + " layout variable \"" + key + '"');
     }
     return expansion;
   }

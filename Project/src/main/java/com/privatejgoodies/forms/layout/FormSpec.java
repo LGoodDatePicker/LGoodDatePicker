@@ -395,7 +395,7 @@ public abstract class FormSpec implements Serializable {
     StringBuffer buffer = new StringBuffer();
     buffer.append(defaultAlignment);
 
-    buffer.append(":");
+    buffer.append(':');
     buffer.append(size.toString());
     buffer.append(':');
     if (resizeWeight == NO_GROW) {
@@ -427,13 +427,13 @@ public abstract class FormSpec implements Serializable {
     StringBuffer buffer = new StringBuffer();
     buffer.append(defaultAlignment.abbreviation());
 
-    buffer.append(":");
+    buffer.append(':');
     buffer.append(size.toString());
     buffer.append(':');
     if (resizeWeight == NO_GROW) {
-      buffer.append("n");
+      buffer.append('n');
     } else if (resizeWeight == DEFAULT_GROW) {
-      buffer.append("g");
+      buffer.append('g');
     } else {
       buffer.append("g(");
       buffer.append(resizeWeight);
@@ -457,14 +457,14 @@ public abstract class FormSpec implements Serializable {
     DefaultAlignment alignmentDefault = isHorizontal() ? ColumnSpec.DEFAULT : RowSpec.DEFAULT;
     if (!alignmentDefault.equals(defaultAlignment)) {
       buffer.append(defaultAlignment.abbreviation());
-      buffer.append(":");
+      buffer.append(':');
     }
     buffer.append(size.encode());
     if (resizeWeight == NO_GROW) {
       // Omit the resize part
     } else if (resizeWeight == DEFAULT_GROW) {
       buffer.append(':');
-      buffer.append("g");
+      buffer.append('g');
     } else {
       buffer.append(':');
       buffer.append("g(");

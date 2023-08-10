@@ -382,7 +382,7 @@ public final class DefaultUnitConverter extends AbstractUnitConverter {
 
     @Override
     public String toString() {
-      return "DBU(x=" + x + "; y=" + y + ")";
+      return "DBU(x=" + x + "; y=" + y + ')';
     }
   }
 }

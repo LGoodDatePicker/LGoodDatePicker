@@ -876,7 +876,7 @@ public class FullDemo {
     // Display message.
     String message = "The timePicker1 value was set using the timePicker2 value!\n\n";
     String timeString = timePicker1.getTimeStringOrSuppliedString("(null)");
-    String messageAddition = ("The timePicker1 value is currently set to: " + timeString + ".");
+    String messageAddition = ("The timePicker1 value is currently set to: " + timeString + '.');
     panel.messageTextArea.setText(message + messageAddition);
   }
 
@@ -888,7 +888,7 @@ public class FullDemo {
     // Display message.
     String dateString = datePicker2.getDateStringOrSuppliedString("(null)");
     String message = "The datePicker2 date was set to New Years 2000!\n\n";
-    message += ("The datePicker2 date is currently set to: " + dateString + ".");
+    message += ("The datePicker2 date is currently set to: " + dateString + '.');
     panel.messageTextArea.setText(message);
   }
 
@@ -939,9 +939,9 @@ public class FullDemo {
     datePicker2.clear();
     // Display message.
     String message = "The datePicker1 and datePicker2 dates were cleared!\n\n";
-    message += getDatePickerOneDateText() + "\n";
+    message += getDatePickerOneDateText() + '\n';
     String date2String = datePicker2.getDateStringOrSuppliedString("(null)");
-    message += ("The datePicker2 date is currently set to: " + date2String + ".");
+    message += ("The datePicker2 date is currently set to: " + date2String + '.');
     panel.messageTextArea.setText(message);
   }
 
@@ -952,7 +952,7 @@ public class FullDemo {
   private static String getDatePickerOneDateText() {
     // Create date string for date picker 1.
     String dateString = datePicker1.getDateStringOrSuppliedString("(null)");
-    return ("The datePicker1 date is currently set to: " + dateString + ".");
+    return ("The datePicker1 date is currently set to: " + dateString + '.');
   }
 
   /**
@@ -1136,7 +1136,7 @@ public class FullDemo {
       String oldDateString = PickerUtilities.localDateToString(oldDate, "(null)");
       String newDateString = PickerUtilities.localDateToString(newDate, "(null)");
       String messageStart = "\nThe date in " + datePickerName + " has changed from: ";
-      String fullMessage = messageStart + oldDateString + " to: " + newDateString + ".";
+      String fullMessage = messageStart + oldDateString + " to: " + newDateString + '.';
       if (!panel.messageTextArea.getText().startsWith(messageStart)) {
         panel.messageTextArea.setText("");
       }
@@ -1296,7 +1296,7 @@ public class FullDemo {
       String oldTimeString = PickerUtilities.localTimeToString(oldTime, "(null)");
       String newTimeString = PickerUtilities.localTimeToString(newTime, "(null)");
       String messageStart = "\nThe time in " + timePickerName + " has changed from: ";
-      String fullMessage = messageStart + oldTimeString + " to: " + newTimeString + ".";
+      String fullMessage = messageStart + oldTimeString + " to: " + newTimeString + '.';
       if (!panel.messageTextArea.getText().startsWith(messageStart)) {
         panel.messageTextArea.setText("");
       }

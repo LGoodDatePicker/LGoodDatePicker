@@ -129,7 +129,7 @@ public final class PrototypeSize implements Size, Serializable {
    */
   @Override
   public String encode() {
-    return "'" + prototype + "'";
+    return '\'' + prototype + '\'';
   }
 
   // Overriding Object Behavior *******************************************
